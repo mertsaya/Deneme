@@ -55,7 +55,7 @@ chapters = [
    ("L1 Lagrange noktası", "~326.000 km", "S", "Dengesiz bölge, roketi yavaşça sürükler.", "Hassas iticiler", None, "Y", 0),
    ("Ay sapanı", "Ay yakını", "I", "Doğru açıyla geçersen yakıt harcamadan büyük ivme, yanlışsa çarpma.", "Sapan hesaplayıcı", "Apollo 13 dönüşünde kullanıldı", "Y", 0),
    ("Masconlar", "Ay yörüngesi", "S", "Ay'ın düzensiz kütle yoğunlukları yörüngeyi bozar.", "Otopilot +", "Gerçek, Apollo'da keşfedildi", "Y", 0),
-   ("Apollo hurdası", "Ay yörüngesi", "I", "Eski Saturn V kademeleri. Bulursan koleksiyon ve bilim ödülü.", "Robot kol", "Gerçek; bazıları hâlâ yörüngede", "N", 1),
+   ("Apollo hurdası", "Dünya–Ay arası", "I", "Güneş yörüngesinde dolaşan eski bir Saturn V üst kademesi ara sıra yakınlardan geçer. Yakalarsan koleksiyon ve bilim ödülü.", "Robot kol", "2002'de asteroit sanılan J002E3, Apollo 12'nin üst kademesi çıktı", "N", 1),
    ("Ay gecesi", "Ay yüzeyi", "Y", "−173 °C. Bataryalar donar, güç düşer.", "RTG", "Gerçek; 14 gün sürer", "Y", 1),
    ("Regolit tozu", "İniş", "Y", "İnişte kalkan toz görüşü kapatır.", "LIDAR", None, "Y", 0),
    ("Ay depremi", "İniş", "P", "İniş anında yüzey sarsılır, bacaklar kırılabilir.", "Esnek iniş bacakları", "Apollo sismometreleri kaydetti", "S", 1),
@@ -303,6 +303,19 @@ section{display:flex;flex-direction:column;gap:18px;padding-block:44px 0}
 .ob .ct span{color:var(--faint)}
 .ob .ct i{font-style:normal;color:var(--star)}
 .ob .real{color:var(--flame);font-size:.8rem}
+/* görsel katmanlar */
+.tiers{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+@media (max-width:520px){.tiers{grid-template-columns:1fr}}
+.tiers > div{border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:2px;background:var(--panel)}
+.tiers > div:last-child{border-color:#5a4426;background:linear-gradient(170deg,#2a2016,var(--panel))}
+.tier{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--flame)}
+.tiers b{font-family:var(--f-display);font-size:1.2rem}
+.tiers p{color:var(--dim);font-size:.85rem}
+.sig{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.sig > div{display:grid;grid-template-columns:2rem minmax(0,1fr);gap:2px 10px;padding:10px 0;border-bottom:1px solid var(--line)}
+.sig span{grid-row:span 2;font-family:var(--f-mono);font-size:.8rem;color:var(--flame);padding-top:2px}
+.sig b{font-weight:600}
+.sig p{color:var(--dim);font-size:.9rem}
 /* denge */
 .bal{display:flex;flex-direction:column;gap:7px}
 .bal > div{display:grid;grid-template-columns:7.5rem minmax(0,1fr) 2rem;gap:10px;align-items:center;font-size:.85rem}
@@ -346,7 +359,7 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div class="wrap">
 <header class="hero">
 <canvas id="sky" aria-hidden="true"></canvas>
-<p class="eyebrow">Oyun tasarım belgesi · Taslak 2 · Tartışma için</p>
+<p class="eyebrow">Oyun tasarım belgesi · Taslak 3 · Tartışma için</p>
 <h1>Son Durak:<br><em>Plüton</em></h1>
 <p class="pitch">Dünya'dan kalkan bir roket her denemede biraz daha uzağa gidiyor. Önce atmosfer, sonra yörünge, Ay, Mars ve sonunda Plüton. Her patlamadan sonra hangarda geliştirme yapıyor, bir sonraki denemede bir önceki seni öldüren engeli aşıyorsun.</p>
 <div class="loop">
@@ -356,7 +369,12 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div><b>Uzağa</b><span>Üs kur, oradan devam et</span></div>
 </div>
 ''')
-out.append(f'''<div class="changes"><p class="eyebrow">Taslak 2'de neler değişti</p><ul>
+out.append(f'''<div class="changes"><p class="eyebrow">Taslak 3'te neler değişti</p><ul>
+<li><b>Tasarım ilkeleri eklendi:</b> rota ve uygulama katmanları, engel aileleri, 3 saniyede yeniden kalkış, önce ekonomi simülasyonu.</li>
+<li><b>Görsel sistem ayrıntılandırıldı:</b> taban katman, her bölümün görsel imzası ve 4 kahraman an; gerçekçilik kuralları ve performans bütçesi.</li>
+<li><b>Yol haritasına A0 eklendi:</b> oynanabilir sürümden önce telefonunda deneyeceğin 20 saniyelik görsel prototip.</li>
+<li><b>Düzeltme:</b> Apollo hurdası Ay yörüngesinde değil, Güneş yörüngesinde.</li>
+</ul><p class="eyebrow" style="margin-top:6px">Taslak 2'de eklenenler</p><ul>
 <li><b>Güneş artık bir oyuncu:</b> yok edici, yavaşlatıcı ve nadiren mükemmel hızlandırıcı. Her uçuş bir uzay hava durumu tahminiyle başlıyor.</li>
 <li><b>Gezegen yörüngeleri:</b> sapanın yönüne göre hızlandırma ya da frenleme, fırlatma pencereleri, Büyük Tur hizalanması, Lagrange otoyolları, rezonans kombosu.</li>
 <li><b>{n_new} yeni engel ve fırsat</b>, her biri kendi ortamına özgü: volkanik kül, uydu treni, Ay depremi, toz şeytanları, Kirkwood boşlukları, çoban uydular…</li>
@@ -411,7 +429,16 @@ out.append('''</div>
 ''')
 
 # Güneş bölümü
-out.append('''<section><p class="eyebrow">Güneş</p><h2>Üç yüzlü yıldız</h2>
+out.append('''<section><p class="eyebrow">Tasarım ilkeleri</p><h2>Kerbal 2'nin düştüğü tuzağa düşmemek</h2>
+<div class="qs">
+<div><b>Rota ve uygulama: iki katman</b><p>Atmosfer gerçek zamanlı bir aksiyon, uzay ise bir planlama oyunu. Bu yüzden uzayda önce <b>rota ekranında</b> hangi sapanı ve pencereyi kullanacağını seçiyorsun, sonra bunu zamanlama anlarıyla ve engellerden kaçarak <b>uyguluyorsun</b>. Fizik gerçek kalıyor; oyuncu hesap yapmıyor, karar veriyor ve beceri gösteriyor.</p></div>
+<div><b>Engel aileleri</b><p>Bir engel ancak oyuncuyu farklı bir şey yapmaya zorluyorsa ayrı engeldir. Aşağıdaki 89 madde, 15–20 davranış ailesine indirilecek. Örneğin dolu, göktaşı izi ve mikrometeoroid aynı ailenin ("küçük darbeler") farklı görünümleri. Görsel çeşitlilik kalıyor, kurallar sadeleşiyor.</p></div>
+<div><b>3 saniyede yeniden kalkış</b><p>Patlama, kara kutu, hangar, kalkış döngüsü çok hızlı. Her bölüm başında checkpoint var; Jüpiter'de ölen oyuncu Dünya'dan baştan uçmuyor.</p></div>
+<div><b>Önce ekonomi simülasyonu</b><p>Kaç uçuşta Ay'a varılacağı, geliştirmelerin fiyatı ve kazançlar kodlamadan önce bir simülasyonla ayarlanacak.</p></div>
+<div><b>En fazla 4 kontrol</b><p>Yön, gaz, kademe ayırma ve yan araç. Kurallar uzun metinlerle değil, patlayıp kara kutu raporunu okuyarak öğreniliyor.</p></div>
+<div><b>Gerçek notlar doğrulanır</b><p>"Gerçek" diye sunulan her bilgi yayından önce tek tek kontrol edilecek.</p></div>
+</div></section>
+<section><p class="eyebrow">Güneş</p><h2>Üç yüzlü yıldız</h2>
 <p class="lead">Mars'tan itibaren Güneş her uçuşun gizli oyuncusu. Aynı yıldız, donanımına, açına ve zamanlamana göre seni eritebilir, frenleyebilir ya da oyundaki en büyük hızı verebilir.</p>
 <div class="sun">''')
 for title, cls, sub, items in sun:
@@ -513,17 +540,73 @@ out.append('''<section><p class="eyebrow">Ekonomi</p><h2>Üç para birimi</h2>
 </div>
 <p class="note"><b>Fotoğraf anları:</b> Ay'ın arkasından Dünya'nın doğuşu (Earthrise, 1968) ya da Satürn'den bakınca Dünya'nın "Soluk Mavi Nokta" olarak görünmesi gibi ünlü kareleri yakalamak, koleksiyon ve bonus bilim puanı veriyor.</p>
 </section>
-<section><p class="eyebrow">Görsel yön</p><h2>Çocuk oyunu değil, belgesel sinema</h2>
-<div class="cards">
-<div><b>Gökyüzü</b><p>Fiziksel tabanlı atmosfer gölgelendiricisi: yükseldikçe mavi laciverte, sonra siyaha döner, ufukta ince mavi çizgi kalır.</p></div>
-<div><b>Ateş ve duman</b><p>Parçacık tabanlı egzoz, ışık patlaması (bloom), sıcak hava titremesi, kalkışta rampa dumanı.</p></div>
-<div><b>Güneş dalışı</b><p>Ekran beyaza kayar, kalkan kenarları akkor turuncuya döner, ses kısılır. Ateşleme anında zaman yavaşlar.</p></div>
-<div><b>Gezegenler</b><p>Prosedürel dokular: bulutlar, Jüpiter'in bantları, Satürn'ün halkaları, Plüton'un kalbi.</p></div>
+<section><p class="eyebrow">Görsel sistem</p><h2>Çocuk oyunu değil, belgesel sinema</h2>
+<p class="lead">Telefonda her şeyi aynı kalitede yapmaya çalışmak oyunu kasar. Bu yüzden grafik üç katmanda düşünülüyor: her yerde geçerli sağlam bir <b>taban</b>, her bölümün tek bir <b>görsel imzası</b>, ve emeğin yığıldığı 4 <b>kahraman an</b>. Referans estetik: canlı roket yayınları ve uzay belgeselleri. Doygun, çizgi film renkleri yok.</p>
+<div class="tiers">
+<div><span class="tier">Katman 1</span><b>Taban</b><p>Her saniye, her bölümde</p></div>
+<div><span class="tier">Katman 2</span><b>Bölüm imzası</b><p>Her bölümde tek, akılda kalan bir görüntü</p></div>
+<div><span class="tier">Katman 3</span><b>Kahraman anlar</b><p>4 an, en yüksek kalite</p></div>
 </div>
-<p class="note"><b>Gerçekçi sınır:</b> Tarayıcıda çalışan Three.js ile sinematik bir görünüm mümkün, ama AAA oyun seviyesi değil. Dış kaynaklardan NASA dokuları yüklenemiyor, bu yüzden gezegen yüzeyleri kodla üretilecek. Telefonda akıcı kalması için grafik kalitesi cihaza göre otomatik ayarlanacak.</p>
+
+<h3>Katman 1 · Taban</h3>
+<div class="cards">
+<div><b>Roket</b><p>Metal ve boya malzemeli, Güneş yönünden gerçek zamanlı aydınlatılan model. <b>Her geliştirme roketin görünüşünü değiştirir:</b> kalkan takınca burun değişir, yelken açılınca gövdeden çıkar. Oyuncu ilerlemesini roketinde görür.</p></div>
+<div><b>Egzoz</b><p>Parçacık tabanlı alev. Atmosferde dar ve uzun, yükseldikçe genişler; boşlukta dev bir yelpazeye dönüşür. Bu gerçek bir olay ve neredeyse bedava bir gerçekçilik hissi verir.</p></div>
+<div><b>Işık</b><p>Tek ana ışık kaynağı Güneş. Gezegenlerden yansıyan zayıf dolgu ışığı, sinematik ton eşleme, sadece parlak kaynaklarda hafif ışık taşması (bloom).</p></div>
+<div><b>Gökyüzü</b><p>Gerçek yıldız haritası: en parlak birkaç bin yıldız gerçek konum ve parlaklıklarıyla yerleştirilir, takımyıldızlar tanınabilir. Arkada Samanyolu bandı.</p></div>
+<div><b>Hız hissi</b><p>Atmosferde katmanlı bulutlar, rüzgâr çizgileri ve ses hızında yoğuşma konisi. Uzayda yakın toz zerreleri, yıldızlarda paralaks ve hedefin büyümesi. FOV hızla birlikte açılır.</p></div>
+<div><b>Kamera</b><p>Roketi hafif gecikmeyle izleyen takip kamerası. Sarsıntı aerodinamik basınçla orantılı; Max-Q'da en sert, uzayda tamamen yok.</p></div>
+<div><b>Engellerin okunması</b><p>Gerçekçilikten önce okunaklılık. Her engel ailesinin tutarlı bir görsel dili var; ölümcül engellerde ince kırmızı, fırsatlarda turkuaz kenar ışığı var. Ekran dışından gelenler için kenarda ok.</p></div>
+<div><b>Gösterge paneli</b><p>Canlı roket yayınlarındaki telemetri gibi sade: irtifa, hız, yakıt, aşama. Yazı tipi teknik ve küçük, ekranı kapatmaz.</p></div>
+<div><b>Patlama</b><p>En sık görülen sahne olduğu için her zaman iyi olmalı. Atmosferde ateş topu ve duman; boşlukta ateş yok, sessiz bir parlama ve dağılan parçalar var (gerçekte de öyle). Kısa ağır çekim, sonra kara kutu.</p></div>
+<div><b>Hangar</b><p>Roket, dramatik ışıklı bir hangarda dönen platformda duruyor. Geliştirme alındığında parça yerine oturur, kısa bir test ateşlemesi yapılır.</p></div>
+</div>
+
+<h3>Gerçekçilik kuralları</h3>
+<ul class="rules">
+<li><b>Güneş uzaklıkla küçülür ve sönükleşir.</b> Mars'ta 2/3'ü, Jüpiter'de 1/5'i, Plüton'da parlak bir yıldız kadar. Dış gezegenler kendiliğinden karanlık ve ürkütücü olur.</li>
+<li><b>Havasız yerde gölgeler simsiyahtır.</b> Ay'da ve asteroitlerde sert, keskin gölgeler; atmosferi olan yerlerde yumuşak.</li>
+<li><b>Uzayda ses yok.</b> Atmosferden çıkınca motor sesi gövde titreşimine dönüşür, dış sesler kesilir.</li>
+<li><b>Ölçek dürüstlüğü.</b> Engeller oyun için gerçekte olduğundan yoğun yerleştirilir, ama gezegenlerin büyüklükleri ve renkleri doğru kalır.</li>
+</ul>
+
+<h3>Katman 2 · Bölüm imzaları</h3>
+<div class="sig">
+<div><span>1</span><b>Troposfer</b><p>Katmanlı bulut tavanını delip geçmek; aşağıda küçülen rampa ve şehir.</p></div>
+<div><span>2</span><b>Üst atmosfer</b><p>Dünya'nın eğriliğinin ilk kez görünmesi, gece parlayan bulutların gümüş ışığı.</p></div>
+<div><span>3</span><b>Yörünge</b><p>Gündüz–gece sınırı, gece yüzündeki şehir ışıkları, ufuktaki ince mavi atmosfer çizgisi ve aurora perdeleri.</p></div>
+<div><span>4</span><b>Ay</b><p>Ay'ın arkasından Dünya'nın doğuşu; kraterli yüzeyde simsiyah gölgeler.</p></div>
+<div><span>5</span><b>Mars</b><p>Pas renkli pus, ufukta Olympus Mons silueti, toz fırtınasında kararan Güneş.</p></div>
+<div><span>6</span><b>Asteroit kuşağı</b><p>Binlerce dönen kaya; Kirkwood boşluğunda aniden açılan temiz koridor.</p></div>
+<div><span>7</span><b>Jüpiter</b><p>Akan bulut bantları ve dönen Büyük Kırmızı Leke. Radyasyon arttıkça gösterge paneli bozulur ve karıncalanır.</p></div>
+<div><span>9</span><b>Neptün ve Kuiper</b><p>Derin mavi gezegen, sonra zifiri karanlık. LIDAR taraması görünmez kayaları yeşil tarama çizgileriyle ortaya çıkarır.</p></div>
+</div>
+<p class="note">Bölüm 8 (Satürn) ve 10 (Plüton) kahraman anlara dahil.</p>
+
+<h3>Katman 3 · Kahraman anlar</h3>
+<div class="cards">
+<div><b>Kármán geçişi</b><p>Gökyüzü maviden laciverte, sonra siyaha döner; yıldızlar birer birer belirir, ses kesilir, ufukta ince mavi çizgi kalır.</p></div>
+<div><b>Satürn halkaları</b><p>Halka boşluğundan geçiş: iki yanda buz duvarları, gölgesi halkalara düşen gezegen.</p></div>
+<div><b>Güneş dalışı</b><p>Ekran beyaza kayar, kalkan kenarları akkor turuncuya döner, ses kısılır. Ateşleme anında zaman yavaşlar.</p></div>
+<div><b>Plüton'un kalbi</b><p>Mavi pusun içinden alçalış, buz dağlarının arasından kalp şeklindeki ovaya iniş ve zafer sinematiği.</p></div>
+</div>
+
+<h3>Yolculuk ekranı</h3>
+<p class="note">Gezegenler arası uzun yolculuklar ve rota ekranı, görev kontrolündeki gibi sade bir güneş sistemi haritasıyla gösterilir. Haritada ince yörünge çizgileri, hayalet rota ve Lagrange otoyolları var. Zaman hızlandığında gezegenler yörüngelerinde akar.</p>
+
+<h3>Performans bütçesi</h3>
+<ul class="rules">
+<li><b>Hedef:</b> orta seviye bir telefonda saniyede 60 kare, zayıf cihazlarda 30.</li>
+<li><b>Otomatik kalite:</b> 3 kademe; kare hızı düşerse çözünürlük ve parçacık sayısı kendiliğinden azalır.</li>
+<li><b>Sınırlar:</b> telefonda aynı anda en fazla ~2.000 parçacık; kayalar gibi tekrar eden nesneler tek seferde çizilir.</li>
+</ul>
+
+<h3>Yapılamayacaklar</h3>
+<p class="note">Fotoğraf gerçekliğinde dokular (dış kaynaktan NASA görüntüsü yüklenemiyor; yüzeyler kodla üretilecek), telefonda gerçek hacimli bulutlar ve gerçekçi insan karakterleri bu kapsamda yok. Hedef AAA değil; tutarlı, şık ve inandırıcı bir görünüm.</p>
 </section>
 <section><p class="eyebrow">Yol haritası</p><h2>Adım adım geliştirme</h2>
 <div class="ms">
+<div><b>A0 · Görsel prototip</b><p>Etkileşimsiz, 20 saniyelik bir sahne: rampadan kalkış, bulutları delme ve Kármán geçişi. Telefonunda grafiğin hissini ve akıcılığını test ediyorsun; beğenmezsen kodlamaya geçmeden yönü değiştiriyoruz.</p></div>
 <div><b>A1 · Oynanabilir dilim: Kalkış → Yörünge</b><p>Bölüm 1–3, roket fiziği, yaklaşık 30 engel, hangar (4 dal), kara kutu raporu, atmosfer geçişi. Burada "his" doğru mu diye birlikte karar veriyoruz.</p></div>
 <div><b>A2 · Ay</b><p>Ay'a atış, sapan mekaniği, iniş, Ay Üssü checkpoint'i, yan araçların ilk dördü.</p></div>
 <div><b>A3 · Mars ve Güneş</b><p>Uzay hava durumu, Güneş'in üç yüzü, atmosfer frenlemesi, Mars yakıt fabrikası.</p></div>
