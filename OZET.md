@@ -47,3 +47,12 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 ## Depo
 - Depo: `mertsaya/Deneme`
 - Önceki oturumun dalı: `claude/evet-simdi-oldu-mu-2ekci2`
+
+## 2. oturum (2026-10-06)
+- Siteler açıktı. #366'nın "belirsiz ifade" notu ayrıntı vermiyor. Bir koşullu kanıt iddiası var (Baker'ın açık ABC sanısıyla n < 10^16136778163).
+  10^22 sınırı Donovan Johnson'ın A060355 b-dosyasından geliyor.
+- `erdos366/` altına arama programları yazıldı (deneme bölmesi + elek). Arama 10^26'ya kadar yapıldı ve #366 yönünde örnek bulunmadı
+  (ayrıntılar: `erdos366/SONUCLAR.md`).
+- Kullanıcı brute force istemiyor, teorik olarak çözülebilecek bir problem arıyor. Sezgisel hesap #366 için aramanın anlamsız olduğunu gösterdi.
+  Ayrıca #366'nın teorik çözümü ABC gücünde araçlar istiyor gibi görünüyor.
+- erdosproblems.com'daki "Looks tractable" oylarıyla aday taraması yapıldı. Adaylar: #488 (|A|=3 durumu), #1100, #389, #1210.
