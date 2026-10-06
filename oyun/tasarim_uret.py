@@ -15,27 +15,27 @@ chapters = [
   [("Pogo titreşimi", "0–1 km", "S", "Motor ve yakıt hattı rezonansa girer, roket sallanır.", "Pogo sönümleyici", "Saturn V'de gerçek sorun", "Y", 0),
    ("Kuş sürüsü", "0,5–3 km", "P", "Motora giren kuş itkiyi tek taraflı keser, roket dönmeye başlar.", "Eskort drone", None, "Y", 0),
    ("Termal sütun", "1–5 km", "I", "Sıcak hava kolonu yukarı doğru küçük bir itki verir.", "—", None, "Y", 0),
-   ("Dolu fırtınası", "2–8 km", "Y", "Buz taneleri gövdeyi döver, hız ve dayanıklılık düşer.", "Karbon gövde", None, "S", 1),
+   ("Dolu fırtınası", "2–8 km", "Y", "Buz taneleri gövdeyi döver, hız ve dayanıklılık düşer.", "Karbon kompozit", None, "S", 1),
    ("Rüzgâr kesmesi", "2–8 km", "S", "Ani yanal rüzgâr rotayı bozar.", "Jimbal motor", None, "Y", 0),
    ("Volkanik kül bulutu", "3–10 km", "Y", "Aşındırıcı kül motor nozulunu yıpratır, itki kademeli olarak düşer.", "Seramik kaplama", "2010 Eyjafjallajökull külü Avrupa hava trafiğini durdurdu", "S", 1),
    ("Fırtına bulutu ve yıldırım", "4–10 km", "P", "Yıldırım aviyoniği kapatır, kontrol birkaç saniye gider.", "Faraday kafesi", "Apollo 12'ye kalkışta iki kez yıldırım çarptı (1969)", "Y", 0),
    ("Buzlanma", "6–10 km", "Y", "Gövdede buz birikir, kütle artar.", "Isıtmalı gövde", None, "Y", 0),
-   ("Yolcu uçağı koridoru", "10–12 km", "P", "Ticari uçuş rotası. Çarpışma kesin son.", "Engel radarı", None, "S", 1),
-   ("Jet akımı", "9–12 km", "I", "Doğru yönde girersen ivme, ters açıyla girersen sapma.", "Rota hesaplayıcı", None, "Y", 0),
-   ("Max-Q", "11–14 km", "P", "Çok hızlıysan aerodinamik basınç roketi parçalar. Gazı kısmayı öğrenmek zorundasın.", "Karbon gövde", "Çoğu fırlatmada gaz bu noktada kısılır", "Y", 0)]),
+   ("Yolcu uçağı koridoru", "10–12 km", "P", "Ticari uçuş rotası. Çarpışma kesin son; çevik manevra gerekir.", "Jimbal motor", None, "S", 1),
+   ("Jet akımı", "9–12 km", "I", "Doğru yönde girersen ivme, ters açıyla girersen sapma.", "Engel radarı", None, "Y", 0),
+   ("Max-Q", "6–14 km (hıza göre)", "P", "Çok hızlıysan aerodinamik basınç roketi parçalar. Gazı kısmayı öğrenmek zorundasın.", "Karbon kompozit", "Çoğu fırlatmada gaz bu noktada kısılır", "Y", 0)]),
  ("2", "Üst Atmosfer", "12 – 100 km", 2.0,
   "Gökyüzü maviden laciverte, sonra siyaha döner. Oyunun ilk görsel 'vay' anı Kármán hattı.",
   [("Stratosfer balonları", "15–35 km", "P", "Rastgele yükselen bilim balonlarıyla çarpışma.", "Engel radarı", None, "Y", 0),
    ("Ozon tabakası", "20–30 km", "I", "Tehlikesiz. UV ölçümü bilim puanı verir.", "—", None, "Y", 1),
    ("Mavi jetler", "40–50 km", "P", "Bulut tepesinden yukarı fışkıran mavi şimşek.", "Faraday kafesi", "Gerçek üst atmosfer olayı", "S", 1),
-   ("Kırmızı sprite şimşekleri", "50–90 km", "P", "Bulutların çok üzerinde çakan kısa elektrik boşalmaları.", "Faraday kafesi +", "Gerçek üst atmosfer olayı", "S", 0),
-   ("Kademe ayırma penceresi", "60–80 km", "I", "Boş kademeyi doğru anda atarsan ani ivme, geç kalırsan ölü ağırlık.", "Çok kademeli roket", None, "Y", 0),
+   ("Kırmızı sprite şimşekleri", "50–90 km", "P", "Bulutların çok üzerinde çakan kısa elektrik boşalmaları.", "Faraday kafesi", "Gerçek üst atmosfer olayı", "S", 0),
+   ("Kademe ayırma penceresi", "60–80 km", "I", "Boş kademeyi doğru anda atarsan ani ivme, geç kalırsan ölü ağırlık.", "İki kademe", None, "Y", 0),
    ("Gece parlayan bulutlar", "76–85 km", "Y", "Buz kristallerinden oluşan en yüksek bulutlar. Hafif fren, ama bilim puanı verir.", "—", "Dünya'nın en yüksek bulutları", "S", 1),
    ("Göktaşı izleri", "70–100 km", "Y", "Yanan küçük göktaşı parçaları gövdeyi döver.", "Whipple kalkanı", None, "Y", 0),
    ("Kármán hattı", "100 km", "I", "Uzayın başlangıcı. Sinematik an, bilim puanı ve ilk büyük ödül.", "—", "FAI'nin kabul ettiği uzay sınırı (ABD 80 km kullanır)", "Y", 0)]),
  ("3", "Yörünge", "100 – 36.000 km", 2.6,
   "Yukarı çıkmak yetmiyor. Saniyede 7,8 km yatay hıza ulaşmazsan düşersin. Oyuncu burada gerçek roket fiziğini keşfediyor.",
-  [("Yerçekimi dönüşü", "100–200 km", "Y", "Dik çıkmakta ısrar edersen yörüngeye giremez, geri düşersin.", "Otopilot", "Gerçek fırlatmalarda roket yavaşça yatar", "Y", 0),
+  [("Yerçekimi dönüşü", "100–200 km", "Y", "Dik çıkmakta ısrar edersen yörüngeye giremez, geri düşersin.", "Yerçekimi dönüşü otopilotu", "Gerçek fırlatmalarda roket yavaşça yatar", "Y", 0),
    ("Termosfer sürtünmesi", "100–400 km", "Y", "İnce ama etkili hava direnci.", "—", None, "Y", 0),
    ("Atomik oksijen", "200–600 km", "Y", "Tek atomlu oksijen gövde kaplamasını kemirir.", "Seramik kaplama", "Alçak yörüngede gerçek malzeme sorunu", "Y", 1),
    ("Aurora perdesi", "100–300 km", "S", "Manyetik alan pusulayı saptırır, ama geçiş bilim puanı kazandırır.", "Yıldız izleyici", None, "S", 0),
@@ -44,19 +44,19 @@ chapters = [
    ("Uydu treni", "550 km", "S", "Sıra halinde ilerleyen yüzlerce küçük uydu. Aradan geçmek zamanlama ister.", "Otomatik kaçınma", None, "Y", 1),
    ("Güney Atlantik Anomalisi", "200–800 km", "S", "Radyasyonun yere en çok yaklaştığı bölge. Aviyonikte rastgele hatalar.", "Radyasyon zırhı", "Gerçek; uydular burada hata yapar", "S", 1),
    ("Uzay çöpü kuşağı", "600–1.000 km", "P", "Çarptığın her parça yeni parçalara bölünür ve tehlike zincirleme büyür.", "Whipple kalkanı", "Kessler sendromu", "Y", 0),
-   ("Uydu karşıtı test enkazı", "Rastgele", "P", "Ani beliren yoğun enkaz bulutu.", "Uzay hava durumu uydusu", "2007 ve 2021'de gerçek testler binlerce parça bıraktı", "N", 1),
+   ("Uydu karşıtı test enkazı", "Rastgele", "P", "Ani beliren yoğun enkaz bulutu.", "Otomatik kaçınma", "2007 ve 2021'de gerçek testler binlerce parça bıraktı", "N", 1),
    ("Ölü uydu", "800 km", "I", "Robot kolla yakalarsan hurda kredisi verir.", "Robot kol", None, "S", 0),
    ("Van Allen iç kuşağı", "1.000+ km", "P", "Radyasyon aviyoniği sıfırlar.", "Radyasyon zırhı", "Gerçek radyasyon kuşağı", "Y", 0),
    ("Mezarlık yörüngesi", "36.000 km", "P", "Yer-durağan kuşağın hemen üstünde emekli uydular birikmiş.", "Engel radarı", "Gerçek; emekli uydular buraya itilir", "S", 1)]),
  ("4", "Ay", "384.400 km", 5.58,
   "İlk gerçek yolculuk. Yörüngeden kopma anını doğru zamanlamak ve Ay'ın yerçekimini kullanmak gerekiyor.",
   [("Ay'a atış zamanlaması", "Dünya yörüngesi", "I", "Motoru Dünya'ya en yakın noktada yakarsan çok daha fazla hız kazanırsın.", "Sapan hesaplayıcı", "Oberth etkisi", "Y", 0),
-   ("Dünya'nın manyetik kuyruğu", "Ay yolu", "S", "Güneş rüzgârının arkaya doğru uzattığı manyetik alan. Yüklü toz roketi iter.", "Manyetik kalkan", "Ay her ay bu kuyruğun içinden geçer", "S", 1),
+   ("Dünya'nın manyetik kuyruğu", "Ay yolu", "S", "Güneş rüzgârının arkaya doğru uzattığı manyetik alan. Yüklü toz roketi iter.", "Manyetik radyasyon kalkanı", "Ay her ay bu kuyruğun içinden geçer", "S", 1),
    ("L1 Lagrange noktası", "~326.000 km", "S", "Dengesiz bölge, roketi yavaşça sürükler.", "Hassas iticiler", None, "Y", 0),
    ("Ay sapanı", "Ay yakını", "I", "Doğru açıyla geçersen yakıt harcamadan büyük ivme, yanlışsa çarpma.", "Sapan hesaplayıcı", "Apollo 13 dönüşünde kullanıldı", "Y", 0),
-   ("Masconlar", "Ay yörüngesi", "S", "Ay'ın düzensiz kütle yoğunlukları yörüngeyi bozar.", "Otopilot +", "1968'de Lunar Orbiter verileriyle keşfedildi", "Y", 0),
+   ("Masconlar", "Ay yörüngesi", "S", "Ay'ın düzensiz kütle yoğunlukları yörüngeyi bozar.", "Hassas iticiler", "1968'de Lunar Orbiter verileriyle keşfedildi", "Y", 0),
    ("Apollo hurdası", "Dünya–Ay arası", "I", "Güneş yörüngesinde dolaşan eski bir Saturn V üst kademesi ara sıra yakınlardan geçer. Yakalarsan koleksiyon ve bilim ödülü.", "Robot kol", "2002'de asteroit sanılan J002E3, Apollo 12'nin üst kademesi çıktı", "N", 1),
-   ("Ay gecesi", "Ay yüzeyi", "Y", "−173 °C. Bataryalar donar, güç düşer.", "RTG", "Gerçek; 14 gün sürer", "Y", 1),
+   ("Ay gecesi", "Ay yüzeyi", "Y", "−173 °C. Bataryalar donar, güç düşer.", "RTG (nükleer pil)", "Gerçek; 14 gün sürer", "Y", 1),
    ("Regolit tozu", "İniş", "Y", "İnişte kalkan toz görüşü kapatır.", "LIDAR", None, "Y", 0),
    ("Ay depremi", "İniş", "P", "İniş anında yüzey sarsılır, bacaklar kırılabilir.", "Esnek iniş bacakları", "Apollo sismometreleri kaydetti", "S", 1),
    ("Shackleton krateri buzu", "Güney kutbu", "I", "Hiç güneş görmeyen kraterlerde su buzu. Yakıta dönüşür.", "Madenci drone", "Güney kutbundaki kalıcı gölgeli kraterlerde buz izleri bulundu; Artemis'in hedef bölgesi", "S", 1),
@@ -68,7 +68,7 @@ chapters = [
    ("Phobos", "Mars yakını", "I", "Küçük ama kullanışlı bir sapan.", "—", None, "Y", 0),
    ("Atmosfer frenlemesi", "Mars atmosferi", "Y", "Dik girersen yanarsın, sığ girersen sekip uzaya kaçarsın. Doğru açı yakıtsız yavaşlatır.", "Ablatif ısı kalkanı", "Gerçek iniş tekniği", "Y", 0),
    ("İnce atmosfer", "İniş", "Y", "Paraşüt tek başına yetmez, son metrelerde motorla frenlemek gerekir.", "Süpersonik retro motor", "Gerçek; Mars inişlerinin en zor kısmı", "Y", 1),
-   ("Toz fırtınası", "Mars yüzeyi", "S", "Görüşü ve güneş enerjisini keser.", "RTG", None, "S", 0),
+   ("Toz fırtınası", "Mars yüzeyi", "S", "Görüşü ve güneş enerjisini keser.", "RTG (nükleer pil)", None, "S", 0),
    ("Toz şeytanları", "Mars yüzeyi", "I", "Küçük hortumlar güneş panellerinin tozunu temizler, enerji geri gelir.", "—", "Spirit gezgininin panellerini gerçekten temizlediler", "S", 1),
    ("Olympus Mons", "İniş bölgesi", "P", "22 km yüksekliğindeki dağ. Yanlış rotada iniş yamaca çarpar.", "LIDAR", "Güneş sisteminin en yüksek dağlarından", "Y", 1),
    ("Mars yakıt fabrikası", "Ödül", "I", "Atmosferdeki karbondioksitten metan üretir. Yeni checkpoint.", "—", None, "Y", 0)]),
@@ -85,26 +85,26 @@ chapters = [
   "Hem en büyük ödül hem en büyük tehlike: oyunun en güçlü sapanı ile en ölümcül radyasyonu bir arada.",
   [("Truva asteroitleri", "Jüpiter'in L4/L5'i", "P", "Jüpiter'le aynı yörüngede önde ve arkada giden iki asteroit sürüsü.", "Otomatik kaçınma", "Gerçek; Lucy sondası inceliyor", "Y", 1),
    ("Jüpiter sapanı", "Jüpiter yakını", "I", "Oyundaki en büyük gezegen ivmesi.", "Sapan hesaplayıcı", "Voyager ve New Horizons kullandı", "Y", 0),
-   ("Radyasyon kuşakları", "Jüpiter yakını", "P", "Güneş sistemindeki en sert radyasyon.", "Manyetik kalkan", None, "Y", 0),
+   ("Radyasyon kuşakları", "Jüpiter yakını", "P", "Güneş sistemindeki en sert radyasyon.", "Manyetik radyasyon kalkanı", None, "Y", 0),
    ("Büyük Kırmızı Leke", "Jüpiter atmosferi", "S", "Dünya'dan büyük bir fırtına. Yaklaşırsan seni içine çeker.", "—", "En az 150 yıldır gözlenen gerçek fırtına", "Y", 1),
    ("Laplace rezonans zinciri", "Io–Europa–Ganymede", "I", "Üç uydu 1:2:4 ritmiyle dönüyor. Doğru anda üçünden art arda sapan yaparsan dev kombo ivme.", "Zincir planlayıcı", "Gerçek yörünge rezonansı", "N", 1),
    ("Io plazma halkası", "Io yörüngesi", "I", "Elektrodinamik ipin varsa elektrik üretir.", "Elektrodinamik ip", None, "S", 0),
    ("Europa buz tozları", "Europa", "I", "Yüzeyden kopan buz. Buhar roketinin yakıtı.", "Madenci drone", None, "Y", 1),
    ("Kuyruklu yıldız parçaları", "Jüpiter yakını", "P", "Jüpiter'e düşen parçalanmış kuyruklu yıldız zinciri.", "Otomatik kaçınma", "Shoemaker–Levy 9, 1994", "N", 1),
-   ("Güneş enerjisi sınırı", "Jüpiter ötesi", "Y", "Güneş panelleri artık yetmez, nükleer enerji gerekir.", "RTG", "Juno Jüpiter'de dev panellerle idare etti; Satürn ve ötesine giden her sonda RTG kullandı", "Y", 0)]),
+   ("Güneş enerjisi sınırı", "Jüpiter ötesi", "Y", "Güneş panelleri artık yetmez, nükleer enerji gerekir.", "RTG (nükleer pil)", "Juno Jüpiter'de dev panellerle idare etti; Satürn ve ötesine giden her sonda RTG kullandı", "Y", 0)]),
  ("8", "Satürn", "~1,3 milyar km", 9.11,
   "Görsel olarak oyunun zirvesi: halkaların arasından geçiş.",
   [("Halka geçişi", "Halka boşluğu", "P", "Buz parçalarının arasından dar bir koridor.", "Otomatik kaçınma", "Cassini 2017'de bu boşluktan 22 kez geçti", "Y", 0),
    ("Çoban uydular", "Halka içi", "I", "Pan ve Daphnis halkalarda temiz boşluklar açar. Onları takip eden güvenli geçer.", "Zincir planlayıcı", "Gerçek; halkalardaki dalgaları onlar yapar", "S", 1),
    ("Halka yağmuru", "Halka altı", "Y", "Halkalardan gezegene buz parçacıkları yağar, hafif fren.", "—", "Gerçek; Cassini ölçtü", "Y", 1),
-   ("Halka parmakları", "Halka üstü", "S", "Elektrostatik toz şeritleri aviyoniği şaşırtır.", "Faraday kafesi +", "Halkalardaki gizemli 'spoke'lar", "S", 1),
+   ("Halka parmakları", "Halka üstü", "S", "Elektrostatik toz şeritleri aviyoniği şaşırtır.", "Faraday kafesi", "Halkalardaki gizemli 'spoke'lar", "S", 1),
    ("Kutup altıgeni", "Kuzey kutbu", "S", "Altıgen biçimli dev jet akımı. Kenarından girersen savrulursun.", "—", "Gerçek; Voyager keşfetti", "S", 1),
    ("Hyperion", "Dış yörünge", "P", "Kaotik dönen, sünger gibi uydu. Yanaşmak neredeyse imkânsız.", "Otomatik kaçınma", "Dönüşü gerçekten öngörülemez", "S", 1),
    ("Titan", "Titan", "Y", "Kalın atmosfer frenler, metan gölleri yakıt verir.", "Ablatif ısı kalkanı", None, "Y", 0),
    ("Enceladus gayzerleri", "Enceladus", "S", "Buz püskürtüleri iter; içinden geçmek su toplar.", "—", None, "Y", 0)]),
  ("9", "Uranüs, Neptün ve Kuiper", "2,7 – 4,5 milyar km", 9.55,
   "Karanlık, soğuk ve sessiz. Güneş ışığı artık işe yaramıyor, sensörlerle uçmak gerekiyor.",
-  [("Güneş ışığının sönüşü", "Uranüs ötesi", "Y", "Güneş yelkeni ve paneller neredeyse sıfıra düşer. Yalnızca nükleer güç.", "RTG / füzyon", "Işık, uzaklığın karesiyle azalır", "Y", 1),
+  [("Güneş ışığının sönüşü", "Uranüs ötesi", "Y", "Güneş yelkeni ve paneller neredeyse sıfıra düşer. Yalnızca nükleer güç.", "RTG (nükleer pil)", "Işık, uzaklığın karesiyle azalır", "Y", 1),
    ("Yan yatık Uranüs", "Uranüs", "S", "98° eğik dönen gezegen. Sapan açıları alışılmadık.", "Sapan hesaplayıcı", "Gerçek; yan yatmış döner", "Y", 1),
    ("Karanlık halkalar", "Uranüs", "P", "Kömür kadar koyu halkalar, gözle görünmez.", "LIDAR", "Gerçek; 1977'de keşfedildi", "Y", 1),
    ("Neptün rüzgârları", "Neptün atmosferi", "S", "Saatte 2.000 km'yi aşan, Güneş sisteminin en hızlı rüzgârları.", "—", None, "Y", 0),
@@ -225,6 +225,11 @@ _fam = [m for f in FAMILIES for m in f[2]]
 assert sorted(_all) == sorted(_fam), (set(_all) ^ set(_fam))
 
 sys.path.insert(0, HERE)
+import model as M
+_chk, _fk = M.kontroller(chapters, FAMILIES)
+M.json_disari(os.path.join(HERE, "model.json"))
+for _ad, _ok, _h in _chk:
+    print(("TAMAM " if _ok else "HATA  ") + _ad, _h if _h else "")
 import ekonomi_sim
 _eko_rows, _eko_dk = ekonomi_sim.main(600)
 
@@ -373,6 +378,36 @@ section{display:flex;flex-direction:column;gap:18px;padding-block:44px 0}
 .est .h:last-child .v{color:var(--flame)}
 code{font-family:var(--f-mono);font-size:.85em;color:var(--star)}
 .qs i{font-style:normal;color:var(--ion)}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:8px}
+.tbl table{width:100%;border-collapse:collapse;font-size:.86rem;min-width:520px}
+.tbl th{font-family:var(--f-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);font-weight:500;background:var(--panel)}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--line);color:var(--dim);vertical-align:top;line-height:1.45}
+.tbl tr:last-child td{border-bottom:0}
+.tbl td b{color:var(--star);font-weight:600}
+.tbl .num{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--star)}
+.tbl .ok{color:var(--ion)} .tbl .bad{color:var(--danger)}
+.fx{display:flex;flex-direction:column;gap:8px}
+.fx > div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:11px 13px;display:flex;flex-direction:column;gap:4px}
+.fx b{font-weight:600}
+.fx .act{font-family:var(--f-mono);font-size:.72rem;color:var(--ion)}
+.fx p{color:var(--dim);font-size:.88rem;line-height:1.5}
+.fx i{font-style:normal;color:var(--star);font-weight:500}
+.tree2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:10px}
+.br2{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:9px;min-width:0}
+.up{display:grid;grid-template-columns:1.5rem minmax(0,1fr);gap:8px}
+.up .k{font-family:var(--f-mono);font-size:.72rem;color:var(--flame);border:1px solid var(--line);border-radius:3px;text-align:center;line-height:1.5rem;height:1.5rem}
+.up b{font-size:.93rem}
+.up p{color:var(--dim);font-size:.84rem;line-height:1.45}
+.cost{color:var(--slow)!important;font-size:.8rem!important}
+.fail > div{grid-template-columns:minmax(0,1fr) 9rem}
+.fail b{color:var(--star);font-weight:600}
+ol.rules{padding-left:1.3em}
+.chk{display:flex;flex-direction:column;gap:6px}
+.chk > div{display:grid;grid-template-columns:1.6rem minmax(0,1fr);gap:8px;align-items:start;border:1px solid var(--line);border-radius:6px;padding:9px 12px}
+.chk span{font-weight:700;font-size:1rem}
+.chk .ok span{color:var(--ion)} .chk .bad span{color:var(--danger)} .chk .bad{border-color:var(--danger)}
+.chk p{font-size:.9rem}
+.chk small{color:var(--faint)}
 /* denge */
 .bal{display:flex;flex-direction:column;gap:7px}
 .bal > div{display:grid;grid-template-columns:7.5rem minmax(0,1fr) 2rem;gap:10px;align-items:center;font-size:.85rem}
@@ -416,7 +451,7 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div class="wrap">
 <header class="hero">
 <canvas id="sky" aria-hidden="true"></canvas>
-<p class="eyebrow">Oyun tasarım belgesi · Taslak 4 · Plan tamam, kodlamaya hazır</p>
+<p class="eyebrow">Oyun tasarım belgesi · Taslak 5 · Plan tamam, kodlamaya hazır</p>
 <h1>Son Durak:<br><em>Plüton</em></h1>
 <p class="pitch">Dünya'dan kalkan bir roket her denemede biraz daha uzağa gidiyor. Önce atmosfer, sonra yörünge, Ay, Mars ve sonunda Plüton. Her patlamadan sonra hangarda geliştirme yapıyor, bir sonraki denemede bir önceki seni öldüren engeli aşıyorsun.</p>
 <div class="loop">
@@ -426,7 +461,14 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div><b>Uzağa</b><span>Üs kur, oradan devam et</span></div>
 </div>
 ''')
-out.append(f'''<div class="changes"><p class="eyebrow">Taslak 4'te neler değişti</p><ul>
+out.append(f'''<div class="changes"><p class="eyebrow">Taslak 5'te neler değişti</p><ul>
+<li><b>Sayısal model:</b> roketin 13 değişkeni, 19 engel ailesinin sayısal etkileri, tüm geliştirme, modül, yan araç ve efsanevilerin sayıları, Güneş ve yörünge formülleri, etkileşim kuralları.</li>
+<li><b>Kalkış fiziği simülasyonu:</b> roket değerleri gerçek fizikle doğrulandı; ekonomi simülasyonu buna bağlandı (Plüton'a iniş ~92 uçuş).</li>
+<li><b>Yeni kategori, modüller:</b> engel karşılıklarında adı geçip ağaçta olmayan 13 donanım (Faraday kafesi, LIDAR…) sınırlı yuvalı modüllere dönüştü.</li>
+<li><b>Düzeltmeler:</b> efsanevi fiyatlar kazançla orantısızdı (120.000 → 20.000 kredi); Max-Q konumu fiziğe göre 6–14 km oldu.</li>
+<li><b>Eksik kontrolü:</b> başarısızlık türleri, kazanç formülü, zaman ölçeği, ilk 10 dakika, rastgelelik, görev hedefleri, oyun sonu, kayıt yedeği, erişilebilirlik, lisanslar, mimari ve test planı.</li>
+<li><b>Tutarlılık denetimi:</b> plan her üretildiğinde kendi kurallarını otomatik kontrol ediyor.</li>
+</ul><p class="eyebrow" style="margin-top:6px">Taslak 4'te eklenenler</p><ul>
 <li><b>Hasar sistemi ve nesneler:</b> göçük, kopan parça, bükülme, parçalanma; kuş, bulut, balon, uydu ve asteroitlerin hareket ve çarpışma tepkileri.</li>
 <li><b>Engel aileleri:</b> 89 engel 19 davranışa indirildi.</li>
 <li><b>Ekonomi simülasyonu:</b> Plüton'a iniş yaklaşık 86 uçuş.</li>
@@ -547,6 +589,15 @@ for n, fx, d, s in orbits:
     out.append(f'<div><b>{E(n)}</b>{fxchip(fx)}<p>{E(d)}</p><small>{E(s)}</small></div>')
 out.append('</div></section>')
 
+# Güneş ve yörünge sayıları
+out.append('<section><p class="eyebrow">Hızlandırıcı ve Güneş sayıları</p><h2>Formüller</h2><p class="lead">Güneş\'in üç yüzü ve gezegen fırsatlarının oyundaki sayısal karşılıkları.</p><div class="tbl"><table><thead><tr><th>Olay</th><th>Değer ve formül</th></tr></thead><tbody>')
+for a_, b_ in M.SUN_FX + M.ORBIT_FX:
+    out.append(f'<tr><td><b>{E(a_)}</b></td><td>{E(b_)}</td></tr>')
+out.append('</tbody></table></div><div class="tbl"><table><thead><tr><th>Uzay hava durumu</th><th>Uçuş olasılığı</th><th>CME sıklığı</th><th>Koronal delik</th><th>Yelken itkisi</th></tr></thead><tbody>')
+for (ad, cme, kd, ye), ol in zip(M.WEATHER, ("%40", "%45", "%15")):
+    out.append(f'<tr><td><b>{ad}</b></td><td>{ol}</td><td class="num">×{cme:g}</td><td class="num">%{kd*100:.0f}</td><td class="num">×{ye:g}</td></tr>'.replace(".", ","))
+out.append('</tbody></table></div></section>')
+
 # Engel aileleri
 out.append(f'<section><p class="eyebrow">Engel aileleri</p><h2>{len(_all)} engel, {len(FAMILIES)} davranış</h2><p class="lead">Bir engel ancak oyuncuyu farklı bir şey yapmaya zorluyorsa ayrı engeldir. Aşağıdaki bölüm listesindeki her madde bu ailelerden birinin, o ortama uygun görünümü. Kod tarafında {len(FAMILIES)} davranış yazılıyor, görsel çeşitlilik korunuyor.</p><div class="fam">')
 for n, act, mem in FAMILIES:
@@ -586,19 +637,60 @@ out.append(f'''</div>
 </section>
 ''')
 
-out.append('<section><p class="eyebrow">Hangar</p><h2>Geliştirme ağacı</h2><p class="lead">Altı dal, her dalda altı kademe. Bir sonraki kademe hem kredi hem de ilgili bölümde toplanan bilim puanı istiyor, böylece geri dönüp keşif yapmak anlam kazanıyor.</p><div class="tree">')
-for n, items, note in tree:
-    out.append(f'<div class="br"><h3>{E(n)}</h3><ol>' + "".join(f'<li>{E(i)}</li>' for i in items) + f'</ol><p>{E(note)}</p></div>')
+# Roket modeli ve etki tablosu (veriler model.py'den)
+def _n(x):
+    return f"{x:,}".replace(",", ".")
+
+out.append('<section><p class="eyebrow">Roket modeli</p><h2>Roketin değişkenleri</h2><p class="lead">Her engel, geliştirme ve hızlandırıcı bu değişkenlerden birini ya da birkaçını değiştirir. Başlangıç değerleri ilk ayardır ve kalkış fiziği simülasyonuyla doğrulandı.</p><div class="tbl"><table><thead><tr><th>Değişken</th><th>Birim</th><th>Başlangıç</th><th>Not</th></tr></thead><tbody>')
+for _id, ad, bi, de, no in M.STATE:
+    out.append(f'<tr><td><b>{E(ad)}</b></td><td>{E(bi)}</td><td class="num">{E(de)}</td><td>{E(no)}</td></tr>')
+out.append('</tbody></table></div><h3>Ortam</h3><div class="tbl"><table><thead><tr><th>Büyüklük</th><th>Formül</th><th>Not</th></tr></thead><tbody>')
+for ad, f, no in M.ENV:
+    out.append(f'<tr><td><b>{E(ad)}</b></td><td>{E(f)}</td><td>{E(no)}</td></tr>')
+out.append('</tbody></table></div><h3>Kalkış fiziği doğrulaması</h3><p class="note">Engelsiz, ideal pilotla Dünya\'dan kalkış simülasyonu: gerçek yerçekimi, hava yoğunluğu, sürükleme ve yörünge mekaniği. Her satır, hangi donanımla nereye fiziksel olarak varılabildiğini gösteriyor.</p><div class="tbl"><table><thead><tr><th>Donanım</th><th>Sonuç</th><th>En yüksek nokta</th><th>En yüksek q</th></tr></thead><tbody>')
+for ad, durum, irt, q, yor in _fk:
+    cls = "ok" if yor else ("bad" if "Max-Q" in durum else "")
+    out.append(f'<tr><td>{E(ad)}</td><td class="{cls}">{E(durum)}</td><td class="num">{_n(round(irt))} km</td><td class="num">{q:.1f} kPa</td></tr>'.replace(".1f", ""))
+out.append('</tbody></table></div><p class="note">Sonuç: başlangıç roketi tam gazla 6 km\'de Max-Q\'da parçalanıyor. Gaz kısmayı öğrenen oyuncu yükseğe çıkabiliyor ama yörüngeye giremiyor. Yörünge için iki kademe, otopilot, karbon gövde ve motor geliştirmesi birlikte gerekiyor; metan motor ve üç kademe Ay\'a gidecek kadar fazla hız bırakıyor. Ekonomi simülasyonundaki bölüm gereksinimleri bu sonuçlarla uyumlu.</p></section>')
+
+out.append('<section><p class="eyebrow">Etki tablosu</p><h2>Engel aileleri roketi nasıl değiştirir</h2><p class="lead">19 davranışın her biri için: hangi değişkene dokunduğu, sayıları ve karşı önlemlerin etkisi.</p><div class="fx">')
+for n, act, mem in FAMILIES:
+    d, sayi, karsi = M.FAMILY_FX[n]
+    out.append(f'<div><b>{E(n)}</b><span class="act">{E(d)}</span><p><i>Sayılar:</i> {E(sayi)}</p><p><i>Karşı önlem:</i> {E(karsi)}</p></div>')
 out.append('</div></section>')
 
-out.append('<section><p class="eyebrow">Yan araçlar</p><h2>Rokete eşlik edenler</h2><div class="cards">')
-for n, d, nw in side:
-    out.append(f'<div><b>{E(n)}{newtag(nw)}</b><p>{E(d)}</p></div>')
+_bol = ["Baştan", "Üst atmosfer", "Yörünge", "Ay", "Mars yolu", "Asteroit kuşağı", "Jüpiter"]
+out.append('<section><p class="eyebrow">Hangar</p><h2>Geliştirme ağacı</h2><p class="lead">Altı dal, her dalda altı kademe. Kademe fiyatı 220 × 1,95^(k−1) kredi; 3. kademeden itibaren bilim, 5. kademeden itibaren malzeme de ister. Her kademe belirli bir bölüme ulaşıldıktan sonra açılır.</p><div class="tbl"><table><thead><tr><th>Kademe</th><th>Kredi</th><th>Bilim</th><th>Malzeme</th><th>Açılış</th></tr></thead><tbody>')
+for k in range(1, 7):
+    out.append(f'<tr><td><b>{k}</b></td><td class="num">{_n(M.PRICE(k))}</td><td class="num">{M.SCIENCE[k]}</td><td class="num">{M.MATERIAL[k]}</td><td>{_bol[M.UNLOCK[k]]}</td></tr>')
+out.append('</tbody></table></div><div class="tree2">')
+for dal, items in M.TREE.items():
+    out.append(f'<div class="br2"><h3>{E(dal)}</h3>')
+    for i, (n, etki, bedel) in enumerate(items, 1):
+        out.append(f'<div class="up"><span class="k">{i}</span><div><b>{E(n)}</b><p>{E(etki)}</p>' + (f'<p class="cost">{E(bedel)}</p>' if bedel != "—" else '') + '</div></div>')
+    out.append('</div>')
 out.append('</div></section>')
 
-out.append('<section><p class="eyebrow">Efsanevi geliştirmeler</p><h2>"Ağzımız açık kalsın" listesi</h2><p class="lead">Oyunun sonlarına doğru açılan, ekranda çok etkileyici duran ve çoğu gerçek mühendislik fikirlerine dayanan geliştirmeler.</p><div class="cards legendary">')
-for n, d, s, nw in legend:
-    out.append(f'<div><b>{E(n)}{newtag(nw)}</b><p>{E(d)}</p><small>{E(s)}</small></div>')
+_bn = {c[0]: c[1] for c in chapters}
+out.append('<section><p class="eyebrow">Modüller</p><h2>Uçuş öncesi takılan donanımlar</h2><p class="lead">Bir kez satın alınır, her uçuş öncesi sınırlı sayıdaki modül yuvasına takılır. Başlangıçta 2 yuva var, lojistik dalıyla 5\'e çıkar. Hangi modülü takacağını seçmek, uçuşun hedefine göre verilen bir karar.</p><div class="tbl"><table><thead><tr><th>Modül</th><th>Açılış</th><th>Kredi</th><th>Etki</th></tr></thead><tbody>')
+for n, b_, fiyat, etki in M.MODULES:
+    out.append(f'<tr><td><b>{E(n)}</b></td><td>{E(_bn[str(b_)])}</td><td class="num">{_n(fiyat)}</td><td>{E(etki)}</td></tr>')
+out.append('</tbody></table></div></section>')
+
+out.append('<section><p class="eyebrow">Yan araçlar</p><h2>Rokete eşlik edenler</h2><div class="tbl"><table><thead><tr><th>Araç</th><th>Açılış</th><th>Kredi</th><th>Etki</th></tr></thead><tbody>')
+for n, b_, fiyat, etki in M.SIDE:
+    out.append(f'<tr><td><b>{E(n)}</b></td><td>{E(_bn[str(b_)])}</td><td class="num">{_n(fiyat)}</td><td>{E(etki)}</td></tr>')
+out.append('</tbody></table></div></section>')
+
+_src = {x[0]: x[2] for x in legend}
+out.append('<section><p class="eyebrow">Efsanevi geliştirmeler</p><h2>"Ağzımız açık kalsın" listesi</h2><p class="lead">Oyunun sonlarına doğru açılan, çoğu gerçek mühendislik fikirlerine dayanan geliştirmeler. Fiyatları, o bölümdeki bir uçuşun kazancının birkaç katı.</p><div class="cards legendary">')
+for n, b_, kr, ma, etki in M.LEGEND:
+    out.append(f'<div><b>{E(n)}</b><p>{E(etki)}</p><p class="cost">{E(_bn[str(b_)])} sonrası · {_n(kr)} kredi · {ma} malzeme</p><small>{E(_src.get(n, ""))}</small></div>')
+out.append('</div></section>')
+
+out.append('<section><p class="eyebrow">Etkileşimler</p><h2>Değişkenler birbirini nasıl etkiler</h2><div class="qs">')
+for a_, b__ in M.INTERACTIONS:
+    out.append(f'<div><b>{E(a_)}</b><p>{E(b__)}</p></div>')
 out.append('</div></section>')
 
 out.append('''<section><p class="eyebrow">Ekonomi</p><h2>Üç para birimi</h2>
@@ -747,7 +839,7 @@ __EKO__<p class="note"><b>Fotoğraf anları:</b> Ay'ın arkasından Dünya'nın 
 <li><b>Tarayıcı:</b> en iyi performans için oyunu Chrome'da açmak önerilir.</li>
 </ul>
 </section>
-<section><p class="eyebrow">Yol haritası</p><h2>Adım adım geliştirme</h2>
+__EKSIK__<section><p class="eyebrow">Yol haritası</p><h2>Adım adım geliştirme</h2>
 <div class="ms">
 <div><b>A0 · Görsel prototip</b><p>Etkileşimsiz, 20 saniyelik bir sahne: Blender'dan çıkmış roket, rampadan kalkış, bulutları delme, kuş sürüsü, küçük bir çarpışma ve Kármán geçişi. Telefonunda grafiğin hissini ve akıcılığını test ediyorsun; beğenmezsen kodlamaya geçmeden yönü değiştiriyoruz.</p></div>
 <div><b>A1 · Oynanabilir dilim: Kalkış → Yörünge</b><p>Bölüm 1–3, roket fiziği, bu bölümlerin engel aileleri, hasar sistemi, hangar (4 dal), kara kutu raporu, ses, kayıt sistemi. Burada "his" doğru mu diye birlikte karar veriyoruz.</p></div>
@@ -816,6 +908,12 @@ __EKO__<p class="note"><b>Fotoğraf anları:</b> Ay'ın arkasından Dünya'nın 
 </script>
 ''')
 page = "".join(out)
+_ek = open(os.path.join(HERE, "belge_ek.html")).read()
+_den = '<section><p class="eyebrow">Tutarlılık denetimi</p><h2>Plan kendi kendini kontrol ediyor</h2><p class="lead">Bu belge her üretildiğinde aşağıdaki kontroller otomatik çalışır. Bir kural bozulursa burada kırmızı görünür.</p><div class="chk">'
+for _ad, _ok, _h in _chk:
+    _den += f'<div class="{"ok" if _ok else "bad"}"><span>{"✓" if _ok else "✗"}</span><p>{E(_ad)}' + (f'<br><small>{E("; ".join(_h))}</small>' if _h else '') + '</p></div>'
+_den += '</div></section>'
+page = page.replace("__EKSIK__", _ek + _den)
 _rows = "".join(f'<div><span>{E(a)}</span><span class="v">{m:.0f}</span><span class="r">{lo}–{hi}</span></div>' for a, m, lo, hi in _eko_rows)
 page = page.replace("__EKO__", '<h3>İlerleme simülasyonu</h3><p class="note">Kodlamadan önce ekonomi bir simülasyonla ayarlandı: kazanç derinlikle, fiyatlar kademeyle katlanarak artıyor. Her bölüm belirli dallarda belirli kademeler istiyor; oyuncu aynı yerde denedikçe ustalaşıyor. Sonuç (uçuş sayısı, medyan ve %10–90 aralığı):</p>'
     + f'<div class="eko"><div class="h"><span>Kilometre taşı</span><span class="v">Uçuş</span><span class="r">Aralık</span></div>{_rows}</div>'

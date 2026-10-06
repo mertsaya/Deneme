@@ -62,4 +62,5 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - Tasarım belgesi: `oyun/tasarim.html` (`oyun/tasarim_uret.py` ile üretiliyor). Yayınlanmış hali: https://claude.ai/artifact/Aj3Qdzz7z9B1k68PugXA1V
 - Plan Taslak 4 ile tamamlandı: hasar sistemi, nesne gerçekçiliği, 19 engel ailesi, ekonomi simülasyonu (`oyun/ekonomi_sim.py`, ~86 uçuş / ~7 saat), ses (müzik + efektler + anonslar), arayüz, S24 Ultra performans hedefi, varsayılan kararlar.
 - Kullanıcının telefonu: Samsung Galaxy S24 Ultra. Blender burada `pip install bpy` (Python 3.11 venv) ile scriptle çalışıyor.
+- Taslak 5: sayısal model `oyun/model.py` (tek doğru kaynak; `model.json` üretir, tutarlılık kontrolleri ve kalkış fiziği simülasyonu içerir), 13 modül, eksik kontrolü (`oyun/belge_ek.html`). Belgeyi üret: `python3 oyun/tasarim_uret.py`.
 - Sıradaki adım: kullanıcı onay verince A0 görsel prototip (20 sn kalkış → Kármán, Blender roketi, kuş sürüsü, küçük çarpışma).
