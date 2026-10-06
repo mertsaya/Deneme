@@ -22,7 +22,7 @@ chapters = [
    ("Buzlanma", "6–10 km", "Y", "Gövdede buz birikir, kütle artar.", "Isıtmalı gövde", None, "Y", 0),
    ("Yolcu uçağı koridoru", "10–12 km", "P", "Ticari uçuş rotası. Çarpışma kesin son.", "Engel radarı", None, "S", 1),
    ("Jet akımı", "9–12 km", "I", "Doğru yönde girersen ivme, ters açıyla girersen sapma.", "Rota hesaplayıcı", None, "Y", 0),
-   ("Max-Q", "11–14 km", "P", "Çok hızlıysan aerodinamik basınç roketi parçalar. Gazı kısmayı öğrenmek zorundasın.", "Karbon gövde", "Her gerçek fırlatmada gaz bu noktada kısılır", "Y", 0)]),
+   ("Max-Q", "11–14 km", "P", "Çok hızlıysan aerodinamik basınç roketi parçalar. Gazı kısmayı öğrenmek zorundasın.", "Karbon gövde", "Çoğu fırlatmada gaz bu noktada kısılır", "Y", 0)]),
  ("2", "Üst Atmosfer", "12 – 100 km", 2.0,
   "Gökyüzü maviden laciverte, sonra siyaha döner. Oyunun ilk görsel 'vay' anı Kármán hattı.",
   [("Stratosfer balonları", "15–35 km", "P", "Rastgele yükselen bilim balonlarıyla çarpışma.", "Engel radarı", None, "Y", 0),
@@ -32,7 +32,7 @@ chapters = [
    ("Kademe ayırma penceresi", "60–80 km", "I", "Boş kademeyi doğru anda atarsan ani ivme, geç kalırsan ölü ağırlık.", "Çok kademeli roket", None, "Y", 0),
    ("Gece parlayan bulutlar", "76–85 km", "Y", "Buz kristallerinden oluşan en yüksek bulutlar. Hafif fren, ama bilim puanı verir.", "—", "Dünya'nın en yüksek bulutları", "S", 1),
    ("Göktaşı izleri", "70–100 km", "Y", "Yanan küçük göktaşı parçaları gövdeyi döver.", "Whipple kalkanı", None, "Y", 0),
-   ("Kármán hattı", "100 km", "I", "Uzayın başlangıcı. Sinematik an, bilim puanı ve ilk büyük ödül.", "—", "Uzayın uluslararası kabul gören sınırı", "Y", 0)]),
+   ("Kármán hattı", "100 km", "I", "Uzayın başlangıcı. Sinematik an, bilim puanı ve ilk büyük ödül.", "—", "FAI'nin kabul ettiği uzay sınırı (ABD 80 km kullanır)", "Y", 0)]),
  ("3", "Yörünge", "100 – 36.000 km", 2.6,
   "Yukarı çıkmak yetmiyor. Saniyede 7,8 km yatay hıza ulaşmazsan düşersin. Oyuncu burada gerçek roket fiziğini keşfediyor.",
   [("Yerçekimi dönüşü", "100–200 km", "Y", "Dik çıkmakta ısrar edersen yörüngeye giremez, geri düşersin.", "Otopilot", "Gerçek fırlatmalarda roket yavaşça yatar", "Y", 0),
@@ -54,12 +54,12 @@ chapters = [
    ("Dünya'nın manyetik kuyruğu", "Ay yolu", "S", "Güneş rüzgârının arkaya doğru uzattığı manyetik alan. Yüklü toz roketi iter.", "Manyetik kalkan", "Ay her ay bu kuyruğun içinden geçer", "S", 1),
    ("L1 Lagrange noktası", "~326.000 km", "S", "Dengesiz bölge, roketi yavaşça sürükler.", "Hassas iticiler", None, "Y", 0),
    ("Ay sapanı", "Ay yakını", "I", "Doğru açıyla geçersen yakıt harcamadan büyük ivme, yanlışsa çarpma.", "Sapan hesaplayıcı", "Apollo 13 dönüşünde kullanıldı", "Y", 0),
-   ("Masconlar", "Ay yörüngesi", "S", "Ay'ın düzensiz kütle yoğunlukları yörüngeyi bozar.", "Otopilot +", "Gerçek, Apollo'da keşfedildi", "Y", 0),
+   ("Masconlar", "Ay yörüngesi", "S", "Ay'ın düzensiz kütle yoğunlukları yörüngeyi bozar.", "Otopilot +", "1968'de Lunar Orbiter verileriyle keşfedildi", "Y", 0),
    ("Apollo hurdası", "Dünya–Ay arası", "I", "Güneş yörüngesinde dolaşan eski bir Saturn V üst kademesi ara sıra yakınlardan geçer. Yakalarsan koleksiyon ve bilim ödülü.", "Robot kol", "2002'de asteroit sanılan J002E3, Apollo 12'nin üst kademesi çıktı", "N", 1),
    ("Ay gecesi", "Ay yüzeyi", "Y", "−173 °C. Bataryalar donar, güç düşer.", "RTG", "Gerçek; 14 gün sürer", "Y", 1),
    ("Regolit tozu", "İniş", "Y", "İnişte kalkan toz görüşü kapatır.", "LIDAR", None, "Y", 0),
    ("Ay depremi", "İniş", "P", "İniş anında yüzey sarsılır, bacaklar kırılabilir.", "Esnek iniş bacakları", "Apollo sismometreleri kaydetti", "S", 1),
-   ("Shackleton krateri buzu", "Güney kutbu", "I", "Hiç güneş görmeyen kraterde su buzu. Yakıta dönüşür.", "Madenci drone", "Gerçek; Artemis'in hedef bölgesi", "S", 1),
+   ("Shackleton krateri buzu", "Güney kutbu", "I", "Hiç güneş görmeyen kraterlerde su buzu. Yakıta dönüşür.", "Madenci drone", "Güney kutbundaki kalıcı gölgeli kraterlerde buz izleri bulundu; Artemis'in hedef bölgesi", "S", 1),
    ("Ay Üssü", "Ödül", "I", "Kurulunca sonraki uçuşlar Ay'dan başlayabilir.", "—", None, "Y", 0)]),
  ("5", "Mars Yolu", "~78 milyon km", 7.89,
   "Güneş artık bir oyuncu (aşağıdaki Güneş bölümüne bak). Mars'a varınca atmosfere doğru açıyla girmek gerekiyor.",
@@ -70,7 +70,7 @@ chapters = [
    ("İnce atmosfer", "İniş", "Y", "Paraşüt tek başına yetmez, son metrelerde motorla frenlemek gerekir.", "Süpersonik retro motor", "Gerçek; Mars inişlerinin en zor kısmı", "Y", 1),
    ("Toz fırtınası", "Mars yüzeyi", "S", "Görüşü ve güneş enerjisini keser.", "RTG", None, "S", 0),
    ("Toz şeytanları", "Mars yüzeyi", "I", "Küçük hortumlar güneş panellerinin tozunu temizler, enerji geri gelir.", "—", "Spirit gezgininin panellerini gerçekten temizlediler", "S", 1),
-   ("Olympus Mons", "İniş bölgesi", "P", "22 km yüksekliğindeki dağ. Yanlış rotada iniş yamaca çarpar.", "LIDAR", "Güneş sisteminin en yüksek dağı", "Y", 1),
+   ("Olympus Mons", "İniş bölgesi", "P", "22 km yüksekliğindeki dağ. Yanlış rotada iniş yamaca çarpar.", "LIDAR", "Güneş sisteminin en yüksek dağlarından", "Y", 1),
    ("Mars yakıt fabrikası", "Ödül", "I", "Atmosferdeki karbondioksitten metan üretir. Yeni checkpoint.", "—", None, "Y", 0)]),
  ("6", "Asteroit Kuşağı", "~300 milyon km", 8.48,
   "Oyunun 'kaçış' bölümü. Ama kuşağın içinde Jüpiter'in açtığı gizli otoyollar var.",
@@ -86,12 +86,12 @@ chapters = [
   [("Truva asteroitleri", "Jüpiter'in L4/L5'i", "P", "Jüpiter'le aynı yörüngede önde ve arkada giden iki asteroit sürüsü.", "Otomatik kaçınma", "Gerçek; Lucy sondası inceliyor", "Y", 1),
    ("Jüpiter sapanı", "Jüpiter yakını", "I", "Oyundaki en büyük gezegen ivmesi.", "Sapan hesaplayıcı", "Voyager ve New Horizons kullandı", "Y", 0),
    ("Radyasyon kuşakları", "Jüpiter yakını", "P", "Güneş sistemindeki en sert radyasyon.", "Manyetik kalkan", None, "Y", 0),
-   ("Büyük Kırmızı Leke", "Jüpiter atmosferi", "S", "Dünya'dan büyük bir fırtına. Yaklaşırsan seni içine çeker.", "—", "Yüzyıllardır süren gerçek fırtına", "Y", 1),
+   ("Büyük Kırmızı Leke", "Jüpiter atmosferi", "S", "Dünya'dan büyük bir fırtına. Yaklaşırsan seni içine çeker.", "—", "En az 150 yıldır gözlenen gerçek fırtına", "Y", 1),
    ("Laplace rezonans zinciri", "Io–Europa–Ganymede", "I", "Üç uydu 1:2:4 ritmiyle dönüyor. Doğru anda üçünden art arda sapan yaparsan dev kombo ivme.", "Zincir planlayıcı", "Gerçek yörünge rezonansı", "N", 1),
    ("Io plazma halkası", "Io yörüngesi", "I", "Elektrodinamik ipin varsa elektrik üretir.", "Elektrodinamik ip", None, "S", 0),
    ("Europa buz tozları", "Europa", "I", "Yüzeyden kopan buz. Buhar roketinin yakıtı.", "Madenci drone", None, "Y", 1),
    ("Kuyruklu yıldız parçaları", "Jüpiter yakını", "P", "Jüpiter'e düşen parçalanmış kuyruklu yıldız zinciri.", "Otomatik kaçınma", "Shoemaker–Levy 9, 1994", "N", 1),
-   ("Güneş enerjisi sınırı", "Jüpiter ötesi", "Y", "Güneş panelleri artık yetmez, nükleer enerji gerekir.", "RTG", "Gerçek; dış gezegen sondaları RTG kullanır", "Y", 0)]),
+   ("Güneş enerjisi sınırı", "Jüpiter ötesi", "Y", "Güneş panelleri artık yetmez, nükleer enerji gerekir.", "RTG", "Juno Jüpiter'de dev panellerle idare etti; Satürn ve ötesine giden her sonda RTG kullandı", "Y", 0)]),
  ("8", "Satürn", "~1,3 milyar km", 9.11,
   "Görsel olarak oyunun zirvesi: halkaların arasından geçiş.",
   [("Halka geçişi", "Halka boşluğu", "P", "Buz parçalarının arasından dar bir koridor.", "Otomatik kaçınma", "Cassini 2017'de bu boşluktan 22 kez geçti", "Y", 0),
@@ -152,7 +152,7 @@ orbits = [
 
 tree = [
  ("İtki", ["Kerosen motor", "Aerospike nozul", "Metan motor (yeniden ateşleme)", "Hava soluyan motor", "Nükleer termal motor", "Füzyon motoru"],
-  "Hava soluyan motor atmosferde oksijeni havadan alır, ilk bölümlerde yakıtı ikiye katlar. Gerçek: SABRE motoru."),
+  "Hava soluyan motor atmosferde oksijeni havadan alır, ilk bölümlerde yakıtı ikiye katlar. Gerçek: SABRE motor kavramı."),
  ("Uzun yol sürüşü", ["Güneş yelkeni", "İyon motoru", "Elektrik yelken", "Manyetik yelken", "Güneş termal roketi", "Buhar roketi"],
   "Buhar roketi Europa, Enceladus veya Kuiper buzuyla çalışır; madenci drone'la birlikte her yerde yakıt ikmali demek."),
  ("Gövde ve kalkan", ["Karbon kompozit", "Ablatif ısı kalkanı", "Whipple kalkanı", "Kendini onaran gövde", "Güneş dalış kalkanı", "Manyetik radyasyon kalkanı"],
@@ -160,7 +160,7 @@ tree = [
  ("Aviyonik", ["Yerçekimi dönüşü otopilotu", "Engel radarı", "Otomatik kaçınma", "Sapan hesaplayıcı", "Zincir planlayıcı", "Uzay hava durumu uydusu"],
   "Zincir planlayıcı birden fazla sapanı ve rezonans kombolarını hayalet rota olarak önceden çizer."),
  ("Enerji", ["Batarya", "Güneş paneli", "Yakıt hücresi", "Isı radyatörleri", "RTG (nükleer pil)", "Kompakt füzyon"],
-  "Isı radyatörleri Güneş yakınında motoru soğutur. Jüpiter'den sonra güneş paneli yetmez; RTG doğal bir ilerleme kapısı."),
+  "Isı radyatörleri Güneş yakınında motoru soğutur. Satürn'den itibaren güneş paneli yetmez; RTG doğal bir ilerleme kapısı."),
  ("Lojistik", ["İki kademe", "Balonla kalkış", "Üç kademe ve booster dönüşü", "Yörünge yakıt deposu", "Ay Üssü", "Mars yakıt fabrikası"],
   "Balonla kalkış roketi 30 km'ye kadar balonla taşıyıp oradan ateşler; troposfer engellerini tamamen atlar. Gerçek: 1950'lerin 'rockoon'ları."),
 ]
@@ -184,7 +184,7 @@ legend = [
  ("Orion darbesi", "Roketin arkasında küçük nükleer patlamalar art arda itki verir. Oyunun en çarpıcı efekti.", "Orion Projesi, 1958–1965", 0),
  ("Plazma emici kalkan", "Güneş fırtınasının enerjisini emip ivmeye çevirir. En büyük tehdit ödüle dönüşür.", "Kurgusal, oyun için", 0),
  ("Merkür ayna dizisi", "Merkür yörüngesindeki ayna filosu Güneş ışığını yelkenine odaklar. Uranüs ötesinde bile yelken çalışır.", "Robert Forward'ın odaklı ışık yelkeni fikrinden türetildi", 1),
- ("Kuyruklu yıldız sörfü", "Zıpkınla bir kuyruklu yıldıza tutun ve onunla birlikte Güneş'in etrafından fırla. Güneş dalışını kalkansız yapmanın tek yolu.", "Philae iniş aracında gerçek zıpkın vardı (2014)", 1),
+ ("Kuyruklu yıldız sörfü", "Zıpkınla bir kuyruklu yıldıza tutun ve onunla birlikte Güneş'in etrafından fırla. Güneş dalışını kalkansız yapmanın tek yolu.", "Philae iniş aracında gerçek zıpkınlar vardı, 2014'te ateşlenemediler", 1),
  ("Ay kütle sürücüsü", "Ay Üssü'nden elektromanyetik rayla fırlatma. Yakıt harcamadan derin uzaya çıkış.", "Gerard O'Neill, 1970'ler", 0),
  ("Uzay asansörü", "Son aşama: Dünya'dan kalkışı tamamen atlar, Plüton denemelerini hızlandırır.", "Kavram; malzeme henüz yok", 0),
 ]
@@ -198,6 +198,35 @@ market = [
  ("Kerbal Space Program 2", "PC", "İlk oyunun devamı.", "Steam'de %27 olumlu. Ders: kapsamı aşırı büyütmek oyunu batırır."),
  ("Spaceflight Simulator", "Mobil / PC", "Telefonda parça parça roket inşası.", "Mobilde gerçekçi uzay oyunu talebi olduğunu gösteriyor."),
 ]
+
+FAMILIES = [
+ ("Hareketli sürüler", "Kaç ya da araya gir", ["Kuş sürüsü", "Stratosfer balonları", "Yolcu uçağı koridoru", "Uydu treni"]),
+ ("Küçük darbe yağmuru", "Kalkan al ya da alandan hızlı çık", ["Dolu fırtınası", "Göktaşı izleri", "Mikrometeoroid yağmuru", "Halka yağmuru"]),
+ ("Elektrik darbesi", "Kısa kontrol kaybı; Faraday kafesi", ["Fırtına bulutu ve yıldırım", "Mavi jetler", "Kırmızı sprite şimşekleri", "Halka parmakları"]),
+ ("Radyasyon alanı", "İçinde kalma süresini yönet; zırh", ["Güney Atlantik Anomalisi", "Van Allen iç kuşağı", "Kozmik ışın sağanağı", "Radyasyon kuşakları"]),
+ ("Rüzgâr ve akıntılar", "Açını ayarla; doğru yönde ivme", ["Rüzgâr kesmesi", "Jet akımı", "Dünya'nın manyetik kuyruğu", "Büyük Kırmızı Leke", "Kutup altıgeni", "Neptün rüzgârları", "Büyük Karanlık Leke"]),
+ ("İtki sütunları", "İçinden geç ya da kaçın", ["Termal sütun", "Enceladus gayzerleri", "Triton gayzerleri"]),
+ ("Yoğun enkaz alanları", "Slalom; çarptığın parça bölünür", ["Uzay çöpü kuşağı", "Uydu karşıtı test enkazı", "Mezarlık yörüngesi", "Çarpışma kümesi", "Truva asteroitleri", "Halka geçişi", "Kuyruklu yıldız parçaları", "Nix ve Hydra"]),
+ ("Görünmez tehlikeler", "Sensörle uç", ["Karanlık Kuiper nesneleri", "Karanlık halkalar", "Regolit tozu", "Toz fırtınası"]),
+ ("Sinsi yükler", "Yavaşça zayıflatır; doğru kaplama", ["Buzlanma", "Volkanik kül bulutu", "Termosfer sürtünmesi", "Atomik oksijen", "Gece parlayan bulutlar"]),
+ ("Yapısal sınırlar", "Hız ve açı eşiği; gazı yönet", ["Max-Q", "Pogo titreşimi", "Yerçekimi dönüşü"]),
+ ("Zamanlama anları", "Doğru anda bas", ["Kademe ayırma penceresi", "Ay'a atış zamanlaması"]),
+ ("Sapanlar", "Açı ve yön seç", ["Ay sapanı", "Phobos", "Ceres sapanı", "Jüpiter sapanı", "Laplace rezonans zinciri", "Yan yatık Uranüs"]),
+ ("Kararsız yerçekimi", "Sürüklenmeyi düzelt", ["L1 Lagrange noktası", "Masconlar", "Plüton–Charon ikilisi", "Hyperion"]),
+ ("Atmosfere giriş", "Giriş açısı koridoru", ["Atmosfer frenlemesi", "İnce atmosfer", "Titan", "Mavi pus"]),
+ ("İnişler", "İniş mini oyunu", ["Ay depremi", "Olympus Mons", "Buz dağları", "Tombaugh Regio'ya iniş", "Moloz yığını asteroit"]),
+ ("Enerji kapıları", "Güç kaynağını değiştir", ["Ay gecesi", "Güneş enerjisi sınırı", "Güneş ışığının sönüşü", "Toz şeytanları"]),
+ ("Yakala ve topla", "Yanaş, yakala, ödül al", ["Uzay istasyonu", "Kayıp alet çantası", "Ölü uydu", "Apollo hurdası", "Madenlik asteroit", "Psyche metal asteroit", "Shackleton krateri buzu", "Europa buz tozları", "Io plazma halkası", "Kuyruklu yıldız geçişi"]),
+ ("Bilim ve kilometre taşları", "Fotoğraf, ölçüm, sinematik", ["Ozon tabakası", "Kármán hattı", "Aurora perdesi", "Arrokoth"]),
+ ("Güvenli koridorlar ve üsler", "Rehber yol ve checkpoint", ["Kirkwood boşlukları", "Çoban uydular", "Ay Üssü", "Mars yakıt fabrikası"]),
+]
+_all = [o[0] for c in chapters for o in c[5]]
+_fam = [m for f in FAMILIES for m in f[2]]
+assert sorted(_all) == sorted(_fam), (set(_all) ^ set(_fam))
+
+sys.path.insert(0, HERE)
+import ekonomi_sim
+_eko_rows, _eko_dk = ekonomi_sim.main(600)
 
 def fxchip(c): l, cls = FX[c]; return f'<span class="chip {cls}">{l}</span>'
 def newtag(n): return '<span class="new">yeni</span>' if n else ''
@@ -316,6 +345,34 @@ section{display:flex;flex-direction:column;gap:18px;padding-block:44px 0}
 .sig span{grid-row:span 2;font-family:var(--f-mono);font-size:.8rem;color:var(--flame);padding-top:2px}
 .sig b{font-weight:600}
 .sig p{color:var(--dim);font-size:.9rem}
+.fam{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}
+.fam > div{background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:10px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.fam b{font-weight:600}
+.fam .act{font-family:var(--f-mono);font-size:.72rem;color:var(--ion)}
+.fam p{color:var(--faint);font-size:.82rem;line-height:1.45}
+.obj{display:flex;flex-direction:column;gap:8px}
+.obj > div{border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:4px;background:var(--panel)}
+.obj b{font-family:var(--f-display);font-size:1.15rem}
+.obj p{color:var(--dim);font-size:.9rem;line-height:1.5}
+.obj i{font-style:normal;color:var(--star);font-weight:500}
+.sfx{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:8px}
+.sfx > div{border-left:2px solid var(--flame);padding:4px 0 4px 12px;display:flex;flex-direction:column;gap:3px;min-width:0}
+.sfx b{font-weight:600}
+.sfx p{color:var(--dim);font-size:.88rem;line-height:1.5}
+.screens{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,230px),1fr));gap:10px}
+.screens > div{border:1px solid var(--line);border-radius:8px;padding:13px;display:flex;flex-direction:column;gap:4px}
+.screens b{font-family:var(--f-display);font-size:1.18rem;color:var(--ion)}
+.screens p{color:var(--dim);font-size:.9rem;line-height:1.5}
+.eko{display:flex;flex-direction:column;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.eko > div{display:grid;grid-template-columns:minmax(0,1fr) 4rem 7rem;gap:10px;padding:7px 0;border-bottom:1px solid var(--line);font-size:.92rem}
+.eko .v{text-align:right;color:var(--flame);font-family:var(--f-mono)}
+.eko .r{text-align:right;color:var(--faint);font-family:var(--f-mono);font-size:.82rem}
+.eko .h{color:var(--faint);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase}
+.eko .h .v{color:var(--faint)}
+.est .h:last-child{color:var(--star);font-size:.9rem;text-transform:none;letter-spacing:0}
+.est .h:last-child .v{color:var(--flame)}
+code{font-family:var(--f-mono);font-size:.85em;color:var(--star)}
+.qs i{font-style:normal;color:var(--ion)}
 /* denge */
 .bal{display:flex;flex-direction:column;gap:7px}
 .bal > div{display:grid;grid-template-columns:7.5rem minmax(0,1fr) 2rem;gap:10px;align-items:center;font-size:.85rem}
@@ -359,7 +416,7 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div class="wrap">
 <header class="hero">
 <canvas id="sky" aria-hidden="true"></canvas>
-<p class="eyebrow">Oyun tasarım belgesi · Taslak 3 · Tartışma için</p>
+<p class="eyebrow">Oyun tasarım belgesi · Taslak 4 · Plan tamam, kodlamaya hazır</p>
 <h1>Son Durak:<br><em>Plüton</em></h1>
 <p class="pitch">Dünya'dan kalkan bir roket her denemede biraz daha uzağa gidiyor. Önce atmosfer, sonra yörünge, Ay, Mars ve sonunda Plüton. Her patlamadan sonra hangarda geliştirme yapıyor, bir sonraki denemede bir önceki seni öldüren engeli aşıyorsun.</p>
 <div class="loop">
@@ -369,7 +426,13 @@ a:focus-visible{outline:2px solid var(--flame);outline-offset:2px}
 <div><b>Uzağa</b><span>Üs kur, oradan devam et</span></div>
 </div>
 ''')
-out.append(f'''<div class="changes"><p class="eyebrow">Taslak 3'te neler değişti</p><ul>
+out.append(f'''<div class="changes"><p class="eyebrow">Taslak 4'te neler değişti</p><ul>
+<li><b>Hasar sistemi ve nesneler:</b> göçük, kopan parça, bükülme, parçalanma; kuş, bulut, balon, uydu ve asteroitlerin hareket ve çarpışma tepkileri.</li>
+<li><b>Engel aileleri:</b> 89 engel 19 davranışa indirildi.</li>
+<li><b>Ekonomi simülasyonu:</b> Plüton'a iniş yaklaşık 86 uçuş.</li>
+<li><b>Ses, müzik, arayüz, S24 Ultra performans hedefi, geliştirme tahmini ve varsayılan kararlar.</b></li>
+<li><b>Bilgi doğrulaması:</b> 11 not düzeltildi (Soluk Mavi Nokta, masconların keşfi, Juno'nun güneş panelleri, Kármán sınırı…).</li>
+</ul><p class="eyebrow" style="margin-top:6px">Taslak 3'te eklenenler</p><ul>
 <li><b>Tasarım ilkeleri eklendi:</b> rota ve uygulama katmanları, engel aileleri, 3 saniyede yeniden kalkış, önce ekonomi simülasyonu.</li>
 <li><b>Görsel sistem ayrıntılandırıldı:</b> taban katman, her bölümün görsel imzası ve 4 kahraman an; gerçekçilik kuralları ve performans bütçesi.</li>
 <li><b>Yol haritasına A0 eklendi:</b> oynanabilir sürümden önce telefonunda deneyeceğin 20 saniyelik görsel prototip.</li>
@@ -484,6 +547,12 @@ for n, fx, d, s in orbits:
     out.append(f'<div><b>{E(n)}</b>{fxchip(fx)}<p>{E(d)}</p><small>{E(s)}</small></div>')
 out.append('</div></section>')
 
+# Engel aileleri
+out.append(f'<section><p class="eyebrow">Engel aileleri</p><h2>{len(_all)} engel, {len(FAMILIES)} davranış</h2><p class="lead">Bir engel ancak oyuncuyu farklı bir şey yapmaya zorluyorsa ayrı engeldir. Aşağıdaki bölüm listesindeki her madde bu ailelerden birinin, o ortama uygun görünümü. Kod tarafında {len(FAMILIES)} davranış yazılıyor, görsel çeşitlilik korunuyor.</p><div class="fam">')
+for n, act, mem in FAMILIES:
+    out.append(f'<div><b>{E(n)}</b><span class="act">{E(act)}</span><p>{E(", ".join(mem))}</p></div>')
+out.append('</div></section>')
+
 # Bölümler
 out.append('<section><p class="eyebrow">Engeller ve itkiler</p><h2>Bölüm bölüm konumlandırma</h2>')
 out.append('<div class="legend">' + "".join(fxchip(c) for c in "PYSI") + '</div>')
@@ -538,7 +607,7 @@ out.append('''<section><p class="eyebrow">Ekonomi</p><h2>Üç para birimi</h2>
 <div><b>Bilim</b><p>Aurora geçişi, örnek toplama, fotoğraf anları. Üst kademe geliştirmeleri açar.</p></div>
 <div><b>Malzeme</b><p>He-3, buz, metan, nadir metal. Üsler ve efsanevi geliştirmeler için gerekir.</p></div>
 </div>
-<p class="note"><b>Fotoğraf anları:</b> Ay'ın arkasından Dünya'nın doğuşu (Earthrise, 1968) ya da Satürn'den bakınca Dünya'nın "Soluk Mavi Nokta" olarak görünmesi gibi ünlü kareleri yakalamak, koleksiyon ve bonus bilim puanı veriyor.</p>
+__EKO__<p class="note"><b>Fotoğraf anları:</b> Ay'ın arkasından Dünya'nın doğuşu (Earthrise, 1968) ya da Plüton'dan geriye bakınca Dünya'nın tek bir piksel olarak görünmesi (Voyager 1'in 1990'daki "Soluk Mavi Nokta" fotoğrafı) gibi ünlü kareleri yakalamak, koleksiyon ve bonus bilim puanı veriyor.</p>
 </section>
 <section><p class="eyebrow">Görsel sistem</p><h2>Çocuk oyunu değil, belgesel sinema</h2>
 <p class="lead">Telefonda her şeyi aynı kalitede yapmaya çalışmak oyunu kasar. Bu yüzden grafik üç katmanda düşünülüyor: her yerde geçerli sağlam bir <b>taban</b>, her bölümün tek bir <b>görsel imzası</b>, ve emeğin yığıldığı 4 <b>kahraman an</b>. Referans estetik: canlı roket yayınları ve uzay belgeselleri. Doygun, çizgi film renkleri yok.</p>
@@ -604,24 +673,113 @@ out.append('''<section><p class="eyebrow">Ekonomi</p><h2>Üç para birimi</h2>
 <h3>Yapılamayacaklar</h3>
 <p class="note">Fotoğraf gerçekliğinde dokular (dış kaynaktan NASA görüntüsü yüklenemiyor; yüzeyler kodla üretilecek), telefonda gerçek hacimli bulutlar ve gerçekçi insan karakterleri bu kapsamda yok. Hedef AAA değil; tutarlı, şık ve inandırıcı bir görünüm.</p>
 </section>
+<section><p class="eyebrow">Hasar sistemi</p><h2>Roket hırpalanır, bükülür, parçalanır</h2>
+<p class="lead">Telefonda gerçek metal simülasyonu çok ağır. Bunun yerine aynı hissi veren beş teknik bir arada kullanılıyor. Hasar sadece görüntü değil, uçuşu da değiştiriyor.</p>
+<div class="cards">
+<div><b>Göçükler</b><p>Çarpma noktasında gövde içeri göçer. Darbeler birikir; uçuş boyunca roket giderek hırpalanır.</p></div>
+<div><b>Kopan parçalar</b><p>Kanatçık, anten, güneş paneli ve yelken darbe alınca kopar, dönerek uzaklaşır.</p></div>
+<div><b>Bükülme</b><p>Max-Q'da ya da sert manevrada gövde yavaşça bükülür ve çatırdar. Bükük hâl Blender'da önceden hazırlanır, oyunda yumuşak geçişle uygulanır.</p></div>
+<div><b>Parçalanma</b><p>Patlamada gövde, Blender'da önceden kesilmiş gerçekçi kırık parçalara ayrılır ve fizikle saçılır.</p></div>
+<div><b>Yüzey izleri</b><p>Isı kararmaları, çizikler, delikler; Güneş'e yaklaşınca akkor hâle gelen kalkan kenarları.</p></div>
+<div><b>Mekanik etki</b><p>Göçmüş motor tek taraflı itki verir ve roketi döndürür. Kopan kanatçık rotayı saptırır. Delinen tank yakıt sızdırır.</p></div>
+</div>
+<p class="note"><b>Hasar bölgeleri:</b> burun, tanklar, motor, kanatçıklar, panel ve yelkenler, aviyonik. Kara kutu raporu roketin hasar haritasını gösterir: "sol kanatçık 2,1 km'de kuşa çarparak koptu."</p>
+</section>
+<section><p class="eyebrow">Nesneler</p><h2>Hiçbir şey sahte durmasın</h2>
+<p class="lead">Her nesnenin üç hâli var: uzaktan ucuz ama doğru siluet, yakından ayrıntılı model ve hareket, çarpışınca kendine özgü tepki. Kalite "gerektiği kadar": emek, oyuncunun gerçekten yakından gördüğü şeye harcanır.</p>
+<div class="obj">
+<div><b>Kuşlar</b><p><i>Hareket:</i> kanat çırpan modeller ve gerçek sürü davranışı: birbirini izleyen, dağılıp yeniden toplanan kuşlar. Roket yaklaşınca panikle dağılırlar.</p><p><i>Çarpışma:</i> tüy patlaması ve takla atan kuş; kan ve vahşet yok. Motor girişine giren kuş motoru tekletir.</p></div>
+<div><b>Bulutlar</b><p><i>Hareket:</i> Güneş'le aydınlanan, katmanlı ve hacimli görünen bulut tabakaları.</p><p><i>Çarpışma:</i> roket bulutu delip geçerken arkasında bir tünel bırakır, kameraya su damlacıkları düşer, görüntü anlık bulanıklaşır.</p></div>
+<div><b>Dolu ve yıldırım</b><p><i>Hareket:</i> hız çizgili buz taneleri; dallanan ve bulutları içeriden aydınlatan şimşekler, ardından gecikmeli gök gürültüsü.</p><p><i>Çarpışma:</i> dolu tanesi buz kırıntısına dönüşür ve göçük bırakır; yıldırım gösterge panelini kısa süre karartır.</p></div>
+<div><b>Balonlar</b><p><i>Hareket:</i> rüzgârla salınan zarf ve altında sallanan yük.</p><p><i>Çarpışma:</i> zarf yırtılıp söner, yük paraşütle düşer.</p></div>
+<div><b>Uçaklar</b><p><i>Hareket:</i> arkasında yoğuşma izi bırakan uzak siluetler.</p><p><i>Etki:</i> yakın geçişte uçağın türbülansı roketi sarsar; çarpışma kesin son.</p></div>
+<div><b>Uydular ve uzay çöpü</b><p><i>Hareket:</i> kendi ekseninde yuvarlanan parçalar; güneş panelleri Güneş'i yakaladıkça parlar.</p><p><i>Çarpışma:</i> parçalar yeni parçalara bölünüp yeni engellere dönüşür (Kessler etkisi). Boşlukta ateş yok, sadece kıvılcım ve saçılan parçalar.</p></div>
+<div><b>Asteroitler</b><p><i>Hareket:</i> her biri farklı biçimli, farklı hızda dönen kayalar; tekrar eden kopya yok.</p><p><i>Çarpışma:</i> toz bulutu ve kopan parçalar. Moloz yığını asteroitte roket çakıl denizine gömülür.</p></div>
+<div><b>Halka buzları ve gayzerler</b><p><i>Hareket:</i> çakıl taşından ev büyüklüğüne buz parçaları Güneş'te parıldar; gayzerler arkadan aydınlanınca ışıldar.</p><p><i>Çarpışma:</i> buz kırılıp parıltılı kırıntılara dönüşür; gayzerin içinden geçen roket buz tutar.</p></div>
+</div>
+<h3>Sahtelik karşıtı kurallar</h3>
+<ul class="rules">
+<li><b>Hiçbir nesne donuk değil:</b> her şey döner, salınır, kanat çırpar ya da sürüklenir.</li>
+<li><b>Tekrar yok:</b> boyut, renk, dönüş ve biçimde rastgele farklılık; aynı kayanın iki kopyası yan yana görünmez.</li>
+<li><b>Tek Güneş:</b> her nesne aynı ışık kaynağıyla aydınlanır ve gölgesi doğru tarafa düşer.</li>
+<li><b>Aniden belirme yok:</b> nesneler uzaklıkla yumuşakça belirir ve kaybolur.</li>
+<li><b>Momentum:</b> büyük nesneye çarpmak daha çok iter; çarpışma tepkisi kütleyle orantılı.</li>
+<li><b>Ortama uygunluk:</b> atmosferde ateş, duman ve ses; boşlukta sessiz parlama ve kıvılcım.</li>
+</ul>
+</section>
+<section><p class="eyebrow">Ses</p><h2>Müzik, efektler ve anonslar</h2>
+<p class="lead">Ses üç katmandan oluşuyor ve her biri ayarlardan ayrı ayrı kısılabiliyor. Ortak kural: atmosferde her şey duyulur, uzayda dışarıdan hiçbir şey gelmez; duyduğun her şey roketin gövdesinden ya da telsizden gelir.</p>
+<h3>Ses efektleri</h3>
+<div class="sfx">
+<div><b>Motor</b><p>Gaz ve hava basıncına göre değişen gürleme. Kalkışta yeri titreten bas, irtifa arttıkça incelir; boşlukta gövdeden gelen boğuk bir uğultuya dönüşür. Motor tekleyince ses de tekler.</p></div>
+<div><b>Rüzgâr ve gövde</b><p>Hızla artan rüzgâr uğultusu, Max-Q'da metalin gerilme sesi ve çatırtıları, bükülürken inleyen gövde.</p></div>
+<div><b>Çarpışmalar</b><p>Her malzemenin kendi sesi: dolunun tıkırtısı, kuşun boğuk darbesi, metale metal çarpması, buz kırılması, kaya sürtünmesi. Uzayda bunlar dışarıdan değil, gövdenin içinden boğuk tok sesler olarak gelir.</p></div>
+<div><b>Yanından geçenler</b><p>Kuş sürüsü, uçak ve balonlar yön ve uzaklığa göre sağdan soldan duyulur; hızla geçerken ses perdesi kayar.</p></div>
+<div><b>Doğa olayları</b><p>Gecikmeli gök gürültüsü, yağmur ve dolu, bulut içinde değişen ses rengi. Radyasyon bölgesinde telsizde artan cızırtı, Jüpiter yakınında manyetik alanın garip vızıltısı.</p></div>
+<div><b>Mekanik</b><p>Kademe ayrılmasındaki patlayıcı cıvatalar, yelken açılması, robot kol, drone fırlatma, iniş bacaklarının yere değmesi.</p></div>
+<div><b>Uyarılar</b><p>Kısa ve ayırt edilebilir uyarı tonları: yaklaşan tehlike, düşük yakıt, aşırı ısınma, hasar. Her uyarının kendi tonu var, bakmadan anlaşılır.</p></div>
+<div><b>Arayüz</b><p>Hangarda parça takılma sesi, satın alma onayı, kara kutu açılışında teyp sesi; hepsi kısa ve yumuşak.</p></div>
+</div>
+<h3>Müzik</h3>
+<p class="note">Bölüme göre değişen ortam müziği: troposferde gergin bir ritim, yörüngede geniş ve sakin tonlar, Mars yolunda yalnızlık, Jüpiter'de derin bir uğultu, Plüton'da ana tema. Kahraman anlarda müzik yükselir; Güneş dalışında neredeyse tamamen susar ve yalnızca kalp atışına benzer bir nabız kalır.</p>
+<h3>Telsiz anonsları</h3>
+<p class="note">"Max-Q geçildi", "Kademe ayrıldı", "Yörüngedesin" gibi kısa anonslar telsiz hışırtısıyla birlikte üstte altyazı olarak gelir. Telefonun Türkçe ses motoru bunları seslendirebilir; sesin tonu telefona göre değişir ve istenirse kapatılır.</p>
+<p class="note"><b>Nasıl üretilecek:</b> Efektlerin ve müziğin çoğu kodla, gerçek zamanlı üretilecek. Bu, sesin oyundaki duruma (hız, basınç, hasar) anlık tepki vermesini sağlar. Gerektiği yerlerde (patlama, metal gıcırtısı gibi) lisansı uygun ücretsiz ses kayıtları eklenebilir. Gerçekçi sınır: sonuç atmosferik ve tutarlı olur, ama stüdyoda kaydedilmiş orkestra müziği seviyesinde değil. Ses, tarayıcı kuralı gereği ekrana ilk dokunuşla başlar.</p>
+</section>
+<section><p class="eyebrow">Arayüz</p><h2>Ekranlar</h2>
+<p class="lead">Dikey ekran; tek elle de oynanabilir. Görsel dil bu belgeyle aynı: görev kontrolü estetiği, sade telemetri, teknik yazı tipi.</p>
+<div class="screens">
+<div><b>Uçuş</b><p>Sol üstte irtifa, hız ve yakıt; sağ üstte uzay hava durumu ve hedef. Ekranın sol yarısında parmakla yön, sağ kenarda dikey gaz kaydırıcısı, altta iki buton: kademe ayır ve yan araç. Ekran dışı tehlikeler için kenarlarda oklar; telsiz altyazıları üstte.</p></div>
+<div><b>Kara kutu</b><p>Patlamadan hemen sonra: irtifa ve hız grafiği ile ölüm noktası, roketin hasar haritası, ölüm nedeni ve "bunu çözen geliştirme" kartı. Büyük "Tekrar uç" butonu; patlamadan yeni kalkışa 3 saniye.</p></div>
+<div><b>Hangar</b><p>Ortada dönen platformda roket; altta altı dal sekmesi; geliştirme kartlarında fiyat, etki ve kilit koşulu. Alınan parça roketin üzerine yerleşir.</p></div>
+<div><b>Rota</b><p>Güneş sistemi haritası. Hedef ve sapanlar parmakla seçilir, hayalet rota çizgisi sonucu gösterir, fırlatma penceresi sayacı burada.</p></div>
+<div><b>Koleksiyon</b><p>Yakalanan fotoğraf anları ve uçuşta açılan gerçek uzay bilgileri: küçük bir uzay ansiklopedisi.</p></div>
+<div><b>Ayarlar</b><p>Grafik kalitesi (otomatik, yüksek, dengeli, pil tasarrufu), müzik, efekt ve anons seviyeleri ayrı ayrı.</p></div>
+</div>
+</section>
+<section><p class="eyebrow">Hedef cihaz</p><h2>Samsung Galaxy S24 Ultra</h2>
+<ul class="rules">
+<li><b>Güç:</b> Snapdragon 8 Gen 3 ve Adreno 750 grafik birimi; tarayıcıda 3B için çok güçlü bir telefon.</li>
+<li><b>Hedef:</b> kararlı 60 kare/sn. Ekran 120 Hz destekliyor, ama 120 kare telefonu ısıtır ve uzun oyunda performans düşer; 60 daha dengeli.</li>
+<li><b>Çözünürlük:</b> ekran 1440×3120. Tam çözünürlük gereksiz yük; iç çözünürlük yaklaşık yarısı, kare hızına göre otomatik ayarlanır.</li>
+<li><b>Bütçe:</b> bu telefonda roket gölgeleri, ışık taşması ve yaklaşık 8.000 parçacık rahat çalışır.</li>
+<li><b>Isınma koruması:</b> uzun oyunda telefon ısınıp yavaşlarsa kalite bir kademe düşer.</li>
+<li><b>Tarayıcı:</b> en iyi performans için oyunu Chrome'da açmak önerilir.</li>
+</ul>
+</section>
 <section><p class="eyebrow">Yol haritası</p><h2>Adım adım geliştirme</h2>
 <div class="ms">
-<div><b>A0 · Görsel prototip</b><p>Etkileşimsiz, 20 saniyelik bir sahne: rampadan kalkış, bulutları delme ve Kármán geçişi. Telefonunda grafiğin hissini ve akıcılığını test ediyorsun; beğenmezsen kodlamaya geçmeden yönü değiştiriyoruz.</p></div>
-<div><b>A1 · Oynanabilir dilim: Kalkış → Yörünge</b><p>Bölüm 1–3, roket fiziği, yaklaşık 30 engel, hangar (4 dal), kara kutu raporu, atmosfer geçişi. Burada "his" doğru mu diye birlikte karar veriyoruz.</p></div>
+<div><b>A0 · Görsel prototip</b><p>Etkileşimsiz, 20 saniyelik bir sahne: Blender'dan çıkmış roket, rampadan kalkış, bulutları delme, kuş sürüsü, küçük bir çarpışma ve Kármán geçişi. Telefonunda grafiğin hissini ve akıcılığını test ediyorsun; beğenmezsen kodlamaya geçmeden yönü değiştiriyoruz.</p></div>
+<div><b>A1 · Oynanabilir dilim: Kalkış → Yörünge</b><p>Bölüm 1–3, roket fiziği, bu bölümlerin engel aileleri, hasar sistemi, hangar (4 dal), kara kutu raporu, ses, kayıt sistemi. Burada "his" doğru mu diye birlikte karar veriyoruz.</p></div>
 <div><b>A2 · Ay</b><p>Ay'a atış, sapan mekaniği, iniş, Ay Üssü checkpoint'i, yan araçların ilk dördü.</p></div>
 <div><b>A3 · Mars ve Güneş</b><p>Uzay hava durumu, Güneş'in üç yüzü, atmosfer frenlemesi, Mars yakıt fabrikası.</p></div>
 <div><b>A4 · Dış gezegenler ve Plüton</b><p>Bölüm 6–10, Büyük Tur, rezonans kombosu, efsanevi geliştirmeler, final sinematiği.</p></div>
 </div>
 <p class="note">Her adımın sonunda telefonundan oynayabileceğin bir link gelecek. Bir sonraki adıma, bir öncekinde konuştuklarımızı düzelttikten sonra geçeceğiz.</p>
 </section>
-<section><p class="eyebrow">Tartışalım</p><h2>Karar vermemiz gerekenler</h2>
+<section><p class="eyebrow">Geliştirme tahmini</p><h2>Ne kadar sürer, ne kadar kullanım harcar</h2>
+<div class="eko est"><div class="h"><span>Adım</span><span class="v">Oturum</span><span class="r">Kod</span></div>
+<div><span>A0 · Görsel prototip</span><span class="v">1</span><span class="r">~1.500 satır</span></div>
+<div><span>A1 · Kalkış → Yörünge</span><span class="v">4–6</span><span class="r">~7.000 satır</span></div>
+<div><span>A2 · Ay</span><span class="v">3–4</span><span class="r">+3.000</span></div>
+<div><span>A3 · Mars ve Güneş</span><span class="v">3–4</span><span class="r">+3.000</span></div>
+<div><span>A4 · Dış gezegenler ve Plüton</span><span class="v">5–8</span><span class="r">+5.000</span></div>
+<div><span>Cila, denge, hata ayıklama</span><span class="v">3–5</span><span class="r">—</span></div>
+<div class="h"><span>Toplam</span><span class="v">~20–30</span><span class="r">~20.000 satır</span></div>
+</div>
+<p class="note">"Oturum" burada benim birkaç saat yoğun çalıştığım bir iş bloğu. Kodlama sohbetten çok daha fazla kullanım harcar: her adımda binlerce satır yazılıyor, ekran görüntüsüyle test ediliyor, düzeltiliyor. Pro aboneliğinde 5 saatlik kullanım penceresi yoğun kodlamayla 1–2 saatte dolabilir; haftalık bir sınır da var. Kesin sınırını göremiyorum, Ayarlar'daki Kullanım bölümünden takip edebilirsin. Kabaca takvim: günde 1–2 oturumla 4–8 hafta. Kullanımı azaltmak için büyük parçalar halinde çalışırım; sen de aralarda telefonunda test edip toplu geri bildirim verirsin.</p>
+</section>
+<section><p class="eyebrow">Kararlar</p><h2>Varsayılanlar (değiştirebilirsin)</h2>
 <div class="qs">
-<div><b>1. Kamera</b><p>Önerim: roketin arkasından ve biraz yukarıdan takip eden 3B kamera. Alternatif: yandan görünüm (2,5B). Daha okunaklı olur ama daha az etkileyici.</p></div>
-<div><b>2. Gerçekçilik ayarı</b><p>Gerçek fizik (yörünge, sapan) ne kadar ağır bassın? Önerim: gerçek kurallar, ama hayalet rota çizgisi gibi yardımlarla öğretilsin.</p></div>
-<div><b>3. Kontroller</b><p>Önerim: sol başparmakla yön, sağda gaz kaydırıcısı, ayrıca kademe ayırma ve yan araç butonları. Telefonu eğme sensörü bu ortamda kullanılamıyor.</p></div>
-<div><b>4. Bir uçuşun süresi</b><p>Önerim: ilk uçuşlar 30–60 saniye, ileri bölümlerde 3–4 dakika. Uzun yolculuklarda zaman hızlandırma.</p></div>
-<div><b>5. Ton ve hikâye</b><p>Ciddi bir belgesel havası mı, yoksa kara kutu raporlarında hafif mizah mı? Kurgusal bir uzay ajansı adı da seçebiliriz.</p></div>
-<div><b>6. Ses</b><p>Motor gürültüsü, telsiz anonsları ("Max-Q geçildi"), müzik. Hepsi kodla üretilebilir; ses ancak ekrana dokunduktan sonra başlayabiliyor.</p></div>
+<div><b>Telefon</b><p>Samsung Galaxy S24 Ultra. <i>Karar verildi.</i></p></div>
+<div><b>Kamera ve ekran</b><p>Roketin arkasından takip eden 3B kamera, dikey ekran.</p></div>
+<div><b>Gerçekçilik</b><p>Gerçek fizik kuralları; hayalet rota çizgisi ve rota ekranıyla öğretilir.</p></div>
+<div><b>Uçuş süresi</b><p>İlk uçuşlar 30–60 saniye, ileri bölümlerde 3–4 dakika; uzun yolculuklarda zaman hızlandırma.</p></div>
+<div><b>Ton</b><p>Ciddi belgesel havası; kara kutu raporlarında kısa, kuru bir mizah.</p></div>
+<div><b>İsim</b><p>"Son Durak: Plüton". Kurgusal ajans adı sonra seçilebilir.</p></div>
+<div><b>Dil</b><p>Türkçe. İngilizce sonra eklenebilir.</p></div>
+<div><b>Modeller</b><p>Blender scriptleri ve NASA'nın ücretsiz modelleriyle ben hazırlarım; istersen elle katkı yapabilirsin.</p></div>
+<div><b>Paylaşım</b><p>Önce sadece sen. Arkadaşlarınla paylaşmak istersen sayfanın paylaşım ayarından açarsın.</p></div>
 </div>
 </section>
 <section><p class="eyebrow">Kaynaklar</p><div class="src">
@@ -658,6 +816,10 @@ out.append('''<section><p class="eyebrow">Ekonomi</p><h2>Üç para birimi</h2>
 </script>
 ''')
 page = "".join(out)
+_rows = "".join(f'<div><span>{E(a)}</span><span class="v">{m:.0f}</span><span class="r">{lo}–{hi}</span></div>' for a, m, lo, hi in _eko_rows)
+page = page.replace("__EKO__", '<h3>İlerleme simülasyonu</h3><p class="note">Kodlamadan önce ekonomi bir simülasyonla ayarlandı: kazanç derinlikle, fiyatlar kademeyle katlanarak artıyor. Her bölüm belirli dallarda belirli kademeler istiyor; oyuncu aynı yerde denedikçe ustalaşıyor. Sonuç (uçuş sayısı, medyan ve %10–90 aralığı):</p>'
+    + f'<div class="eko"><div class="h"><span>Kilometre taşı</span><span class="v">Uçuş</span><span class="r">Aralık</span></div>{_rows}</div>'
+    + f'<p class="note">Toplam: yaklaşık <b>{_eko_dk/60:.0f} saatlik</b> bir oyun. Bunlar ilk tahminler; gerçek denge A1\'den itibaren oynayarak ince ayarlanacak. Araç: <code>oyun/ekonomi_sim.py</code>.</p>')
 for p in OUTS:
     open(p, "w").write(page)
 print(f"engel={n_obs} yeni={n_new} gelistirme={n_upg} denge={tot}")
