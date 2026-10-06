@@ -63,6 +63,6 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - Plan Taslak 4 ile tamamlandı: hasar sistemi, nesne gerçekçiliği, 19 engel ailesi, ekonomi simülasyonu (`oyun/ekonomi_sim.py`, ~86 uçuş / ~7 saat), ses (müzik + efektler + anonslar), arayüz, S24 Ultra performans hedefi, varsayılan kararlar.
 - Kullanıcının telefonu: Samsung Galaxy S24 Ultra. Blender burada `pip install bpy` (Python 3.11 venv) ile scriptle çalışıyor.
 - Taslak 5: sayısal model `oyun/model.py` (tek doğru kaynak; `model.json` üretir, tutarlılık kontrolleri ve kalkış fiziği simülasyonu içerir), 13 modül, eksik kontrolü (`oyun/belge_ek.html`). Belgeyi üret: `python3 oyun/tasarim_uret.py`.
-- A0 görsel prototip yapıldı: `oyun/a0/` (index.html + roket.glb + dunya.jpg + bolge.jpg). Roket `oyun/blender/roket.py` ile üretiliyor. Yayın: https://claude.ai/code/artifact (A0 linki sohbette).
+- A0 görsel prototip yapıldı: `oyun/a0/` (index.html + roket.glb + dunya.jpg + bolge.jpg). Roket `oyun/blender/roket.py` ile üretiliyor. Yayın: https://claude.ai/artifact/GXoa5nw3mw4jwrYmxYSbB4 (model yayında roket.json olarak; .glb sunulmuyor).
 - Test: `oyun/a0` için headless Chromium + swiftshader ile `?t=<saniye>` parametresiyle ekran görüntüsü alınıyor.
 - Sıradaki adım: kullanıcının S24 Ultra geri bildirimi (fps, görünüm), sonra A1.
