@@ -152,14 +152,9 @@ os.makedirs(os.path.dirname(OUT), exist_ok=True)
 bpy.ops.export_scene.gltf(filepath=OUT, export_format="GLB", export_apply=True, export_yup=True)
 print("yazıldı:", os.path.abspath(OUT), os.path.getsize(OUT), "bayt")
 
-# Yayın sistemi .glb sunmadığı için, aynı modeli verisi gömülü glTF JSON olarak da yaz (roket.json)
-import json, struct, base64
-b = open(OUT, "rb").read()
-n = struct.unpack("<I", b[12:16])[0]
-j = json.loads(b[20:20 + n])
-o = 20 + n
-bn = struct.unpack("<I", b[o:o + 4])[0]
-j["buffers"][0]["uri"] = "data:application/octet-stream;base64," + base64.b64encode(b[o + 8:o + 8 + bn]).decode()
-JOUT = OUT[:-4] + ".json"
-json.dump(j, open(JOUT, "w"), separators=(",", ":"))
-print("yazıldı:", os.path.abspath(JOUT), os.path.getsize(JOUT), "bayt")
+# Yayın sistemi .glb sunmuyor ve sayfanın güvenlik kuralı data: adreslerini yüklemiyor.
+# Bu yüzden GLB'yi base64 metin olarak da yaz (roket.txt); sayfa bunu kendisi çözüp GLTFLoader.parse ile okur.
+import base64
+TOUT = OUT[:-4] + ".txt"
+open(TOUT, "w").write(base64.b64encode(open(OUT, "rb").read()).decode())
+print("yazıldı:", os.path.abspath(TOUT), os.path.getsize(TOUT), "bayt")
