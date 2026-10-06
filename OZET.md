@@ -66,3 +66,24 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - A0 görsel prototip yapıldı: `oyun/a0/` (index.html + roket.glb + dunya.jpg + bolge.jpg). Roket `oyun/blender/roket.py` ile üretiliyor. Yayın: https://claude.ai/artifact/GXoa5nw3mw4jwrYmxYSbB4 (model yayında roket.txt = base64 GLB; .glb sunulmuyor ve sayfa güvenlik kuralı data: yüklemeyi engelliyor. Testlerde CSP meta etiketi kullan).
 - Test: `oyun/a0` için headless Chromium + swiftshader ile `?t=<saniye>` parametresiyle ekran görüntüsü alınıyor.
 - Sıradaki adım: kullanıcının S24 Ultra geri bildirimi (fps, görünüm), sonra A1.
+
+## 3. oturum sonu: bilgisayara geçiş (2026-10-06)
+- A0 telefonda (S24 Ultra, Chrome) test edildi: **ortalama 61 fps, en düşük 60 fps**, çözünürlük 768×1212 (pr 2,0). Performans payı bol.
+- Kullanıcı geri bildirimi: gerçek NASA görüntüsü ile sade, kodla üretilmiş roket/zemin yan yana sahte duruyor (üslup karışıklığı).
+  Öneri: **stilize gerçekçilik**. Fizik ve coğrafya gerçek kalır, görüntü bilinçli bir sanat üslubuyla çizilir. Kullanıcı henüz seçmedi.
+- Karar: geliştirmeye **kullanıcının bilgisayarında** (Claude Code yerel) devam edilecek. Bilgisayarda Blender, Three.js ve Node.js kurulu. Son test yine telefonda, yayın linkiyle.
+
+### Yeni oturumda yapılacaklar (sırayla)
+1. Eklentileri kur: `/plugin` ile **parallax-threejs** (Three.js/GLSL hata ayıklama, görsel regresyon testi) ve **Audiorective** (Web Audio + three.js).
+   Mobil uygulamada kurulum butonu çıkmadı. Bulunamazsa kullanıcıyla birlikte bak.
+2. A0'ın **stilize sürümünü** yap. Sahnede bir düğmeyle "gerçekçi / stilize" arasında geçiş olsun; kullanıcı telefonda karşılaştırıp seçsin.
+3. Roket modelini kullanıcının yerel Blender'ında üret (`oyun/blender/roket.py`). Kullanıcı isterse Blender'da açıp inceleyebilir.
+4. Sonra A1'e geç. A1'de eklenecekler: doku/model sıkıştırma (KTX2, gltf-transform), kopan parçalar için fizik motoru (ör. Rapier), ajans adı.
+
+### Teknik notlar
+- Yayın sayfası (artifact) `.glb` sunmuyor ve güvenlik kuralı (CSP) `data:` adreslerinden yüklemeyi engelliyor.
+  Model bu yüzden `roket.txt` (base64 GLB) olarak yayınlanıyor; sayfa çözüp `GLTFLoader.parseAsync` ile okuyor.
+- Testlerde her zaman CSP meta etiketi kullan (`connect-src 'self'` vb.). Eski yöntemin hatası ancak bu kuralla yakalanabildi.
+- Ekran görüntüsü testi: `?t=<saniye>` parametresi sahneyi baştan o ana kadar simüle edip dondurur.
+- Belgeyi üret: `python3 oyun/tasarim_uret.py`. Model ve kontroller: `python3 oyun/model.py`. Ekonomi: `python3 oyun/ekonomi_sim.py`.
+- Bağlantılar: tasarım belgesi https://claude.ai/artifact/Aj3Qdzz7z9B1k68PugXA1V · A0 https://claude.ai/artifact/GXoa5nw3mw4jwrYmxYSbB4
