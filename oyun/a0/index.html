@@ -721,7 +721,7 @@ scene.fog = new THREE.FogExp2(0x9ebce6, 1 / 32000);
 boyut();
 const yukle = async () => {
   const [gltf, tex, bolgeTex] = await Promise.all([
-    new GLTFLoader().loadAsync('roket.glb'),
+    new GLTFLoader().loadAsync('roket.json'),
     new THREE.TextureLoader().loadAsync('dunya.jpg'),
     new THREE.TextureLoader().loadAsync('bolge.jpg'),
   ]);
