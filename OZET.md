@@ -56,3 +56,8 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - Kullanıcı brute force istemiyor, teorik olarak çözülebilecek bir problem arıyor. Sezgisel hesap #366 için aramanın anlamsız olduğunu gösterdi.
   Ayrıca #366'nın teorik çözümü ABC gücünde araçlar istiyor gibi görünüyor.
 - erdosproblems.com'daki "Looks tractable" oylarıyla aday taraması yapıldı. Adaylar: #488 (|A|=3 durumu), #1100, #389, #1210.
+
+## Yeni proje: "Son Durak: Plüton" (3B roket oyunu)
+- Kullanıcı Erdős problemlerini bıraktı. Yeni hedef: Dünya'dan Plüton'a, her patlamadan sonra geliştirme yapılan, sinematik grafikli 3B roket oyunu.
+- Tasarım belgesi: `oyun/tasarim.html` (`oyun/tasarim_uret.py` ile üretiliyor). Yayınlanmış hali: https://claude.ai/artifact/Aj3Qdzz7z9B1k68PugXA1V
+- Sıradaki adım: belgedeki 6 açık soruyu kullanıcıyla netleştirmek, ardından A1 (Kalkış → Yörünge) oynanabilir dilimini Three.js ile yapmak.
