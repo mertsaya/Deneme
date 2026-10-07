@@ -153,7 +153,7 @@ const H0 = 27;                                               // roket merkezinin
 const RG = 143;                                              // oyuncak kürenin yarıçapı (m, roket ölçeğinde): 54 m'lik roketin yanında 30 cm'lik küre gibi
 const HV0 = Q.has('hv0') ? parseFloat(Q.get('hv0')) : 16;      // irtifa sıkıştırma: hv = HV0·ln(1 + h/HV0); yerde 1:1, 1 km'de ≈ 66 m, 100 km'de ≈ 140 m
 const KX = Q.has('kx') ? parseFloat(Q.get('kx')) : 6e-6;     // menzil → küre üzerindeki açı (rad/m)
-const SISMAN = 1.35, KUS_OLCEK = 2.4;                        // oyuncak oranları: tombul roket, iri martılar
+const SISMAN = 1.35, KUS_OLCEK = 7, UO = 1.6;                 // oyuncak oranları: tombul roket, iri martılar (kanat ~10 m), iri uçak. Çarpışma kutuları da aynı oranla büyür.
 const hv = (h) => HV0 * Math.log(1 + Math.max(0, h) / HV0);
 
 // ------------------------------------------------------------------ kalkış fiziği: model.py ile aynı denklemler ve sayılar
@@ -417,7 +417,7 @@ const sokD = { t: -1, p: new THREE.Vector3() };
 
 // ------------------------------------------------------------------ martılar: Akdeniz gümüş martısı (boy 0,6 m, kanat ~1,4 m); oyuncakta 2,4 kat iri plastik
 // İki parçalı kanat (omuz + dirsek), çırpma ve süzülme dönemleri, gerçek sürü davranışı (ayrışma, hizalanma, toplanma) ve roketten kaçış.
-const KN = 26, SURU_H = 1000, SURU_V = 11, KUS_CARP = 1.83 * SISMAN + 0.35 * KUS_OLCEK;
+const KN = 26, SURU_H = 1000, SURU_V = 11, KUS_CARP = 1.83 * SISMAN + 0.45 * KUS_OLCEK, KUS_ARA = 1.2 * KUS_OLCEK;   // KUS_ARA: sürüde kuşlar arası rahat mesafe
 function kanatGeo(ic, sag) {   // x dışa (kanat ucu), z ileri; iç kanat geniş, dış kanat sivri; oyuncakta kalınlığı olan levha
   const p = ic ? [0, 0, 0.11, 0.34, 0.015, 0.10, 0.34, 0, -0.09, 0, 0, -0.11] : [0, 0, 0.10, 0.38, -0.01, 0.02, 0.30, 0, -0.08, 0, 0, -0.09];
   const s = new THREE.Shape(); s.moveTo(p[0], p[2]); for (let i = 3; i < p.length; i += 3) s.lineTo(p[i], p[i + 2]);
@@ -432,11 +432,10 @@ const kusMatlar = [new THREE.MeshPhysicalMaterial({ color: 0xf4f3ee, roughness: 
 const kParca = [[kusGovdeG, 0], [kanatGeo(true, false), 1], [kanatGeo(true, true), 1], [kanatGeo(false, false), 2], [kanatGeo(false, true), 2], [gagaG, 3]].map(([g, mi]) => {
   const im = new THREE.InstancedMesh(g, kusMatlar[mi], KN); im.frustumCulled = false; im.castShadow = true; world.add(im); return im; });
 const kuslar = [];
-function kuslariKur() {
-  // sürü, otopilotla uçan roketin 1 km'ye vardığı anda (τ ≈ 19 s) yolunu kesecek biçimde konur
-  const cx = 12 + SURU_V * (19.3 + 3);
+function kuslariKur(cx = 12 + SURU_V * (19.3 + 3)) {
+  // sürü, roketin 1 km'ye vardığı anda yolunu kesecek biçimde konur (başta otopilot rotasına göre; suruHedefle oyuncunun rotasına çeker)
   kuslar.length = 0;
-  for (let i = 0; i < KN; i++) kuslar.push({ p: new THREE.Vector3(cx + (Math.random() - 0.5) * 44, SURU_H + (Math.random() - 0.5) * 24, (Math.random() - 0.5) * 14),
+  for (let i = 0; i < KN; i++) kuslar.push({ p: new THREE.Vector3(cx + (Math.random() - 0.5) * 9 * KUS_OLCEK, SURU_H + (Math.random() - 0.5) * 5 * KUS_OLCEK, (Math.random() - 0.5) * 3 * KUS_OLCEK),
     v: new THREE.Vector3(-SURU_V + (Math.random() - 0.5) * 2, (Math.random() - 0.5), (Math.random() - 0.5)), faz: Math.random() * 6.3, cirp: Math.random(),
     suzul: Math.random() * 3, yatis: 0, panik: 0, olu: false, savrul: false, q: new THREE.Quaternion() });
 }
@@ -451,8 +450,8 @@ function kusGuncelle(dt, RW, ax) {
     kusAcc.set(0, 0, 0); let c = 0; const coh = kusTmp.set(0, 0, 0), ali = kusYak.set(0, 0, 0);
     for (let j = 0; j < KN; j++) { if (j === i) continue; const o = kuslar[j]; if (o.olu || o.savrul) continue;
       const dx = k.p.x - o.p.x, dy = k.p.y - o.p.y, dz = k.p.z - o.p.z, d2 = dx * dx + dy * dy + dz * dz;
-      if (d2 > 100) continue; c++; coh.add(o.p); ali.add(o.v);
-      if (d2 < 9) { const f = 2.5 / Math.max(d2, 0.2); kusAcc.x += dx * f; kusAcc.y += dy * f; kusAcc.z += dz * f; } }
+      if (d2 > 11 * KUS_ARA * KUS_ARA) continue; c++; coh.add(o.p); ali.add(o.v);
+      if (d2 < KUS_ARA * KUS_ARA) { const f = 2.5 * KUS_ARA / 3 / Math.max(d2, 0.2); kusAcc.x += dx * f; kusAcc.y += dy * f; kusAcc.z += dz * f; } }
     if (c) { kusAcc.addScaledVector(coh.divideScalar(c).sub(k.p), 0.3); kusAcc.addScaledVector(ali.divideScalar(c).sub(k.v), 0.6); }
     kusAcc.x += (-SURU_V - k.v.x) * 0.35; kusAcc.y += (SURU_H - k.p.y) * 0.04 - k.v.y * 0.3;
     // panik: roket 110 m içine girince eksene dik yönde kaç
@@ -495,20 +494,30 @@ const ucak = { var: false, x0: 0, tau0: 0, gecti: false, carpti: false, karsilas
 const ucakX = (tau) => ucak.x0 - UCAK_V * (tau - ucak.tau0);
 const ucakG = new THREE.Group(); ucakG.visible = false; world.add(ucakG);
 let ucakKok = null; const ucakKayit = [], ucakGecici = [];
+// roketin şu anki yatırmasıyla h irtifasına vardığı yer ve an (gelecek tahmini; oyuncu sabit tutarsa)
+function rotaTahmini(hedefH) {
+  const s = { ...SIM, yakit: SIM.yakit.slice(), tahmin: true };
+  for (let n = 0; s.h + H0 < hedefH && n < 15000; n++) simAdim(s, 0.02);
+  return s;
+}
+// sürü, roketin o anki rotası 1 km'yi nerede keserse oraya taşınır: erken yatırarak sürüden kurtulamazsın, son anda kaçman gerekir
+function suruHedefle() {
+  const s = rotaTahmini(SURU_H), cx = s.x + SURU_V * (s.tau - SIM.tau), dx = cx - suruMerkezi(new THREE.Vector3()).x;
+  for (const k of kuslar) k.p.x += dx;
+}
 function ucakDogur() {
   // otopilotla (parmaksız) roketin 10,6 km'ye vardığı yer ve an: uçak oraya o anda varacak
-  const s = { ...SIM, yakit: SIM.yakit.slice(), ofset: 0, tahmin: true };
-  for (let n = 0; s.h + H0 < UCAK_H && n < 15000; n++) simAdim(s, 0.02);
+  const s = rotaTahmini(UCAK_H);   // oyuncunun o anki rotası: uçak oraya o anda varacak
   Object.assign(ucak, { var: true, tau0: SIM.tau, x0: s.x + UCAK_V * (s.tau - SIM.tau) + (Math.random() - 0.5) * 8, gecti: false, carpti: false });
 }
 // roket ekseni (−22…32 m) ile uçak siluetinin (gövde + dikey kuyruk, roketle aynı düzlemde) kesişmesi; tombul roketin yarıçapı payıyla
 function ucakKontrol() {
   if (!ucak.var || ucak.carpti || ucak.gecti || SIM.hp <= 0) return;
   const px = ucakX(SIM.tau), sn = Math.sin(SIM.th), cs = Math.cos(SIM.th), cx = SIM.x, cy = SIM.h + H0;
-  if (Math.abs(cy - UCAK_H) > 60) return;
+  if (Math.abs(cy - UCAK_H) > 80) return;
   for (let s = -22; s <= 32; s += 2.5) {
     const dx = cx + sn * s - px, dy = cy + cs * s - UCAK_H;
-    if ((Math.abs(dx) < 21 && dy > -5 && dy < 5) || (dx > 12 && dx < 24 && dy > 0 && dy < 11)) { ucak.carpti = true; ucakCarpisma(cx + sn * s, cy + cs * s); return; }
+    if ((Math.abs(dx) < 21 * UO && dy > -5 * UO && dy < 5 * UO) || (dx > 12 * UO && dx < 24 * UO && dy > 0 && dy < 11 * UO)) { ucak.carpti = true; ucakCarpisma(cx + sn * s, cy + cs * s); return; }
   }
 }
 
@@ -637,7 +646,7 @@ function modelleriKur(gltf) {
   kolUst = k.getObjectByName('Kol_Ust'); kolAlt = k.getObjectByName('Kol_Alt');
   birlestir(k, ['Kol_Ust', 'Kol_Alt', 'Kule_Isik']);
   for (const kol of [kolUst, kolAlt]) kol.traverse(o => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
-  const u = kok('Ucak'); ucakG.add(u); u.traverse(o => { if (o.isMesh) o.castShadow = true; });
+  const u = kok('Ucak'); ucakG.add(u); ucakG.scale.setScalar(UO); u.traverse(o => { if (o.isMesh) o.castShadow = true; });
   ucakKok = u; u.traverse(o => { if (o.isMesh) ucakKayit.push({ m: o, ebeveyn: o.parent, p0: o.position.clone(), q0: o.quaternion.clone(), s0: o.scale.clone() }); });
   // parçalar gövdeye ölçeksiz bağlanır; tombullaştırma (SISMAN) sonra gövde ölçeğinden gelir
   const rk = kok('Roket'); rk.updateMatrixWorld(true); govde.scale.set(1, 1, 1); roket.updateMatrixWorld(true); roketiKur(rk); govde.scale.set(SISMAN, 1, SISMAN);
@@ -906,7 +915,8 @@ function gorsel(dTau, dG, dtR, k) {
   // martılar
   kusGuncelle(dTau, RW, ileriW);
   kusCiz(h < 9000);
-  { const c = suruMerkezi(tmp2); kusYakin = !!c && c.y - RW.y < 480 && c.y - RW.y > -40; if (kusYakin) bir('kus', () => olay('Kuş sürüsü önünde · sürükleyip kaç', true, 3)); }
+  if (h > 500 && !bitti) bir('suru', suruHedefle);
+  { const c = suruMerkezi(tmp2); kusYakin = !!c && c.y - RW.y < 480 && c.y - RW.y > -60; if (kusYakin) bir('kus', () => olay('Kuş sürüsü önünde · sürükleyip kaç', true, 3)); }
   if (dTau > 0 && !bitti) for (const kk of kuslar) { if (kk.olu || kk.savrul) continue;
     const yak = eksenYakin(kk.p, RW, ileriW, kusTmp), d = kk.p.distanceTo(yak); kusMin = Math.min(kusMin, d); if (d < KUS_CARP) kusCarpisma(kk, yak, ileriW); }
 
@@ -917,7 +927,7 @@ function gorsel(dTau, dG, dtR, k) {
     const px = ucakX(s.tau); ucakG.position.set(px, UCAK_H, 0);
     ucak.karsilasma = RW.y < UCAK_H ? (UCAK_H - RW.y) / Math.max(s.vy, 1) : 0;
     if (!ucak.gecti && !ucak.carpti && RW.y > UCAK_H + 60) { ucak.gecti = true; olay('Uçak geride kaldı'); }
-    if (dG > 0 && ucakG.visible && !ucak.parcalandi && Math.random() < 0.7) for (const z of [-5.8, 5.8]) pamuk.emit(new THREE.Vector3(px + 3 + Math.random() * 2, UCAK_H - 2.8, z), new THREE.Vector3(0, 0, (Math.random() - 0.5) * 0.6), 6, 1.6 + Math.random() * 1.2);
+    if (dG > 0 && ucakG.visible && !ucak.parcalandi && Math.random() < 0.7) for (const z of [-5.8 * UO, 5.8 * UO]) pamuk.emit(new THREE.Vector3(px + (3 + Math.random() * 2) * UO, UCAK_H - 2.8 * UO, z), new THREE.Vector3(0, 0, (Math.random() - 0.5) * 0.6), 6, (1.6 + Math.random() * 1.2) * UO);
   }
   isaretGuncelle();
 
@@ -1031,7 +1041,7 @@ function ucakCarpisma(cx, cy) {
 function ucakParcala(c) {
   if (!ucakKok || ucak.parcalandi) return; ucak.parcalandi = true; ucak.carpti = true;
   ucakG.updateMatrixWorld(true);
-  const hx = THREE.MathUtils.clamp(c.x - ucakG.position.x, -10, 14);   // çarpma noktası, uçak gövdesi boyunca
+  const hx = THREE.MathUtils.clamp((c.x - ucakG.position.x) / UO, -10, 14);   // çarpma noktası, uçak gövdesi boyunca
   const merkez = (o) => { o.geometry.computeBoundingBox(); const p = o.geometry.boundingBox.getCenter(new THREE.Vector3()); o.localToWorld(p); return ucakKok.worldToLocal(p); };
   const gruplar = { on: [], arka: [], sol: [], sag: [] };
   for (const r of ucakKayit) { const o = r.m; if (o.parent.isMesh) continue;   // alt parçalar ebeveynleriyle gider
@@ -1067,7 +1077,7 @@ function patlamaEtkisi(c) {
     const yon = k.p.clone().sub(c).normalize(); k.savrul = true; k.v.addScaledVector(yon, 70 * (1 - d / 90) + 5);
     k.eks = new THREE.Vector3().randomDirection(); k.wh = 10 + 25 * (1 - d / 90);
     for (let i = 0; i < 4; i++) pamuk.emit(k.p.clone(), k.v.clone().multiplyScalar(0.5).add(new THREE.Vector3().randomDirection().multiplyScalar(10)), 1.4, 0.6); }
-  if (ucak.var && !ucak.parcalandi && ucakG.visible) { const up = ucakG.position; if (Math.hypot(up.x - c.x, up.y - c.y) < 150) ucakParcala(c); }
+  if (ucak.var && !ucak.parcalandi && ucakG.visible) { const up = ucakG.position; if (Math.hypot(up.x - c.x, up.y - c.y) < 150 * UO) ucakParcala(c); }
 }
 // patlama: göz kamaştıran parlama, şok dalgası, yakıtın tutuşmasıyla büyüyen ateş topu, kara is bulutu; parçalar yanarak saçılır
 function patlama(baslik, mesaj, merkez) {
@@ -1102,7 +1112,7 @@ function isaretGuncelle() {
   // en yakın geçiş: roketin şu anki hızını ve uçağın hızını sabit sayarak
   const rx = SIM.x, ry = SIM.h + H0, dx = ucakX(SIM.tau) - rx, dy = UCAK_H - ry, vx = -UCAK_V - SIM.vx, vy = -SIM.vy;
   const tt = Math.max(0, -(dx * vx + dy * vy) / (vx * vx + vy * vy || 1)), mx = dx + vx * tt, my = dy + vy * tt;
-  const rota = Math.hypot(mx, my) < 45 && tt < 40;
+  const rota = Math.hypot(mx, my) < 45 * UO && tt < 40;
   uy.hidden = false; uy.textContent = (rota ? 'Çarpışma rotası · ' : 'Uçak · ') + fmt(Math.hypot(dx, dy) / 1000, 1) + ' km' + (rota ? ' · yana yatır' : '');
   uy.classList.toggle('sakin', !rota);
   const p = ucakG.position.clone(); world.localToWorld(p); p.project(camera);
@@ -1121,7 +1131,13 @@ function kamera(dtR, titre) {
   const s = SIM, sm = THREE.MathUtils.smoothstep, P = oy.P, up = oy.up, tan = oy.tan;
   if (kam.ayrZ > 0) kam.ayrZ -= dtR;
   const yum = (a, b, hiz) => a + (b - a) * Math.min(1, dtR * hiz);
-  const uUc = ucak.var && !ucak.carpti ? (ucak.gecti ? 0 : 1 - sm(ucak.karsilasma, 2.5, 10)) : 0;
+  // karşılaşma: uçak (çarpışmaya kalan süreyle) ya da sürü (roketin önünde ve yakınsa)
+  let engelYon = null, engelD = 0, uUc = 0;
+  if (ucak.var && !ucak.carpti && !ucak.gecti && ucakG.visible) { engelYon = toy.worldToLocal(ucakG.getWorldPosition(new THREE.Vector3())).sub(P); engelD = engelYon.length();
+    uUc = 1 - sm(engelD, 280, 520); }   // dikey ekranın yatay açısı dar: uçak 500 m'ye girince çerçevele
+  else { const c = suruMerkezi(new THREE.Vector3());
+    if (c && s.h < 3000 && !bitti) { const rel = c.clone().sub(tmp2.set(s.x, s.h + H0, 0)), d = rel.length();
+      if (rel.y > -80) { uUc = 1 - sm(d, 120, 420); world.updateMatrixWorld(true); engelYon = toy.worldToLocal(world.localToWorld(c)).sub(P); engelD = engelYon.length(); } } }
   const test = TEST_T != null;
   kam.ayrW = test ? (kam.ayrZ > 0 ? 1 : 0) : yum(kam.ayrW, kam.ayrZ > 0 ? 1 : 0, 2.2);
   kam.ucW = test ? uUc : yum(kam.ucW, uUc, 1.8);
@@ -1132,10 +1148,8 @@ function kamera(dtR, titre) {
   const rampaK = new THREE.Vector3(70, 34, dikey ? 135 : 105);
   const geriC = sm(s.h, 1500, 40000);                                                  // yükseldikçe geri çekil: kürenin kavisi görünsün
   const takip = yer(52 + 20 * geriC, 12 + 34 * geriC, (dikey ? 135 : 100) + 90 * geriC);
-  // uçak çekimi: roket ile uçak arası gerçek ölçekte yüzlerce metre; ikisini birden göstermek için mesafeyle geri çekil
-  let ucakYon = null, ucakD = 0;
-  if (ucak.var && ucakG.visible) { ucakYon = toy.worldToLocal(ucakG.getWorldPosition(new THREE.Vector3())).sub(P); ucakD = ucakYon.length(); }
-  const ucakK = yer(70, 26, (dikey ? 230 : 170) + Math.min(ucakD * 1.1, dikey ? 520 : 380));
+  // karşılaşma çekimi: roket ile engel arası gerçek ölçekte yüzlerce metre olabilir; ikisini birden göstermek için mesafeyle geri çekil
+  const ucakK = yer(40, 30, (dikey ? 160 : 130) + Math.min(engelD * (dikey ? 1.7 : 1.0), dikey ? 900 : 520));
   const ayr = yer(-12, 40, dikey ? 200 : 150);
   const uzay = yer(-50, 30, dikey ? 470 : 330);
   const pat = yer(60, 30, dikey ? 250 : 190);
@@ -1143,7 +1157,7 @@ function kamera(dtR, titre) {
   const hedefPos = rampaK.lerp(takip, u1).lerp(ucakK, kam.ucW).lerp(ayr, kam.ayrW).lerp(uzay, u2 * (1 - kam.ayrW)).lerp(pat, kam.patW);
   // bakış: roketin biraz altı (Blender karesindeki gibi); uçak yaklaşırken ikisinin arası; uzayda roketle küre arası
   const bak = P.clone().addScaledVector(up, (s.h < 200 ? -2 : -10) - 22 * sm(s.h, 3000, 60000)).addScaledVector(oy.eks, -14 * kam.ayrW);   // yükseldikçe aşağı bak: küre kadraja girsin
-  if (kam.ucW > 0.01 && ucakYon) bak.addScaledVector(ucakYon, Math.min(0.5, 170 / Math.max(ucakD, 1)) * kam.ucW);   // roketle uçağın arasına (en çok 170 m)
+  if (kam.ucW > 0.01 && engelYon) bak.addScaledVector(engelYon, 0.5 * kam.ucW);   // roketle engelin tam ortasına
   bak.lerp(new THREE.Vector3(0, -RG, 0), 0.2 * u2 * (1 - kam.patW));
   if (test || kam.ilk) { kam.pos.copy(hedefPos); kam.bak.copy(bak); kam.ilk = false; }
   else { const k = 1 - Math.pow(0.004, dtR); kam.pos.lerp(hedefPos, k); kam.bak.lerp(bak, k); }
