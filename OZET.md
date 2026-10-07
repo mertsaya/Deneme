@@ -124,3 +124,9 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - Kararlar: kırmızı burun/kanatçık kalır; gök mavi → yükseldikçe lacivert; oyun kamerası ayrılma karesine yakın.
 - Giriş kartındaki "her çarpma %25" yazısı enerjiye bağlı hasar açıklamasıyla değiştirildi (`oyun/a0/index.html`).
 - Sıradaki: A0'ı Three.js'te minyatür görünüme çevir (Opus önerilir), sonra A1.
+- A0 minyatür görünüme çevrildi (ilk taslak):
+  - `oyun/blender/minyatur_modeller.py` → `oyun/a0/minyatur.glb` (+ `.txt`): plastik roket (kırmızı burun/kanatçık), kolları açılan oyuncak kule, rampa, oyuncak yolcu uçağı.
+  - Sahne iki çerçeveli: fizik (gerçek metre, roketin çevresi: kuşlar, uçak, enkaz) + oyuncak dünya (küre yarıçapı 143 m, irtifa `hv = 16·ln(1+h/16)`, menzil 6e-6 rad/m). Test parametreleri: `?hv0=`, `?kx=`, `?dof=0`, `?ton=agx|aces|notr`, `?pozlama=`.
+  - Gerçekçi patlama (parlama, şok halkası, ateş topu, is, yanan enkaz) ve yeni ses (motor gümbürtüsü + çıtırtı + hava süzgeci, Max-Q uğultusu, piroteknik ayırma, katmanlı patlama + yankı).
+  - Gerçekçi/Stilize düğmesi kaldırıldı. Karşılaştırma: `oyun/blender/kareler/a0_minyatur_taslak1.png`.
+  - Yerel test: `.claude/launch.json` → "a0" (python http.server 8765).
