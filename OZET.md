@@ -87,3 +87,19 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 - Ekran görüntüsü testi: `?t=<saniye>` parametresi sahneyi baştan o ana kadar simüle edip dondurur.
 - Belgeyi üret: `python3 oyun/tasarim_uret.py`. Model ve kontroller: `python3 oyun/model.py`. Ekonomi: `python3 oyun/ekonomi_sim.py`.
 - Bağlantılar: tasarım belgesi https://claude.ai/artifact/Aj3Qdzz7z9B1k68PugXA1V · A0 https://claude.ai/artifact/GXoa5nw3mw4jwrYmxYSbB4
+
+## 4. oturum (2026-10-07, bilgisayarda)
+- Depo `C:\projeler\oyun geliştirme` altına klonlandı. `.gitignore`: `__pycache__/`, `.parallax/`. Eklentiler `claude.exe plugin install <ad>@anthropic-plugin-directory` ile kuruldu: parallax-threejs, audiorective (spector derlenmedi).
+- A0 artık **oynanabilir** (aynı link, sürüm 4):
+  - Stilize görünüm (varsayılan) + "Gerçekçi / Stilize" düğmesi; `?yumusak=0..1` (varsayılan 0,6: "tatlı ama gerçekçi"). `harita_uret.py` NASA görüntüsünden düz renkli harita (`harita.png`, `bolge_harita.png`) ve bulut dokusu (`bulut.png`) üretir.
+  - Fizik: model.py ile aynı denklemler (iki kademe, karbon gövde, otomatik gaz, otopilot yatışı 150 km). Parmakla sürükle = ±25° yatırma. Yan yük sınırı q·α ≤ 260 kPa·°.
+  - Engeller: 26 martı (sürü davranışı, hasar = çarpma enerjisi kJ, en çok 25), 10,6 km'de yolcu uçağı (otopilotla çarpışma rotasında doğar; çarpışma = son). Uyarı kutusu ve kenar oku.
+  - Kademe ayrılması ağır çekim, ilk kademe ayrı fizikle düşer; 100 km'de kaporta iki yarıya açılır, içinde kapsül. Sahne hızı engel yakınken yavaşlar (~50 s toplam).
+  - Test: `?t=<s>&yon=<derece>&yonh=<m-m>` (yatırmayı irtifa aralığında uygular), `?abarti=`, `?stil=`.
+- Kullanıcı istekleri: kuşlar/uçak gerçekçi ve kaçınılabilir, ayrılmalar görünür, Dünya oyun gibi (canlı renk + bulut katmanı). Çarpışma hissi: gerçek fizik ile Burrito Bison arası.
+
+### Sıradaki
+1. Kullanıcının telefon testi (fps, zorluk, görünüm). Giriş kartında "her çarpma %25" yazıyor, düzeltilecek (artık enerjiye bağlı).
+2. Roketi yerel Blender'da üret (`oyun/blender/roket.py`), Blender 5.2: `C:\Program Files\Blender Foundation`.
+3. A1: KTX2 sıkıştırma, Rapier, ajans adı. Ses: NASA arşivi + Kenney + Audiorective önerildi.
+4. Push yapılmadı: önce kullanıcı `gh auth login` yapmalı.

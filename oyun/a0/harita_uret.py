@@ -15,14 +15,14 @@ from scipy import ndimage
 
 KOK = Path(__file__).parent
 
-# retro ajans afişi paleti (index.html'deki PALET ile aynı)
+# stilize palet: canlı ve temiz (index.html'deki PALET ile aynı)
 PALET = {
-    "derin": (0x2E, 0x5E, 0x6E),
-    "sig":   (0x4E, 0x8C, 0x8F),
-    "col":   (0xE9, 0xC2, 0x7E),
-    "bozkir": (0xC8, 0x8A, 0x4E),
-    "bitki": (0x6F, 0x7D, 0x47),
-    "kar":   (0xF4, 0xEB, 0xD8),
+    "derin": (0x1D, 0x5F, 0x8C),
+    "sig":   (0x2F, 0xA8, 0xB5),
+    "col":   (0xF0, 0xC6, 0x7C),
+    "bozkir": (0xD9, 0x97, 0x55),
+    "bitki": (0x5A, 0x9A, 0x3A),
+    "kar":   (0xFB, 0xF8, 0xF1),
     "murekkep": (0x1F, 0x2A, 0x3A),
 }
 SINIF = ["derin", "sig", "col", "bozkir", "bitki", "kar"]
@@ -71,7 +71,27 @@ def uret(kaynak, hedef, sigma, sig_px, cizgi_px, boyut=None):
     print(hedef, out.shape[1], "x", out.shape[0])
 
 
+def bulut(hedef="bulut.png", W=2048, H=1024, tohum=7):
+    """Küresel bulut örtüsü (gri tonlu, beyaz = bulut). Çok ölçekli gürültü; enleme göre gerçekçi dağılım:
+    ekvatorda ve orta enlemlerde çok, ~25° çöl kuşağında az."""
+    rng = np.random.default_rng(tohum)
+    n = np.zeros((H, W), np.float32)
+    for o in range(7):
+        gh, gw = 6 * 2 ** o, 18 * 2 ** o   # doğu-batı yönünde uzun (rüzgâr kuşakları)
+        g = rng.random((gh + 3, gw + 3)).astype(np.float32)
+        z = ndimage.zoom(g, (H / gh, W / gw), order=3)[:H, :W]
+        n += z * 0.62 ** o
+    n = (n - n.min()) / (n.max() - n.min())
+    enlem = np.abs(np.linspace(90, -90, H))[:, None]
+    agirlik = 1 - 0.28 * np.exp(-((enlem - 25) / 9) ** 2) + 0.1 * np.exp(-(enlem / 8) ** 2)
+    c = np.clip((n * agirlik - 0.44) / 0.2, 0, 1)
+    c = c * c * (3 - 2 * c)
+    Image.fromarray((c * 255).astype(np.uint8), "L").save(KOK / hedef, optimize=True)
+    print(hedef, W, "x", H)
+
+
 if __name__ == "__main__":
+    bulut()
     uret("dunya.jpg", "harita.png", sigma=1.6, sig_px=6, cizgi_px=1)
     # yakın plan 100 km'den bakılıyor: büyütüp sınıflandır ki kıyılar basamaklı değil yumuşak olsun (4096, telefonda güvenli doku sınırı)
     uret("bolge.jpg", "bolge_harita.png", sigma=5.5, sig_px=25, cizgi_px=3, boyut=(4096, 2979))
