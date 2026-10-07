@@ -103,3 +103,19 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 2. Roketi yerel Blender'da üret (`oyun/blender/roket.py`), Blender 5.2: `C:\Program Files\Blender Foundation`.
 3. A1: KTX2 sıkıştırma, Rapier, ajans adı. Ses: NASA arşivi + Kenney + Audiorective önerildi.
 4. Push yapılmadı: önce kullanıcı `gh auth login` yapmalı.
+
+## 5. oturum (2026-10-07, bilgisayarda)
+- Kullanıcı A0'ın görünüşünü, kamerasını ve oynanışını beğenmedi. A0 deneme alanı: fizik ve sistemler kalıyor, görüntü baştan yapılacak.
+- `roket.py` artık `oyun/blender/roket.blend` da kaydediyor (Blender'da açıp incelenebilir).
+- Tarz denemeleri: `oyun/blender/tarz_karesi.py -- <sinematik|mobil|minyatur>` → `kareler/`. Kullanıcı **minyatürü** seçti.
+- Minyatür kararları: **boyalı plastik oyuncak**, **abartılı ölçek** (oyuncak küre, roket büyük; fizik arka planda gerçek değerlerle), **masa üstü çapraz kamera**.
+- `oyun/blender/minyatur_kareleri.py -- <kalkis|ayrilma|uzay> [örnek] [kamera_açısı]` → `kareler/minyatur_*.png` ve `minyatur_karsilastirma.png`. Sahne gerçek oyuncak boyutunda (küre yarıçapı 30 cm), bu yüzden alan derinliği gerçekçi bulanıklaşıyor. Çalıştır: `"C:\Program Files\Blender Foundation\Blender 5.2\blender.exe" -b --factory-startup -P ...`
+- Onaysız yapılan ve sorulacak tasarım değişiklikleri: kırmızı burun ve kanatçıklar (asıl tasarımda beyaz/siyah), rampadaki kırmızı-beyaz kule yer tutucu.
+- Kullanıcı bundan sonra **Sonnet 5.5** ile çalışacak; zor adımlarda (büyük shader/fizik yeniden yazımı, karmaşık sahne) Opus'a geçmesi için uyar. Soruları hep seçenekli sor.
+
+### Sıradaki
+1. Minyatür karelere geri bildirim al (seçenekli sorular hazırdı): oyuncak hissi tuttu mu, roket rengi (kırmızı burun kalsın mı), kalkışta gök (mavi → yükseldikçe lacivert önerildi), oyun kamerası hangi kareye yakın (ayrılma karesi önerildi).
+2. Sonra A0'ı minyatür görünüme çevir (Three.js'te plastik malzeme, oyuncak küre, yeni kamera ve oynanış hissi). Bu büyük iş: Opus önerilir.
+3. Giriş kartındaki "her çarpma %25" yazısını düzelt.
+4. A1: KTX2, Rapier, ajans adı. Ses planı.
+5. Push için kullanıcı önce `gh auth login` yapmalı (GitHub CLI kurulu, oturumu bitmiş).

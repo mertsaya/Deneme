@@ -158,3 +158,8 @@ import base64
 TOUT = OUT[:-4] + ".txt"
 open(TOUT, "w").write(base64.b64encode(open(OUT, "rb").read()).decode())
 print("yazıldı:", os.path.abspath(TOUT), os.path.getsize(TOUT), "bayt")
+
+# Blender'da açıp incelemek için sahneyi de kaydet (oyun/blender/roket.blend)
+BLEND = os.path.join(os.path.dirname(os.path.abspath(__file__)), "roket.blend")
+bpy.ops.wm.save_as_mainfile(filepath=BLEND)
+print("yazıldı:", BLEND)
