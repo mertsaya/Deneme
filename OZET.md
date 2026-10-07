@@ -119,3 +119,8 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 3. Giriş kartındaki "her çarpma %25" yazısını düzelt.
 4. A1: KTX2, Rapier, ajans adı. Ses planı.
 5. Push için kullanıcı önce `gh auth login` yapmalı (GitHub CLI kurulu, oturumu bitmiş).
+
+## 6. oturum (2026-10-07)
+- Kararlar: kırmızı burun/kanatçık kalır; gök mavi → yükseldikçe lacivert; oyun kamerası ayrılma karesine yakın.
+- Giriş kartındaki "her çarpma %25" yazısı enerjiye bağlı hasar açıklamasıyla değiştirildi (`oyun/a0/index.html`).
+- Sıradaki: A0'ı Three.js'te minyatür görünüme çevir (Opus önerilir), sonra A1.
