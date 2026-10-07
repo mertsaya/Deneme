@@ -130,3 +130,5 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
   - Gerçekçi patlama (parlama, şok halkası, ateş topu, is, yanan enkaz) ve yeni ses (motor gümbürtüsü + çıtırtı + hava süzgeci, Max-Q uğultusu, piroteknik ayırma, katmanlı patlama + yankı).
   - Gerçekçi/Stilize düğmesi kaldırıldı. Karşılaştırma: `oyun/blender/kareler/a0_minyatur_taslak1.png`.
   - Yerel test: `.claude/launch.json` → "a0" (python http.server 8765).
+- Engeller görünür yapıldı (martılar 7x, uçak 1.6x, oyuncunun rotasına doğar, karşılaşma çekimi); uçak çarpışmada parçalanır. Telefon testi: ort. 77 fps, en düşük 58 fps.
+- **2026-10-08: Kullanıcı minyatür sürümü beğenmedi ve projeyi burada bitirmek istedi.** Tüm kod ve modeller depoda duruyor; yayın linki (sürüm 6) açık.
