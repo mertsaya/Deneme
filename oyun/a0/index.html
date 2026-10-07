@@ -491,10 +491,10 @@ function suruMerkezi(c) { let n = 0; c.set(0, 0, 0); for (const k of kuslar) if 
 // ------------------------------------------------------------------ yolcu uçağı: A320 ölçüsünde (boy 37,6 m, kanat 35,8 m), 10,6 km'de 230 m/s
 // Roketin otopilotla 10,6 km'ye vardığı noktayı o anda kesecek biçimde doğar: hiçbir şey yapmazsan çarpışma rotasındasın.
 const UCAK_H = 10600, UCAK_V = 230;
-const ucak = { var: false, x0: 0, tau0: 0, gecti: false, carpti: false, karsilasma: 99, duman: false };
+const ucak = { var: false, x0: 0, tau0: 0, gecti: false, carpti: false, karsilasma: 99, parcalandi: false };
 const ucakX = (tau) => ucak.x0 - UCAK_V * (tau - ucak.tau0);
 const ucakG = new THREE.Group(); ucakG.visible = false; world.add(ucakG);
-let ucakUc = null, ucakUcP0 = null, ucakUcQ0 = null;
+let ucakKok = null; const ucakKayit = [], ucakGecici = [];
 function ucakDogur() {
   // otopilotla (parmaksız) roketin 10,6 km'ye vardığı yer ve an: uçak oraya o anda varacak
   const s = { ...SIM, yakit: SIM.yakit.slice(), ofset: 0, tahmin: true };
@@ -555,15 +555,16 @@ const kon = new THREE.Mesh(new THREE.CylinderGeometry(2.15, 4.6, 8, 64, 1, true)
 const kapSol = new THREE.Group(), kapSag = new THREE.Group(); kademe2.add(kapSol, kapSag);
 const parcaKayit = [], gocukler = [];
 const kaydet = (m) => parcaKayit.push({ m, ebeveyn: m.parent, p0: m.position.clone(), q0: m.quaternion.clone(), s0: m.scale.clone() });
-// geometrinin x > 0 (isaret 1) ya da x < 0 (−1) yarısındaki üçgenleri ayır
-function yariGeo(geo, isaret) {
-  const g = geo.index ? geo.toNonIndexed() : geo.clone(), p = g.attributes.position, tut = [];
-  for (let i = 0; i < p.count; i += 3) if ((p.getX(i) + p.getX(i + 1) + p.getX(i + 2)) * isaret >= 0) tut.push(i);
+// geometriden, ağırlık merkezi (isteğe bağlı bir matrisle dönüştürülmüş) koşulu sağlayan üçgenleri ayır
+function secGeo(geo, kosul, mat = null) {
+  const g = geo.index ? geo.toNonIndexed() : geo.clone(), p = g.attributes.position, tut = [], c = new THREE.Vector3(), v = new THREE.Vector3();
+  for (let i = 0; i < p.count; i += 3) { c.set(0, 0, 0); for (let k = 0; k < 3; k++) c.add(v.fromBufferAttribute(p, i + k)); c.divideScalar(3); if (mat) c.applyMatrix4(mat); if (kosul(c)) tut.push(i); }
   const out = new THREE.BufferGeometry();
   for (const ad in g.attributes) { const a = g.attributes[ad], n = a.itemSize, arr = new a.array.constructor(tut.length * 3 * n);
     tut.forEach((i, j) => { for (let k = 0; k < 3 * n; k++) arr[j * 3 * n + k] = a.array[i * n + k]; }); out.setAttribute(ad, new THREE.BufferAttribute(arr, n, a.normalized)); }
   return out;
 }
+const yariGeo = (geo, isaret) => secGeo(geo, c => c.x * isaret >= 0);   // x > 0 (isaret 1) ya da x < 0 (−1) yarısı
 function roketiKur(kok) {
   const parcalar = []; kok.traverse(o => { if (o.isMesh) parcalar.push(o); });
   for (const m of parcalar) {
@@ -614,8 +615,8 @@ function gocuk(mesh, dunyaNokta, yaricap, derinlik) {
 }
 // kopan parçalar: gerçek yerçekimi ve kendi dönüşleriyle; yanan parçalar arkalarında ateş ve is bırakır
 const kopanlar = [];
-function kopar(mesh, hiz, donus, surt = 0.3, yanar = 0) {
-  if (!mesh || mesh.parent === world) return; world.attach(mesh); kopanlar.push({ m: mesh, v: hiz, w: donus, surt, yanar });
+function kopar(mesh, hiz, donus, surt = 0.3, yanar = 0, patlarZ = -1) {
+  if (!mesh || mesh.parent === world) return; world.attach(mesh); kopanlar.push({ m: mesh, v: hiz, w: donus, surt, yanar, patlarZ });
 }
 
 // ------------------------------------------------------------------ oyuncak dünya modelleri (rampa, kule, uçak) — minyatur.glb'den
@@ -637,7 +638,7 @@ function modelleriKur(gltf) {
   birlestir(k, ['Kol_Ust', 'Kol_Alt', 'Kule_Isik']);
   for (const kol of [kolUst, kolAlt]) kol.traverse(o => { if (o.isMesh) o.castShadow = o.receiveShadow = true; });
   const u = kok('Ucak'); ucakG.add(u); u.traverse(o => { if (o.isMesh) o.castShadow = true; });
-  ucakUc = u.getObjectByName('Ucak_KanatUcu'); ucakUcP0 = ucakUc.position.clone(); ucakUcQ0 = ucakUc.quaternion.clone();
+  ucakKok = u; u.traverse(o => { if (o.isMesh) ucakKayit.push({ m: o, ebeveyn: o.parent, p0: o.position.clone(), q0: o.quaternion.clone(), s0: o.scale.clone() }); });
   // parçalar gövdeye ölçeksiz bağlanır; tombullaştırma (SISMAN) sonra gövde ölçeğinden gelir
   const rk = kok('Roket'); rk.updateMatrixWorld(true); govde.scale.set(1, 1, 1); roket.updateMatrixWorld(true); roketiKur(rk); govde.scale.set(SISMAN, 1, SISMAN);
 }
@@ -706,6 +707,9 @@ const SES = {
   // kuş çarpması: yumuşak, tok bir darbe ve gövde sacının kısa titreşimi
   kus() { katman(S.kahve, { f: 260, g: 1.6, sal: 0.002, son: 0.06, sure: 0.4, yanki: 0.15 }); ton(140, 70, 0.18, 0.7, { yanki: 0 });
     katman(S.beyaz, { tur: 'bandpass', f: 1400, q: 1.5, g: 0.35, sal: 0.001, son: 0.03, sure: 0.2, yanki: 0.1 }); ton(410, 400, 0.5, 0.06, { son: 0.12 }); },
+  ikincil() { katman(S.beyaz, { tur: 'highpass', f: 1200, g: 1.0, sal: 0.002, son: 0.04, sure: 0.3, yanki: 0.4 });
+    katman(S.kahve, { f: 260, g: 1.8, sal: 0.01, son: 0.8, sure: 4, yanki: 0.7 }); ton(60, 28, 1.4, 0.9, { yanki: 0.3, son: 0.5 });
+    katman(S.pembe, { tur: 'bandpass', f: 500, q: 0.6, g: 0.7, sal: 0.1, son: 1.2, sure: 4, yanki: 0.5 }); },
   patlama() {
     const bus = S.kazanc(1); const ds = AC.createWaveShaper(); { const c = new Float32Array(1024); for (let i = 0; i < 1024; i++) { const x = i / 512 - 1; c[i] = Math.tanh(x * 3.5); } ds.curve = c; }
     bus.connect(ds); ds.connect(S.ana); const y = S.kazanc(0.9); ds.connect(y); y.connect(S.yanki);
@@ -769,13 +773,14 @@ function zamanHizi() {
 
 function yeniden() {
   t = 0; bitti = false; sonucZ = -1; karmanTau = null; kaportaZ = -1; flas = 0; sokD.t = -1; sok.visible = false;
-  SIM = yeniSim(); ayrik.aktif = false; Object.assign(ucak, { var: false, gecti: false, carpti: false, karsilasma: 99, duman: false });
+  SIM = yeniSim(); ayrik.aktif = false; Object.assign(ucak, { var: false, gecti: false, carpti: false, karsilasma: 99, parcalandi: false });
   for (const k in bayrak) delete bayrak[k]; olayKuyrugu.length = 0;
   for (const s of sistemler) s.reset(); kuslariKur();
   fpsMin = 999; fpsTop = 0; fpsSay = 0;
   kopanlar.length = 0; donma = 0; agir = 0; fovVur = 0; yalpa.a = yalpa.w = 0; sicak.titre = 0; izSon.birikim = 0;
   for (const p of parcaKayit) { p.ebeveyn.add(p.m); p.m.position.copy(p.p0); p.m.quaternion.copy(p.q0); p.m.scale.copy(p.s0); p.m.visible = true; }
-  if (ucakUc) { ucakG.children[0].add(ucakUc); ucakUc.position.copy(ucakUcP0); ucakUc.quaternion.copy(ucakUcQ0); ucakUc.scale.set(1, 1, 1); }
+  for (const o of ucakGecici) o.removeFromParent(); ucakGecici.length = 0;
+  for (const r of ucakKayit) { r.ebeveyn.add(r.m); r.m.position.copy(r.p0); r.m.quaternion.copy(r.q0); r.m.scale.copy(r.s0); r.m.visible = true; }
   for (const m of gocukler) { m.geometry.attributes.position.array.set(m.userData.g0); m.geometry.attributes.position.needsUpdate = true; m.geometry.computeVertexNormals(); }
   $('sonuc').hidden = true; $('baslik').classList.remove('on'); $('uyari').hidden = true; $('isaret').hidden = true;
 }
@@ -912,8 +917,7 @@ function gorsel(dTau, dG, dtR, k) {
     const px = ucakX(s.tau); ucakG.position.set(px, UCAK_H, 0);
     ucak.karsilasma = RW.y < UCAK_H ? (UCAK_H - RW.y) / Math.max(s.vy, 1) : 0;
     if (!ucak.gecti && !ucak.carpti && RW.y > UCAK_H + 60) { ucak.gecti = true; olay('Uçak geride kaldı'); }
-    if (dG > 0 && ucakG.visible) { if (Math.random() < 0.7) for (const z of [-5.8, 5.8]) pamuk.emit(new THREE.Vector3(px + 3 + Math.random() * 2, UCAK_H - 2.8, z), new THREE.Vector3(0, 0, (Math.random() - 0.5) * 0.6), 6, 1.6 + Math.random() * 1.2);
-      if (ucak.duman) { kara.emit(new THREE.Vector3(px + 1, UCAK_H - 1, 15), new THREE.Vector3(UCAK_V * 0.2, 1, 0), 3, 6 + Math.random() * 3); ates.emit(new THREE.Vector3(px, UCAK_H - 1, 15.5), new THREE.Vector3(30, 0, 0), 0.4, 3); } }
+    if (dG > 0 && ucakG.visible && !ucak.parcalandi && Math.random() < 0.7) for (const z of [-5.8, 5.8]) pamuk.emit(new THREE.Vector3(px + 3 + Math.random() * 2, UCAK_H - 2.8, z), new THREE.Vector3(0, 0, (Math.random() - 0.5) * 0.6), 6, 1.6 + Math.random() * 1.2);
   }
   isaretGuncelle();
 
@@ -921,6 +925,7 @@ function gorsel(dTau, dG, dtR, k) {
   if (ayrik.aktif) { kademe1.position.set(ayrik.x, ayrik.h + H0, 0); kademe1.rotation.set(0, 0, -ayrik.th); kademe1.visible = Math.hypot(ayrik.x - x, ayrik.h - h) < 900; }
   for (const kp of kopanlar) { if (dTau <= 0) continue; kp.v.y -= 9.81 * dTau; kp.v.multiplyScalar(Math.exp(-kp.surt * rho(kp.m.position.y) / 1.225 * dTau));
     kp.m.position.addScaledVector(kp.v, dTau); kp.m.rotation.x += kp.w.x * dTau; kp.m.rotation.y += kp.w.y * dTau; kp.m.rotation.z += kp.w.z * dTau;
+    if (kp.patlarZ > 0) { kp.patlarZ -= dTau; if (kp.patlarZ <= 0) { const p = kp.m.getWorldPosition(new THREE.Vector3()); world.worldToLocal(p); ikincilPatlama(p, kp.v); } }
     if (kp.yanar > 0) { kp.yanar -= dTau; const p = kp.m.getWorldPosition(tmp2); world.worldToLocal(p);
       ates.emit(p, kp.v.clone().multiplyScalar(0.6), 0.5 + Math.random() * 0.4, 2.5 + Math.random() * 2); if (Math.random() < 0.7) kara.emit(p, kp.v.clone().multiplyScalar(0.4), 2.5 + Math.random() * 2, 4 + Math.random() * 3); } }
   // şok dalgası ve ışık parlaması
@@ -1017,11 +1022,52 @@ function kusCarpisma(kus, yak, ax) {
     olay('Kuş çarpması · gövde ' + Math.max(0, Math.round(SIM.hp)) + '%', true, 2.2); ses('kus');
     if (navigator.vibrate) try { navigator.vibrate([40, 30, 25 * ABARTI]); } catch (e) {} }
 }
-// uçak çarpması: roket parçalanır; uçağın kanat ucu kopar, uçak dumanla uçmaya devam eder
+// uçak çarpması: 1.500 km/sa'lik roket ile 830 km/sa'lik uçağın çarpışmasında ikisi de parçalanır (patlamaEtkisi uçağı da parçalar)
 function ucakCarpisma(cx, cy) {
-  if (ucakUc && ucakUc.parent !== world) { ucakG.updateMatrixWorld(true); kopar(ucakUc, new THREE.Vector3(-UCAK_V * 0.8, -15, 25), new THREE.Vector3(2, 4, 6), 0.4, 2.5); }
-  ucak.duman = true;
-  patlama('Yolcu uçağına çarptın', 'Uçak kanat ucunu kaybetti ama uçmaya devam ediyor. Uyarıyı görünce erkenden yana yatır: birkaç derece yeter.', new THREE.Vector3(cx, cy, 0));
+  patlama('Yolcu uçağına çarptın', 'Roket de uçak da parçalandı. Uyarıyı görünce erkenden yana yatır: birkaç derece yeter.', new THREE.Vector3(cx, cy, 0));
+}
+// uçağın parçalanması: gövde çarpma noktasından ikiye ayrılır; kanatlar (yakıt tankları) motorlarıyla kopar ve kısa süre sonra tutuşur.
+// Her parça uçağın hızını (230 m/s) korur, patlamanın itkisini alır, takla atar; hava direnci ve yerçekimiyle yanarak düşer.
+function ucakParcala(c) {
+  if (!ucakKok || ucak.parcalandi) return; ucak.parcalandi = true; ucak.carpti = true;
+  ucakG.updateMatrixWorld(true);
+  const hx = THREE.MathUtils.clamp(c.x - ucakG.position.x, -10, 14);   // çarpma noktası, uçak gövdesi boyunca
+  const merkez = (o) => { o.geometry.computeBoundingBox(); const p = o.geometry.boundingBox.getCenter(new THREE.Vector3()); o.localToWorld(p); return ucakKok.worldToLocal(p); };
+  const gruplar = { on: [], arka: [], sol: [], sag: [] };
+  for (const r of ucakKayit) { const o = r.m; if (o.parent.isMesh) continue;   // alt parçalar ebeveynleriyle gider
+    const m = merkez(o);
+    if (o.name === 'Ucak_Govde') {   // gövdeyi çarpma noktasından kes
+      const mat = new THREE.Matrix4().compose(o.position, o.quaternion, o.scale);
+      for (const [ad, on] of [['on', true], ['arka', false]]) { const y = new THREE.Mesh(secGeo(o.geometry, p => (p.x < hx) === on, mat), o.material);
+        y.position.copy(o.position); y.quaternion.copy(o.quaternion); y.castShadow = true; ucakKok.add(y); ucakGecici.push(y); gruplar[ad].push(y); }
+      o.visible = false; continue; }
+    if (/Kanat|Motor|Isik/.test(o.name)) gruplar[m.z < 0 ? 'sol' : 'sag'].push(o);
+    else gruplar[m.x < hx ? 'on' : 'arka'].push(o);
+  }
+  for (const [ad, liste] of Object.entries(gruplar)) { if (!liste.length) continue;
+    const g = new THREE.Group(), mrk = new THREE.Vector3(); for (const o of liste) mrk.add(merkez(o)); mrk.divideScalar(liste.length);
+    g.position.copy(mrk); ucakKok.add(g); g.updateMatrixWorld(true); ucakGecici.push(g); for (const o of liste) g.attach(o);
+    const gp = g.getWorldPosition(new THREE.Vector3()); world.worldToLocal(gp);
+    const d = gp.clone().sub(c), uz = d.length(); d.normalize();
+    const v = new THREE.Vector3(-UCAK_V, 0, 0).addScaledVector(d, 45 / (1 + uz / 15) + 8 * Math.random()).addScaledVector(roketV, 0.25 / (1 + uz / 10));
+    const kanat = ad === 'sol' || ad === 'sag';
+    kopar(g, v, new THREE.Vector3(Math.random() - 0.5, Math.random() - 0.5, Math.random() - 0.5).multiplyScalar(kanat ? 2.2 : 1.2), 0.8, kanat ? 12 : (uz < 20 ? 8 : 3), kanat ? 0.25 + Math.random() * 0.35 : -1);
+  }
+}
+// ikincil patlama: kanat yakıt tankı tutuşur (parçanın hızıyla birlikte giden ateş topu)
+function ikincilPatlama(p, v) {
+  for (let i = 0; i < 90; i++) { const d = new THREE.Vector3().randomDirection(); ates.emit(p.clone().addScaledVector(d, Math.random() * 5), v.clone().multiplyScalar(0.9).addScaledVector(d, 6 + Math.random() * 22), 0.8 + Math.random() * 1.2, 7 + Math.random() * 11); }
+  for (let i = 0; i < 40; i++) { const d = new THREE.Vector3().randomDirection(); kara.emit(p.clone().addScaledVector(d, Math.random() * 6), v.clone().multiplyScalar(0.85).addScaledVector(d, 3 + Math.random() * 8), 3 + Math.random() * 3, 12 + Math.random() * 14); }
+  flas = Math.max(flas, 0.5); sicak.titre += 1.5;
+  if (oynuyor) ses('ikincil');
+}
+// patlamanın çevreye etkisi: basınç dalgası yakındaki kuşları savurur, uçak yakındaysa onu da parçalar
+function patlamaEtkisi(c) {
+  for (const k of kuslar) { if (k.olu) continue; const d = k.p.distanceTo(c); if (d > 90) continue;
+    const yon = k.p.clone().sub(c).normalize(); k.savrul = true; k.v.addScaledVector(yon, 70 * (1 - d / 90) + 5);
+    k.eks = new THREE.Vector3().randomDirection(); k.wh = 10 + 25 * (1 - d / 90);
+    for (let i = 0; i < 4; i++) pamuk.emit(k.p.clone(), k.v.clone().multiplyScalar(0.5).add(new THREE.Vector3().randomDirection().multiplyScalar(10)), 1.4, 0.6); }
+  if (ucak.var && !ucak.parcalandi && ucakG.visible) { const up = ucakG.position; if (Math.hypot(up.x - c.x, up.y - c.y) < 150) ucakParcala(c); }
 }
 // patlama: göz kamaştıran parlama, şok dalgası, yakıtın tutuşmasıyla büyüyen ateş topu, kara is bulutu; parçalar yanarak saçılır
 function patlama(baslik, mesaj, merkez) {
@@ -1042,6 +1088,7 @@ function patlama(baslik, mesaj, merkez) {
     const d = new THREE.Vector3().randomDirection(), buyuk = p.m.geometry.boundingSphere?.radius > 3 || /Kademe|AraKademe|Kaporta|Burun/.test(p.m.name);
     kopar(p.m, roketV.clone().multiplyScalar(0.92).addScaledVector(d, (buyuk ? 6 : 14) + Math.random() * (buyuk ? 14 : 40)), new THREE.Vector3().randomDirection().multiplyScalar(buyuk ? 0.6 + Math.random() : 2 + Math.random() * 6), buyuk ? 2.5 : 5, buyuk ? 1.5 + Math.random() * 2 : (Math.random() < 0.3 ? 1 : 0)); }
   for (const a of alevler) a.visible = false;
+  patlamaEtkisi(c);
   sokD.t = 0; sokD.p.copy(c); flas = 1;
   sicak.titre = 4; fovVur = 0.12; donma = 0.1; yavasla(2.5, 0.3); kam.patlamaZ = 1;
   sonucBilgi = { ey: 'Uçuş sona erdi', baslik, mesaj }; sonucZ = 3.5;
