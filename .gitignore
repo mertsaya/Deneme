@@ -1,4 +1,5 @@
 __pycache__/
+.parallax/
 erdos366/search
 erdos366/sieve
 erdos366/sieve_dbg
