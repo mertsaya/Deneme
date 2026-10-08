@@ -161,3 +161,19 @@ Bulgu bulgu durum: `MANTIK_RAPOR.md`; yeniden üretim: `test/mantik_test.py` (10
   - `durum()` içinde `rampa_faz` ve `aci` alanları var; `t` rampada açı + güç fazı süresi.
 - **Eşlik (200 tohum, `aci='bot'`, orta ve iyi):** süre, mesafe, en yüksek hız, kazanç ve açı ortalaması geçti (fark %0,3–4,1).
 - **Tur süresine etkisi:** insan için +1–3 s (açı fazı).
+
+## Kalkış boş bölgesi (kullanıcı: "fırlatılır fırlatılmaz engellere çarpıyor"; ölçüm `oyun/sim/RAPOR.md` §9)
+
+- **Kurallar** (sim ve oyunda birebir; rastgele çekim sırası aynı):
+  - Kalkıştan sonra x < 90 bölgesinde rokete değebilecek hiçbir nesne doğmuyor (`baslangic_bos_x`), yakıt dronu dahil. "İlk ekran temiz": nesneler o bölgede hiç görünmüyor.
+  - Açılış zeplini bölgenin hemen ötesinde, rota üstünde. İlk sekme hic botunda ~1,8 s.
+  - Tur 1–3'te x < 400'de martı ve uçurtma yok (`yavaslatici_ac_x`, `yavaslatici_tur`).
+- **Bölge neden 90:** önerilen 150–200 K1'i bozuyor. Hic botunun 3 s'lik otomatik rampası yüzünden ilk sekme 2 s içinde olmalı; 100'de hic botunda vay ≤ 5 s oranı %1, 150 ve üstünde %0.
+- **Hız ölçütü (`baslangic_bos_v`) yok:** roket kalkıştan sonra hızlanmıyor, ölçüt tanımsız.
+- **Test:** `test/bos_bolge_test.py`. 5 bot × 100 tohum × (tur 1, tur 1 açılı, tur 3) koşuldu; x < 90'da çarpışma 0, x < 400'de yavaşlatıcı teması 0. 15/15 geçti.
+- **Test kancası:** `sonuc` artık `ilk_temas_x` ve `erken_yv` alanlarını da veriyor (yalnız JS).
+- **Eşlik:**
+  - 200 tohumda 36/37 geçti. Kalan tek ölçü orta botun mükemmel sekme sayısı: JS 0,69, sim 0,82.
+  - 800 tohumda ikisi aynı çıktı (0,72 / 0,74; tohum 200–800 arası 0,73 / 0,71). Yani ilk 200 tohumda sim tarafında örneklem sapması; port farkı değil.
+- **Menü arkası çizim:** kara kutu ve hangarda sahne artık bir kez çiziliyor (pil ve menü tepkisi için; boyut değişince yeniden çiziliyor).
+- **K7 notu:** oyun içinde TEKRAR UÇ'tan RAMPA'ya geçiş 1,7 ms. Playwright ölçümü 0,26–0,68 s arasında oynuyor. Sebep makinedeki yük: başka bir ajanın Blender süreci %300 CPU kullanıyordu, yük ortalaması 5, 4 çekirdek. Yük düşükken önceki koşularda 0,24–0,48 s ölçülmüştü.

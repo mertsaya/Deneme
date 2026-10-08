@@ -1,8 +1,8 @@
 {
  "sonuc": {
   "K7": {
-   "durum": "GECTI",
-   "ayrinti": "TEKRAR UC -> RAMPA 0.26s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~1.68s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+   "durum": "KALDI",
+   "ayrinti": "TEKRAR UC -> RAMPA 0.58s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~2.01s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
   }
  },
  "konsol_hata": []

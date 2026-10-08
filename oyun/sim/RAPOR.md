@@ -150,3 +150,20 @@ Kalkışta iki dokunuş var: önce açı (26°–52°), sonra güç/zamanlama. `
 | usta | 770 → 822 | — |
 
   Beceri farkı biraz açılıyor.
+
+## 9. Kalkış boş bölgesi (kullanıcı kararı, 2026-10-08: "roket fırlatılır fırlatılmaz engellere çarpıyor")
+
+- **`baslangic_bos_x` = 90:** rokete değebileceği en küçük x'i (x − r − r_roket) 90'dan küçük olan hiçbir nesne doğmaz. Yakıt dronu da aynı kurala uyar. Aday çekildikten sonra reddedildiği için rastgele çekim sırası aynı kalır.
+- **Açılış zeplini** boş bölgenin hemen ötesine, rota üstüne konur. Bu bölgede tek temas odur; ilk sekme hic botunda ~1,8 s, öbür botlarda ~1,5 s.
+- **Yavaşlatıcısız başlangıç:** `yavaslatici_tur` = 3 ve `yavaslatici_ac_x` = 400. Tur 1–3'te x < 400'de martı ve uçurtma (ip dahil) doğmaz.
+- **Neden 150–200 değil:** K1 (tur 1'de hic botunun ≥ %90'ı vay ≤ 5 s) hic botunun 3 s'lik otomatik rampası yüzünden ilk sekmenin ≤ 2 s'de olmasını gerektiriyor. 200 tohumda ölçüm:
+
+| Boş bölge | hic vay ≤ 5 s | Not |
+|---|---|---|
+| 90 | %100 | seçildi |
+| 100 | %1 | ilk sekme 2,01 s |
+| 150 / 200 | %0 | zeplin rotanın üstünde kalıyor |
+
+  Bölge yaklaşık ilk ekran genişliği (W = 150, roket sol üçte birde).
+- **Hız ölçütü (`baslangic_bos_v`) uygulanmadı:** fizikte roket kalkıştan sonra hızlanmıyor (en yüksek hız kalkışta), bu yüzden "kalkış hızının %90'ını geçene kadar" ölçütü tanımsız.
+- **Etki** (tur 1, 200 tohum): hic mesafe 494 → 504, kazanç 88; iyi 773 → 786, kazanç 119 → 118; süreler aynı. Kampanyada (40 tohum, 25 tur) iyi botta ses duvarı medyanı tur 3, hic tur 6. Kampanya kazancı gürültülü (hic t15 362 → 277, iyi t5 387 → 518), ekonomi düzeltmesi yapılmadı.

@@ -10,3 +10,4 @@ roket.png	768x260	64	28.0
 roket_kademe_1.png	512x310	64	24.9
 roket_kademe_2.png	512x200	64	17.5
 pilot_notr.png	512x602	64	70.5
+pilot_heyecan.png	512x602	64	67.4
