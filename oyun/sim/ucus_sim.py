@@ -81,6 +81,7 @@ AYAR = dict(
     # ekonomi
     kombo_sure=3.0, kombo_sure_sv=0.5, kombo_adim=0.05, kombo_tavan=2.0, kombo_tavan_sv=0.33,
     carpan_tavan=4.0,          # tüm çarpanların çarpımı en çok ×4
+    bant_carpan=((1000.0, 1.8), (3500.0, 3.0)),   # S3: irtifa bandı çarpanı (y ≥ eşik → ×), nesne ve km ödülüne; carpan_tavan dışında
     izlenme_sv=0.10,
     odul_kat=0.10,             # izlenme → jeton çevrimi (KULLANICI KARARI bekliyor; değiştirme)
     nesne_prim=2.4,            # nesne ödülüne sponsor primi (çevrimden bağımsız; kaldırılan saniye ödemesinin yerine)
@@ -263,6 +264,14 @@ class Ucus:
     def k_etkin(s, k):
         return min(s.A['k_tavan'], k + s.A['k_sv'] * s.sv.get('verim', 0))
 
+    def bant(s):
+        """S3: irtifa bandı ödül çarpanı (y < 1.000 ×1; üst atmosfer ×1,8; uzay ×3)."""
+        k = 1.0
+        for y0, c in s.A['bant_carpan']:
+            if s.y >= y0:
+                k = c
+        return k
+
     def odul(s, miktar, kombo=True):
         A = s.A
         if kombo:
@@ -272,7 +281,7 @@ class Ucus:
         tavan = A['kombo_tavan'] + A['kombo_tavan_sv'] * s.sv.get('kombo_t', 0)
         kc = min(tavan, 1 + A['kombo_adim'] * s.kombo_n)
         carp = min(A['carpan_tavan'], kc * (1 + A['izlenme_sv'] * s.sv.get('izlenme', 0)))
-        s.st['kazanc'] += miktar * carp * A['odul_kat'] * A['nesne_prim']
+        s.st['kazanc'] += miktar * carp * A['odul_kat'] * A['nesne_prim'] * s.bant()
 
     def gosterge_ekle(s, m):
         cap = s.A['dalis_kap'] + s.sv.get('kapasite', 0)
@@ -756,6 +765,7 @@ class Ucus:
         s.ip_kontrol(x_on)
         v = math.hypot(s.vx, s.vy)
         st = s.st
+        st['km_bant'] = st.get('km_bant', 0.0) + (s.x - x_on) * s.bant()   # S3: km ödülü bulunduğu banttan
         if v > 1e-6:   # göstergedeki mesafe: gösterge hızının yatay bileşeninin tümlevi (km)
             st['mesafe_g'] += hiz_gosterge(v) * (s.vx / v) * dt / 1000
         if v > st['max_v']:
@@ -818,7 +828,7 @@ class Ucus:
         st['son_y'], st['son_v'] = s.y, math.hypot(s.vx, s.vy)
         st['duvar'] = sorted(s.duvar)
         st['kazanc_nesne'] = st['kazanc']
-        st['kazanc'] += s.x / 1000 * s.A['km_odul'] + s.A['taban_odul'] + s.A['sure_odul'] * s.t
+        st['kazanc'] += st.get('km_bant', s.x) / 1000 * s.A['km_odul'] + s.A['taban_odul'] + s.A['sure_odul'] * s.t
         st['temas_s'] = st['temas'] / max(1e-6, s.t)
         st['kademe_kalan'] = s.kademe
         st['rakip_hasar'] = s.rakip_hasar
