@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ses Seçici</title>
+<style>
+:root {
+  --zemin: #f4f1ea; --kart: #ffffff; --yazi: #1d1b18; --soluk: #6b665d; --cizgi: #ddd6c8;
+  --vurgu: #ff6b2c; --vurgu-yazi: #ffffff; --iyi: #1e8449; --kotu: #b03a2e; --secili: #fff1e8; --dugme: #efe9dd;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --zemin: #16151a; --kart: #222128; --yazi: #f1eee8; --soluk: #a49e93; --cizgi: #3a3842;
+    --vurgu: #ff7a3d; --vurgu-yazi: #16151a; --iyi: #4cc27a; --kotu: #ec7063; --secili: #3a2a20; --dugme: #2e2c35;
+  }
+}
+:root[data-theme="dark"] {
+  --zemin: #16151a; --kart: #222128; --yazi: #f1eee8; --soluk: #a49e93; --cizgi: #3a3842;
+  --vurgu: #ff7a3d; --vurgu-yazi: #16151a; --iyi: #4cc27a; --kotu: #ec7063; --secili: #3a2a20; --dugme: #2e2c35;
+}
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body { margin: 0; background: var(--zemin); color: var(--yazi); font: 16px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 640px; margin: 0 auto; padding: 12px 16px 120px; }
+h1 { font-size: 1.45rem; margin: 8px 0 4px; }
+h2 { font-size: 1.15rem; margin: 0; }
+p.alt { color: var(--soluk); margin: 0 0 12px; font-size: .92rem; }
+button, select, input, textarea { font: inherit; color: inherit; }
+button { min-height: 48px; border: 0; border-radius: 14px; background: var(--dugme); padding: 0 16px; cursor: pointer; touch-action: manipulation; }
+button:active { transform: scale(.97); }
+button.ana { background: var(--vurgu); color: var(--vurgu-yazi); font-weight: 700; }
+.bant { position: sticky; top: 0; z-index: 5; background: var(--vurgu); color: var(--vurgu-yazi); text-align: center; padding: 12px; font-weight: 700; border-radius: 0 0 14px 14px; }
+.bant[hidden] { display: none; }
+.durum { font-size: .85rem; color: var(--soluk); margin: 6px 0 12px; }
+nav.sekme { display: flex; gap: 8px; position: sticky; top: 0; z-index: 4; background: var(--zemin); padding: 8px 0; }
+nav.sekme button { flex: 1; }
+nav.sekme button[aria-pressed="true"] { background: var(--yazi); color: var(--zemin); }
+.kat { background: var(--kart); border: 1px solid var(--cizgi); border-radius: 18px; padding: 14px; margin: 14px 0; }
+.kat-bas { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+.kat-bas .say { font-size: .8rem; color: var(--soluk); }
+.kat .sec-ozet { font-size: .85rem; margin-top: 4px; color: var(--soluk); }
+.kat .sec-ozet b { color: var(--yazi); }
+.aday { border-top: 1px solid var(--cizgi); padding: 12px 0 10px; }
+.aday.secili { background: var(--secili); margin: 0 -14px; padding-left: 14px; padding-right: 14px; }
+.aday-ust { display: flex; gap: 10px; align-items: flex-start; }
+.oynat { flex: 0 0 64px; height: 64px; border-radius: 50%; font-size: 1.5rem; background: var(--vurgu); color: var(--vurgu-yazi); padding: 0; }
+.oynat.calar { background: var(--yazi); color: var(--zemin); }
+.aday-bilgi { flex: 1; min-width: 0; }
+.aday-ad { font-weight: 700; }
+.rozet { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 4px; vertical-align: 2px; }
+.rozet.oneri { background: var(--iyi); color: #fff; }
+.rozet.elendi { background: var(--kotu); color: #fff; }
+.aciklama { font-size: .88rem; color: var(--soluk); }
+.olcu { font-size: .75rem; color: var(--soluk); margin-top: 2px; }
+.neden { font-size: .8rem; color: var(--kotu); }
+.aday-alt { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; align-items: center; }
+.aday-alt .sec { flex: 1 1 140px; }
+.aday-alt .sec[aria-pressed="true"] { background: var(--iyi); color: #fff; font-weight: 700; }
+.puan { display: flex; gap: 4px; }
+.puan button { width: 44px; min-height: 44px; padding: 0; border-radius: 12px; font-weight: 700; }
+.puan button[aria-pressed="true"] { background: var(--vurgu); color: var(--vurgu-yazi); }
+.ek { flex: 1 1 100%; display: flex; gap: 6px; }
+.ek button { flex: 1; min-height: 44px; font-size: .88rem; }
+.ek button[aria-pressed="true"] { background: var(--yazi); color: var(--zemin); }
+textarea { width: 100%; min-height: 64px; border-radius: 12px; border: 1px solid var(--cizgi); background: var(--zemin); padding: 10px; margin-top: 10px; }
+details.elenen { margin-top: 8px; }
+details.elenen summary { cursor: pointer; padding: 10px 0; color: var(--soluk); font-size: .9rem; min-height: 44px; }
+.kat-dug { display: flex; gap: 8px; margin-top: 10px; }
+.kat-dug button { flex: 1; }
+.sonuc { position: fixed; left: 0; right: 0; bottom: 0; z-index: 6; background: var(--kart); border-top: 1px solid var(--cizgi); padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); }
+.sonuc .ic { max-width: 640px; margin: 0 auto; display: flex; gap: 8px; align-items: center; }
+.sonuc .ic span { flex: 1; font-size: .85rem; color: var(--soluk); }
+#jsonKutu { width: 100%; min-height: 160px; font: 12px/1.3 ui-monospace, Menlo, monospace; }
+/* simulasyon */
+.sim { background: var(--kart); border: 1px solid var(--cizgi); border-radius: 18px; padding: 14px; margin: 14px 0; }
+.hiz-ust { display: flex; justify-content: space-between; align-items: baseline; }
+.hiz-sayi { font-size: 2.2rem; font-weight: 800; font-variant-numeric: tabular-nums; }
+input[type=range] { width: 100%; height: 48px; accent-color: var(--vurgu); }
+.izgara { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-top: 10px; }
+.izgara button { min-height: 56px; }
+.satir { display: flex; gap: 8px; align-items: center; margin-top: 8px; }
+.satir label { flex: 0 0 110px; font-size: .88rem; color: var(--soluk); }
+.kullanilan { font-size: .8rem; color: var(--soluk); margin-top: 10px; }
+.olaylar { font-size: .85rem; min-height: 1.4em; margin-top: 8px; font-weight: 700; color: var(--vurgu); }
+.katman-gost { display: flex; gap: 6px; margin-top: 6px; }
+.katman-gost span { flex: 1; text-align: center; font-size: .75rem; padding: 6px 0; border-radius: 10px; background: var(--dugme); color: var(--soluk); transition: background .2s; }
+.katman-gost span.acik { background: var(--iyi); color: #fff; }
+</style>
+</head>
+<body>
+<div class="bant" id="bant">Sesi açmak için bir kez dokun</div>
+<main>
+  <h1>Son Durak: Plüton · Ses Seçici</h1>
+  <p class="alt">Her ses için adayları dinle, birini <b>seç</b>, 1–5 puan ver, istersen not yaz. Seçimler bu telefonda saklanır. Bitince alttaki <b>Sonucu kopyala</b> düğmesiyle gönder.</p>
+  <p class="durum" id="durum">Yükleniyor…</p>
+  <nav class="sekme">
+    <button id="sekmeListe" aria-pressed="true">Sesler</button>
+    <button id="sekmeSim" aria-pressed="false">Oyun simülasyonu</button>
+  </nav>
+  <section id="liste"></section>
+  <section id="simBolum" hidden>
+    <div class="sim">
+      <h2>Oyun simülasyonu</h2>
+      <p class="alt">Seçtiğin (seçmediysen ölçüm önerisi olan) seslerle çalışır. Hız kaydırıcısıyla motor ve müzik değişir; düğmeler oyundaki olayları çalar.</p>
+      <div class="satir"><button class="ana" id="simBasla" style="flex:1">▶ Motoru ve müziği başlat</button></div>
+      <div class="hiz-ust" style="margin-top:12px"><span>Hız (iç hız)</span><span class="hiz-sayi" id="hizSayi">0</span></div>
+      <input type="range" id="hiz" min="0" max="300" step="1" value="40" aria-label="Hız">
+      <div class="katman-gost" aria-label="Müzik katmanları"><span id="kg1" class="acik">Temel</span><span id="kg2">Orta katman</span><span id="kg3">Ezgi katmanı</span></div>
+      <div class="olaylar" id="olay" aria-live="polite"></div>
+      <div class="izgara">
+        <button data-olay="tutusma">Rampa tutuşma</button>
+        <button data-olay="trambolin">Trambolin (kombo)</button>
+        <button data-olay="marti">Martı çarpma</button>
+        <button data-olay="balon">Balon patlama</button>
+        <button data-olay="dalis">Dalış</button>
+        <button data-olay="mukemmel">Mükemmel sekme</button>
+        <button data-olay="kademe">Kademe ayrılma</button>
+        <button data-olay="sesduvari">Ses duvarı</button>
+        <button data-olay="jeton">Jeton (zincir)</button>
+        <button data-olay="sonsans">Son şans</button>
+        <button data-olay="satin">Kart satın al</button>
+        <button data-olay="tik">Arayüz tık</button>
+      </div>
+      <div class="satir"><button class="ana" id="ornekTur" style="flex:1">▶ Örnek tur (25 sn sıralı)</button></div>
+      <div class="satir"><label for="sesEfekt">Efekt sesi</label><input type="range" id="sesEfekt" min="0" max="100" value="80"></div>
+      <div class="satir"><label for="sesMuzik">Müzik sesi</label><input type="range" id="sesMuzik" min="0" max="100" value="60"></div>
+      <div class="satir"><label for="sesMotor">Motor sesi</label><input type="range" id="sesMotor" min="0" max="100" value="70"></div>
+      <div class="kullanilan" id="kullanilan"></div>
+    </div>
+  </section>
+  <section>
+    <details>
+      <summary style="padding:12px 0;cursor:pointer">Sonuç JSON'unu göster</summary>
+      <textarea id="jsonKutu" readonly></textarea>
+      <div class="satir"><button id="sifirla" style="flex:1">Tüm seçimleri sil</button></div>
+    </details>
+  </section>
+</main>
+<div class="sonuc"><div class="ic"><span id="ozet">0 seçim</span><button class="ana" id="kopyala">Sonucu kopyala</button></div></div>
+
+<script src="adaylar/liste.js"></script>
+<script>
+'use strict';
+const L = window.SES_LISTE;
+const KAT = Object.fromEntries(L.kategori.map(k => [k.id, k]));
+const ADAY = Object.fromEntries(L.adaylar.map(a => [a.id, a]));
+const ANAHTAR = 'sdp_ses_secim_v1';
+const $ = (id) => document.getElementById(id);
+
+// ------------------------------------------------------------ kayit (localStorage)
+let kayit = {};
+try { kayit = JSON.parse(localStorage.getItem(ANAHTAR) || '{}') || {}; } catch (e) { kayit = {}; }
+const katKayit = (k) => (kayit[k] = kayit[k] || { secim: null, puan: {}, not: '' });
+function sakla() {
+  kayit._zaman = new Date().toISOString();
+  try { localStorage.setItem(ANAHTAR, JSON.stringify(kayit)); } catch (e) { /* gizli pencere: yalniz bellekte */ }
+  ozetGuncelle();
+}
+function sonucJSON() {
+  const out = { surum: 1, zaman: new Date().toISOString(), secimler: {} };
+  for (const k of L.kategori) {
+    const r = kayit[k.id] || {};
+    const oneri = L.adaylar.find(a => a.kat === k.id && a.oneri);
+    out.secimler[k.id] = { secim: r.secim || null, puan: r.puan || {}, not: r.not || '', olcum_onerisi: oneri ? oneri.id : null };
+  }
+  return JSON.stringify(out, null, 1);
+}
+function ozetGuncelle() {
+  const n = L.kategori.filter(k => kayit[k.id] && kayit[k.id].secim).length;
+  $('ozet').textContent = `${n} / ${L.kategori.length} ses seçildi`;
+  $('jsonKutu').value = sonucJSON();
+}
+
+// ------------------------------------------------------------ ses motoru
+const AC = new (window.AudioContext || window.webkitAudioContext)();
+try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iOS: sessiz anahtarda da cal
+const ana = AC.createGain(); ana.connect(AC.destination);
+const sinir = AC.createDynamicsCompressor();   // ust uste binen seslerde kirpilmayi onler
+sinir.threshold.value = -6; sinir.knee.value = 6; sinir.ratio.value = 8; sinir.attack.value = 0.003; sinir.release.value = 0.15;
+sinir.connect(ana);
+const efektBus = AC.createGain(); efektBus.connect(sinir);
+const muzikBus = AC.createGain(); muzikBus.connect(sinir);
+const motorBus = AC.createGain(); motorBus.connect(sinir);
+const onizlemeBus = AC.createGain(); onizlemeBus.connect(sinir);
+const tampon = {};          // dosya adi -> AudioBuffer
+const yukleniyor = {};
+
+let gomuluSoz = null;
+function gomuluYukle() {
+  if (!gomuluSoz) gomuluSoz = new Promise((ok, hata) => {
+    const s = document.createElement('script'); s.src = 'adaylar/gomulu.js'; s.onload = ok; s.onerror = hata; document.head.appendChild(s);
+  });
+  return gomuluSoz;
+}
+async function hamVeri(dosya) {
+  if (location.protocol === 'file:') {
+    await gomuluYukle();
+    const b = atob(window.SES_GOMULU[dosya]); const u = new Uint8Array(b.length);
+    for (let i = 0; i < b.length; i++) u[i] = b.charCodeAt(i);
+    return u.buffer;
+  }
+  const r = await fetch('adaylar/' + dosya); if (!r.ok) throw new Error(dosya + ' ' + r.status);
+  return r.arrayBuffer();
+}
+function coz(veri) { return new Promise((ok, hata) => AC.decodeAudioData(veri, ok, hata)); }
+function yukle(dosya) {
+  if (tampon[dosya]) return Promise.resolve(tampon[dosya]);
+  if (!yukleniyor[dosya]) yukleniyor[dosya] = hamVeri(dosya).then(coz).then(b => { tampon[dosya] = b; delete yukleniyor[dosya]; return b; });
+  return yukleniyor[dosya];
+}
+// Muzik katmanlari buyuk (stereo, ~25 s): bellekte en cok 2 muzik adayi tutulur (telefon bellegi)
+const muzikLRU = [];
+async function muzikYukle(a) {
+  const i = muzikLRU.indexOf(a.id); if (i >= 0) muzikLRU.splice(i, 1); muzikLRU.push(a.id);
+  while (muzikLRU.length > 2) { const eski = ADAY[muzikLRU.shift()]; if (eski.id !== simMuzikId()) for (const d of eski.dosyalar) delete tampon[d]; }
+  return Promise.all(a.dosyalar.map(yukle));
+}
+
+function cal(dosya, { hedef = efektBus, kazanc = 1, oran = 1, dongu = null, zaman = 0 } = {}) {
+  const b = tampon[dosya]; if (!b) return null;
+  const s = AC.createBufferSource(); s.buffer = b; s.playbackRate.value = oran;
+  const g = AC.createGain(); g.gain.value = kazanc; s.connect(g); g.connect(hedef);
+  const t = zaman || AC.currentTime;
+  if (dongu) { s.loop = true; s.loopStart = dongu[0]; s.loopEnd = dongu[1]; s.start(t, dongu[0]); }
+  else s.start(t);
+  return { s, g };
+}
+
+// ------------------------------------------------------------ onizleme (listedeki dinleme)
+let onizleme = [], onizlemeDug = null, sirali = null;
+function onizlemeDurdur() {
+  for (const o of onizleme) { try { o.s.stop(); } catch (e) {} }
+  onizleme = [];
+  if (onizlemeDug) { onizlemeDug.classList.remove('calar'); onizlemeDug.textContent = '▶'; onizlemeDug = null; }
+}
+async function onizle(a, dug, secenek = {}) {
+  const ayni = onizlemeDug === dug && !secenek.zorla;
+  onizlemeDurdur(); simDurdur();
+  if (ayni) return;
+  await AC.resume();
+  onizlemeDug = dug; dug.classList.add('calar'); dug.textContent = '■';
+  if (a.kat === 'muzik') {
+    dug.textContent = '…';
+    await muzikYukle(a);
+    if (onizlemeDug !== dug) return;
+    dug.textContent = '■';
+    const kat = secenek.katman ?? muzikKatman[a.id] ?? 3;
+    const t = AC.currentTime + 0.05;
+    a.dosyalar.forEach((d, i) => onizleme.push(cal(d, { hedef: onizlemeBus, kazanc: i < kat ? 1 : 0, dongu: a.dongu, zaman: t })));
+    return;
+  }
+  if (a.kat === 'motor_ucus' && secenek.dongu) { onizleme.push(cal(a.dosyalar[0], { hedef: onizlemeBus, dongu: a.dongu })); return; }
+  const d = a.demo || a.dosyalar[0];
+  await yukle(d);
+  const o = cal(d, { hedef: onizlemeBus }); onizleme.push(o);
+  o.s.onended = () => { if (onizlemeDug === dug && !sirali) onizlemeDurdur(); };
+  return new Promise(ok => { o.s.addEventListener('ended', ok); });
+}
+const muzikKatman = {};
+
+// ------------------------------------------------------------ liste arayuzu
+function olcuMetni(a) {
+  let s = `${a.lufs} LUFS · telefon kaybı ${a.tel} dB · ${a.sure} s`;
+  if (a.bpm) s = `${a.bpm} BPM · ` + s;
+  return s + ` · ${a.kaynak}`;
+}
+function adayEl(a) {
+  const r = katKayit(a.kat);
+  const el = document.createElement('div'); el.className = 'aday' + (r.secim === a.id ? ' secili' : ''); el.dataset.id = a.id;
+  el.innerHTML = `
+    <div class="aday-ust">
+      <button class="oynat" aria-label="${a.kod.toUpperCase()} dinle">▶</button>
+      <div class="aday-bilgi">
+        <div class="aday-ad">${a.kod.toUpperCase()}. ${a.ad}${a.oneri ? '<span class="rozet oneri">ölçüm önerisi</span>' : ''}${a.elendi ? '<span class="rozet elendi">elendi</span>' : ''}</div>
+        <div class="aciklama">${a.aciklama}</div>
+        <div class="olcu">${olcuMetni(a)}</div>
+        ${a.elendi ? `<div class="neden">Elenme nedeni: ${a.neden.join('; ')}</div>` : ''}
+      </div>
+    </div>
+    <div class="aday-alt">
+      <button class="sec" aria-pressed="${r.secim === a.id}">${r.secim === a.id ? '✓ Seçildi' : 'Bunu seç'}</button>
+      <div class="puan" role="group" aria-label="Puan">${[1, 2, 3, 4, 5].map(p => `<button data-p="${p}" aria-pressed="${r.puan[a.id] === p}">${p}</button>`).join('')}</div>
+      ${a.kat === 'muzik' ? `<div class="ek"><button data-k="1">Yavaş (1 katman)</button><button data-k="2">Hızlı (2)</button><button data-k="3" aria-pressed="true">Çok hızlı (3)</button></div>` : ''}
+      ${a.kat === 'motor_ucus' ? `<div class="ek"><button data-dongu="1">Sabit hızda döngü</button></div>` : ''}
+    </div>`;
+  const oyn = el.querySelector('.oynat');
+  oyn.addEventListener('click', () => onizle(a, oyn));
+  el.querySelector('.sec').addEventListener('click', () => {
+    r.secim = r.secim === a.id ? null : a.id; sakla(); katCiz(a.kat); simBilgi();
+  });
+  el.querySelectorAll('.puan button').forEach(b => b.addEventListener('click', () => {
+    const p = +b.dataset.p; r.puan[a.id] = r.puan[a.id] === p ? undefined : p; if (r.puan[a.id] === undefined) delete r.puan[a.id];
+    sakla(); el.querySelectorAll('.puan button').forEach(x => x.setAttribute('aria-pressed', r.puan[a.id] === +x.dataset.p));
+  }));
+  el.querySelectorAll('.ek button[data-k]').forEach(b => b.addEventListener('click', () => {
+    const k = +b.dataset.k; muzikKatman[a.id] = k;
+    el.querySelectorAll('.ek button[data-k]').forEach(x => x.setAttribute('aria-pressed', +x.dataset.k === k));
+    if (onizlemeDug === oyn && onizleme.length === 3) onizleme.forEach((o, i) => o.g.gain.setTargetAtTime(i < k ? 1 : 0, AC.currentTime, 0.15));
+    else onizle(a, oyn, { katman: k, zorla: true });
+  }));
+  const dd = el.querySelector('[data-dongu]');
+  if (dd) dd.addEventListener('click', () => onizle(a, oyn, { dongu: true, zorla: true }));
+  return el;
+}
+function katCiz(kid) {
+  const k = KAT[kid]; const r = katKayit(kid);
+  let kutu = document.getElementById('kat_' + kid);
+  const yeni = !kutu;
+  if (yeni) { kutu = document.createElement('div'); kutu.className = 'kat'; kutu.id = 'kat_' + kid; $('liste').appendChild(kutu); }
+  const hepsi = L.adaylar.filter(a => a.kat === kid);
+  const gecen = hepsi.filter(a => !a.elendi).sort((x, y) => (x.sira || 99) - (y.sira || 99));
+  const elenen = hepsi.filter(a => a.elendi);
+  const acikti = kutu.querySelector('details.elenen')?.open;
+  const secilen = r.secim ? ADAY[r.secim] : null;
+  kutu.innerHTML = `<div class="kat-bas"><h2>${k.ad}</h2><span class="say">${gecen.length} aday${elenen.length ? ' · ' + elenen.length + ' elendi' : ''}</span></div>
+    <div class="sec-ozet">${secilen ? `Seçimin: <b>${secilen.kod.toUpperCase()}. ${secilen.ad}</b>` : 'Henüz seçilmedi'}</div>`;
+  for (const a of gecen) kutu.appendChild(adayEl(a));
+  if (elenen.length) {
+    const d = document.createElement('details'); d.className = 'elenen'; d.open = !!acikti;
+    d.innerHTML = `<summary>Ölçümde elenenler (${elenen.length}) — yine de dinleyebilirsin</summary>`;
+    for (const a of elenen) d.appendChild(adayEl(a));
+    kutu.appendChild(d);
+  }
+  if (kid !== 'muzik' && kid !== 'motor_ucus') {
+    const kd = document.createElement('div'); kd.className = 'kat-dug';
+    kd.innerHTML = '<button>▶ Hepsini sırayla çal</button>';
+    kd.querySelector('button').addEventListener('click', async (ev) => {
+      if (sirali) { sirali = null; onizlemeDurdur(); return; }
+      const ben = sirali = {}; ev.target.textContent = '■ Durdur';
+      for (const a of gecen) {
+        if (sirali !== ben) break;
+        const dug = kutu.querySelector(`[data-id="${a.id}"] .oynat`);
+        await onizle(a, dug, { zorla: true }); onizlemeDurdur();
+        await new Promise(ok => setTimeout(ok, 450));
+      }
+      if (sirali === ben) sirali = null; ev.target.textContent = '▶ Hepsini sırayla çal';
+    });
+    kutu.appendChild(kd);
+  }
+  const not = document.createElement('textarea'); not.placeholder = 'Not (isteğe bağlı): ne beğendin, ne değişsin?'; not.value = r.not || '';
+  not.addEventListener('input', () => { r.not = not.value; sakla(); });
+  kutu.appendChild(not);
+}
+
+// ------------------------------------------------------------ simulasyon
+const secili = (kid) => { const r = kayit[kid]; if (r && r.secim && ADAY[r.secim]) return ADAY[r.secim]; return L.adaylar.find(a => a.kat === kid && a.oneri) || L.adaylar.find(a => a.kat === kid); };
+const simMuzikId = () => secili('muzik').id;
+let sim = null;           // { motor, muzik: [..] }
+let kombo = 0, komboZ = 0, jetonZ = 0, jetonZincir = 0, duvarKirildi = false, ornekZ = [];
+const hizOran = () => +$('hiz').value / 300;
+function simBilgi() {
+  const r = ['motor_tutusma', 'motor_ucus', 'sekme_trambolin', 'carpma_marti', 'carpma_balon', 'dalis', 'mukemmel', 'kademe_ayrilma', 'ses_duvari', 'jeton', 'son_sans', 'kart_satin', 'ui_tik', 'muzik']
+    .map(k => `${KAT[k].ad.split(' (')[0]}: ${secili(k).kod.toUpperCase()}`);
+  $('kullanilan').textContent = 'Kullanılan: ' + r.join(' · ');
+}
+function olayYaz(t) { $('olay').textContent = t; }
+async function simBasla() {
+  onizlemeDurdur(); await AC.resume();
+  if (sim) { simDurdur(); return; }
+  $('simBasla').textContent = '…';
+  const m = secili('motor_ucus'), mz = secili('muzik');
+  await Promise.all([yukle(m.dosyalar[0]), muzikYukle(mz)]);
+  const t = AC.currentTime + 0.05;
+  const motor = cal(m.dosyalar[0], { hedef: motorBus, dongu: m.dongu, zaman: t });
+  const lp = AC.createBiquadFilter(); lp.type = 'lowpass'; motor.g.disconnect(); motor.g.connect(lp); lp.connect(motorBus);
+  const muzik = mz.dosyalar.map(d => cal(d, { hedef: muzikBus, dongu: mz.dongu, zaman: t, kazanc: 0 }));
+  sim = { motor, lp, muzik };
+  hizUygula(true);
+  $('simBasla').textContent = '■ Durdur';
+}
+function simDurdur() {
+  if (!sim) return;
+  try { sim.motor.s.stop(); } catch (e) {}
+  for (const o of sim.muzik) try { o.s.stop(); } catch (e) {}
+  sim = null; $('simBasla').textContent = '▶ Motoru ve müziği başlat';
+  ornekZ.forEach(clearTimeout); ornekZ = [];
+}
+const yumu = (a, b, x) => { const t = Math.min(1, Math.max(0, (x - a) / (b - a))); return t * t * (3 - 2 * t); };
+function hizUygula(ani) {
+  const s = hizOran(), v = +$('hiz').value;
+  $('hizSayi').textContent = v < 115 ? `${v}` : `${v} · Mach ${(v / 115).toFixed(1).replace('.', ',')}`;
+  const k2 = yumu(0.25, 0.4, s), k3 = yumu(0.55, 0.7, s);
+  $('kg2').classList.toggle('acik', k2 > 0.5); $('kg3').classList.toggle('acik', k3 > 0.5);
+  if (!sim) return;
+  const t = AC.currentTime, tc = ani ? 0.01 : 0.08;
+  // motor: uret.py motor_demo ile ayni esleme
+  sim.motor.s.playbackRate.setTargetAtTime(0.7 + 0.9 * s, t, tc);
+  sim.lp.frequency.setTargetAtTime(1200 * Math.pow(2, 2.5 * s), t, tc);
+  sim.motor.g.gain.setTargetAtTime(0.55 + 0.45 * s, t, tc);
+  sim.muzik[0].g.gain.setTargetAtTime(1, t, 0.3);
+  sim.muzik[1].g.gain.setTargetAtTime(k2, t, 0.3);
+  sim.muzik[2].g.gain.setTargetAtTime(k3, t, 0.3);
+  if (v >= 115 && !duvarKirildi) { duvarKirildi = true; olay('sesduvari'); }
+  if (v < 100) duvarKirildi = false;
+}
+function sustur(sure) {   // buyuk anlarda muzik ve motor kisa sure kisilir
+  const t = AC.currentTime;
+  for (const b of [muzikBus, motorBus]) { b.gain.cancelScheduledValues(t); b.gain.setTargetAtTime(b._hedef * 0.25, t, 0.02); b.gain.setTargetAtTime(b._hedef, t + sure, 0.4); }
+}
+async function efekt(kid, { oran = 1, kazanc = 1 } = {}) {
+  const a = secili(kid); const d = a.dosyalar[0]; await yukle(d); await AC.resume();
+  const s = hizOran();
+  // carpma/sekme sesi hizla olceklenir: hizli iken daha yuksek ve hafif tiz
+  return cal(d, { kazanc: kazanc * (0.55 + 0.45 * s), oran: oran * (0.94 + 0.12 * s) });
+}
+function olay(ad) {
+  const yarimTon = (n) => Math.pow(2, n / 12);
+  const simdi = performance.now();
+  switch (ad) {
+    case 'tutusma': efekt('motor_tutusma', { kazanc: 1.2 }); olayYaz('Rampa: tutuşma!'); break;
+    case 'trambolin':
+      kombo = simdi - komboZ < 2500 ? Math.min(kombo + 1, 12) : 0; komboZ = simdi;
+      efekt('sekme_trambolin', { oran: yarimTon(kombo) }); olayYaz(kombo ? `Kombo ×${kombo + 1} (+${kombo} yarım ton)` : 'Boing!'); break;
+    case 'marti': efekt('carpma_marti'); olayYaz('Martı sürüsü dağıldı'); break;
+    case 'balon': efekt('carpma_balon'); olayYaz('Balon patladı'); break;
+    case 'dalis': efekt('dalis'); olayYaz('Dalış!'); break;
+    case 'mukemmel': efekt('mukemmel', { kazanc: 1.1 }); olayYaz('MÜKEMMEL!'); break;
+    case 'kademe': efekt('kademe_ayrilma'); olayYaz('Kademe ayrıldı'); break;
+    case 'sesduvari': sustur(1.4); efekt('ses_duvari', { kazanc: 1.0 / (0.55 + 0.45 * hizOran()) }); olayYaz('SES DUVARI!'); break;
+    case 'jeton':
+      jetonZincir = simdi - jetonZ < 900 ? Math.min(jetonZincir + 1, 7) : 0; jetonZ = simdi;
+      efekt('jeton', { oran: yarimTon([0, 2, 4, 5, 7, 9, 11, 12][jetonZincir]), kazanc: 1 / (0.55 + 0.45 * hizOran()) });
+      olayYaz(jetonZincir ? `Jeton zinciri ${jetonZincir + 1}` : '+jeton'); break;
+    case 'sonsans': sustur(1.2); efekt('son_sans', { kazanc: 1 / (0.55 + 0.45 * hizOran()) }); olayYaz('SON ŞANS!'); break;
+    case 'satin': efekt('kart_satin', { kazanc: 1 / (0.55 + 0.45 * hizOran()) }); olayYaz('Kart satın alındı'); break;
+    case 'tik': efekt('ui_tik', { kazanc: 1 / (0.55 + 0.45 * hizOran()) }); olayYaz('tık'); break;
+  }
+}
+function hizAyarla(v) { $('hiz').value = v; hizUygula(); }
+async function ornekTur() {
+  if (!sim) await simBasla();
+  ornekZ.forEach(clearTimeout); ornekZ = [];
+  hizAyarla(0); duvarKirildi = false;
+  const plan = [[0, () => olay('tutusma')]];
+  for (let i = 0; i <= 30; i++) plan.push([300 + i * 60, () => hizAyarla(i * 3)]);              // rampa: 0 -> 90
+  plan.push([2400, () => olay('trambolin')], [3000, () => olay('trambolin')], [3550, () => olay('trambolin')], [4050, () => olay('trambolin')]);
+  plan.push([4700, () => olay('marti')]);
+  for (let i = 0; i < 6; i++) plan.push([5300 + i * 130, () => olay('jeton')]);
+  plan.push([6600, () => olay('dalis')], [7200, () => olay('mukemmel')]);
+  for (let i = 0; i <= 20; i++) plan.push([7400 + i * 80, () => hizAyarla(90 + i * 2)]);           // 90 -> 130: ses duvari otomatik
+  plan.push([10500, () => olay('balon')], [11300, () => olay('trambolin')], [11800, () => olay('trambolin')]);
+  for (let i = 0; i <= 20; i++) plan.push([12500 + i * 100, () => hizAyarla(130 + i * 4)]);       // 130 -> 210
+  plan.push([13500, () => olay('mukemmel')], [15200, () => olay('dalis')]);
+  for (let i = 0; i <= 30; i++) plan.push([16000 + i * 120, () => hizAyarla(210 - i * 6)]);      // yavaslama
+  plan.push([18500, () => olay('sonsans')], [19900, () => olay('kademe')]);
+  for (let i = 0; i <= 15; i++) plan.push([20500 + i * 60, () => hizAyarla(30 + i * 5)]);          // ust kademe yeniden firlar
+  for (let i = 0; i <= 25; i++) plan.push([22000 + i * 100, () => hizAyarla(Math.max(0, 105 - i * 4.2))]);
+  plan.push([24800, () => { olayYaz('Tur bitti'); simDurdur(); }]);
+  for (const [t, f] of plan) ornekZ.push(setTimeout(f, t));
+}
+
+// ------------------------------------------------------------ ses duzeyleri
+function duzey() {
+  efektBus.gain.value = $('sesEfekt').value / 100;
+  muzikBus._hedef = $('sesMuzik').value / 100; muzikBus.gain.value = muzikBus._hedef;
+  motorBus._hedef = $('sesMotor').value / 100; motorBus.gain.value = motorBus._hedef;
+}
+
+// ------------------------------------------------------------ kurulum
+function sekme(sim_) {
+  $('sekmeListe').setAttribute('aria-pressed', !sim_); $('sekmeSim').setAttribute('aria-pressed', sim_);
+  $('liste').hidden = sim_; $('simBolum').hidden = !sim_;
+  if (!sim_) simDurdur(); else onizlemeDurdur();
+}
+async function kur() {
+  for (const k of L.kategori) katCiz(k.id);
+  ozetGuncelle(); simBilgi(); duzey();
+  $('sekmeListe').onclick = () => sekme(false); $('sekmeSim').onclick = () => sekme(true);
+  $('simBasla').onclick = simBasla; $('ornekTur').onclick = ornekTur;
+  $('hiz').addEventListener('input', () => hizUygula());
+  for (const id of ['sesEfekt', 'sesMuzik', 'sesMotor']) $(id).addEventListener('input', duzey);
+  document.querySelectorAll('[data-olay]').forEach(b => b.addEventListener('click', () => olay(b.dataset.olay)));
+  $('kopyala').onclick = async () => {
+    const t = sonucJSON(); let ok = false;
+    try { await navigator.clipboard.writeText(t); ok = true; } catch (e) {}
+    if (!ok) { const k = $('jsonKutu'); k.closest('details').open = true; k.value = t; k.focus(); k.select(); try { ok = document.execCommand('copy'); } catch (e) {} }
+    $('kopyala').textContent = ok ? 'Kopyalandı ✓' : 'Kutudan elle kopyala';
+    setTimeout(() => { $('kopyala').textContent = 'Sonucu kopyala'; }, 2500);
+  };
+  $('sifirla').onclick = () => { if (confirm('Tüm seçim, puan ve notlar silinsin mi?')) { kayit = {}; sakla(); for (const k of L.kategori) katCiz(k.id); simBilgi(); } };
+  const ac = () => { AC.resume(); $('bant').hidden = true; };
+  document.addEventListener('pointerdown', ac, { once: true }); document.addEventListener('keydown', ac, { once: true });
+  // Efektler ve motor donguleri hemen yuklenir; muzik katmanlari dinlenince (bellek icin)
+  const efektDosya = L.adaylar.filter(a => a.kat !== 'muzik').flatMap(a => [...a.dosyalar, ...(a.demo ? [a.demo] : [])]);
+  let n = 0, hata = 0;
+  await Promise.all(efektDosya.map(d => yukle(d).then(() => { n++; $('durum').textContent = `Sesler yükleniyor: ${n} / ${efektDosya.length}`; })
+    .catch(e => { hata++; console.error('yuklenemedi', d, e); })));
+  const mz = L.adaylar.filter(a => a.kat === 'muzik').length;
+  $('durum').textContent = hata ? `${hata} ses yüklenemedi!` : `${n} efekt hazır · ${mz} müzik adayı dinlenince yüklenir · ${L.adaylar.length} aday, ${L.adaylar.filter(a => a.elendi).length} tanesi ölçümde elendi`;
+  window.__yuklendi = { n, hata, toplam: efektDosya.length };
+}
+// test kancasi: tum muzik adaylarini sirayla yukleyip cozer (Playwright)
+window.__muzikTest = async () => { const s = []; for (const a of L.adaylar.filter(a => a.kat === 'muzik')) { const b = await muzikYukle(a); s.push(b.map(x => +(x.duration.toFixed(2)))); } return s; };
+kur();
+</script>
+</body>
+</html>

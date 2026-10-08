@@ -30,7 +30,7 @@ AYAR = dict(
     rho_olcek=400.0,           # ρ(y) = e^(−y/400)
     c_suruk=0.00012,           # a = −c·ρ·Cd·v²
     cd_ses=((85, 1.0), (100, 2.4), (115, 1.1)),   # transonik tepe (doğrusal ara değer)
-    ses_v=115.0, ses_sure=0.3, isi_duvar_v=250.0, duvar_sure=1.0, isi_sure=3.0,   # ısı duvarı: 250 üstünde 3 s (1→2→3, S5: gerçek duvar; kalkan çözen geliştirme)
+    ses_v=115.0, ses_sure=0.3, isi_duvar_v=250.0, duvar_sure=1.0, isi_sure=2.5,   # ısı duvarı: 250 üstünde 2,5 s (S5 3 s önerdi; 40 tohumda 3 s iyi botu tur 13'e itti)
     uzay_kosul=True,           # yörünge ve kaçış yalnız y ≥ y_karman'da sayılır. Hız duvarı = eşiğin üstünde duvar_sure kadar kesintisiz kalmak
     isi_v=250.0, isi_y=1000.0,  # ısı duvarı yalnız atmosferde (y < tropopoz) kırılır
     isi_hiz=3.0,               # ısı/s = (v − 250) × ρ(y) × 3 × (1 − 0,15·kalkan) (S5: 2→3)
@@ -58,7 +58,7 @@ AYAR = dict(
     # dalış
     dalis_aci=70.0, dalis_koni=(66.0, 76.0), dalis_menzil=150.0, dalis_menzil_k=1.0,   # koni içinde hedef varsa ona nişan alır. 60–80→66–76: zamanlama beceri farkı yaratsın
     dalis_itki=14.0, dalis_itki_sv=4.0, dalis_sure=1.2,   # sv 2,2→4,0 (14→54): geç oyun hızı, yörünge ~tur 25–27
-    bos_dalis_sure=0.4, bos_dalis_kayip=0.10, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = 0,9 × dalış öncesi
+    bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -83,14 +83,14 @@ AYAR = dict(
     # ekonomi
     kombo_sure=3.0, kombo_sure_sv=0.5, kombo_adim=0.05, kombo_tavan=2.0, kombo_tavan_sv=0.33,
     carpan_tavan=4.0,          # tüm çarpanların çarpımı en çok ×4
-    bant_carpan=((1000.0, 1.8), (3500.0, 3.0)),   # S3: irtifa bandı çarpanı (y ≥ eşik → ×), nesne ve km ödülüne; carpan_tavan dışında
+    bant_carpan=((1000.0, 2.4), (3500.0, 4.3)),   # S3 (öneri 1,8 · 3,0; ayarla 2,4 · 4,3): irtifa bandı çarpanı (y ≥ eşik → ×), nesne ve km ödülüne; carpan_tavan dışında
     izlenme_sv=0.10,
     odul_kat=0.10,             # izlenme → jeton çevrimi (KULLANICI KARARI bekliyor; değiştirme)
-    nesne_prim=2.0,            # nesne ödülüne sponsor primi (çevrimden bağımsız; kaldırılan saniye ödemesinin yerine)
-    rakip_odul=0.45,            # rampa zeplin vuruşu: hasar × 0,6 jeton (ICERIK formülündeki "zeplin vuruşu"); S4: 0,6→0,45
-    km_odul=55.0,              # iç km (1.000 b) başına jeton (50→70→55; S4 erken gelir kesintisi)
+    nesne_prim=2.8,            # nesne ödülüne sponsor primi (çevrimden bağımsız). S4 2,4→2,0 önerdi; geliri hedefin yarısına düşürdü, ayarla 2,8
+    rakip_odul=0.2,             # rampa zeplin vuruşu: hasar × 0,2 jeton. S4 0,6→0,45 önerdi; tur 1 kazancının büyük payı olduğu için 0,2
+    km_odul=75.0,              # iç km (1.000 b) başına jeton, bant çarpanıyla (S3). S4 55 önerdi, ayarla 75
     taban_odul=25.0, sure_odul=0.0,   # sponsor tabanı: tur başına sabit (para sıfırken bile kazanç > 0). Saniye ödemesi kaldırıldı (uzun turu ödüllendirmesin)
-    firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=5.5),   # S7: römorkör 4,5→5,5   # FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
+    firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=5.5),   # S7: römorkör 4,5→5,5. FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
     fiyat_us=1.55,
     ayar_tur=25,               # denge yalnız ilk 25 tur için ayarlı; 26–60 taslak
 )

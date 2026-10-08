@@ -29,7 +29,7 @@ Hedef -12 LUFS (100 ms tepe), etkin süre 1.0–3.0 s. Spektrogram: `spektrogram
 | Aday | Kaynak | LUFS | Tepe dBTP | Tepe/RMS | Eksik | Tel. kaybı | Atak ms | Süre s | Bantlar % | Merkez Hz | Puan | Sonuç |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
 | a. Kükreyen tutuşma | sentez | -13.0 | -1.5 | 13.2 | 1.0 | 5.0 | 0 | 2.28 | 61/24/14/1/0 | 336 | 80 | geçti (4.) |
-| b. Fıs... VUUM! | sentez | -12.0 | -2.0 | 12.5 | 0.0 | 5.8 | 553 | 2.23 | 51/30/16/2/0 | 475 | 88 | geçti (3.) |
+| b. Fıs... VUUM! | sentez | -12.0 | -2.0 | 12.5 | 0.0 | 5.8 | 553 | 2.23 | 51/30/16/2/0 | 466 | 88 | geçti (3.) |
 | c. Turbo şarj + ateşleme | sentez | -12.1 | -3.3 | 16.1 | 0.0 | 5.1 | 1000 | 2.30 | 59/17/21/1/2 | 550 | 92 | **ÖNERİ** (1.) |
 | d. Kenney itici + tok başlangıç | karma | -15.9 | -3.4 | 20.2 | 3.7 | 11.4 | 1 | 2.19 | 64/31/0/0/4 | 754 | 11 | ELENDİ: çok sivri: hedef yüksekliğe 3.7 dB eksik kalıyor (tepe/RMS 20 dB); telefonda kaybolur: hoparlör benzetiminde 11.4 dB düşüş |
 | e. Pıt-pıt-VRUUM | sentez | -11.9 | -1.6 | 10.9 | 0.0 | 5.4 | 5 | 2.09 | 65/24/11/0/0 | 277 | 91 | geçti (2.) |
