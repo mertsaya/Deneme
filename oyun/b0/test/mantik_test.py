@@ -44,8 +44,10 @@ with sync_playwright() as p:
     yaz('1', len(hata) == n0 and o['sv']['rampa'] == 6 and asama() == 'HANGAR', f"sv.rampa={o['sv']['rampa']} asama={asama()} hata={hata[n0:]}")
     # 2) UÇ'tan hemen sonra ikinci dokunuş zayıf kalkış yapmaz (0,25 s kilit)
     pg.click('#ucBtn'); pg.mouse.click(190, 400)
-    a1 = asama(); pg.wait_for_timeout(300); pg.mouse.click(190, 400); pg.wait_for_timeout(50)
-    yaz('2', a1 == 'RAMPA' and asama() == 'UCUS', f'ilk ek dokunuştan sonra {a1}, 0,3 s sonra dokunuşla {asama()}')
+    f1 = pg.evaluate('window.__oyun.durum().rampa_faz'); pg.wait_for_timeout(300); pg.mouse.click(190, 400); pg.wait_for_timeout(50)
+    f2 = pg.evaluate('window.__oyun.durum().rampa_faz'); pg.mouse.click(190, 400); f3 = asama()   # açı kilidinden hemen sonra çift dokunuş
+    pg.wait_for_timeout(300); pg.mouse.click(190, 400); pg.wait_for_timeout(50)
+    yaz('2', f1 == 'aci' and f2 == 'guc' and f3 == 'RAMPA' and asama() == 'UCUS', f'UÇ+ek dokunuş → {f1}; 0,3 s sonra → {f2}; hemen ikinci → {f3}; 0,3 s sonra → {asama()}')
     # 3) kara kutu: düğme dışı dokunuş (atlama) kilidi geçmez
     pg.goto(URL + '?kayit=0&seed=3&bot=hic&hiz=8'); hazir()
     pg.wait_for_function("window.__oyun.durum().asama === 'KARA_KUTU'", timeout=60000)

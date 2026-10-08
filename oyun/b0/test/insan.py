@@ -19,7 +19,7 @@ with sync_playwright() as p:
     k = pg.evaluate('window.__oyun.kayit.oku()'); k['tur'] = 2; k['jeton'] = 2000; k['sv']['yakit_ac'] = 1; k['sv']['yakit_s'] = 4
     pg.evaluate('(k) => window.__oyun.kayit.yaz(k)', k); pg.reload(); pg.wait_for_function('window.__oyun.hazir')
     print('açılış:', pg.evaluate('window.__oyun.durum().asama'))
-    pg.click('#ucBtn'); pg.wait_for_timeout(840); pg.mouse.click(190, 300)   # yeşile yakın
+    pg.click('#ucBtn'); pg.wait_for_timeout(600); pg.mouse.click(190, 300); pg.wait_for_timeout(840); pg.mouse.click(190, 300)   # açı, sonra güç (yeşile yakın)
     print('kalkış:', pg.evaluate('window.__oyun.durum()')['asama'])
     halka_goruldu = False
     for i in range(80):
@@ -39,7 +39,7 @@ with sync_playwright() as p:
     pg.click('#kkHangar'); pg.wait_for_timeout(300)
     pg.click('#kartlar .kart >> nth=0'); pg.wait_for_timeout(200)
     print('satın alma sonrası:', pg.evaluate('window.__oyun.kayit.oku()')['sv'], pg.evaluate('window.__oyun.kayit.oku().jeton'))
-    pg.click('#ucBtn'); pg.wait_for_timeout(4000)
+    pg.click('#ucBtn'); pg.wait_for_timeout(500); pg.mouse.click(190, 300); pg.wait_for_timeout(500); pg.mouse.click(190, 300); pg.wait_for_timeout(3000)
     pg.click('#durBtn'); pg.wait_for_timeout(200); pg.screenshot(path=str(T / 'insan_duraklat.png'))
     j1 = pg.evaluate('window.__oyun.kayit.oku()')
     pg.click('#mYeniden'); pg.wait_for_timeout(300)
