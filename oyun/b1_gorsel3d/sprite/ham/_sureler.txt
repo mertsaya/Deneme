@@ -17,3 +17,4 @@ zeplin_ezik.png	640x274	64	29.2
 zeplin_saskin.png	640x364	64	37.6
 zeplin_ezilme_0.png	640x334	64	26.1
 zeplin_ezilme_1.png	640x334	64	22.1
+zeplin_ezilme_2.png	640x334	64	27.5

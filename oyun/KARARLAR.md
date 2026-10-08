@@ -51,3 +51,5 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - **Kayıt:** yerel çift kayıt.
 - **Hedef yaş:** herkes, çocuk hedefli değil (içerik şiddetsiz ve çocuk dostu kalır).
 - **Para modeli:** ilke şimdi: parayla güç satılmaz, enerji yok, reklam yok; model yayına yakın sorulur.
+- (B0 telefon testi, kullanıcı onaylı) **Sanat yönü güncellemesi:** vektör ve Canva denemeleri 'çocuksu / ilkokul seviyesinde' bulundu. Yeni yön: **Burrito Bison kalitesi ama çocuksu olmayan**: neşeli abartılı ton ve ifadeler korunur; çizim kalitesi, ayrıntı, malzeme ve renk uyumu premium; basit yuvarlak şekiller yerine detaylı tasarım; genç yetişkin astronot; bebeksi büyük göz/pembe yanak yok. (Önceki 'parlak renkli çizgi film' onayı bu yönle birlikte yorumlanır.) Canva ticari kullanım şartları yayından önce kontrol edilecek.
+- (B0, kullanıcı onaylı) Kalkış açısı iki dokunuşlu seçim uygulandı; nesne yoğunluğu ekran başı 5; motor sesi sentez yedekli.
