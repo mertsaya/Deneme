@@ -140,7 +140,7 @@ def sayfa_ac(ctx, url, hatalar=None, bekle_kanca=True, zaman=15000):
     """Sayfayi acar, konsol hata ve sayfa hatalarini 'hatalar' listesine toplar."""
     pg = ctx.new_page()
     if hatalar is not None:
-        pg.on("console", lambda m: hatalar.append(("console." + m.type, m.text)) if m.type == "error" else None)
+        pg.on("console", lambda m: hatalar.append(("console." + m.type, m.text)) if m.type == "error" and "favicon" not in (m.location or {}).get("url", "") else None)
         pg.on("pageerror", lambda e: hatalar.append(("pageerror", str(e))))
         pg.on("requestfailed", lambda r: hatalar.append(("requestfailed", r.url)))
     r = pg.goto(url, wait_until="load", timeout=zaman)

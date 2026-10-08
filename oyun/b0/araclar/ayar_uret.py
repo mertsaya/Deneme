@@ -32,6 +32,7 @@ SABIT_EK = {
     'firsat': {'ilk': [0.3, 0.7], 'sonra': [0.7, 0.6], 'tau': [1.6, 1.0], 'y_sapma': 12, 'y_min': 30},   # firsat_yonet
     'yakit': {'tut_ek': 0.25, 'cift_sv': 4, 'ek_sv': 2, 'ek': 0.25},         # firsat_al
     'aday': [0.15, 80],                                                       # adim
+    'bot_bolge_kat': 0.5,                                                     # rampa_karar (mükemmel olasılığına bölge/2)
     'hedef_dy_min': 5, 'hedef_r_kat': 0.5,                                    # dalis_hedef
     'bot_karar_ara': 0.05,                                                    # bot_karar
     'tohum_bot': [7919, 13], 'tohum_tur': 1000, 'tohum_alici': [31, 7],       # tur_oyna, kampanya

@@ -40,11 +40,12 @@ kayit = oku();
 if(kayit.bekleyen){ kayit.jeton += kayit.bekleyen; kayit.bekleyen=null; yaz(kayit); }
 
 function tur(seed, sv, bot, turNo){
-  sv = sv||{}; const r = mulberry32(seed*7919+13);
+  sv = sv||{}; const r = mulberry32(seed*7919+13); const ol=[];
   const iyi = {hic:0,kotu:.3,orta:.6,iyi:1,usta:1.2}[bot||'hic'] ?? 0;
   const carp = 1 + 0.6*iyi + 0.05*(sv.rampa||0);
   const sure = Math.min(64, 16 + r()*10 + iyi*3);
   const mesafe = (1000 + r()*200) * carp;
+  const sk=3+Math.floor(r()*4)+Math.round(iyi*3); for(let i=0;i<sk;i++) ol.push([3+i*3,'sekme','balon',i==2?'M':'',300]); ol.push([8,'dalis',20]); if(iyi>=1) ol.push([12,'ses_duvari']); olaylar=ol;
   return {sekme: 3+Math.floor(r()*4)+Math.round(iyi*3), mukemmel: Math.round(iyi*2), temas: 6, son_sans: 1, dalis: Math.round(iyi*3),
     max_v: 100+60*iyi+r()*20, max_y: 300+r()*100, kazanc: 100+60*iyi, kazanc_nesne: 60, vay_t: 2+r()*2, mesafe, mesafe_g: mesafe/1000*3,
     sure_ucus: sure-1, sure_tur: sure, bitis: 'durma', duvar: iyi>=1&&(turNo||1)>=2?['ses']:[], temas_s: .3, kademe_kalan: 0,
@@ -104,7 +105,7 @@ function ciz(){ const W=cv.width=innerWidth*devicePixelRatio, H=cv.height=innerH
   cx.fillStyle=asama==='UCUS'?'#6af':'#9cf'; cx.fillRect(0,0,W,H); cx.fillStyle='#333'; cx.fillRect(W*(.2+.5*Math.min(1,t/30)),H*.5,20,10);
   $('bilgi').textContent=asama+' '+t.toFixed(1); }
 let son=performance.now();
-function kare(n){ let dt=Math.min(0.1,(n-son)/1000)*HIZ; son=n; const k=Math.max(1,Math.round(dt*120)); for(let i=0;i<k;i++) ilerle(dt/k); ciz(); requestAnimationFrame(kare); }
+let birik=0; function kare(n){ birik+=Math.min(0.1,(n-son)/1000)*HIZ; son=n; while(birik>=1/120){ ilerle(1/120); birik-=1/120; } ciz(); requestAnimationFrame(kare); }
 // ?t=S : goruntusuz S sn ilerle, dondur
 if(Q.has('t')){ basla(); const S=num('t',0); const k=Math.round(S*120); if(BOT&&BOT!=='hic'){} for(let i=0;i<k && asama!=='BITIS' && asama!=='KARA_KUTU';i++){ ilerle(1/120);} duraklat=true; }
 else if(Q.has('toplu')){ sonuclar=[]; for(let i=0;i<num('toplu',1);i++) sonuclar.push(tur(SEED+i, {}, BOT||'hic', 1)); console.log(JSON.stringify(sonuclar)); }

@@ -40,7 +40,7 @@ def osc(f, n, kind='sine', duty=0.5, ph0=0.0):
     """Frekans dizisi (Hz) ile osilator. Kare/testere 4x asiri ornekleme ile (katlanma azaltilir)."""
     f = arr(f, n)
     if kind == 'sine':
-        return np.sin(2 * np.pi * (np.cumsum(f) / SR + ph0))
+        return np.sin(2 * np.pi * (np.cumsum(f) / SR + ph0)) * (f < SR * 0.45)
     if kind == 'tri':
         fr = (np.cumsum(f) / SR + ph0) % 1.0
         return 2 * np.abs(2 * fr - 1) - 1
