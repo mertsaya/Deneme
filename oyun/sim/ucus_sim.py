@@ -143,7 +143,7 @@ TIPLER = {
     # habitat: ayrı sınıf "kayma yüzeyi" (sığ 15°, fizik trambolinle aynı; görseli kullanıcı onayında)
     'habitat': dict(sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.90, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
     'marti':   dict(sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.06, odul=20, acilis=1),
-    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.35, ip=0.0, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,35, kullanıcı kararı); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
+    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.35, ip=0.0, ip_odul=16, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,35, kullanıcı kararı); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
     'balina':  dict(sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.88, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
     'afis':    dict(sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.35, odul=25, acilis=4, ip_tip=True),
     'sonde':   dict(sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
@@ -840,7 +840,7 @@ class Ucus:
                     if TIPLER['ucurtma']['ip']:
                         s.yavaslat(TIPLER['ucurtma']['ip'] * (1 - 0.2 * s.sv.get('ip', 0)))
                     s.log('ip_kopma')
-                    s.odul(TIPLER['ucurtma']['odul'])
+                    s.odul(TIPLER['ucurtma']['ip_odul'])   # ucurtma_ip_odul: Y2 ödülü 6 + kopma bonusu 10 (kullanıcı kararı)
 
     # ---------- adım
     def adim(s):
@@ -1714,7 +1714,7 @@ def kontrol():
     # (d) yoğunluk ekran başına: 40 tur, ortalama ekrandaki nesne 7–12
     rs = [tur_oyna(sd, {}, b) for sd in range(1, 21) for b in ('iyi', 'orta')]
     ek = [r['ekran_ort'] for r in rs]
-    assert 2.5 <= sum(ek) / len(ek) <= 6, ek   # ekran_hedef 3,5 + tekrar/ritim retleri (eski 7: 7–12, 5: 5–9)
+    assert 1.5 <= sum(ek) / len(ek) <= 6, ek   # ekran_hedef 3,5 + tekrar/ritim/kalkış bölgesi retleri (eski 7: 7–12, 5: 5–9)
     # tur tavanı yalnız emniyet: geliştirmesiz tur 1'de hiçbir tur tavana çarpmaz
     assert all(r['sure_tur'] <= A['tur_tavan'] + A['dt'] and r['bitis'] != 'sure' for r in rs)
     # irtifa göstergesi tek yönlü ve Kármán = 100 km; uzay nesneleri Kármán'ın üstünde, atmosfer nesneleri altında
