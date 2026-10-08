@@ -6,11 +6,11 @@
   },
   "K2": {
    "durum": "GECTI",
-   "ayrinti": "ort tur suresi 17.4s (16-30), 65s'ye carpan 0"
+   "ayrinti": "ort tur suresi 17.0s (16-30), 65s'ye carpan 0"
   },
   "K3": {
    "durum": "GECTI",
-   "ayrinti": "tur1 iyi/hic mesafe orani 1.42 (>=1,30); tur5 sv={'rampa': 5, 'yakit_ac': 1, 'yakit_s': 2, 'dalis': 1, 'verim': 1}: 2.33 (>=1,60)"
+   "ayrinti": "tur1 iyi/hic mesafe orani 1.42 (>=1,30); tur5 sv={'rampa': 4, 'yakit_ac': 1, 'dalis': 2, 'yakit_s': 2}: 2.33 (>=1,60)"
   },
   "K4": {
    "durum": "BILGI",
@@ -18,19 +18,19 @@
   },
   "K5": {
    "durum": "BILGI",
-   "ayrinti": "ses duvari ilk kirilis medyan tur: {'iyi': 4, 'orta': 4, 'hic': 6} (iyi 2-3, hic <=8)"
+   "ayrinti": "ses duvari ilk kirilis medyan tur: {'iyi': 4, 'orta': 5, 'hic': 6} (iyi 2-3, hic <=8)"
   },
   "K6": {
    "durum": "BILGI",
-   "ayrinti": "iyi t5-15 sure medyan 60.2s, tavan %44; orta t5-15 sure medyan 28.1s, tavan %2; hic t5-15 sure medyan 20.4s, tavan %0 (hedef 20-40s, tavan <=%5)"
+   "ayrinti": "iyi t5-15 sure medyan 51.7s, tavan %42; orta t5-15 sure medyan 30.2s, tavan %6; hic t5-15 sure medyan 21.2s, tavan %0 (hedef 20-40s, tavan <=%5)"
   },
   "K7": {
    "durum": "GECTI",
-   "ayrinti": "TEKRAR UC -> RAMPA 0.31s (<=0,5), BITIS->KARA_KUTU 1.00s, bitis->rampa toplam ~1.71s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+   "ayrinti": "TEKRAR UC -> RAMPA 0.24s (<=0,5), BITIS->KARA_KUTU 1.01s, bitis->rampa toplam ~1.65s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
   },
   "K8": {
    "durum": "GECTI",
-   "ayrinti": "n=200; ayar_uret --denetle temiz; tum olculer uyumlu"
+   "ayrinti": "n=40; ayar_uret --denetle temiz; tum olculer uyumlu"
   },
   "K9": {
    "durum": "GECTI",
@@ -42,7 +42,7 @@
   },
   "K11": {
    "durum": "ELLE",
-   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 57 min 12"
+   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 59 min 30"
   },
   "K12": {
    "durum": "GECTI",
@@ -50,7 +50,7 @@
   },
   "K13": {
    "durum": "GECTI",
-   "ayrinti": "yenileyince jeton/sv ayni=True; gizlenince bekleyen=336, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak"
+   "ayrinti": "yenileyince jeton/sv ayni=True; gizlenince bekleyen={'j': 351, 'ses': True}, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak"
   },
   "K14": {
    "durum": "GECTI",
