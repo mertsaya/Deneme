@@ -58,7 +58,8 @@ AYAR = dict(
     acilis_inis_pay=0.2,       # açılış zeplini rota tepesinden en az bu kadar s sonra (iniş kolu)
     acilis_sekme_dt=1.8,       # açılış zeplini: kalkıştan 1,6 s sonraki rota noktasına konur ("vay" garantisi)
     # sekme
-    k_tavan=0.92, k_sv=0.012,  # Sekme verimi: k + 0,012/sv, tavan 0,92
+    k_tavan=0.96, k_sv=0.012,  # Sekme verimi: k + 0,012/sv, tavan 0,96
+    sekme_v_tavan=300.0,       # kullanıcı kararı (mantık kuralı 1'in bilinçli istisnası, yay enerjisi): sekme |v'| = v·k + b·(1 − v/V_tavan), alt sınır 0; düşük hızda kazanç, V_tavan üstünde kayıp
     tekrar_sure=2.0,           # aynı nesne 2 s içinde ikinci kez etki vermez
     # dalış
     dalis_aci=70.0, dalis_koni=(66.0, 76.0), dalis_menzil=150.0, dalis_menzil_k=1.0,   # koni içinde hedef varsa ona nişan alır. 60–80→66–76: zamanlama beceri farkı yaratsın
@@ -75,9 +76,12 @@ AYAR = dict(
     yon_hiz=60.0, yon_hiz_sv=12.0, yon_sinir=45.0, yon_sinir_sv=5.0,   # derece/s dönüş hızı, ± derece hedef sınırı; 'yon' kartı
     yon_bot_ara=0.2,           # botların yönlendirme kararı aralığı (s)
     # doğal hava akımları (kullanıcı kararı): termal ve jet satın almadan çıkar; erken turlarda nadir/zayıf, 'hava' kartı sıklık+güç
-    hava_dogal=('termal', 'jet'), hava_ara_kat=1.5, hava_guc=(0.6, 0.1),   # aralık × 1,5; güç × (0,6 + 0,1·hava sv)
+    hava_dogal=('termal', 'jet'), hava_ara_kat=1.1, hava_guc=(0.6, 0.1),   # aralık × 1,5; güç × (0,6 + 0,1·hava sv)
     # tekrardan kaçınma ve ritim (kullanıcı kararı: 'çok sıklık var, tekrardan kaçılmalı'); hepsi aday reddi, rastgele çekim eklemez
-    cesit_max=1,               # aynı tür art arda en çok 1 kez
+    cesit_max=1,               # aynı AİLE art arda en çok 1 kez (aile: TIPLER[*]['aile'])
+    aile=dict(son_n=3, son_kat=0.25, uzak_n=6, uzak_kat=1.5,   # son 3 doğanın ailesi ×0,25; son 6'da yoksa ×1,5
+              balon_pay=0.20, balon_pay_erken=0.15, erken_tur=3,   # balon ailesi doğanların en çok %20'si (tur 1–3: %15)
+              ekran_max=2, ilk_n=10, ilk_cesit=4),   # bir ekran genişliğinde aynı aileden en çok 2; ilk 10 doğuşta en az 4 aile
     ayni_tur_ekran=1.5,        # aynı türden iki nesne arasında en az 1,5 ekran genişliği (W) yatay mesafe
     kume_dx=0.2,               # aynı x aralığında (0,2·W) en çok 1 nesne
     yakin_agirlik=(0.3, 4.0),  # son doğan türün ağırlığı ×0,3, 4 s'de doğrusal olarak normale döner
@@ -133,23 +137,25 @@ RAKIPLER = [(700, 500), (1100, 1500), (1800, 4000), (3200, 8000), (5200, 15000)]
 # sinif: tr = trambolin, yv = yavaşlatıcı, fr = fırsat (hızlandırıcı/toplanır), ol = ölümcül
 _YK = AYAR['y_karman']   # uzay bantları Kármán eşiğinden türer
 TIPLER = {
-    'balon':   dict(sinif='tr', r=12,  ymin=40,   ymax=200,  w=3.0, k=0.80, aci=50, yan=0.06, odul=15, omur=3, acilis=1),
-    'parti':   dict(sinif='tr', r=10,  ymin=30,   ymax=150,  w=2.0, k=0.70, aci=42, yan=0.02, odul=10, omur=2, acilis=1),
-    'zeplin':  dict(sinif='tr', r=22, ymin=80,   ymax=500,  w=1.2, k=0.85, aci=45, yan=0.10, odul=40, omur=3, acilis=1),
-    'dron':    dict(sinif='tr', r=11,  ymin=60,   ymax=450,  w=0.6, k=0.80, aci=55, yan=0.25, odul=60, omur=1, acilis=2, ek_vy=15),
-    'sicak':   dict(sinif='tr', r=20, ymin=250,  ymax=950,  w=1.0, k=0.85, aci=40, yan=0.08, odul=30, omur=3, acilis=9),
+    'balon':   dict(aile='balon', sinif='tr', r=12,  ymin=40,   ymax=200,  w=2.0, k=0.90, b=18, aci=50, yan=0.06, odul=15, omur=3, acilis=1),
+    'parti':   dict(aile='balon', sinif='tr', r=10,  ymin=30,   ymax=150,  w=2.0, k=0.85, b=12, aci=42, yan=0.02, odul=10, omur=2, acilis=1),
+    'zeplin':  dict(aile='zeplin', sinif='tr', r=22, ymin=80,   ymax=500,  w=1.8, k=0.92, b=20, aci=45, yan=0.10, odul=40, omur=3, acilis=1),
+    'dron':    dict(aile='makine', sinif='tr', r=11,  ymin=60,   ymax=450,  w=1.2, k=0.92, b=20, aci=55, yan=0.25, odul=60, omur=1, acilis=1, ek_vy=15),
+    'sicak':   dict(aile='balon', sinif='tr', r=20, ymin=250,  ymax=950,  w=1.0, k=0.90, b=20, aci=40, yan=0.08, odul=30, omur=3, acilis=9),
     # bilim 40° (8. oturum kararı); fazla irtifa AYAR['ust_sonum'] ile kesilir
-    'bilim':   dict(sinif='tr', r=26, ymin=800,  ymax=_YK - 100, w=1.2, k=0.85, aci=40, yan=0.03, odul=30, omur=3, acilis='tropopoz'),
+    'bilim':   dict(aile='balon', sinif='tr', r=26, ymin=800,  ymax=_YK - 100, w=1.2, k=0.90, b=20, aci=40, yan=0.03, odul=30, omur=3, acilis='tropopoz'),
     # habitat: ayrı sınıf "kayma yüzeyi" (sığ 15°, fizik trambolinle aynı; görseli kullanıcı onayında)
-    'habitat': dict(sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.90, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
-    'marti':   dict(sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.06, odul=20, acilis=1),
-    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.08, ip=0.0, ip_odul=16, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,08 hafif, kullanıcı kararı; 0,02→0,35→0,08); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
-    'balina':  dict(sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.88, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
-    'afis':    dict(sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.35, odul=25, acilis=4, ip_tip=True),
-    'sonde':   dict(sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
-    'goktasi': dict(sinif='yv', r=12, ymin=1000, ymax=_YK - 100, w=0.8, kayip=0.05, odul=20, acilis='tropopoz'),
-    'uydu':    dict(sinif='yv', r=10, ymin=_YK + 100, ymax=9000, w=1.0, kayip=0.12, odul=50, acilis='karman'),
-    'cop':     dict(sinif='yv', r=6,  ymin=_YK, ymax=9000, w=2.0, kayip=0.08, odul=15, acilis='karman'),
+    'habitat': dict(aile='habitat', sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.92, b=20, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
+    'marti':   dict(aile='kus', sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.03,   # 0,06→0,03 (kullanıcı kararı)
+                      odul=20, acilis=1),
+    'ucurtma': dict(aile='ucurtma', sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.08, ip=0.0, ip_odul=16, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,08 hafif, kullanıcı kararı; 0,02→0,35→0,08); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
+    'balina':  dict(aile='zeplin', sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.93, b=20, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
+    'afis':    dict(aile='makine', sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.25,   # 0,35→0,25 (kullanıcı kararı)
+                      odul=25, acilis=4, ip_tip=True),
+    'sonde':   dict(aile='balon', sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
+    'goktasi': dict(aile='goktasi', sinif='yv', r=12, ymin=1000, ymax=_YK - 100, w=0.8, kayip=0.05, odul=20, acilis='tropopoz'),
+    'uydu':    dict(aile='uydu', sinif='yv', r=10, ymin=_YK + 100, ymax=9000, w=1.0, kayip=0.12, odul=50, acilis='karman'),
+    'cop':     dict(aile='cop', sinif='yv', r=6,  ymin=_YK, ymax=9000, w=2.0, kayip=0.08, odul=15, acilis='karman'),
 }
 # fırsat nesneleri (satın alınınca). guc = sv0 değeri, guc_sv = seviye başına
 FIRSATLAR = {
@@ -285,7 +291,7 @@ class Ucus:
         s._rota_t, s._rota_p = None, []
         s.yakit = A['yakit_kap'] + A['yakit_kap_sv'] * sv.get('depo', 0)
         s.yon_hedef = None             # oyuncu/bot yönlendirme hedefi (rad) ya da None
-        s.son_tip, s.son_y, s.tip_t = None, None, {}   # son doğan tür/yükseklik, tür başına son doğuş zamanı (tekrardan kaçınma)
+        s.son_tip, s.son_y, s.tip_t, s.aile_gecmis = None, None, {}, []   # son doğan tür/yükseklik, tür başına son doğuş zamanı (tekrardan kaçınma)
         s.itki, s.itki_son = None, -99.0   # itiş [kalan s, hedef açı, dv/s]
         s.st['itki'] = 0
         s.st['yon_s'] = 0.0
@@ -406,8 +412,21 @@ class Ucus:
         tipler = [(n, T['w'] * (sk if T['sinif'] == 'tr' else 1.0) * (ya[0] + (1 - ya[0]) * min(1.0, (s.t - s.tip_t[n]) / ya[1]) if n in s.tip_t else 1.0))
                   for n, T in TIPLER.items()
                   if T['ymin'] <= y <= T['ymax'] and s.acik(n) and (not sadece_tr or T['sinif'] == 'tr')]
-        if s.son_tip is not None and len(tipler) > 1:   # aynı tür art arda en çok cesit_max (1) kez
-            tipler = [t for t in tipler if t[0] != s.son_tip]
+        AI, G = s.A['aile'], s.aile_gecmis
+        n = len(G)
+        yasak = set()
+        if G:
+            yasak.add(G[-1])   # aynı aile art arda en çok 1 kez
+        if (G.count('balon') + 1) / (n + 1) > (AI['balon_pay_erken'] if s.tur <= AI['erken_tur'] else AI['balon_pay']):
+            yasak.add('balon')
+        if n < AI['ilk_n'] and AI['ilk_n'] - n <= AI['ilk_cesit'] - len(set(G)):
+            yasak |= set(G)   # ilk 10 doğuşta en az 4 farklı aile
+        kalan = [t for t in tipler if TIPLER[t[0]]['aile'] not in yasak]
+        if kalan:
+            tipler = kalan
+        son3, uzak = G[-AI['son_n']:], G[-AI['uzak_n']:]
+        tipler = [(t, w * (AI['son_kat'] if TIPLER[t]['aile'] in son3 else AI['uzak_kat'] if n >= AI['uzak_n'] and TIPLER[t]['aile'] not in uzak else 1.0))
+                  for t, w in tipler]
         if not tipler:
             return None
         top = sum(w for _, w in tipler)
@@ -474,8 +493,13 @@ class Ucus:
             return True
         W = s.ekran()[4]
         ogren = s.tur == 1 and s.st.get('dogan', 0) < A['ogrenme_n']
+        aile, ayni = TIPLER[tip]['aile'], 0
         for o in s.nesneler:
             if o.sinif in ('tr', 'yv') and o.aktif:
+                if TIPLER[o.tip]['aile'] == aile and abs(o.x - x) < W:
+                    ayni += 1
+                    if ayni >= A['aile']['ekran_max']:
+                        return True
                 if ogren and abs(o.x - x) < A['ayni_tur_ekran'] * W:
                     return True
                 if o.tip == tip and abs(o.x - x) < A['ayni_tur_ekran'] * W:
@@ -495,6 +519,7 @@ class Ucus:
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
         s.son_tip, s.son_y, s.tip_t[tip] = tip, y, s.t
+        s.aile_gecmis.append(T['aile'])
         s.st['dogan'] = s.st.get('dogan', 0) + 1
         return True
 
@@ -723,11 +748,11 @@ class Ucus:
         A = s.A
         v = math.hypot(s.vx, s.vy)
         mukemmel = s.dalis_t is not None
-        if mukemmel:
-            yv = v + min(v * A['mukemmel_sekme'], A['mukemmel_sekme_tavan'])
+        Vt = A['sekme_v_tavan']
+        yv = max(0.0, v * s.k_etkin(T['k']) + T['b'] * (1 - v / Vt))   # yay enerjisi: kendini sınırlayan sekme
+        if mukemmel:   # ek bonus; sekme hızı V_tavan'ı aşmaz (zaten üstündeyse taban değer korunur)
+            yv = min(yv + min(v * A['mukemmel_sekme'], A['mukemmel_sekme_tavan']), max(Vt, yv))
             s.st['mukemmel'] += 1
-        else:
-            yv = v * s.k_etkin(T['k'])
         a = math.radians(T['aci'])
         s.vx, s.vy = yv * math.cos(a), yv * math.sin(a) + T.get('ek_vy', 0)
         s.dalis_t = None
@@ -1707,7 +1732,11 @@ def kontrol():
         o = Nesne(ad, 0, 0, 'tr', T['r']); u.y = 50
         u.sekme(o, T)
         v1 = m.hypot(u.vx, u.vy - T.get('ek_vy', 0)) if T.get('ek_vy') else m.hypot(u.vx, u.vy)
-        assert abs(m.hypot(u.vx, u.vy - T.get('ek_vy', 0)) - v0 * u.k_etkin(T['k'])) < 1e-6, (ad, v1, v0 * u.k_etkin(T['k']))
+        bek = max(0.0, v0 * u.k_etkin(T['k']) + T['b'] * (1 - v0 / A['sekme_v_tavan']))
+        assert abs(m.hypot(u.vx, u.vy - T.get('ek_vy', 0)) - bek) < 1e-6, (ad, v1, bek)
+        assert bek <= v0 * 1.16, (ad, bek / v0)   # tek sekmede en çok ~+%15
+        for vv in (300.0, 400.0, 800.0):          # invaryant: sekme hızı V_tavan üstüne çıkarmaz
+            assert max(0.0, vv * u.k_etkin(T['k']) + T['b'] * (1 - vv / A['sekme_v_tavan'])) <= max(vv * u.k_etkin(T['k']), A['sekme_v_tavan']) + 1e-9
         assert T['k'] < 1.0
         if not T.get('kayma'):   # kayma yüzeyi (habitat) ayrı sınıf: sığ açı serbest
             assert 40 <= T['aci'] <= 55, (ad, T['aci'])
