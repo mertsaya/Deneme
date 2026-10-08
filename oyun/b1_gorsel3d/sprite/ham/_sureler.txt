@@ -25,3 +25,4 @@ balon_ezik.png	448x582	64	20.8
 balon_saskin.png	448x690	64	66.8
 balon_ezilme_0.png	448x652	64	35.4
 balon_ezilme_1.png	448x652	64	35.8
+balon_ezilme_2.png	448x652	64	49.7
