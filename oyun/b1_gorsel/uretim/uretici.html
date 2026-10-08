@@ -17,7 +17,7 @@ function spriteCiz(s, D) {
   if (ol > 0 && ST.kontur) {
     const B = document.createElement('canvas'); B.width = w; B.height = h; const b = B.getContext('2d');
     for (const [n, k] of [[32, 1], [16, 0.66], [8, 0.33]]) for (let i = 0; i < n; i++) { const t = i / n * 6.2832; b.drawImage(A, Math.cos(t) * ol * k, Math.sin(t) * ol * k); }
-    b.globalCompositeOperation = 'source-in'; b.fillStyle = INK; b.fillRect(0, 0, w, h);
+    b.globalCompositeOperation = 'source-in'; b.fillStyle = s.olRenk || INK; b.fillRect(0, 0, w, h);
     b.globalCompositeOperation = 'source-over'; b.drawImage(A, 0, 0); out = B;
   }
   return { c: out, w, h, ax: pad - s.x0 * d, ay: pad - s.y0 * d, d };

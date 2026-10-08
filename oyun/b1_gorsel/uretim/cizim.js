@@ -235,15 +235,15 @@ function balon(c, ifade) {
 
 // ---------------------------------------------------------------- ZEPLİN (trambolin sırtlı, r = 22, burnu sola)
 function zeplin(c, ifade, renk = RENK.mor) {
-  const X = 27, Y = 15, cy = 2;
+  const X = 19.5, Y = 15, cy = 2;
   // kuyruk kanatları
   for (const s of [-1, 1]) {
-    const p = [19, cy + 5 * s, 30, cy + 13.5 * s, 32.5, cy + 12.5 * s, 31, cy + 4 * s, 25, cy + 1.5 * s];
+    const p = [12.5, cy + 5 * s, 22, cy + 13 * s, 24.6, cy + 12.2 * s, 23.4, cy + 4 * s, 18.5, cy + 1.5 * s];
     poli(c, p); dol(c, dikey(c, RENK.kirmizi, cy - 14 * (s < 0), cy + 14 * (s > 0))); cizgi(c, IL, RENK.kirmizi);
   }
   // trambolin ayakları (yaylar)
   c.lineJoin = 'round';
-  for (const x of [-11, -3.5, 4, 11.5]) {
+  for (const x of [-10.5, -3.5, 3.5, 10.5]) {
     const yb = cy - Y * Math.sqrt(1 - (x / X) ** 2) + 1.2;
     c.beginPath(); c.moveTo(x, yb); const n = 6, h = (yb - (-19.4)) / n;
     for (let i = 1; i <= n; i++) c.lineTo(x + (i === n ? 0 : i % 2 ? 0.9 : -0.9), yb - h * i);
@@ -258,10 +258,10 @@ function zeplin(c, ifade, renk = RENK.mor) {
   const g = c.createRadialGradient(-8, cy - 9, 2, -4, cy - 2, X * 1.1); g.addColorStop(0, 'rgba(255,255,255,.25)'); g.addColorStop(0.4, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(42,29,92,.25)'); c.fillStyle = g; c.fillRect(-X, cy - Y, 2 * X, 2 * Y);
   c.restore();
   elips(c, 0, cy, X, Y); cizgi(c, IL, renk);
-  parla(c, -6, cy - 10.5, 9, 1.4, -0.06, 0.75);
+  parla(c, -4, cy - 10.5, 7, 1.3, -0.1, 0.75);
   // trambolin minderi (şekil kodu: üstte beyaz yay şeridi)
-  c.beginPath(); c.roundRect(-14.5, -21.6, 29, 2.6, 1.3); dol(c, dikey(c, RENK.kirmizi, -21.6, -19)); cizgi(c, IL, RENK.kirmizi);
-  c.beginPath(); c.moveTo(-12.4, -20.3); c.quadraticCurveTo(0, -19.0, 12.4, -20.3); c.strokeStyle = '#fff'; c.lineWidth = 1.2; c.lineCap = 'round'; c.stroke();
+  c.beginPath(); c.roundRect(-13.5, -21.6, 27, 2.6, 1.3); dol(c, dikey(c, RENK.kirmizi, -21.6, -19)); cizgi(c, IL, RENK.kirmizi);
+  c.beginPath(); c.moveTo(-11.6, -20.3); c.quadraticCurveTo(0, -19.0, 11.6, -20.3); c.strokeStyle = '#fff'; c.lineWidth = 1.2; c.lineCap = 'round'; c.stroke();
   // gondol
   c.beginPath(); c.roundRect(-8, cy + 13.2, 14, 4.9, 2.2); dol(c, dikey(c, RENK.sari, cy + 13, cy + 18)); cizgi(c, IL, RENK.sari);
   for (const x of [-5.2, -1.6, 2]) { c.beginPath(); c.roundRect(x, cy + 14.4, 2.4, 2, 0.8); dol(c, '#7fc8ff'); cizgi(c, IL * 0.6); }
@@ -269,7 +269,7 @@ function zeplin(c, ifade, renk = RENK.mor) {
   c.beginPath(); c.moveTo(6, cy + 15.5); c.lineTo(8.2, cy + 15.5); cizgi(c, 0.6, RENK.koyuMetal);
   elips(c, 8.6, cy + 15.5, 0.6, 2.6); c.save(); c.globalAlpha = 0.7; dol(c, '#c6cede'); c.restore(); cizgi(c, IL * 0.6);
   // yüz (burun, sola)
-  c.save(); c.translate(-18.5, cy - 1);
+  c.save(); c.translate(-12.6, cy - 1); c.scale(0.92, 0.92);
   const k = v => v;
   if (ifade === 'ezik') {
     c.beginPath(); c.moveTo(-2.6, -0.8); c.quadraticCurveTo(0, 0.8, 2.2, -0.9); c.strokeStyle = INK; c.lineWidth = 0.6; c.lineCap = 'round'; c.stroke();
@@ -397,7 +397,6 @@ function toz(c, kare) {   // sekme tozu / duman puf'u: 4 kare, büyür ve dağı
   c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + s, y); c.arc(x, y, s, 0, 6.283); } dol(c, '#c8c3ea');
   c.save(); c.clip(); c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x - 0.3 + s * 0.85, y - 0.5); c.arc(x - 0.3, y - 0.5, s * 0.85, 0, 6.283); } dol(c, '#ffffff'); c.restore();
   c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + s, y); c.arc(x, y, s, 0, 6.283); }
-  if (ST.kontur) { c.strokeStyle = INK; c.lineWidth = 0.35 * a; c.globalCompositeOperation = 'destination-over'; c.stroke(); c.globalCompositeOperation = 'source-over'; }
   c.globalAlpha = 1;
 }
 function yildiz5(c, x, y, R, r, rot) { c.beginPath(); for (let i = 0; i < 10; i++) { const a = rot + i * Math.PI / 5 - Math.PI / 2, q = i % 2 ? r : R; c.lineTo(x + Math.cos(a) * q, y + Math.sin(a) * q); } c.closePath(); }
@@ -447,57 +446,77 @@ function balonParca(c) {
 
 // ---------------------------------------------------------------- ARKA PLAN
 function bulut(c, w, h, tohum, uzak) {
-  const r = rastgele(tohum), top = [];
-  const n = Math.round(w / h * 2.2);
-  for (let i = 0; i < n; i++) {
-    const t = (i + 0.5) / n, x = (t - 0.5) * w * 0.86, tepe = Math.sin(Math.PI * t) ** 0.7;
-    const s = h * (0.28 + 0.34 * tepe) * (0.85 + 0.3 * r());
-    top.push([x, h * 0.5 - s, s]);
+  const r = rastgele(tohum);
+  if (uzak) {   // uzak katman: yassı, lavanta-beyaz şeritler (yakın kümülüslerden farklı)
+    const el = [];
+    for (let i = 0; i < 5; i++) el.push([(i / 4 - 0.5) * w * 0.5 + (r() - 0.5) * w * 0.08, (r() - 0.5) * h * 0.4, w * (0.12 + r() * 0.1), h * (0.22 + r() * 0.16)]);
+    c.beginPath(); for (const [x, y, rx, ry] of el) { c.moveTo(x + rx, y); c.ellipse(x, y, rx, ry, 0, 0, 6.283); }
+    const g = c.createLinearGradient(0, -h * 0.5, 0, h * 0.5); g.addColorStop(0, '#fbf8ff'); g.addColorStop(1, '#d9d2f0'); c.fillStyle = g; c.fill();
+    return;
   }
-  top.push([0, h * 0.25, h * 0.4]);
-  const yol = (dx, dy, k) => { c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + dx + s * k, y + dy); c.arc(x + dx, y + dy, s * k, 0, 6.283); } c.rect(-w * 0.43, h * 0.15, w * 0.86, h * 0.35); };
-  const golge = uzak ? '#cfe0f6' : '#b9cdf2', isik = uzak ? '#f4f9ff' : '#ffffff';
-  yol(0, 0, 1); dol(c, golge);
-  c.save(); yol(0, 0, 1); c.clip(); yol(-h * 0.04, -h * 0.13, 0.93); dol(c, isik);
-  if (!uzak) { yol(-h * 0.08, -h * 0.2, 0.75); c.save(); c.globalAlpha = 0.6; dol(c, '#ffffff'); c.restore(); }
-  c.restore();
+  const top = [], n = Math.max(3, Math.round(w / h * 1.6));
+  for (let i = 0; i < n; i++) top.push([((i + 0.5) / n - 0.5) * w * 0.8, h * 0.18, h * 0.3 * (0.9 + 0.2 * r())]);
+  for (let i = 0; i < n - 1; i++) { const t = (i + 1) / n, tepe = Math.sin(Math.PI * t) ** 0.6, sx = h * (0.3 + 0.32 * tepe) * (0.85 + 0.3 * r()); top.push([(t - 0.5) * w * 0.8, h * 0.18 - sx * 0.75, sx]); }
+  const yol = (dx, dy, k) => { c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + dx + s * k, y + dy); c.arc(x + dx, y + dy, s * k, 0, 6.283); } };
+  yol(0, 0, 1); dol(c, '#c4d8f6');
+  c.save(); yol(0, 0, 1); c.clip(); yol(-h * 0.04, -h * 0.12, 0.92); dol(c, '#ffffff');
+  yol(-h * 0.08, -h * 0.2, 0.72); c.save(); c.globalAlpha = 0.55; dol(c, '#ffffff'); c.restore(); c.restore();
 }
-function zemin(c, W) {   // yatayda döşenebilir tarla + tepeler: y 0 = yer; üstte tepeler, altta tarlalar
-  const T = (x, ks) => ks.reduce((s, [a, k, f]) => s + a * Math.sin(2 * Math.PI * k * x / W + f), 0);
+function zemin(c, W) {   // yatayda döşenebilir: tüm dalgalar W'nin tam katı periyotlu
+  const T = (x, ks) => ks.reduce((t, [a, k, f]) => t + a * Math.sin(2 * Math.PI * k * x / W + f), 0);
   const tepe = (ks, taban, renk1, renk2) => {
     c.beginPath(); c.moveTo(0, 5); for (let x = 0; x <= W; x += 1) c.lineTo(x, taban - T(x, ks)); c.lineTo(W, 5); c.closePath();
-    const g = c.createLinearGradient(0, -14, 0, 2); g.addColorStop(0, renk1); g.addColorStop(1, renk2); c.fillStyle = g; c.fill();
-    c.beginPath(); for (let x = 0; x <= W; x += 1) c.lineTo(x, taban - T(x, ks)); c.strokeStyle = ko(renk2, 0.35); c.lineWidth = 0.5; c.stroke();
+    const g = c.createLinearGradient(0, taban - 10, 0, 3); g.addColorStop(0, renk1); g.addColorStop(1, renk2); c.fillStyle = g; c.fill();
+    c.beginPath(); for (let x = 0; x <= W; x += 1) c.lineTo(x, taban - T(x, ks)); c.strokeStyle = ko(renk2, 0.3); c.lineWidth = 0.45; c.stroke();
   };
-  tepe([[6, 2, 0.4], [3, 5, 1.3], [1.5, 9, 2]], -6, '#8fe08a', '#5cc463');
-  // uzak ağaçlar ve ev
-  const r = rastgele(5);
-  for (let i = 0; i < 9; i++) {
-    const x = (i + r() * 0.6) * W / 9, y = -T(x, [[3, 3, 0.2], [1.2, 7, 1]]) - 1.2;
-    c.fillStyle = '#7a4a2a'; c.fillRect(x - 0.3, y - 0.2, 0.6, 2.2);
-    daire(c, x, y - 1.6, 1.8 + r()); c.fillStyle = '#2fa64a'; c.fill(); c.strokeStyle = '#1d6b36'; c.lineWidth = 0.35; c.stroke();
+  const agacKume = (x, y, n, r) => {
+    for (let i = 0; i < n; i++) { const dx = (i - (n - 1) / 2) * r * 1.3, dy = (i % 2) * r * 0.35, rr = r * (0.85 + 0.3 * ((i * 7) % 3) / 2);
+      c.fillStyle = '#7a5a3a'; c.fillRect(x + dx - 0.25, y + dy - 0.2, 0.5, 1.6);
+      daire(c, x + dx, y + dy - rr * 0.9, rr); c.fillStyle = '#6fa868'; c.fill(); c.strokeStyle = '#3f6f48'; c.lineWidth = 0.35; c.stroke();
+      daire(c, x + dx - rr * 0.3, y + dy - rr * 1.15, rr * 0.4); c.fillStyle = '#8fc082'; c.fill(); }
+  };
+  tepe([[6, 2, 0.4], [3, 5, 1.3], [1.5, 9, 2]], -6, '#b4d7a2', '#8fbf84');
+  const r = rastgele(5), arka = [[3, 3, 0.2], [1.2, 7, 1]];
+  for (let i = 0; i < 6; i++) { const x = (i + 0.2 + r() * 0.6) * W / 6; agacKume(x, -T(x, arka) - 0.6, 2 + (i % 3), 1.4 + r() * 0.5); }
+  const ex_ = W * 0.62, ey_ = -T(W * 0.62, arka) - 0.6;
+  c.fillStyle = '#e8846f'; c.fillRect(ex_ - 3, ey_ - 3.6, 6, 3.6); c.strokeStyle = INK; c.lineWidth = 0.3; c.strokeRect(ex_ - 3, ey_ - 3.6, 6, 3.6);
+  poli(c, [ex_ - 3.6, ey_ - 3.5, ex_, ey_ - 6.6, ex_ + 3.6, ey_ - 3.5]); dol(c, '#9a5a48'); cizgi(c, 0.3);
+  c.fillStyle = '#fff'; c.fillRect(ex_ - 0.8, ey_ - 2.4, 1.6, 2.4);
+  tepe([[2.2, 3, 0.2], [1.2, 7, 1], [0.5, 13, 0.3]], 0, '#a2cf92', '#7fb57a');
+  // tarlalar: dalgalı sınırlı şeritler, her şerit eğri ayraçlarla parsellere bölünür
+  const renkler = ['#a3c98f', '#c3d39a', '#d9d0a0', '#94bf88', '#b9cf9c', '#cfc795'];
+  const sinir = (k, x) => { let y = 1.5; for (let i = 0; i < k; i++) y += 4 + i * 1.7; return y + (k ? 1.6 * Math.sin(2 * Math.PI * (k % 3 + 1) * x / W + k) : 0); };
+  for (let k = 0; k < 9; k++) {
+    const n = 3 + (k % 3), ofs = r();
+    for (let p = 0; p < n; p++) {
+      const xa = ((p + ofs) / n) * W, xb = ((p + 1 + ofs) / n) * W;
+      c.beginPath();
+      for (let x = xa; x <= xb + 0.01; x += 2) c.lineTo(x, sinir(k, x));
+      for (let x = xb; x >= xa - 0.01; x -= 2) c.lineTo(x + 1.5 * Math.sin((x - xb) * 0.2 + k), sinir(k + 1, x));
+      c.closePath(); c.fillStyle = renkler[(k * 2 + p) % renkler.length]; c.fill();
+      // sürüm izleri
+      c.save(); c.clip(); c.strokeStyle = 'rgba(70,110,60,.18)'; c.lineWidth = 0.3;
+      for (let j = 1; j < 6; j++) { c.beginPath(); for (let x = xa - 2; x <= xb + 2; x += 3) c.lineTo(x, lerp(sinir(k, x), sinir(k + 1, x), j / 6)); c.stroke(); }
+      c.restore();
+      if (xb > W) { c.save(); c.translate(-W, 0); c.beginPath(); for (let x = xa; x <= xb + 0.01; x += 2) c.lineTo(x, sinir(k, x)); for (let x = xb; x >= xa - 0.01; x -= 2) c.lineTo(x + 1.5 * Math.sin((x - xb) * 0.2 + k), sinir(k + 1, x)); c.closePath(); c.fillStyle = renkler[(k * 2 + p) % renkler.length]; c.fill(); c.restore(); }
+    }
+    c.beginPath(); for (let x = 0; x <= W; x += 2) c.lineTo(x, sinir(k + 1, x)); c.strokeStyle = '#7fa871'; c.lineWidth = 0.5; c.stroke();
   }
-  const ex = W * 0.62, ey = -T(W * 0.62, [[3, 3, 0.2], [1.2, 7, 1]]) - 0.6;
-  c.fillStyle = '#ff5a4a'; c.fillRect(ex - 3, ey - 3.6, 6, 3.6); c.strokeStyle = INK; c.lineWidth = 0.3; c.strokeRect(ex - 3, ey - 3.6, 6, 3.6);
-  poli(c, [ex - 3.6, ey - 3.5, ex, ey - 6.6, ex + 3.6, ey - 3.5]); dol(c, '#8a3a2a'); cizgi(c, 0.3);
-  c.fillStyle = '#fff'; c.fillRect(ex - 0.8, ey - 2.4, 1.6, 2.4);
-  tepe([[2.2, 3, 0.2], [1.2, 7, 1], [0.5, 13, 0.3]], 0, '#6bd36a', '#3fb34f');
-  // tarlalar (yer altı bandı, perspektifsiz şeritler)
-  const renkler = ['#5cc463', '#8fd65a', '#ffd45a', '#4fb85a', '#b9e06a', '#f2c14e'];
-  let y = 1.5, sat = 0;
-  while (y < 90) {
-    const h = 3 + sat * 1.4; let x = 0, j = sat * 3;
-    while (x < W) { const w = W / (4 + (sat % 3)); c.fillStyle = renkler[(j++) % renkler.length]; c.fillRect(x, y, w + 0.2, h + 0.2);
-      c.strokeStyle = 'rgba(40,90,40,.25)'; c.lineWidth = 0.3; for (let k = 1; k < h / 1.2; k++) { c.beginPath(); c.moveTo(x, y + k * 1.2); c.lineTo(x + w, y + k * 1.2); c.stroke(); }
-      x += w; }
-    c.fillStyle = '#3f9a45'; c.fillRect(0, y + h - 0.3, W, 0.6);
-    y += h; sat++;
-  }
+  // yol (kıvrımlı, döşenebilir)
+  const yol = x => 16 + 5 * Math.sin(2 * Math.PI * 2 * x / W + 0.7) + 2 * Math.sin(2 * Math.PI * 5 * x / W);
+  c.beginPath(); for (let x = 0; x <= W; x += 1) c.lineTo(x, yol(x)); c.strokeStyle = '#b8a77f'; c.lineWidth = 3.2; c.stroke(); c.strokeStyle = '#e9dfc4'; c.lineWidth = 2.4; c.stroke();
+  // tarla aralarında ağaç kümeleri
+  for (let i = 0; i < 5; i++) { const x = (i + 0.5) * W / 5 + 7, k = 2 + (i % 4) * 2; agacKume(x, sinir(k, x) + 0.6, 2 + (i % 2), 1.5); }
 }
-function uzakTepe(c, W) {
-  const T = (x) => 5 * Math.sin(2 * Math.PI * 2 * x / W + 1) + 3 * Math.sin(2 * Math.PI * 5 * x / W) + 1.5 * Math.sin(2 * Math.PI * 11 * x / W + 2);
-  c.beginPath(); c.moveTo(0, 30); for (let x = 0; x <= W; x += 1) c.lineTo(x, -T(x) - 2); c.lineTo(W, 30); c.closePath();
-  const g = c.createLinearGradient(0, -12, 0, 20); g.addColorStop(0, '#9fd0e8'); g.addColorStop(1, '#bfe6f2'); c.fillStyle = g; c.fill();
+function lerp(a, b, t) { return a + (b - a) * t; }
+function uzakTepe(c, W) {   // soluk mor-yeşil tepe siluetleri (deniz değil); alt kısım sahnede sisle zemine erir
+  const sirt = (ks, taban, ust, alt) => {
+    const T = (x) => ks.reduce((t, [a, k, f]) => t + a * Math.sin(2 * Math.PI * k * x / W + f), 0);
+    c.beginPath(); c.moveTo(0, 30); for (let x = 0; x <= W; x += 1) c.lineTo(x, taban - T(x)); c.lineTo(W, 30); c.closePath();
+    const g = c.createLinearGradient(0, taban - 12, 0, 26); g.addColorStop(0, ust); g.addColorStop(1, alt); c.fillStyle = g; c.fill();
+  };
+  sirt([[6, 2, 1], [3, 5, 0], [1.5, 11, 2]], -8, '#b3a9da', '#c9c8e0');
+  sirt([[4, 3, 0.4], [2, 7, 1.1], [1, 13, 0.2]], -1, '#9fbfa6', '#bcd0c0');
 }
 function rampa(c) {   // rampa: ray (−76.8, 0) → (0, 60) dünya; sprite'ta y aşağı
   const bx = -76.8;
@@ -523,39 +542,40 @@ function rampa(c) {   // rampa: ray (−76.8, 0) → (0, 60) dünya; sprite'ta y
 // ---------------------------------------------------------------- SPRITE TANIMLARI
 // x0,y0,x1,y1: sınır (birim). d: yoğunluk çarpanı. ol: dış kontur (birim; 0 = yok).
 const SPRITE = [];
-const ekle = (ad, x0, y0, x1, y1, ciz, o = {}) => SPRITE.push({ ad, x0, y0, x1, y1, ciz, d: o.d ?? 1, ol: o.ol ?? 0.9 });
+const OLPX = 2.5, KN = 1.9, ol = (m = 1) => OLPX / (KN * m);   // dış kontur (birim) = 2,5 px / (1,9 px/birim × görüntüleme çarpanı)
+const ekle = (ad, x0, y0, x1, y1, ciz, o = {}) => SPRITE.push({ ad, x0, y0, x1, y1, ciz, d: o.d ?? 1, ol: o.ol ?? ol(1), olRenk: o.olRenk || null });
 ekle('roket_ust', -7.4, -7.8, 13, 7.8, roketUst);
 ekle('roket_alt', -21, -10.4, -4.6, 10.4, roketAlt);
 ekle('cam', -2.5, -2.8, 3, 2.6, camParlak, { ol: 0 });
 for (const f of ['notr', 'heyecan', 'saskin', 'kararli']) {
   ekle('pilot_' + f, -2.6, -2.6, 2.6, 2.6, c => pilotKafa(c, 2.35, f, false), { ol: 0, d: 1.5 });
-  ekle('portre_' + f, -17, -23, 17, 16, c => pilotKafa(c, 15, f, true), { ol: 0.9 });
+  ekle('portre_' + f, -17.5, -23.5, 17.5, 16.5, c => pilotKafa(c, 15, f, true), { ol: ol(1.75 / 1.9) });
 }
 for (let i = 0; i < 4; i++) { ekle('alev_' + i, -13, -4, 1, 4, c => alev(c, i, false), { ol: 0 }); ekle('alev_dalis_' + i, -21, -5, 1, 5, c => alev(c, i, true), { ol: 0 }); }
 ekle('balon', -13, -13, 13, 23, c => balon(c, 'normal'));
 ekle('balon_ezik', -13, -13, 13, 23, c => balon(c, 'ezik'));
-for (const f of ['normal', 'ezik', 'yama']) ekle('zeplin_' + f, -28.5, -23, 33.5, 21, c => zeplin(c, f));
-for (const f of ['yukari', 'orta', 'asagi', 'sersem']) ekle('marti_' + f, -8, -11, 10.5, 8.6, c => marti(c, f));
+for (const f of ['normal', 'ezik', 'yama']) ekle('zeplin_' + f, -21, -23, 25.5, 21, c => zeplin(c, f));
+for (const f of ['yukari', 'orta', 'asagi', 'sersem']) ekle('marti_' + f, -8, -11, 10.5, 8.6, c => marti(c, f), { ol: ol(0.85) });
 for (const [f, k] of [['a', 'a'], ['b', 'b'], ['saskin', 'a']]) ekle('ucurtma_' + f, -6.6, -9.2, 6.6, 18.6, c => ucurtma(c, f === 'saskin' ? 'saskin' : 'normal', k));
 ekle('dron_a', -13, -5.6, 13, 9.8, c => dron(c, 'a'));
 ekle('dron_b', -13, -5.6, 13, 9.8, c => dron(c, 'b'));
 ekle('dron_bos', -13, -5.6, 13, 2.6, c => dron(c, 'a', false));
 ekle('bidon', -2.8, -1, 2.8, 5.6, c => bidon(c, 0, 0));
-for (let i = 0; i < 4; i++) ekle('toz_' + i, -13, -11, 13, 11, c => toz(c, i), { ol: 0 });
-for (let i = 0; i < 3; i++) ekle('yildiz_' + i, -11.5, -11.5, 11.5, 11.5, c => yildizPatlama(c, i), { ol: i === 1 ? 0.6 : 0 });
+for (let i = 0; i < 4; i++) ekle('toz_' + i, -13, -11, 13, 11, c => toz(c, i), { ol: ol(0.9) });
+for (let i = 0; i < 3; i++) ekle('yildiz_' + i, -11.5, -11.5, 11.5, 11.5, c => yildizPatlama(c, i), { ol: i === 1 ? ol(1.1) : 0 });
 ekle('parilti', -2.8, -2.8, 2.8, 2.8, parilti, { ol: 0 });
-ekle('tuy', -2.8, -1.4, 2.6, 1.3, tuy, { ol: 0.4 });
-ekle('balon_parca', -2.2, -1.6, 2.4, 1.3, balonParca, { ol: 0 });
+ekle('tuy', -2.8, -1.4, 2.6, 1.3, tuy);
+ekle('balon_parca', -2.2, -1.6, 2.4, 1.3, balonParca, { ol: ol(1.2) });
 ekle('ses_konisi', -17, -11.5, 1.5, 11.5, sesKonisi, { ol: 0 });
-ekle('jeton', -2.6, -2.6, 2.6, 2.6, jeton, { ol: 0.5 });
-ekle('parasut', -8, -16, 8, 0.5, parasut, { ol: 0.7 });
-ekle('bulut_0', -30, -17, 30, 9, c => bulut(c, 60, 16, 3, false), { ol: 0, d: 0.6 });
-ekle('bulut_1', -22, -15, 22, 8, c => bulut(c, 44, 14, 8, false), { ol: 0, d: 0.6 });
-ekle('bulut_2', -38, -19, 38, 10, c => bulut(c, 76, 18, 21, false), { ol: 0, d: 0.6 });
-ekle('bulut_uzak_0', -40, -11, 40, 6, c => bulut(c, 80, 10, 5, true), { ol: 0, d: 0.35 });
-ekle('bulut_uzak_1', -30, -10, 30, 6, c => bulut(c, 60, 9, 13, true), { ol: 0, d: 0.35 });
+ekle('jeton', -2.6, -2.6, 2.6, 2.6, jeton, { ol: ol(1.1) });
+ekle('parasut', -8, -16, 8, 0.5, parasut);
+ekle('bulut_0', -31, -19, 31, 10, c => bulut(c, 60, 16, 3, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_1', -23, -16.5, 23, 9, c => bulut(c, 44, 14, 8, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_2', -37.5, -21, 37.5, 11, c => bulut(c, 76, 18, 21, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_uzak_0', -39, -6, 39, 6, c => bulut(c, 80, 10, 5, true), { ol: 0, d: 0.35 });
+ekle('bulut_uzak_1', -30, -5.5, 30, 5.5, c => bulut(c, 60, 9, 13, true), { ol: 0, d: 0.35 });
 ekle('zemin', 0, -16, 200, 90, c => zemin(c, 200), { ol: 0, d: 0.5 });
 ekle('uzak_tepe', 0, -14, 300, 30, c => uzakTepe(c, 300), { ol: 0, d: 0.3 });
-ekle('rampa', -80, -60, 4, 2.5, rampa, { ol: 0, d: 0.6 });
+ekle('rampa', -80, -61, 4, 2.5, rampa, { d: 0.6 });
 
 if (typeof module !== 'undefined') module.exports = { SPRITE, ST, INK };

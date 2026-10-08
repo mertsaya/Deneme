@@ -39,6 +39,10 @@ def main():
     yaz(ONIZ / "kontak.png", r["kontak"])
     yaz(ONIZ / "karsilastirma_tarz.png", r["karsilastir"])
     yaz(ONIZ / "karsilastirma_pilot.png", r["pilot"])
+    # sahnenin sekme değerleri B0 şartnamesinden (oyun/b0/ayar.json, TIPLER); zeplin k en çok 0,92
+    tip = json.loads((KOK.parent / "b0" / "ayar.json").read_text())["TIPLER"]
+    b0 = {ad: {"r": tip[ad]["r"], "aci": tip[ad]["aci"], "k": min(tip[ad]["k"], 0.92) if ad == "zeplin" else tip[ad]["k"]} for ad in ("balon", "zeplin")}
+    (SPRITE / "b0_tipler.json").write_text(json.dumps(b0, ensure_ascii=False))
     toplam = sum(f.stat().st_size for f in SPRITE.iterdir())
     print(f"{len(r['atlas']['json']['sprite'])} sprite, {len(r['atlas']['png'])} atlas sayfası, sprite klasörü {toplam/1024:.0f} KB")
 
