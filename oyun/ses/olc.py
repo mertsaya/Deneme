@@ -218,7 +218,7 @@ def spektrogram(KAT, sonuc, sinyal):
             a.axhline(500, color='cyan', lw=0.5, ls='--')
         ax[-1, 0].set_xlabel('s')
         fig.tight_layout()
-        fig.savefig(os.path.join(SPEK, f'{kat}.png'), dpi=80)
+        fig.savefig(os.path.join(SPEK, f'{kat}.png'), dpi=60)
         plt.close(fig)
 
 
