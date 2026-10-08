@@ -149,8 +149,8 @@ def roket(pilot_ifade="heyecan", R=0.52):
     g2 = torna("govde_2", pr2, BEYAZ, parent=k2)
     # pencere oyuğu (boolean; iç yüzey koyu)
     ICK = plastik("kabin_ic", "#1d2a5c", rough=0.6, sss=0, kenar=0)
-    kes = silindir("pencere_oyuk", 0.235, 1.0, ICK, loc=(0.36, -0.55, 0.02), rot=(math.pi / 2, 0, 0), seg=40)
-    kes.hide_render = True; kes.hide_viewport = True; kes.parent = k2
+    kes = silindir("pencere_oyuk", 0.275, 1.0, ICK, loc=(0.36, -0.55, 0.02), rot=(math.pi / 2, 0, 0), seg=40)
+    kes.hide_render = True; kes["gizli"] = True; kes.parent = k2
     g2.data.materials.append(ICK)
     b = g2.modifiers.new("oyuk", "BOOLEAN"); b.operation = "DIFFERENCE"; b.object = kes; b.solver = "EXACT"; b.material_mode = "TRANSFER"
     kabuk(g2, hk)
@@ -167,15 +167,15 @@ def roket(pilot_ifade="heyecan", R=0.52):
         f.rotation_euler = (math.radians(phi), 0, 0); yumusat(f, 1); kabuk(f, hk)
     # pencere
     pen = bos("pencere", parent=k2)
-    cer = simit("pencere_cerceve", 0.255, 0.055, GRI, loc=(0.36, -R + 0.05, 0.02), rot=(math.pi / 2, 0, 0), parent=pen); kabuk(yumusat(cer, 1), hk)
-    kure("kabin_arka", 0.24, ICK, loc=(0.36, -0.05, 0.02), parent=pen)
+    cer = simit("pencere_cerceve", 0.30, 0.06, GRI, loc=(0.36, -R + 0.05, 0.02), rot=(math.pi / 2, 0, 0), parent=pen); kabuk(yumusat(cer, 1), hk)
+    kure("kabin_arka", 0.30, ICK, loc=(0.36, -0.05, 0.02), parent=pen)
     # pilot kafası pencerede
-    pk = pilot(govde=False, anten=False, ifadeler={pilot_ifade: PILOT_IFADE[pilot_ifade]}, olcek=0.205, ad="pilot_kabin")
-    pk.parent = pen; pk.location = (0.36, -0.20, 0.0); pk.rotation_euler = (0, 0, math.radians(8))
+    pk = pilot(govde=False, anten=False, ifadeler={pilot_ifade: PILOT_IFADE[pilot_ifade]}, olcek=0.25, ad="pilot_kabin")
+    pk.parent = pen; pk.location = (0.36, -0.17, -0.02); pk.rotation_euler = (0, 0, math.radians(8))
     cam = cam_mat()
-    camo = kure("pencere_cam", 0.235, cam, loc=(0.36, -R + 0.02, 0.02), olcek=(1, 0.32, 1), parent=pen)
+    camo = kure("pencere_cam", 0.28, cam, loc=(0.36, -R + 0.02, 0.02), olcek=(1, 0.32, 1), parent=pen)
     camo.visible_shadow = False
-    par = kure("cam_parilti", 0.07, isikli("parilti_beyaz", "#ffffff", 1.0, alfa=0.85), loc=(0.27, -R - 0.06, 0.13), olcek=(0.9, 0.3, 0.45), parent=pen)
+    par = kure("cam_parilti", 0.07, isikli("parilti_beyaz", "#ffffff", 1.0, alfa=0.85), loc=(0.25, -R - 0.06, 0.15), olcek=(1.0, 0.3, 0.45), parent=pen)
     par.rotation_euler = (0, math.radians(35), 0); par.visible_shadow = False
     return kok
 
@@ -226,9 +226,9 @@ def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
     hal = simit("kask_halka", math.sin(ac) * 0.985, 0.075, GRI, loc=(0, -math.cos(ac) * 0.98, 0), rot=(math.pi / 2, 0, 0), parent=kok)
     kabuk(yumusat(hal, 1), hk)
     # açık vizör: kaskın üstüne kalkmış altın cam
-    viz = kapak_kure("vizor", 1.07, lambda c: c.y < -math.cos(math.radians(47)) * 1.07, plastik("vizor", P["altin"], rough=0.08, sss=0, coat=1.0, kenar=0.9))
+    viz = kapak_kure("vizor", 1.06, lambda c: c.y < -math.cos(math.radians(44)) * 1.06, plastik("vizor", "#46b8ff", rough=0.06, sss=0, coat=1.0, kenar=1.2))
     so = viz.modifiers.new("kalinlik", "SOLIDIFY"); so.thickness = 0.04; so.offset = -1
-    viz.rotation_euler = (math.radians(-64), 0, 0); yumusat(viz, 1); kabuk(viz, hk)
+    viz.rotation_euler = (math.radians(-80), 0, 0); yumusat(viz, 1); kabuk(viz, hk)
     # kulaklıklar
     for sd in (-1, 1):
         k = silindir(f"kulak_{'l' if sd < 0 else 'r'}", 0.27, 0.16, KIR, loc=(sd * 0.98, 0.0, -0.02), rot=(0, math.pi / 2, 0), parent=kok, seg=32, pah=0.05)
@@ -321,11 +321,11 @@ def zeplin(ifadeler=None):
         yumusat(f, 1); kabuk(f, hk)
     gon = bos("gondol", parent=govde)
     g = torna("gondol_govde", [(-0.15, 0)] + yay(-0.05, 0.15, 0.12, 180, 90) + yay(0.95, 0.12, 0.15, 90, 0) + [(1.1, 0)], SARI, parent=gon)
-    g.location = (0.0, 0, -1.12); yumusat(g, 1); kabuk(g, hk)
+    g.location = (0.0, 0, -1.02); yumusat(g, 1); kabuk(g, hk)
     for sx in (0.15, 0.85):
-        d = silindir(f"gondol_ip_{sx}", 0.03, 0.3, plastik("metal", P["gri"]), loc=(sx, 0, -0.9), parent=gon); kabuk(d, 0.015)
+        d = silindir(f"gondol_ip_{sx}", 0.03, 0.3, plastik("metal", P["gri"]), loc=(sx, 0, -0.82), parent=gon); kabuk(d, 0.015)
     for i, sx in enumerate((0.2, 0.47, 0.74)):
-        w = kure(f"gondol_pencere_{i}", 0.085, plastik("pencere", "#2b4fa8", rough=0.1, coat=1, kenar=0), loc=(sx, -0.25, -1.1), olcek=(1, 0.35, 1), parent=gon)
+        w = kure(f"gondol_pencere_{i}", 0.085, plastik("pencere", "#2b4fa8", rough=0.1, coat=1, kenar=0), loc=(sx, -0.25, -1.0), olcek=(1, 0.35, 1), parent=gon)
         kabuk(w, 0.02)
     per = bos("pervane", parent=govde, loc=(-2.42, 0, 0))
     kabuk(kure("pervane_gobek", 0.12, plastik("metal", P["gri"]), parent=per), hk)

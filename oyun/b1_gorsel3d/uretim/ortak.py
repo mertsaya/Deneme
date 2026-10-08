@@ -85,7 +85,6 @@ def isik(ad, tip, loc, hedef=(0, 0, 0), guc=100, boy=2.0, renk="#ffffff", aci=No
     o = bpy.data.objects.new(ad, ld); bpy.context.scene.collection.objects.link(o)
     o.location = loc
     d = Vector(hedef) - Vector(loc); o.rotation_euler = d.to_track_quat("-Z", "Y").to_euler()
-    ld.cycles.cast_shadow = True
     return o
 
 def isik_kur():
@@ -102,6 +101,8 @@ def isik_kur():
         isik("gunes", "SUN", (-5, -6, 8), guc=3.6, renk="#fff0d6", aci=12)
         isik("kenar_soguk", "AREA", (6, 9, 6), guc=2600, boy=4, renk="#d8f0ff")
         isik("kenar_sicak", "AREA", (-8, 8, 1), guc=1500, boy=4, renk="#ffd2a6")
+        # yüz dolgusu: kameradan gelen zayıf, geniş, sıcak ışık (kask içindeki yüz kararmasın)
+        isik("yuz_dolgu", "AREA", (1, -14, 2), guc=900, boy=10, renk="#fff4e8")
 
 # ---------------------------------------------------------------- malzemeler
 _MATS = {}
@@ -471,7 +472,7 @@ def goster(kokler):
         for o in alt_nesneler(k): izin.add(o.name)
     for o in bpy.context.scene.objects:
         if o.type in ("LIGHT", "CAMERA"): continue
-        o.hide_render = o.name not in izin
+        o.hide_render = (o.name not in izin) or bool(o.get("gizli"))
 
 def sinir(kokler):
     bpy.context.view_layer.update()

@@ -48,6 +48,9 @@ AYAR = dict(
     # rampa
     rampa_y=60.0, rampa_aci=38.0, rampa_v=70.0, rampa_v_sv=16.0,   # 12→16: üst sınır 190→230 (zayıf oyuncu tabanı)
     rampa_oto=3.0,             # dokunmazsan 3 s sonra otomatik "iyi"
+    aci_aralik=(26.0, 52.0),   # kalkış açısı seçimi (kullanıcı kararı): oyuncu girdisi; verilmezse rampa_aci (38) — eski sonuçlar/eşlik aynen
+    aci_hiz_k=0.0,             # açıya bağlı kalkış hızı: v × (1 + k·(38 − açı)/26) (alçak açı biraz hızlı)
+    aci_oto=3.0,               # açı fazı: dokunmazsan 3 s sonra orta açı (rampa_aci)
     kalite=dict(mukemmel=1.30, iyi=1.0, zayif=0.80),
     mukemmel_bolge=0.12, mukemmel_bolge_sv=0.024,
     mukemmel_bonus_sv=0.05,    # +%30 → +%55
@@ -302,15 +305,17 @@ class Ucus:
         s.olay.append((round(s.t, 2),) + a)
 
     # ---------- rampa
-    def kalkis(s, kalite, rampa_t):
+    def kalkis(s, kalite, rampa_t, aci=None):
         A = s.A
+        s.aci = A['rampa_aci'] if aci is None else aci
         s.rampa_t = rampa_t
         v = A['rampa_v'] + A['rampa_v_sv'] * s.sv.get('rampa', 0)
         q = A['kalite'][kalite]
         if kalite == 'mukemmel':
             q += A['mukemmel_bonus_sv'] * s.sv.get('m_bonus', 0)
         v *= q
-        a = math.radians(A['rampa_aci'])
+        v *= 1 + A['aci_hiz_k'] * (A['rampa_aci'] - s.aci) / (A['aci_aralik'][1] - A['aci_aralik'][0])
+        a = math.radians(s.aci)
         s.vx, s.vy = v * math.cos(a), v * math.sin(a)
         s.v_kalkis = v
         s.kalite = kalite
