@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<title>SAHTE B0 (yalniz testci smoke-test icin; oyun degildir)</title>
+<style>
+html,body{margin:0;height:100%;overflow:hidden;background:#9cf;font:16px sans-serif;touch-action:none;user-select:none}
+canvas{position:fixed;inset:0;width:100%;height:100%}
+.d{position:fixed;min-width:56px;min-height:56px;font-size:16px;z-index:5}
+#duraklat{top:4px;right:4px} #menu{position:fixed;inset:80px 20px auto 20px;background:#fff;padding:10px;z-index:6;display:none}
+#menu button{display:block;width:100%;min-height:52px;margin:8px 0}
+#kk,#hangar{position:fixed;inset:0;background:#ddd;z-index:4;display:none;padding:20px}
+#kk button,#hangar button{min-height:52px;min-width:120px;margin:8px}
+#bilgi{position:fixed;top:4px;left:4px;color:#000;font-weight:bold}
+</style></head><body>
+<canvas id="c"></canvas>
+<div id="bilgi"></div>
+<button class="d" id="duraklat" aria-label="Duraklat">||</button>
+<div id="menu"><button id="devam">DEVAM</button><button id="yeniden">YENİDEN BAŞLA</button><button id="mhangar">HANGAR</button></div>
+<div id="kk"><h2>UÇUŞ RAPORU</h2><p id="kkt"></p><button id="tekrar">TEKRAR UÇ</button><button id="khangar">HANGAR</button></div>
+<div id="hangar"><h2>HANGAR</h2><p id="hj"></p><button id="uc">UÇ</button><button id="satin">Rampa gücü 60</button></div>
+<script>
+// Kancalari taklit eder (TASARIM.md 17). Fizik YOK: sonuclar tohumdan uretilir.
+const Q = new URLSearchParams(location.search);
+const num = (k, d) => Q.has(k) ? +Q.get(k) : d;
+const KAYIT0 = Q.get('kayit') === '0';
+const HIZ = num('hiz', 1);
+const BOT = Q.get('bot');
+const SEED = num('seed', 1);
+function mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const VARSAY = () => ({v:1,jeton:0,tur:0,sv:{rampa:0,bolge:0,verim:0,dalis:0,kademe_itki:0,yakit_ac:0,yakit_s:0},duvar:{ses:null},
+  rekor:{mesafe_g:0,max_v:0,max_y:0},son:[],son_dalis:[],ipucu:{rampa:false,dalis:false,sekme:false,yakit:false},
+  ayar:{efekt:80,titresim:true,hareket_azalt:null,isik:false,yazi:1.0,kalite:'oto'},bekleyen:null});
+let kayit = VARSAY();
+const bellek = {};
+function oku(){ if(KAYIT0) return kayit; let s=null; try{s=localStorage.getItem('sdp_kayit')}catch(e){}
+  if(s==null) return VARSAY(); try{const o=JSON.parse(s); if(!o||o.v!==1||typeof o.jeton!=='number') throw 0; return o;}
+  catch(e){ try{localStorage.setItem('sdp_kayit_bozuk',s)}catch(_){} return VARSAY(); } }
+function yaz(o){ kayit=o; if(!KAYIT0) localStorage.setItem('sdp_kayit',JSON.stringify(o)); }
+kayit = oku();
+if(kayit.bekleyen){ kayit.jeton += kayit.bekleyen; kayit.bekleyen=null; yaz(kayit); }
+
+function tur(seed, sv, bot, turNo){
+  sv = sv||{}; const r = mulberry32(seed*7919+13);
+  const iyi = {hic:0,kotu:.3,orta:.6,iyi:1,usta:1.2}[bot||'hic'] ?? 0;
+  const carp = 1 + 0.6*iyi + 0.05*(sv.rampa||0);
+  const sure = Math.min(64, 16 + r()*10 + iyi*3);
+  const mesafe = (1000 + r()*200) * carp;
+  return {sekme: 3+Math.floor(r()*4)+Math.round(iyi*3), mukemmel: Math.round(iyi*2), temas: 6, son_sans: 1, dalis: Math.round(iyi*3),
+    max_v: 100+60*iyi+r()*20, max_y: 300+r()*100, kazanc: 100+60*iyi, kazanc_nesne: 60, vay_t: 2+r()*2, mesafe, mesafe_g: mesafe/1000*3,
+    sure_ucus: sure-1, sure_tur: sure, bitis: 'durma', duvar: iyi>=1&&(turNo||1)>=2?['ses']:[], temas_s: .3, kademe_kalan: 0,
+    ekran_ort: 7, ekran_az_oran: 0, firsat: 1, firsat_tut: 0, kalite: 'iyi'};
+}
+function kampanya(seed, bot, n){
+  let sv={rampa:0}, ilk={}, turlar=[], yok=0, enyok=0, para=0;
+  for(let i=1;i<=n;i++){ const r=tur(seed*1000+i,sv,bot,i); para+=r.kazanc; let al=false;
+    if(para>=60*(1+sv.rampa)&&sv.rampa<6){para-=60*(1+sv.rampa);sv={...sv,rampa:sv.rampa+1};al=true}
+    if(r.duvar.length&&!ilk.ses) ilk.ses=i; yok = al?0:yok+1; enyok=Math.max(enyok,yok);
+    turlar.push({tur:i,sure:r.sure_tur,mesafe:r.mesafe,max_v:r.max_v,max_y:r.max_y,kazanc:r.kazanc,al,bitis:r.bitis,sv:{...sv}}); }
+  return {seed,bot,ilk,en_uzun_yok:enyok,turlar,para};
+}
+// ---- oyun durumu
+let asama='HANGAR', t=0, gosterge=1, kazanc=0, olaylar=[], sonuclar=[], sonSonuc=null, duraklat=false, sayim=0, rampaT=0, mevcut=null, turSay=0;
+let ses=null;
+function sesBaslat(){ if(ses) { if(ses.state==='suspended') ses.resume(); return; }
+  const AC=window.AudioContext; if(!AC) return; ses=new AC(); if(ses.state==='suspended') ses.resume();
+  // tam ekran / kilit / titresim denemesi: reddedilirse yut
+  try{document.documentElement.requestFullscreen().catch(()=>{})}catch(e){}
+  try{screen.orientation.lock('portrait').catch(()=>{})}catch(e){}
+  try{navigator.vibrate&&navigator.vibrate(10)}catch(e){} }
+function basla(){ turSay++; mevcut=tur(SEED+ (turSay-1), kayit.sv, BOT||'hic', kayit.tur+1); asama='RAMPA'; t=0; rampaT=0; gosterge=1; kazanc=0; olaylar=[]; gizle(); }
+function bitir(elle){ asama='BITIS'; olaylar=[[t,'bitis']]; sonSonuc=mevcut;
+  const k = elle? Math.round(mevcut.kazanc_nesne*(t/mevcut.sure_tur)) : Math.round(mevcut.kazanc);
+  kayit.jeton+=k; kayit.tur++; kayit.bekleyen=null; yaz(kayit);
+  setTimeout(()=>{ if(asama==='BITIS'){ asama='KARA_KUTU'; kkAc(k);} }, 1000/HIZ); }
+function gizle(){ for(const id of ['kk','hangar','menu']) document.getElementById(id).style.display='none'; }
+function kkAc(k){ gizle(); document.getElementById('kk').style.display='block'; document.getElementById('kkt').textContent='+'+k+' jeton'; }
+function hangarAc(){ gizle(); asama='HANGAR'; document.getElementById('hangar').style.display='block'; document.getElementById('hj').textContent='jeton '+kayit.jeton; }
+function dokun(){ if(duraklat||sayim>0) return false;
+  if(asama==='RAMPA'){ asama='UCUS'; t=0; olaylar.push([0,'kalkis']); return true; }
+  if(asama==='UCUS'){ if(gosterge>=1){ gosterge-=1; olaylar.push([t,'dalis']); return true;} return false; }
+  return false; }
+const $=(i)=>document.getElementById(i);
+$('uc').onclick=basla; $('tekrar').onclick=basla; $('khangar').onclick=hangarAc;
+$('satin').onclick=()=>{ if(kayit.jeton>=60){kayit.jeton-=60;kayit.sv.rampa++;yaz(kayit);hangarAc();} };
+$('duraklat').onclick=(e)=>{ e.stopPropagation(); if(asama==='UCUS'||asama==='RAMPA'){duraklat=true;$('menu').style.display='block';} };
+$('devam').onclick=(e)=>{ e.stopPropagation(); $('menu').style.display='none'; sayim=1.5; };
+$('yeniden').onclick=(e)=>{ e.stopPropagation(); duraklat=false; bitir(true); basla(); };
+$('mhangar').onclick=(e)=>{ e.stopPropagation(); duraklat=false; bitir(true); hangarAc(); };
+addEventListener('pointerdown', e=>{ sesBaslat(); if(e.target.closest('button')) return; dokun(); });
+function gorunurDegisti(){ if(document.hidden){ if(asama==='UCUS'||asama==='RAMPA'){duraklat=true; $('menu').style.display='block';
+    if(!KAYIT0){kayit.bekleyen=Math.round(mevcut.kazanc_nesne*(t/mevcut.sure_tur)); yaz(kayit);} } }
+  else if(kayit.bekleyen){ kayit.bekleyen=null; yaz(kayit);} }
+document.addEventListener('visibilitychange', gorunurDegisti); addEventListener('pagehide', ()=>{ if(asama==='UCUS'&&!KAYIT0){kayit.bekleyen=1;yaz(kayit);} });
+addEventListener('blur', ()=>{ if(!Q.has('toplu')&&!Q.has('kampanya')&&(asama==='UCUS')){duraklat=true;$('menu').style.display='block';} });
+function ilerle(dt){ // fizik zamani
+  if(duraklat) return; if(sayim>0){ sayim-=dt; return; }
+  if(asama==='RAMPA'){ rampaT+=dt; t=rampaT;
+    if(BOT && BOT!=='hic' && rampaT>0.9) dokun(); else if(rampaT>=3.0) dokun(); }
+  else if(asama==='UCUS'){ t+=dt; gosterge=Math.min(2,gosterge+dt*0.1);
+    if(BOT && BOT!=='hic' && gosterge>=1 && Math.floor(t*10)%17===0) dokun();
+    if(t>=mevcut.sure_ucus){ olaylar.push([t,'durma']); bitir(false); } } }
+const cv=$('c'), cx=cv.getContext('2d');
+function ciz(){ const W=cv.width=innerWidth*devicePixelRatio, H=cv.height=innerHeight*devicePixelRatio;
+  cx.fillStyle=asama==='UCUS'?'#6af':'#9cf'; cx.fillRect(0,0,W,H); cx.fillStyle='#333'; cx.fillRect(W*(.2+.5*Math.min(1,t/30)),H*.5,20,10);
+  $('bilgi').textContent=asama+' '+t.toFixed(1); }
+let son=performance.now();
+function kare(n){ let dt=Math.min(0.1,(n-son)/1000)*HIZ; son=n; const k=Math.max(1,Math.round(dt*120)); for(let i=0;i<k;i++) ilerle(dt/k); ciz(); requestAnimationFrame(kare); }
+// ?t=S : goruntusuz S sn ilerle, dondur
+if(Q.has('t')){ basla(); const S=num('t',0); const k=Math.round(S*120); if(BOT&&BOT!=='hic'){} for(let i=0;i<k && asama!=='BITIS' && asama!=='KARA_KUTU';i++){ ilerle(1/120);} duraklat=true; }
+else if(Q.has('toplu')){ sonuclar=[]; for(let i=0;i<num('toplu',1);i++) sonuclar.push(tur(SEED+i, {}, BOT||'hic', 1)); console.log(JSON.stringify(sonuclar)); }
+else if(Q.has('kampanya')){ sonuclar=kampanya(SEED, BOT||'hic', num('kampanya',1)); }
+else if(kayit.tur===0) basla(); else hangarAc();   // K-B: hangarsiz ilk tur
+window.__oyun = {
+  AYAR:{}, TIPLER:{}, GELISTIRME:{}, B0:{},
+  durum:()=>({asama,t,x:t*50,y:100,vx:50,vy:0,gosterge,kademe:0,kazanc,nesne_n:7,halka:null}),
+  adim:(n)=>{ for(let i=0;i<n;i++) ilerle(1/120); }, dokun,
+  tur:(s,sv,b,tn)=>tur(s,sv,b,tn), kampanya, get olaylar(){return olaylar}, get sonuclar(){return sonuclar},
+  kayit:{oku:()=>oku(), yaz:(o)=>yaz(o), sifirla:()=>{ if(!KAYIT0) localStorage.removeItem('sdp_kayit'); kayit=VARSAY(); }},
+  sesDurum:()=>ses?ses.state:null,
+};
+requestAnimationFrame(kare);
+</script></body></html>
