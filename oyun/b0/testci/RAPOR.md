@@ -1,6 +1,6 @@
 # B0 kabul raporu (otomatik: testci/kabul.py)
 
-Sayfa: `index.html` · Koşu: 2026-10-08 19:33 · Süre: 85 s · Konsol hatası: 2
+Sayfa: `index.html` · Koşu: 2026-10-08 19:36 · Süre: 86 s · Konsol hatası: 2
 
 | K | Ölçüt | Durum | Ayrıntı |
 |---|---|---|---|
@@ -10,11 +10,11 @@ Sayfa: `index.html` · Koşu: 2026-10-08 19:33 · Süre: 85 s · Konsol hatası:
 | K4 | Satın alma ritmi | **BILGI** | iyi: en uzun alisverissiz 1 (<=3); orta: en uzun alisverissiz 1 (<=3); hic: en uzun alisverissiz 2 (<=3) |
 | K5 | Ses duvarı tur | **BILGI** | ses duvari ilk kirilis medyan tur: {'iyi': 4, 'orta': 5, 'hic': 6} (iyi 2-3, hic <=8) |
 | K6 | Kampanya tur süresi | **BILGI** | iyi t5-15 sure medyan 51.7s, tavan %42; orta t5-15 sure medyan 30.2s, tavan %6; hic t5-15 sure medyan 21.2s, tavan %0 (hedef 20-40s, tavan <=%5) |
-| K7 | Yeniden başlatma <=0,5 / <=3 s | **GECTI** | TEKRAR UC -> RAMPA 0.24s (<=0,5), BITIS->KARA_KUTU 1.01s, bitis->rampa toplam ~1.65s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali |
+| K7 | Yeniden başlatma <=0,5 / <=3 s | **GECTI** | TEKRAR UC -> RAMPA 0.28s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~1.69s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali |
 | K8 | Sim eşliği (>=200 tohum) | **GECTI** | n=40; ayar_uret --denetle temiz; tum olculer uyumlu |
 | K9 | Belirlenimlilik | **GECTI** | ayni tohum ayni sonuc=True; hiz=4 vs hiz=8 olay gunlugu ayni=True (hiz=1 yerine 4 kullanildi, sure icin) |
 | K10 | Mantık denetimi (debug) | **GECTI** | debug=1 toplu=20: konsol uyari/hata 0; __oyun.uyarilar=0. NOT: oyun enerji denetimini konsola uyari olarak yazmali (uyar/enerji/ihlal ya da console.warn); yazmiyorsa bu madde guvenilir degil |
-| K11 | Kare hızı (telefon) | **ELLE** | telefon olcumu sart; headless swiftshader bilgisi: fps ort 59 min 30 |
+| K11 | Kare hızı (telefon) | **ELLE** | telefon olcumu sart; headless swiftshader bilgisi: fps ort 58 min 20 |
 | K12 | Kararlılık, 0 konsol hatası | **GECTI** | kampanya(iyi,50) cokmedi; konsol hata 0; heap artisi 0.1 MB (<20) |
 | K13 | Kayıt | **GECTI** | yenileyince jeton/sv ayni=True; gizlenince bekleyen={'j': 351, 'ses': True}, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak |
 | K14 | Duraklat | **GECTI** | gizlenince fizik durdu=True (dt=0.000); 3-2-1 sirasinda dokunus dalis yapmadi=True (gosterge 1.00->1.00); duraklat dugmesi dalis yapmadi=True; toplu'da blur duraklatmadi=True |
