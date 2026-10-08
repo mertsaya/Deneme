@@ -334,7 +334,7 @@ function bulutKatmani(f, boy, hucreW, hucreH, adlar, alfa, yMin, yMax, olasilik)
     const x = (i + hash(i + 5, j)) * hucreW, ad = adlar[Math.floor(hash(i, j + 7) * adlar.length)];
     const X = CW / 3 + (x - lx) * s, Y = CH / 2 - (y - ly) * s;
     if (X < -300 || X > CW + 300 || Y < -150 || Y > CH + 150) continue;
-    const yukA = kis((1300 - y) / 400, 0, 1);   // çok yüksekte bulut yok
+    const yukA = kis((1300 - y) / 400, 0, 1) * kis((950 - K.y) / 450, 0, 1);   // yükseldikçe bulutlar seyrelir (gece göğünde yok)
     spr(ad, X, Y, 0, s * boy * (0.8 + 0.4 * hash(j, i)), 1, 1, alfa * yukA);
   }
 }
