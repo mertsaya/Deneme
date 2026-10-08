@@ -390,10 +390,9 @@ function bidon(c, x, y) {
 
 // ---------------------------------------------------------------- EFEKTLER
 function toz(c, kare) {   // sekme tozu / duman puf'u: 4 kare, büyür ve dağılır
-  const r = rastgele(91), n = 6, b = 1 + kare * 0.55, a = 1 - kare * 0.18;
+  const r = rastgele(91), n = 6, b = 1 + kare * 0.55;   // saydamlık çalışma anında (kontur gri görünmesin)
   const top = [];
   for (let i = 0; i < n; i++) { const t = i / n * 6.283 + r(); top.push([Math.cos(t) * 2.6 * b, Math.sin(t) * 1.6 * b, (1.6 + r() * 1.2) * (1 + kare * 0.3)]); }
-  c.globalAlpha = a;
   c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + s, y); c.arc(x, y, s, 0, 6.283); } dol(c, '#c8c3ea');
   c.save(); c.clip(); c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x - 0.3 + s * 0.85, y - 0.5); c.arc(x - 0.3, y - 0.5, s * 0.85, 0, 6.283); } dol(c, '#ffffff'); c.restore();
   c.beginPath(); for (const [x, y, s] of top) { c.moveTo(x + s, y); c.arc(x, y, s, 0, 6.283); }
@@ -438,7 +437,7 @@ function parasut(c) {   // ayrılan kademe paraşütü; bağlantı noktası (0,0
   for (let i = 3; i >= -3; i--) c.quadraticCurveTo(i * 2.1 + 1.05, -10.4, i * 2.1 - 1.05 + 0 * i, -9);
   c.closePath(); c.save(); dol(c, dikey(c, '#ffffff', -15, -9)); c.clip();
   c.fillStyle = dikey(c, RENK.kirmizi, -15, -9); for (const x of [-5.2, 1.0]) c.fillRect(x, -17, 4.2 - (x > 0 ? 0 : 0), 9);
-  c.restore(); c.beginPath(); c.moveTo(-7.4, -9); c.bezierCurveTo(-7.4, -17, 7.4, -17, 7.4, -9); for (let i = 3; i >= -3; i--) c.quadraticCurveTo(i * 2.1 + 1.05, -10.4, i * 2.1 - 1.05, -9); c.closePath(); cizgi(c, IL, '#fff');
+  c.restore(); c.beginPath(); c.moveTo(-7.4, -9); c.bezierCurveTo(-7.4, -17, 7.4, -17, 7.4, -9); for (let i = 3; i >= -3; i--) c.quadraticCurveTo(i * 2.1 + 1.05, -10.4, i * 2.1 - 1.05, -9); c.closePath(); cizgi(c, IL * 2.4, '#fff');
 }
 function balonParca(c) {
   c.beginPath(); c.moveTo(-1.8, -0.8); c.quadraticCurveTo(0, -1.8, 2.0, -0.6); c.lineTo(1.2, 0.9); c.quadraticCurveTo(0, 0.2, -1.1, 0.9); c.closePath(); dol(c, '#ff3346'); cizgi(c, 0.3);
@@ -568,7 +567,7 @@ ekle('tuy', -2.8, -1.4, 2.6, 1.3, tuy);
 ekle('balon_parca', -2.2, -1.6, 2.4, 1.3, balonParca, { ol: ol(1.2) });
 ekle('ses_konisi', -17, -11.5, 1.5, 11.5, sesKonisi, { ol: 0 });
 ekle('jeton', -2.6, -2.6, 2.6, 2.6, jeton, { ol: ol(1.1) });
-ekle('parasut', -8, -16, 8, 0.5, parasut);
+ekle('parasut', -8.5, -16.5, 8.5, 0.8, parasut, { ol: 0 });
 ekle('bulut_0', -31, -19, 31, 10, c => bulut(c, 60, 16, 3, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
 ekle('bulut_1', -23, -16.5, 23, 9, c => bulut(c, 44, 14, 8, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
 ekle('bulut_2', -37.5, -21, 37.5, 11, c => bulut(c, 76, 18, 21, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
