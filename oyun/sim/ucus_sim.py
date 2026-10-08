@@ -73,6 +73,7 @@ AYAR = dict(
     ekran_hedef=7,             # ekranda her an hedef nesne sayısı (6–10)
     romorkor_garanti=False,    # SEÇENEK (kapalı): uçuşta romorkor_y ilk geçilince römorkör garanti çıkar (RAPOR §6)
     romorkor_y=1500.0,         # uzay römorkörü yalnız bu yüksekliğin üstünde çıkar (üst atmosfer sonu / yörünge girişi)
+    seyrek=dict(y=1000.0, t0=30.0, adim=10.0, kat=0.9, en_az=0.5),   # S8: y < 1.000'de (300 yetmedi: tavana çarpanlar bulut bandında) trambolin ağırlığı uçuşun 30. s'sinden sonra her 10 s'de ×0,9 (en az ×0,5)
     garanti_pay=25.0,          # sekme garantisi: rotanın en az 25 b altında, y ≥ 25
     # fırsat / ölümcül aralıkları (süre)
     firsat_ara=30.0, firsat_ara_sv=0.25, firsat_min=6.0,   # tür başına ortalama aralık /(1+0,25·sv), türler arası ≥ firsat_min s
@@ -89,7 +90,7 @@ AYAR = dict(
     rakip_odul=0.45,            # rampa zeplin vuruşu: hasar × 0,6 jeton (ICERIK formülündeki "zeplin vuruşu"); S4: 0,6→0,45
     km_odul=55.0,              # iç km (1.000 b) başına jeton (50→70→55; S4 erken gelir kesintisi)
     taban_odul=25.0, sure_odul=0.0,   # sponsor tabanı: tur başına sabit (para sıfırken bile kazanç > 0). Saniye ödemesi kaldırıldı (uzun turu ödüllendirmesin)
-    firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=4.5),   # FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
+    firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=5.5),   # S7: römorkör 4,5→5,5   # FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
     fiyat_us=1.55,
     ayar_tur=25,               # denge yalnız ilk 25 tur için ayarlı; 26–60 taslak
 )
@@ -312,6 +313,7 @@ class Ucus:
             h = v * {'mukemmel': 1.0, 'iyi': 0.4, 'zayif': 0.0}[kalite] * (1 + 0.15 * s.sv.get('zeplin_h', 0))
             s.rakip_hasar += h
             s.st['kazanc'] += h * A['rakip_odul']
+            s.st['kazanc_rakip'] = h * A['rakip_odul']
         s.ilk_doldur()
         # açılış zeplini: "vay" anı garantisi
         px, py = s.rota_nokta(A['acilis_sekme_dt'])
@@ -344,8 +346,14 @@ class Ucus:
         return pts
 
     # ---------- dünya yönetmeni (ekran başına yoğunluk)
+    def seyrek(s, y):
+        """S8: uzun uçuşta alçak bantta trambolin ağırlığı çarpanı (1 → en az 0,5)."""
+        Sy = s.A['seyrek']
+        return max(Sy['en_az'], Sy['kat'] ** int(max(0.0, s.t - Sy['t0']) // Sy['adim'])) if y < Sy['y'] else 1.0
+
     def tip_sec(s, y, sadece_tr=False):
-        tipler = [(n, T['w']) for n, T in TIPLER.items()
+        sk = s.seyrek(y)
+        tipler = [(n, T['w'] * (sk if T['sinif'] == 'tr' else 1.0)) for n, T in TIPLER.items()
                   if T['ymin'] <= y <= T['ymax'] and s.acik(n) and (not sadece_tr or T['sinif'] == 'tr')]
         if not tipler:
             return None
@@ -395,6 +403,9 @@ class Ucus:
         """Dalış menzilinde (pasif rotanın altında, y ≥ 25) en az 1 trambolin."""
         pts = s.rota()
         if len(pts) < 3:
+            return
+        sk = s.seyrek(s.y)
+        if sk < 1.0 and s.rng.random() > sk:   # S8: seyrelme garantiyi de kapsar
             return
         x0, x1 = s.x + 20, pts[-1][0]
         if x1 - x0 < 20:
@@ -843,6 +854,7 @@ class Ucus:
         st['son_y'], st['son_v'] = s.y, math.hypot(s.vx, s.vy)
         st['duvar'] = sorted(s.duvar)
         st['kazanc_nesne'] = st['kazanc']
+        st['kazanc_km'] = st.get('km_bant', s.x) / 1000 * s.A['km_odul']
         st['kazanc'] += st.get('km_bant', s.x) / 1000 * s.A['km_odul'] + s.A['taban_odul'] + s.A['sure_odul'] * s.t
         st['temas_s'] = st['temas'] / max(1e-6, s.t)
         st['kademe_kalan'] = s.kademe
