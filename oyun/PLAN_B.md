@@ -1,6 +1,8 @@
 # Son Durak: Plüton — Plan B (Burrito Bison mantığı)
 
-Taslak 6 · 2026-10-08 · Durum: kullanıcı onayı bekliyor
+Taslak 6.1 · 2026-10-08 · Durum: kullanıcı onayı bekliyor
+
+**6.1'de değişen (kullanıcı kararı):** Deniz kaldırıldı, her şey gökyüzünde. Sekme yüzeyi havadaki nesneler (zeplin, balon, helikopter…). Yere düşmek üzereyken boş kademe atılıp bir sonraki kademe olduğu yerden yeniden fırlar (son şans); kademeler bitince tur biter.
 
 Bu plan, Taslak 5'teki fikri (Dünya'dan Plüton'a, her denemeden sonra geliştirme) korur, oynanışı ise baştan Burrito Bison mantığına göre kurar. A0'daki gerçekçi uçuş simülasyonu bırakılır.
 
@@ -8,7 +10,7 @@ Bu plan, Taslak 5'teki fikri (Dünya'dan Plüton'a, her denemeden sonra gelişti
 
 ## 0. Kuzey yıldızı ve kalite çıtası
 
-**Tek cümle:** Rampadan fırlatılan çizgi film roketi, denizin üstünde sekerek, çarptığı şeylerden hız kaparak ve doğru anda dokunarak momentumunu korur. Yeterince hızlanırsa yörüngeye, sonra Ay'a, en sonunda Plüton'a "düşer".
+**Tek cümle:** Rampadan fırlatılan çizgi film roketi, gökyüzündeki zeplinlerden, balonlardan ve helikopterlerden sekerek, çarptığı şeylerden hız kaparak ve doğru anda dokunarak momentumunu korur. Yere düşmek üzereyken boş kademesini atıp kaldığı yerden yeniden fırlar. Yeterince hızlanırsa yörüngeye, sonra Ay'a, en sonunda Plüton'a "düşer".
 
 **4,5 yıldız ne demek?** Mağazada 4,5 ve üstü alan arcade fırlatma oyunlarının (Burrito Bison: Launcha Libre, Learn to Fly 3, Earn to Die 2) ortak özellikleri. Her biri ölçülebilir bir kabul ölçütüne dönüştü (§12):
 
@@ -30,11 +32,12 @@ Kaynaklar: oyunun resmî sitesi, rehberler ve incelemeler (§15). "Al" birebir a
 |---|---|---|---|
 | Ringden sapanla fırlatma, zamanlama göstergesi, kritik vuruş | İlk saniyede beceri ve heyecan | **Rampa fırlatması:** gösterge iğnesi yeşil bölgedeyken dokun → mükemmel kalkış (+%30 hız) | Al |
 | Ringdeki rakip: canı var, her fırlatmada hasar alır, nakavt olunca büyük ödül, sıradaki rakip gelir | Her turda küçük, uzun vadede büyük hedef | **Rakip ajansın zeplini:** rampanın yanında asılı durur, mükemmel kalkış onun gondoluna çarpar; yamalı zeplin turlar arasında hasarını taşır, nakavt olunca söner ve uçup gider, sıradaki rakip gelir (5 rakip) | Uyarla |
-| Normal jöle ayılar: üstlerine düşünce sekersin ama yavaşlarsın, para verirler | Sürekli küçük karar ve ödül | **Martılar, şişme reklam balonları, şamandıralar:** çarpınca küçük hız kaybı, izlenme puanı | Uyarla |
-| Yere değmek seni çok yavaşlatır, uzun süre yerde kalırsan tur biter | Havada kalma baskısı | **Su sekmesi:** sığ açıyla suya değersen taş gibi sekersin ama hız kaybedersin; dik açıyla suya girersen batarsın ve tur biter | Uyarla (gerçek fizik) |
-| Roket dalışı (Rocket Slam): gösterge dolunca 2 kullanım (yarısında 1); aşağı dalıp ayıya çarpınca yüksek sekersin | Tek dokunuşluk beceri | **Dalış ateşlemesi:** aynı kural. Dokun → roket burnunu 22° aşağı verir ve kısa ateşler; bir nesneye ya da suya değdiği anda dev sekme | Al |
-| Özel jöleler satın alınınca oyunda çıkmaya başlar (roketli, bombalı, balonlu, ek dalış veren…) | Para harcamanın görünür sonucu, çeşitlilik | **Fırsat nesneleri:** havai fişek mavnası, eski deniz mayını, yakıt dronu, jet akımı… satın alınınca dünyada belirmeye başlar, yükseltildikçe güçlenir | Al |
-| Polis jöleleri yerde devriye gezer, seni yakalayıp yavaşlatır | Yerden uzak durma nedeni | **Balıkçı ağları ve sahil güvenlik botu:** ağa sekersen ağır fren | Uyarla |
+| Normal jöle ayılar: üstlerine düşünce sekersin ama yavaşlarsın, para verirler | Sürekli küçük karar ve ödül | **Martılar, uçurtmalar, şişme reklam balonları:** çarpınca küçük hız kaybı, izlenme puanı | Uyarla |
+| Yere değmek seni çok yavaşlatır, uzun süre yerde kalırsan tur biter | Havada kalma baskısı | **Gökyüzü zemini:** zemin yok; havadaki esnek nesneler (zeplin, balon, helikopter rotor akımı) trambolin işi görür. Yere düşersen tur biter | Uyarla |
+| — (Burrito Bison'da yok) | Onca ilerlemenin bir hatayla kaybolmaması | **Kademe son şansı:** yere düşmek üzereyken en alt kademe otomatik ayrılır, üstteki kademe ya da acil kapsül olduğu yerden yukarı-ileri ateşlenir. Başta 1 son şans, geliştirmeyle 3. Atılan kademe paraşütle iner | Yeni (gerçek kademe ayırma) |
+| Roket dalışı (Rocket Slam): gösterge dolunca 2 kullanım (yarısında 1); aşağı dalıp ayıya çarpınca yüksek sekersin | Tek dokunuşluk beceri | **Dalış ateşlemesi:** aynı kural. Dokun → roket burnunu 22° aşağı verir ve kısa ateşler; bir nesneye değdiği anda dev sekme | Al |
+| Özel jöleler satın alınınca oyunda çıkmaya başlar (roketli, bombalı, balonlu, ek dalış veren…) | Para harcamanın görünür sonucu, çeşitlilik | **Fırsat nesneleri:** havai fişek roketi, konfeti topu dronu, yakıt dronu, jet akımı, termal sütun… satın alınınca dünyada belirmeye başlar, yükseltildikçe güçlenir | Al |
+| Polis jöleleri yerde devriye gezer, seni yakalayıp yavaşlatır | Alçakta kalmanın bedeli | **Afiş çeken uçaklar ve uçurtma ipleri:** alçak bantta dolaşır, afişe ya da ipe takılırsan ağır fren | Uyarla |
 | Pasta duvarları: bölgeleri ayırır, kırmak için hız ve güç gerekir, hasar birikir | Orta vadeli büyük hedef, "bu tur kırdım!" anı | **Hız duvarları:** Ses duvarı (Mach 1), Isı duvarı (Mach 5), Yörünge hızı, Kaçış hızı. Gerçek eşikler, her biri sinematik bir an (§4) | Uyarla (gerçek fizik) |
 | Piñata kartları (para, geçici güç, indirim) | Sürpriz ödül | **Kargo kapsülü:** uçuşta nadir çıkan paraşütlü kapsül, çarpınca 3 kart | Uyarla (reklamsız) |
 | 3 karakter, her birinin özel gücü | Yeniden oynanabilirlik | **3 roket:** Kıvılcım (başlangıç), Süzülgen (kısa süzülme), Kancalı (uydulara kanca) | Al (Faz 4) |
@@ -50,12 +53,12 @@ Gerçekte roket uzaya **yukarı çıkarak değil, yatayda hızlanarak** gider. Y
 
 > **g_etkin = g × (1 − (v / v_yörünge)²)**
 
-- Yavaşsan yerçekimi tam çeker → denize düşersin.
+- Yavaşsan yerçekimi tam çeker → yere düşersin.
 - Hızlandıkça yerçekimi zayıflar → yaylar uzar, daha yüksekte süzülürsün.
 - v = v_yörünge olunca g_etkin = 0 → **yörüngedesin**, süzülürsün.
 - v = √2 × v_yörünge olunca kaçarsın → **Ay bölümü**. (Gerçek kaçış hızı da yörünge hızının √2 katı: 11,2 ≈ 1,41 × 7,9 km/s.)
 
-Burrito Bison'daki "hızını koru, yere düşme" kuralı burada fiziğin kendisi oluyor. Formül gerçek, ölçek oyun için küçültülmüş: Dünya'nın yarıçapı "çizgi film" boyunda. Bu tek kural ilerlemeyi de tanımlıyor: hızlandıkça gökyüzü kararıyor, deniz kavisleniyor, yıldızlar çıkıyor.
+Burrito Bison'daki "hızını koru, yere düşme" kuralı burada fiziğin kendisi oluyor. Formül gerçek, ölçek oyun için küçültülmüş: Dünya'nın yarıçapı "çizgi film" boyunda. Bu tek kural ilerlemeyi de tanımlıyor: hızlandıkça gökyüzü kararıyor, ufuk kavisleniyor, yıldızlar çıkıyor.
 
 ---
 
@@ -63,7 +66,7 @@ Burrito Bison'daki "hızını koru, yere düşme" kuralı burada fiziğin kendis
 
 Her tasarım kararı bunlara göre denetlenir. Denetçi ajan her teslimatta bu listeyle kontrol eder.
 
-1. **Enerji kaynaksız artmaz.** Hız ancak şunlardan gelir: rampa, motor ateşlemesi (yakıt), patlama (mayın, havai fişek), jet akımı, sapan (kütle çekimi). Balon ve sekme hızı **artırmaz**, yalnızca yönü yukarı çevirir ve bir kısmını kaybettirir. Kodda otomatik test: her hız artışı kayıtlı bir kaynağa bağlanmalı.
+1. **Enerji kaynaksız artmaz.** Hız ancak şunlardan gelir: rampa, motor ateşlemesi (yakıt), kademe ateşlemesi (her kademenin kendi motoru ve yakıtı), patlama (konfeti topu, havai fişek), jet akımı ve termal sütun, sapan (kütle çekimi). Balon ve sekme hızı **artırmaz**, yalnızca yönü yukarı çevirir ve bir kısmını kaybettirir. Kodda otomatik test: her hız artışı kayıtlı bir kaynağa bağlanmalı.
 2. **Her çarpışmanın iki tarafı var.** Her nesnenin bir kütle sınıfı ve kendi tepkisi var (§6 tablosu). Hafif nesne savrulur, roket biraz yavaşlar. Ağır nesne parçalanır, roket çok yavaşlar ya da patlar. Sabit nesne (kaya) roketi durdurur.
 3. **Şiddet yok, kimse ölmez.** Kuşlar sersemler, tüyleri uçar, toparlanıp uçar. Uçaklarda insan yok: kargo uçağı ve insansız dronlar. Kargo pilotu paraşütle atlar. Zeplindeki rakip kaptan her seferinde paraşütle iner ve yumruk sallar.
 4. **Görünmeyen şey etkilemez.** Her etki önce görünür (uyarı, iz, gölge, kenar oku). Ekran dışından gelen her tehlike en az 1,2 saniye önce işaretlenir.
@@ -84,13 +87,15 @@ HANGAR ──Kalk──► RAMPA (zamanlama) ──► UÇUŞ (sekme, çarpma, d
 
 **Rampa (2–3 s).** Geri sayım biter, gösterge iğnesi sarkaç gibi gidip gelir. Dokunduğun an gücü belirler: yeşil = mükemmel (+%30 hız ve zeplin vuruşu), sarı = iyi, kırmızı = zayıf. Dokunmazsan 3 saniye sonra otomatik "iyi" kalkış.
 
-**Uçuş.** Roket yay çizerek denizin üstüne iner, seker, nesnelere çarpar. Oyuncunun tek eylemi **dalış ateşlemesi**:
+**Uçuş.** Roket yay çizerek iner, gökyüzündeki nesnelere çarpar ve onlardan seker. Oyuncunun tek eylemi **dalış ateşlemesi**:
 - Dalış göstergesi çarpma ve sekmelerle dolar. Yarısında 1, tamamında 2 dalış hakkı (ilk roket için, geliştirmeyle 3–4).
 - Dokun → roket burnunu 22° aşağı verir ve 0,35 s ateşler: +18 hız (geliştirmeyle +40).
-- Dalış bir nesneye ya da suya değerek biterse **mükemmel sekme**: o sekmede hız kaybı yok, üstüne +%10.
+- Dalış bir nesneye değerek biterse **mükemmel sekme**: o sekmede hız kaybı yok, üstüne +%10.
 - Hak yokken dokunmak hiçbir şey yapmaz, gösterge kısa bir "boş" titreşimi verir.
 
-**Duruş.** Hız düştükçe yaylar kısalır, düşüş dikleşir. Suya 35°'den dik girersen roket batar, tur biter. Komik bir son: roket şamandıra gibi su yüzüne çıkar, ajansın römorkörü çekip götürür. Seyrek ölümcül nesneye çarparsan da patlarsın: ateş topu, saçılan parçalar, kaptan paraşütle atlar. İki durumda da kazanç tam alınır, ceza yok. Burrito Bison'daki gibi.
+**Son şans (kademe ayırma).** Roket yerden 25 birimin altına inerse en alt kademe otomatik ayrılır (oyuncu bir şey yapmaz, haksız ölüm yok). Üstteki kademe 0,8 s ateşlenir: düşüşü keser ve 50° yukarı-ileri fırlatır. Roket her ayrılmada küçülür ve hafifler. Boş kademe paraşütle tarlaya iner. Ekranda "SON ŞANS" ve kalan kademe sayısı görünür.
+
+**Duruş.** Hız düştükçe yaylar kısalır. Kademeler bitmişken yere düşersen tur biter. Komik bir son: kapsül paraşütle tarlaya iner, ajansın kamyoneti gelip toplar. Seyrek ölümcül nesneye çarparsan da patlarsın: ateş topu, saçılan parçalar, kaptan paraşütle atlar. İki durumda da kazanç tam alınır, ceza yok. Burrito Bison'daki gibi.
 
 **Kara kutu (tur sonu, en fazla 4 s).** Mesafe, en yüksek hız, kırılan duvarlar, izlenme dökümü. "Seni durduran şey" (ör. "Ses duvarının 40 km/sa altında kaldın") ve bunu çözen geliştirme kartı (fiyatı ve kaç tur kaldığı). Büyük "Tekrar uç" ve "Hangar" düğmeleri.
 
@@ -104,7 +109,7 @@ Tüm sayılar tek bir yapılandırma nesnesinde durur. Denge, kod değil veri de
 
 | Büyüklük | Değer | Not |
 |---|---|---|
-| Dünya düzlemi | x ileri, y yükseklik (deniz = 0) | Yandan 2.5B |
+| Dünya düzlemi | x ileri, y yükseklik (yer = 0) | Yandan 2.5B |
 | Taban yerçekimi g | 30 b/s² | Oyun hissi için güçlü; gerçek oran g_etkin formülüyle |
 | v_yörünge | 600 b/s | g_etkin = 0 |
 | v_kaçış | 849 b/s (= 600 × √2) | Ay bölümüne geçiş |
@@ -112,18 +117,19 @@ Tüm sayılar tek bir yapılandırma nesnesinde durur. Denge, kod değil veri de
 | Sürükleme | a = −0,00012 × ρ × Cd(M) × v² | |
 | Ses duvarı Cd(M) | 1 → 2,4 → 1,1 (v 85→100→115) | Gerçekteki transonik sürükleme tepesi. Hızın yetmezse "duvara" takılırsın |
 | Isı duvarı | v > 250 ve y < 300 iken ısı birikir | Isı kalkanı alınana ya da daha yükseğe çıkılana kadar hız sınırlanır |
-| Sekme koşulu | açı < 35° ve v > 25 | Değilse batma |
-| Sekme kaybı | %14 (geliştirmeyle %4'e kadar) | Dikey hız × 0,55 (geliştirmeyle 0,75) |
+| Nesneden sekme | Trambolin nesneleri (zeplin, balon, rotor akımı): dikey hız × −0,8; diğerleri × −0,4 | Yatay kayıp nesneye göre (§6); "Sekme verimi" geliştirmesi kaybı azaltır |
+| Kademe ayırma | y < 25 ve aşağı iniyorsa otomatik. Yeni hız = (yatay × 0,9) + kademe itkisi 40 b/s, 50° yukarı (geliştirmeyle 90) | Her kademe sürüklemeyi %15 azaltır (roket küçülür). Başta 1, geliştirmeyle en çok 3 son şans |
+| Yer | y = 0'a kademesiz değmek = tur sonu | Paraşütle iniş |
 | Rampa çıkış hızı | 70 b/s, 38° | Geliştirmeyle 190'a kadar |
 | Göstergede hız | 0–100 → 0–1.235 km/sa (Mach 1), 100–250 → Mach 1–5, 250–600 → Mach 5–23 (7,9 km/s), 600–849 → 7,9–11,2 km/s | Tek yönlü eşleme (kural 7) |
 
-**Kamera.** Roketi ekranın sol üçte birinde tutar. Hızla birlikte geri çekilir (FOV 50° → 65°). Yüksekte deniz ve kavis kadraja girer. Duvar geçişlerinde 0,6 s ağır çekim ve yakın çekim.
+**Kamera.** Roketi ekranın sol üçte birinde tutar. Hızla birlikte geri çekilir (FOV 50° → 65°). Yüksekte yeryüzü ve kavis kadraja girer. Duvar geçişlerinde 0,6 s ağır çekim ve yakın çekim.
 
 **Hedef tur profilleri** (ekonomi simülasyonuyla doğrulanacak):
 
 | Tur | Süre | Mesafe | En yüksek hız | Olay |
 |---|---|---|---|---|
-| 1 | 18 s | 1,2 km | 70 | Martılar, ilk sekmeler |
+| 1 | 18 s | 1,2 km | 70 | Kuşlar, balondan ilk sekmeler, ilk kademe ayırma |
 | 3 | 30 s | 4 km | 110 | Ses duvarı ilk kez kırılır |
 | 10 | 50 s | 25 km | 260 | Isı duvarı |
 | 25 | 75 s | 150 km | 600 | Yörünge: süzülme, yıldızlar |
@@ -133,22 +139,23 @@ Tüm sayılar tek bir yapılandırma nesnesinde durur. Denge, kod değil veri de
 
 ## 6. Dünya bölümü: nesneler
 
-Bantlar: **Deniz** (y 0–40), **Alçak hava** (40–250), **Bulutlar** (250–700), **Üst atmosfer** (700–1.500), **Yörünge** (g_etkin ≈ 0, 1.500+). Hız arttıkça roket doğal olarak üst bantlara çıkar.
+Bantlar: yer (y 0, arka planda tarlalar ve kıyı), **Alçak hava** (25–250), **Bulutlar** (250–700), **Üst atmosfer** (700–1.500), **Yörünge** (g_etkin ≈ 0, 1.500+). Hız arttıkça roket doğal olarak üst bantlara çıkar.
 
 | Nesne | Bant | Sıklık | Rokete etkisi | Nesneye ne olur | Ödül | Açılış |
 |---|---|---|---|---|---|---|
-| Martı sürüsü | Deniz, alçak | Yaygın | −%3 hız, hafif yukarı itiş | Sersemler, tüyleri uçar, takla atıp toparlanır | +10 izlenme | Baştan |
+| Martı sürüsü | Alçak | Yaygın | −%3 hız, hafif yukarı itiş | Sersemler, tüyleri uçar, takla atıp toparlanır | +10 izlenme | Baştan |
 | Şişme reklam balonu | Alçak | Yaygın | Üstten: dikey hızı tersler (trambolin), yatay −%2. Yandan: −%6 | Esner, sallanır, 3. vuruşta patlar | +15 | Baştan |
-| Şamandıra | Deniz | Yaygın | Sekme gibi davranır, kayıp %8 (sudan iyi) | Batıp çıkar, çanı çalar | +8 | Baştan |
-| Balıkçı ağı | Deniz | Seyrek | Sekme kaybı %45 | Ağ yırtılır, balıklar kaçar | +5 | Baştan (fren) |
-| Sahil güvenlik botu | Deniz | Seyrek | Yaklaşırsan ağ fırlatır (1 s uyarı) | Ağ boşa giderse bot döner | — | Tur 4'ten |
+| Uçurtma | Alçak | Yaygın | −%2, ipine takılırsan −%15 | İpi kopar, uçurtma savrulup süzülür | +6 | Baştan |
+| Reklam zeplini | Alçak, bulut | Yaygın | Üstten: dev trambolin (dikey × −0,85, yatay −%3). Yandan: −%10 | Zarf esner, 3. vuruşta söner ve yavaşça iner | +40 | Baştan |
+| Dron-helikopter (insansız) | Alçak, bulut | Seyrek | Üstten: rotor akımı yukarı iter (trambolin, yatay −%5). Gövdeye yandan: −%25 | Yandan vurulursa parçalanır, pervaneleri savrulur, gövde paraşütle iner | +60 | Baştan |
+| Afiş çeken uçak | Alçak | Seyrek | Afişe takılırsan −%35 (Burrito Bison'daki polis gibi) | Afiş yırtılır, uçak sallanıp yoluna devam eder | +25 | Tur 4'ten |
 | **Yakıt dronu** | Alçak, bulut | Seyrek | +1 dalış hakkı | Bidonu bırakır, dron sallanarak uzaklaşır | +20 | Satın al |
-| **Havai fişek mavnası** | Deniz | Seyrek | Üstüne düşersen 1,2 s fişekle yukarı-ileri itilirsin (+60 hız) | Fişekler bitince mavna is içinde kalır | +40 | Satın al |
-| **Eski deniz mayını** | Deniz | Seyrek | Patlama ileri iter (+45 hız) | Patlar, su sütunu | +35 | Satın al |
+| **Havai fişek roketi** | Alçak, bulut | Seyrek | Çarpınca ona tutunursun: 1,2 s yukarı-ileri itilirsin (+60 hız) | Fişek bitince havada patlayıp gösteri yapar | +40 | Satın al |
+| **Konfeti topu dronu** | Alçak, bulut | Seyrek | Konfeti şarjı patlar, ileri iter (+45 hız) | Dron sallanır, konfeti yağar | +35 | Satın al |
+| **Termal sütun** | Alçak | Bant | İçinde kaldıkça +8 b/s² yukarı | — (sıcak hava) | +3/s | Satın al |
 | **Jet akımı** | Bulut | Bant | İçinde kaldıkça +12 hız/s | — (rüzgâr) | +5/s | Satın al |
 | Fırtına bulutu | Bulut | Seyrek | Yıldırım: 0,8 s dalış kilidi | Bulut çakar, gök gürler | +25 | Tur 8'den |
 | Kargo uçağı (insansız) | Bulut | Nadir | Gövdeye çarpmak: patlama, tur sonu. Kanat ucuna sürtmek: −%30 | Parçalanır, kargo paraşütleri açılır | +200 | Tur 6'dan |
-| Kaya adacık | Deniz | Nadir | Çarpma: patlama, tur sonu (2 s önce ufukta) | — | — | Tur 5'ten |
 | Hava balonu (bilim) | Üst atmosfer | Yaygın | Trambolin, dikey tersler, yatay −%2 | Gondol sallanır | +30 | Bölge |
 | Göktaşı izi | Üst atmosfer | Seyrek | −%5, ısı +5 | Kıvılcım | +20 | Bölge |
 | Uydu | Yörünge | Yaygın | Yandan sürtme = **mini sapan** (+25 hız). Gövdeye çarpma: −%20 | Paneli döner, kopabilir | +50 | Bölge |
@@ -159,7 +166,7 @@ Bantlar: **Deniz** (y 0–40), **Alçak hava** (40–250), **Bulutlar** (250–7
 
 Kalın yazılanlar Burrito Bison'un özel jöleleri gibi satın alınınca dünyada belirmeye başlar ve yükseltildikçe güçlenir.
 
-**Yerleşim.** Dünya sonsuz akan bir şerit. Nesneler mesafe aralığına, banda ve sıklığa göre tohumlu rastgele yerleşir (§10). İki ölümcül nesne arasında en az 2 km var. Ölümcül nesnenin 300 m yakınına fren nesnesi konmaz. Her 600 m'de en az bir sekme ya da itki fırsatı var. Rotada "kaçınılmaz ölüm" diziliminin olmadığı oluşturma anında test edilir.
+**Yerleşim.** Dünya sonsuz akan bir şerit. Nesneler mesafe aralığına, banda ve sıklığa göre tohumlu rastgele yerleşir (§10). İki ölümcül nesne arasında en az 2 km var. Ölümcül nesnenin 300 m yakınına fren nesnesi konmaz. Zemin olmadığı için her 250 m'de, dalış menzilinde en az bir sekme nesnesi (zeplin, balon, helikopter) var; bu kural oluşturma anında test edilir. Rotada "kaçınılmaz ölüm" diziliminin olmadığı oluşturma anında test edilir.
 
 ---
 
@@ -169,14 +176,15 @@ Kalın yazılanlar Burrito Bison'un özel jöleleri gibi satın alınınca düny
 
 Tur kazancı = Σ(nesne izlenmesi × kombo) + mesafe (km başına 4) + duvar ödülleri + zeplin vuruşu.
 
-**Hangar sekmeleri** (her geliştirme 5–10 kademe; fiyat = taban × 1,55^kademe):
+**Hangar sekmeleri** (her geliştirme 5–10 seviye; fiyat = taban × 1,55^kademe):
 
 | Sekme | Geliştirmeler |
 |---|---|
 | Rampa | Rampa gücü · Mükemmel bölge genişliği · Zeplin hasarı |
-| Gövde | Sekme verimi · Aerodinamik (Cd −) · Ağ kesici · Isı kalkanı (Isı duvarı için) · Kaya zırhı (bir ölümcül çarpmayı −%60 kayıpla atlatır) |
+| Gövde | Sekme verimi · Aerodinamik (Cd −) · İp kesici (uçurtma ve afiş freni −) · Isı kalkanı (Isı duvarı için) · Zırh (bir ölümcül çarpmayı −%60 kayıpla atlatır) |
+| Kademeler | Kademe sayısı (son şans 1 → 3) · Kademe itkisi (40 → 90) |
 | Motor | Dalış gücü · Gösterge dolum hızı · Dalış kapasitesi (2→4) · Son ateşleme (hız bitince otomatik tek ateşleme) |
-| Fırsatlar | Yakıt dronu · Havai fişek mavnası · Deniz mayını · Jet akımı. Her biri aç + sıklık + güç |
+| Fırsatlar | Yakıt dronu · Havai fişek roketi · Konfeti topu dronu · Jet akımı · Termal sütun. Her biri aç + sıklık + güç |
 | Yayın | İzlenme çarpanı · Kombo süresi · Kargo kapsülü sıklığı |
 
 İlk tur ≈ 120 ₺. İlk geliştirmeler 60–150 ₺. İlk 10 turda her turdan sonra en az bir satın alma yapılabilir. Plüton'a kadar hedef yaklaşık 6–8 saat. **Kodlamadan önce `oyun/ekonomi_b.py` simülasyonu** yazılır: "ortalama oyuncu" botu turları oynar ve her bölüme kaç turda varıldığını, en uzun "satın alamadan geçen tur" dizisini ve hiçbir geliştirmenin işe yaramaz kalmadığını ölçer. Kabul: art arda en fazla 3 tur satın alamadan geçer. Hiçbir duvar 8 turdan fazla oyuncuyu durdurmaz.
@@ -185,14 +193,14 @@ Tur kazancı = Σ(nesne izlenmesi × kombo) + mesafe (km başına 4) + duvar öd
 
 ## 8. Bölümler (Taslak 5'in rotası korunur)
 
-Her bölüm kendi "dünyası": kendi zemini (sekme yüzeyi), yerçekimi, nesneleri ve hız duvarlarıyla. Kaçış hızı bir sonraki bölümü açar. Varılan bölümde bir **üs** kurulur ve sonraki turlar oradan kalkar (Taslak 5'teki checkpoint).
+Her bölüm kendi "dünyası": kendi sekme nesneleri, yerçekimi, nesneleri ve hız duvarlarıyla. Kaçış hızı bir sonraki bölümü açar. Varılan bölümde bir **üs** kurulur ve sonraki turlar oradan kalkar (Taslak 5'teki checkpoint).
 
-| # | Bölüm | Sekme yüzeyi | Özel kural | Duvarlar |
+| # | Bölüm | Sekme nesneleri | Özel kural | Duvarlar |
 |---|---|---|---|---|
-| 1 | Dünya (Akdeniz) | Deniz | Hava yoğun, ses ve ısı duvarı | Ses · Isı · Yörünge · Kaçış |
-| 2 | Ay | Regolit (toz bulutu kalkar, kayıp fazla) | Zayıf yerçekimi, hava yok (sürükleme yok, ama sekme kaybı büyük) | Krater sırtları · Kaçış |
-| 3 | Mars | Kum tepeleri ve ince atmosfer | Toz fırtınası, Phobos sapanı | Olympus Mons · Kaçış |
-| 4 | Asteroit Kuşağı | Asteroitler (her biri küçük bir zemin) | Kayadan kayaya sekme | Kirkwood boşlukları |
+| 1 | Dünya (Akdeniz kıyısı) | Zeplin, balon, helikopter | Hava yoğun, ses ve ısı duvarı | Ses · Isı · Yörünge · Kaçış |
+| 2 | Ay | Yörünge hurdaları, kraterden fışkıran gaz | Zayıf yerçekimi, hava yok (sürükleme yok) | Krater sırtları · Kaçış |
+| 3 | Mars | Toz hortumları, kum bulutları | Toz fırtınası, Phobos sapanı | Olympus Mons · Kaçış |
+| 4 | Asteroit Kuşağı | Asteroitler | Kayadan kayaya sekme | Kirkwood boşlukları |
 | 5 | Jüpiter | Bulut tepeleri | Dev yerçekimi, en büyük sapan | Radyasyon kuşağı |
 | 6 | Satürn | Halka buzları | Halka boşlukları | Halka geçişi |
 | 7 | Uranüs–Neptün | Buz bulutları | Karanlık, görüş kısa | Rüzgârlar |
@@ -207,10 +215,11 @@ Taslak 5'teki 10 bölüm 8'e indi. Troposfer, Kármán ve Yörünge artık Düny
 | An | Duraksama | Sarsıntı | Diğer |
 |---|---|---|---|
 | Hafif çarpma (martı, balon) | 40 ms | 0,15 | Squash %15, tüy ya da konfeti, "pof", +izlenme sayısı uçar |
-| Mükemmel sekme | 60 ms | 0,25 | Su halkası, beyaz parlama, "MÜKEMMEL", ses perdesi yükselir |
+| Mükemmel sekme | 60 ms | 0,25 | Şok halkası, beyaz parlama, "MÜKEMMEL", ses perdesi yükselir |
 | Fırsat nesnesi | 90 ms | 0,4 | Özel efekt (fişek, patlama), kısa ağır çekim (×0,4, 0,3 s) |
+| Kademe ayırma (son şans) | 200 ms | 0,5 | Ağır çekim ×0,3, 0,5 s; boş kademe paraşütle düşer; "SON ŞANS" yazısı |
 | Duvar kırılışı | 300 ms | 0,6 | Ağır çekim ×0,2, 0,6 s; şok konisi; tam ekran başlık; müzik katmanı açılır |
-| Patlama / batma | 120 ms | 0,8 | Ateş topu ya da su sütunu, parçalar, kaptan paraşütle atlar |
+| Patlama / yere iniş | 120 ms | 0,8 | Ateş topu ya da su sütunu, parçalar, kaptan paraşütle atlar |
 
 Hız çizgileri, kamera geri çekilmesi ve rüzgâr sesi hızla orantılı. Müzik hızla katman kazanır. Dokunmatik titreşim vuruşun gücüne göre (hareket azaltma ayarıyla kapanır).
 
@@ -287,7 +296,7 @@ Her fazın sonunda oyun testçisi ajan ölçer, denetçi onaylar, sonra sen tele
 
 | Faz | İçerik | Bitiş ölçütü |
 |---|---|---|
-| **B0 · Gri kutu** | Basit şekillerle: rampa göstergesi, uçuş fiziği (g_etkin, sürükleme, sekme), dalış, 5 nesne (martı, balon, şamandıra, ağ, yakıt dronu), ses duvarı, kara kutu, 6 geliştirmelik hangar, kayıt | Kabul ölçütlerinden beceri farkı, tur süresi ve satın alma ritmi tutuyor. Sen "eğlenceli" diyorsun. **Eğlenceli değilse sonraki faza geçilmez.** |
+| **B0 · Gri kutu** | Basit şekillerle: rampa göstergesi, uçuş fiziği (g_etkin, sürükleme, sekme), dalış, 5 nesne (martı, reklam zeplini, dron-helikopter, uçurtma, yakıt dronu), 1 kademe son şansı, ses duvarı, kara kutu, 6 geliştirmelik hangar, kayıt | Kabul ölçütlerinden beceri farkı, tur süresi ve satın alma ritmi tutuyor. Sen "eğlenceli" diyorsun. **Eğlenceli değilse sonraki faza geçilmez.** |
 | B1 · Dünya bölümü tam | Tüm nesneler (§6), 4 duvar, zeplin rakipleri, kargo kapsülü, 25+ geliştirme, ekonomi simülasyonu | Dünya bölümü baştan sona oynanıyor (~1,5–2 saat) |
 | B2 · Görünüm | Tarz kareleri (3 seçenek) → senin seçimin → modeller, animasyon, efektler, arayüz | Telefonda 60 fps, senin onayın |
 | B3 · Ses | Efektler, müzik, hızla değişen katmanlar | Senin onayın |
