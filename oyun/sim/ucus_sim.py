@@ -58,6 +58,7 @@ AYAR = dict(
     # dalış
     dalis_aci=70.0, dalis_koni=(66.0, 76.0), dalis_menzil=150.0, dalis_menzil_k=1.0,   # koni içinde hedef varsa ona nişan alır. 60–80→66–76: zamanlama beceri farkı yaratsın
     dalis_itki=14.0, dalis_itki_sv=4.0, dalis_sure=1.2,   # sv 2,2→4,0 (14→54): geç oyun hızı, yörünge ~tur 25–27
+    bos_dalis_sure=0.4, bos_dalis_kayip=0.10, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = 0,9 × dalış öncesi
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -227,6 +228,7 @@ class Ucus:
         s.dur_t = 0.0
         s.gosterge = A['gosterge_bas']
         s.dalis_t = None
+        s.bos = None                   # S6: boş dalış [kalan s, eski açı, eski |v|]
         s.kademe = 1 + sv.get('kademe_n', 0)
         s.cd_kat = 1.0
         s.son_ates_hak = sv.get('son_ates', 0) > 0
@@ -488,6 +490,7 @@ class Ucus:
         v = math.hypot(s.vx, s.vy)
         sv = v + A['dalis_itki'] + A['dalis_itki_sv'] * s.sv.get('dalis', 0)
         h = s.dalis_hedef()
+        s.bos = None if h else [A['bos_dalis_sure'], math.atan2(s.vy, s.vx), v]   # S6: boş dalış toparlanır
         a = -(h[1] if h else math.radians(A['dalis_aci']))
         s.vx, s.vy = sv * math.cos(a), sv * math.sin(a)
         s.gosterge -= 1.0
@@ -528,6 +531,7 @@ class Ucus:
         if s.y > A['y_tropopoz']:     # S1: yüksekte (durma) ateşleme ileri ağırlıklı
             s.vy *= A['kademe_ust_vy_kat']
         s.dalis_t = None
+        s.bos = None
         s.itis = None
         s.dur_t = 0.0
         s.st['son_sans'] += 1
@@ -546,6 +550,7 @@ class Ucus:
         a = math.radians(T['aci'])
         s.vx, s.vy = yv * math.cos(a), yv * math.sin(a) + T.get('ek_vy', 0)
         s.dalis_t = None
+        s.bos = None
         s.st['sekme'] += 1
         s.gosterge_ekle(A['gosterge_m'] if mukemmel else A['gosterge_tr'])
         # "vay": kalkıştan sonraki ilk tepe aşımı
@@ -613,6 +618,7 @@ class Ucus:
                 s.yavaslat(T['yan'])
                 s.gosterge_ekle(A['gosterge_diger'])
                 s.dalis_t = None
+                s.bos = None
             o.vurus += 1
             if o.vurus >= T['omur']:
                 o.aktif = False
@@ -743,6 +749,15 @@ class Ucus:
             s.dalis_t += dt
             if s.dalis_t > A['dalis_sure']:
                 s.dalis_t = None
+        if s.bos:   # S6: boş dalış toparlanması
+            s.bos[0] -= dt
+            if s.bos[0] <= 0:
+                lo, hi = (math.radians(x) for x in A['bos_dalis_aci'])
+                a = min(hi, max(lo, s.bos[1]))
+                vb = s.bos[2] * (1 - A['bos_dalis_kayip'])
+                s.vx, s.vy = vb * math.cos(a), vb * math.sin(a)
+                s.bos, s.dalis_t = None, None
+                s.log('bos_dalis')
         # çarpışmalar
         rr = A['r_roket']
         for o in s.aday:

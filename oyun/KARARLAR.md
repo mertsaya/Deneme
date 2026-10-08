@@ -26,3 +26,10 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - Sanat yönü (kullanıcı onaylı): `oyun/konsept/` altındaki üç konsept (oyun içi, hangar, ana ekran) kabul: parlak renkli çizgi film, kalın yumuşak hatlar, parlak yuvarlak arayüz, maskot pilot. Görsel yazılar kodla konur (üretilen görseldeki yazılara güvenilmez). Ana ekranda Plüton daha belirgin olmalı.
 - Kabul edilen kurallar (kullanıcı onaylı): (1) tropopoz üstünde yatay hız 2 sn boyunca 110'un altında kalırsa tur biter (`vx_dur`); (2) turda en çok 5 fırsat nesnesi, römorkör hariç (`firsat_tur_max`); (3) dalış itkisi gelişimi 14→54 (4,0/sv).
 - PLAN_B §16 / ICERIK §10 önerileri kabul (kullanıcı onaylı): vx_dur'da önce kademe ateşlenir; geç dönem kazanç = irtifa bandı; boş dalış 0,4 s sonra toparlanır; yeryüzü dekoru tarla; rakipler adsız hayvan maskot arketipleri; hedef değişiklikleri (mesafe 150 km bilgi satırı, tur 5 kazanç 500, ses duvarı tur 2–3, tur 1 beceri farkı ≥%30); uçan sayılar jeton; görev/albüm/günlük hedef/hayalet B1 sonrası; römorkör y 1500'de kalır. Simülasyon ayarları S1–S9 uygulanacak (bulut, Opus).
+
+## B0 kararları (2026-10-08, kullanıcı onaylı)
+- Yakıt dronu B0'a **mini oyunla** girer (halka daralınca dokun; ayrıntı b0/TASARIM.md §7.4, öneri olarak işaretli, gri kutuda ayarlanır).
+- Dalış hedef vurgusu: **var** (`vurgu: 1`).
+- İlk açılış: **hangarsız ilk tur**, hangar ilk turdan sonra açılır.
+- Bitiş sahnesi: **karışık** (normal bitişler sakin, rekor / büyük kayıpta abartılı).
+- "Seni durduran şey" metinleri: **öğretici** ton.
