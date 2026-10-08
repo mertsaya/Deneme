@@ -99,3 +99,22 @@ Dayanıklılık (alıcı %30 rastgele): alışverişsiz seri en çok 2, çıkmaz
 ## 6. Simüle edilmedi
 
 Nadir olaylar, kapsül kartları, görevler, albüm, rüzgâr/dalga bulutu/fırtına, F5/F7/F8/F9, Süzülgen/Kancalı roket, hayalet, uçuşta rakip hasarı (yalnız rampa vuruşu), ölümcül nesneden kaçınan bot. Bot parametreleri (tepki, hata, mini oyun oranları, alışveriş değerleri) gerçek oyuncu verisiyle düzeltilmeli. Özellikle kotu botun alışverişi (§4.2).
+
+## 7. Seyreltme ve geçit kuralı (2026-10-08, kullanıcı kararı; uygulayıcı)
+
+Kullanıcı B0'ı telefonda denedi: "nesneler çok yoğun, bir şeye çarpmadan uçulmuyor".
+
+- **Yoğunluk:** `ekran_hedef` 7 → **5** (~%30 seyrek). `kontrol` yoğunluk aralığı 7–12 → 5–9 oldu; ölçülen ortalama 6,9.
+- **E3 geçit kuralı (`gecit`):** roketin pasif yoluna doğan aday (|y − rota_y| < r + r_roket), aynı sütunda üstünde ya da altında en az 2·(r_roket + `kacis_pay` 4) = 16 b boşluk bırakmıyorsa reddedilir. Alt sınır zemin. Rastgele çekim yok; çekim sırası değişmedi. `ekle` içinde, E2'den sonra uygulanıyor.
+- **Ekonomi düzeltmesi:** daha az temas geliri düşürdü. `nesne_prim` 2,8 → **3,1** ile karşılandı (en az sapma). Ölçüm 20 tohumluk kampanya, tur 1'de 40 tohum:
+
+| | Eski (7, ×2,8) | Yeni (5, ×2,8) | Yeni (5, ×3,1) |
+|---|---|---|---|
+| iyi: ses duvarı ilk tur (medyan) | 3 | 4 | **3** |
+| iyi: tur 5 / 15 kazanç | 415 / 2.343 | 382 / 2.547 | 451 / 2.565 |
+| hic: tur 5 / 15 kazanç | 160 / 404 | 119 / 426 | 139 / 402 |
+| iyi: tropopoz ilk tur | 10,5 | 9 | 9 |
+| iyi: 25 turda tavana çarpan | %18 | %13 | %15 |
+| tur 1 süre (iyi / hic) | 17,3 / 16,2 s | 16,5 / 15,9 s | — |
+
+- **Kalan sapma:** hic botunun tur 5 kazancı eskiden %13 düşük (139'a karşı 160); tur 15'te aynı. İyi botun tur 1 vay ≤ 5 s oranı 0,90'dan 0,97'ye çıktı (daha az martı/uçurtma freni).

@@ -116,3 +116,31 @@ Bulgu bulgu durum: `MANTIK_RAPOR.md`; yeniden üretim: `test/mantik_test.py` (10
 ## Bilinen sınırlar
 
 - **Çoklu sekme:** aynı tarayıcıda oyun iki sekmede açılırsa her sekme kendi bellekteki kaydını yazar, son yazan kazanır (jeton/satın alma kaybolabilir). B0'da ele alınmadı (koordinatör kararı).
+
+## Testçi düzeltmeleri (testci/SORUNLAR.md)
+
+- **(1) Kara kutu ve hangar:** düğme çubuğu ekranın altına sabit (`position: sticky`), içerik kayıyor. Ana düğmeler tek satır: yazı boyutu `clamp(…, 6vw)` ve `nowrap`.
+- **(2) Ayarlar:** satırlar sarıyor (`flex-wrap`). Ekran içerikleri sıkışmıyor (`flex-shrink: 0`), TAMAM düğmesi altta sabit.
+- **(4) Hangar:** roket en az 110 px; kart açıklaması en az 13 px; ekran kayabiliyor.
+- **K15 genişletmesi:** `test/k15_genis.py`, 360×780, 384×832 ve 412×915 görünümlerinde × yazı 1,0/1,2/1,4. Hepsi geçti (9/9); görüntüler `test/k15/`.
+- **(6) Duraklatılmış turun kazancı:** §13.1 gereği görünür olunca `bekleyen = null` kalıyor (K13 bunu bekliyor). Kazanç aynı yazımda yeni `askida` alanına taşınıyor. `askida` DEVAM sayımı bitince ya da tur bitince siliniyor. Süreç bu arada ölürse açılışta bir kez ekleniyor.
+- **(7) Kayıt sınırları:** jeton ve bekleyen için üst sınır 1e9. İleri ya da bilinmeyen sürüm (`v: 99`) artık bozuk sayılmıyor: bilinen alanlar onarılıyor, bilinmeyen alanlar korunuyor, "Kayıt başka bir sürümden" bildirimi çıkıyor.
+- **(8) Olay günlüğü:** `__oyun.olaylar` artık yandan temas, martı, uçurtma gövdesi, ip ve balon patlamasını da içeriyor (`temas`, `ip`, `sondu`). Fizik ve rastgele çekim değişmedi.
+
+## Seyreltme (kullanıcı kararı) ve E3
+
+- Sim'de `ekran_hedef` 7 → 5, `nesne_prim` 2,8 → 3,1; yeni geçit kuralı E3 (`gecit`). JS'e birebir aktarıldı. Ayrıntı: `oyun/sim/RAPOR.md` §7.
+- Eşlik (200 tohum) tuttu.
+- B0 seyrekleşmesi (`b0_seyrek`) değişmeden hedefte kaldı (30 tohum): iyi botta 5–15. tur medyanı 47 s, tavana çarpan %6,7; orta 31 s / %1,5; hiç 19 s / %0. Ses duvarının ilk kırıldığı tur iyi 3, orta 4, hiç 6.
+
+## Motor sesi (kullanıcı: "uçuşta motor duyulmuyor")
+
+- **Neden (bulgu):**
+  - Motor yalnız `motor_ucus_b.mp3` çözüldüyse başlıyordu, sentez yedeği yoktu. Dosya yayında indirilemez ya da çözülemezse uçuş tamamen sessiz kalıyordu. Yayında `ses/` dosyalarının sayfanın yanında yayınlanıp yayınlanmadığı ayrıca doğrulanmalı.
+  - Dosya yüklense bile düzey düşüktü: dosya −20 LUFS, motor düzeyi ×0,5 × efekt kazancı (~0,57), müzik ise 0,45. Motor müziğin altında kalıyordu.
+  - İlk dokunuş ve AudioContext akışı doğruydu: tur ilk dokunuşu bekliyor, ses o dokunuşla başlıyor.
+- **Düzeltme:**
+  - mp3 yoksa sentez yedek motor çalıyor (testere 70 Hz + kare 140 Hz + süzülmüş gürültü; perde, filtre ve kazanç hıza göre). mp3 sonradan çözülünce mp3'e geçiyor.
+  - Motor düzeyi 0,5 → 0,8, müzik 0,45 → 0,38.
+  - `__oyun.sesDurum()` artık `{ac, motorAktif, motorTur, kazanc, perde, yuklu}` döndürüyor.
+- **Test:** `test/ses_test.py` iki yolu ölçüyor, ikisi de geçti. Normal yolda motor mp3, engelli yolda sentez; uçuşta aktif ve kazanç > 0, duraklatınca kesiliyor.
