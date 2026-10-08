@@ -52,7 +52,7 @@ def parilti(im, r, guc=1.0, renk=(200, 245, 255)):
 # ad önekine göre kontur kuralı: (kalınlık oranı (en uzun kenara göre), renk, hale)
 KURAL = [
     ("bulut", 0.010, hex2("#8fa6e6"), None),
-    ("alev", 0.016, hex2("#9a1f0c"), None),
+    ("alev", 0.0, None, (9, 0.55, (255, 150, 60))),
     ("efekt_ses", 0.0, None, (10, 0.9)),
     ("efekt_toz", 0.012, hex2("#7b6a8f"), None),
     ("", 0.009, CIVIT, None),
@@ -67,7 +67,7 @@ def isle(yol, hedef_gen=None, oran_carp=1.0, sabit_px=None):
     if hedef_gen and hedef_gen != im.width:
         im = im.resize((hedef_gen, max(1, round(im.height * hedef_gen / im.width))), Image.LANCZOS)
     oran, renk, hale = kural(ad)
-    if hale: return parilti(im, hale[0] * im.width / 448, hale[1])
+    if hale: return parilti(im, hale[0] * im.width / 448, hale[1], *(hale[2:3]))
     if oran <= 0: return im
     # dizideki tüm kareler aynı kalınlıkta olsun: oran, dizinin ortak tuval boyuna göre
     r = sabit_px if sabit_px else max(1.6, oran * oran_carp * max(im.size))
@@ -87,7 +87,7 @@ def kucult_konturla(yol, hedef_uzun, r_px=2.0):
     s = hedef_uzun / max(im.size)
     im = im.resize((max(1, round(im.width * s)), max(1, round(im.height * s))), Image.LANCZOS)
     oran, renk, hale = kural(ad)
-    if hale: return parilti(im, max(2, hale[0] * s * 1.2), hale[1])
+    if hale: return parilti(im, max(2, hale[0] * s * 1.2), hale[1], *(hale[2:3]))
     if oran <= 0: return im
     return kontur(im, r_px, renk)
 

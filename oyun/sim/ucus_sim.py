@@ -67,7 +67,14 @@ AYAR = dict(
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
     baslangic_bos_x=90.0,      # kullanıcı kararı: kalkıştan sonra x < bu değerde hiç nesne doğmaz (ilk ekran temiz). Açılış zeplini bölgenin hemen ötesine konur
     yavaslatici_ac_x=400.0, yavaslatici_tur=3,   # tur 1–3'te x < 400'de yavaşlatıcı (martı, uçurtma) doğmaz
-    kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
+    kacis_pay=4.0,
+    # yönlendirme + yakıt (kullanıcı kararı): basılı tutup sürükleyince burun hedef açıya döner, |v| korunur; dönerken yakıt harcanır
+    yakit_kap=100.0, yakit_kap_sv=30.0, yakit_harca=35.0,   # tur başı dolu depo; 'depo' kartı kapasite; birim/s (dönerken)
+    yon_hiz=60.0, yon_hiz_sv=12.0, yon_sinir=45.0, yon_sinir_sv=5.0,   # derece/s dönüş hızı, ± derece hedef sınırı; 'yon' kartı
+    yon_bot_ara=0.2,           # botların yönlendirme kararı aralığı (s)
+    # doğal hava akımları (kullanıcı kararı): termal ve jet satın almadan çıkar; erken turlarda nadir/zayıf, 'hava' kartı sıklık+güç
+    hava_dogal=('termal', 'jet'), hava_ara_kat=1.5, hava_guc=(0.6, 0.1),   # aralık × 1,5; güç × (0,6 + 0,1·hava sv)
+    cesit_max=2,               # aynı tür art arda en çok 2 kez doğar             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -123,7 +130,8 @@ TIPLER = {
     # habitat: ayrı sınıf "kayma yüzeyi" (sığ 15°, fizik trambolinle aynı; görseli kullanıcı onayında)
     'habitat': dict(sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.90, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
     'marti':   dict(sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.06, odul=20, acilis=1),
-    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.02, ip=0.15, odul=6, acilis=1),
+    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.35, ip=0.15, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip; kullanıcı kararı 0,02→0,35 'roket durmalı'), ip −%15
+    'balina':  dict(sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.88, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
     'afis':    dict(sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.35, odul=25, acilis=4, ip_tip=True),
     'sonde':   dict(sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
     'goktasi': dict(sinif='yv', r=12, ymin=1000, ymax=_YK - 100, w=0.8, kayip=0.05, odul=20, acilis='tropopoz'),
@@ -152,6 +160,7 @@ GELISTIRME = {
     'izlenme':    (10, 150, 1), 'kombo_s': (5, 120, 9), 'kombo_t': (3, 1000, 20),
     # fırsatlar: aç (tek), sıklık (4), güç (5)
     'yakit_ac': (1, [150], 2), 'yakit_s': (4, 100, 2), 'yakit_g': (5, 120, 2),
+    'depo': (5, 110, 1), 'yon': (5, 130, 1), 'hava': (5, 140, 1),   # yakıt deposu, yönlendirme gücü, hava akımı
     'fisek_ac': (1, [300], 3), 'fisek_s': (4, 150, 3), 'fisek_g': (5, 160, 3),
     'konfeti_ac': (1, [450], 6), 'konfeti_s': (4, 180, 6), 'konfeti_g': (5, 200, 6),
     'termal_ac': (1, [400], 8), 'termal_s': (4, 150, 8), 'termal_g': (5, 170, 8),
@@ -261,6 +270,10 @@ class Ucus:
         s.tepe_rampa = A['rampa_y']
         s.kad_izle, s.kad_y0 = None, 0.0
         s._rota_t, s._rota_p = None, []
+        s.yakit = A['yakit_kap'] + A['yakit_kap_sv'] * sv.get('depo', 0)
+        s.yon_hedef = None             # oyuncu/bot yönlendirme hedefi (rad) ya da None
+        s.son2 = [None, None]          # son doğan iki tür (çeşitlendirme)
+        s.st['yon_s'] = 0.0
 
     # ---------- yardımcılar
     def ekran(s):
@@ -373,6 +386,8 @@ class Ucus:
         sk = s.seyrek(y)
         tipler = [(n, T['w'] * (sk if T['sinif'] == 'tr' else 1.0)) for n, T in TIPLER.items()
                   if T['ymin'] <= y <= T['ymax'] and s.acik(n) and (not sadece_tr or T['sinif'] == 'tr')]
+        if s.son2[0] is not None and s.son2[0] == s.son2[1] and len(tipler) > 1:   # aynı tür art arda en çok cesit_max (2) kez
+            tipler = [t for t in tipler if t[0] != s.son2[0]]
         if not tipler:
             return None
         top = sum(w for _, w in tipler)
@@ -408,6 +423,29 @@ class Ucus:
                 alt = min(alt, (y - r) - (o.y + o.r))
         return ust >= g or alt >= g
 
+    def hava_k(s, o):
+        """Doğal hava akımı güç çarpanı (satın alınmışsa 1)."""
+        h = s.A['hava_guc']
+        return h[0] + h[1] * s.sv.get('hava', 0) if o.ek.get('dogal') else 1.0
+
+    def yonlendir(s, dt):
+        """Yönlendirme: burun hedef açıya yon_hiz ile döner, |v| korunur; dönerken yakıt harcanır. Dalışta/boş dalışta çalışmaz."""
+        A = s.A
+        if s.yon_hedef is None or s.yakit <= 0 or s.dalis_t is not None or s.bos:
+            return
+        k = s.sv.get('yon', 0)
+        lim = math.radians(A['yon_sinir'] + A['yon_sinir_sv'] * k)
+        h = min(lim, max(-lim, s.yon_hedef))
+        a = math.atan2(s.vy, s.vx)
+        adim = math.radians(A['yon_hiz'] + A['yon_hiz_sv'] * k) * dt
+        d = min(adim, max(-adim, h - a))
+        if abs(d) < 1e-9:
+            return
+        c, si = math.cos(d), math.sin(d)
+        s.vx, s.vy = s.vx * c - s.vy * si, s.vx * si + s.vy * c
+        s.yakit = max(0.0, s.yakit - A['yakit_harca'] * dt)
+        s.st['yon_s'] += dt
+
     def ekle(s, tip, x, y):
         T = TIPLER[tip]
         xk = x - T['r'] - s.A['r_roket']   # nesnenin rokete değebileceği en küçük x
@@ -416,6 +454,7 @@ class Ucus:
         if s.cakisir(x, y, T['r']) or not s.gecit(x, y, T['r']):
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
+        s.son2 = [s.son2[1], tip]
         return True
 
     def ilk_doldur(s):
@@ -490,17 +529,18 @@ class Ucus:
     def firsat_yonet(s):
         A = s.A
         for ad, F in FIRSATLAR.items():
-            if not s.sv.get(ad + '_ac'):
+            dogal = ad in A['hava_dogal'] and not s.sv.get(ad + '_ac')   # satın alınmamış hava akımı: doğal (nadir/zayıf)
+            if not s.sv.get(ad + '_ac') and not dogal:
                 continue
-            ara = A['firsat_ara'] / (1 + A['firsat_ara_sv'] * s.sv.get(ad + '_s', 0))
+            ara = A['firsat_ara'] * (A['hava_ara_kat'] if dogal else 1) / (1 + A['firsat_ara_sv'] * (s.sv.get(ad + '_s', 0) + (s.sv.get('hava', 0) if dogal else 0)))
             if ad not in s.firsat_zaman:
                 s.firsat_zaman[ad] = ara * (0.3 + 0.7 * s.rng.random())
             if ad == 'romorkor' and A['romorkor_garanti'] and not s.st.get('rom_garanti') and s.y >= A['romorkor_y']:
                 s.st['rom_garanti'] = 1            # seçenek: romorkor_y ilk geçilişte römorkör hemen gelir
                 s.firsat_zaman[ad] = s.t
-            if s.t < s.firsat_zaman[ad] or s.t - s.son_firsat_t < A['firsat_min']:
+            if s.t < s.firsat_zaman[ad] or (not dogal and s.t - s.son_firsat_t < A['firsat_min']):
                 continue
-            if s.firsat_n >= A['firsat_tur_max'] and ad not in A['firsat_tur_muaf']:
+            if not dogal and s.firsat_n >= A['firsat_tur_max'] and ad not in A['firsat_tur_muaf']:
                 continue
             # bant koşulları
             if ad == 'romorkor' and s.y < A['romorkor_y']:
@@ -510,15 +550,16 @@ class Ucus:
             if ad == 'jet' and not (250 < s.y < 800):
                 continue
             s.firsat_zaman[ad] = s.t + ara * (0.7 + 0.6 * s.rng.random())
-            s.son_firsat_t = s.t
-            s.firsat_n += ad not in A['firsat_tur_muaf']
+            if not dogal:
+                s.son_firsat_t = s.t
+                s.firsat_n += ad not in A['firsat_tur_muaf']
             tau = 1.6 + s.rng.random()
             px, py = s.rota_nokta(tau)
             if ad == 'termal':
-                s.nesneler.append(Nesne(ad, px, 140, 'bant', 60, dict(w=60), s.t))
+                s.nesneler.append(Nesne(ad, px, 140, 'bant', 60, dict(w=60, dogal=dogal), s.t))
             elif ad == 'jet':
                 yc = min(650, max(400, py))
-                s.nesneler.append(Nesne(ad, px, yc, 'bant', 30, dict(L=F['uzun']), s.t))
+                s.nesneler.append(Nesne(ad, px, yc, 'bant', 30, dict(L=F['uzun'], dogal=dogal), s.t))
             else:
                 py = max(30.0, py + s.rng.gauss(0, 12))
                 for o in s.nesneler:   # E2: fırsat rotada kalır, üst üste binen eski nesne kaldırılır
@@ -793,15 +834,16 @@ class Ucus:
         # bantlar
         for o in s.aday:
             if o.tip == 'termal' and abs(s.x - o.x) < 60 and 25 < s.y < 250 and s.termal_t < FIRSATLAR['termal']['sure']:
-                ay += FIRSATLAR['termal']['guc'] + FIRSATLAR['termal']['guc_sv'] * s.sv.get('termal_g', 0)
+                ay += (FIRSATLAR['termal']['guc'] + FIRSATLAR['termal']['guc_sv'] * s.sv.get('termal_g', 0)) * s.hava_k(o)
                 s.termal_t += dt
                 s.st['kazanc'] += FIRSATLAR['termal']['odul'] * dt
             elif o.tip == 'jet' and o.x <= s.x <= o.x + o.ek['L'] and abs(s.y - o.y) < 30:
                 g = s.sv.get('jet_g', 0)
                 V = FIRSATLAR['jet']['V'] + FIRSATLAR['jet']['V_sv'] * g
                 if v < V:
-                    ax += (FIRSATLAR['jet']['guc'] + FIRSATLAR['jet']['guc_sv'] * g) * A['firsat_guc_kat']['jet'] * (1 - v / V)
+                    ax += (FIRSATLAR['jet']['guc'] + FIRSATLAR['jet']['guc_sv'] * g) * A['firsat_guc_kat']['jet'] * (1 - v / V) * s.hava_k(o)
                 s.st['kazanc'] += FIRSATLAR['jet']['odul'] * dt
+        s.yonlendir(dt)
         # tümleştir (yarı örtük Euler)
         x_on = s.x
         s.vx += ax * dt
@@ -926,10 +968,10 @@ class Ucus:
 # ayrıca saniyede rastgele_s amaçsız dokunuş yapar. hic: rampada bekler, uçuşta hiç dokunmaz.
 BOTLAR = dict(
     hic=dict(tut=0.0),
-    kotu=dict(tepki=(0.40, 0.70), gurultu=0.50, ongoru=0.2, tut=0.25, vazgec=0.3, rampa_t=(0.4, 2.0), zayif=0.25, rastgele_s=0.15, aci_sapma=None, aci_t=(0.5, 2.0)),
-    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4), aci_sapma=6.0, aci_t=(0.6, 1.4)),
-    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1), aci_sapma=3.0, aci_t=(0.5, 1.0)),
-    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1), aci_sapma=0.0, aci_t=(0.5, 0.6)),
+    kotu=dict(tepki=(0.40, 0.70), gurultu=0.50, ongoru=0.2, tut=0.25, vazgec=0.3, rampa_t=(0.4, 2.0), zayif=0.25, rastgele_s=0.15, aci_sapma=None, aci_t=(0.5, 2.0), yon=0.3),
+    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4), aci_sapma=6.0, aci_t=(0.6, 1.4), yon=0.6),
+    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1), aci_sapma=3.0, aci_t=(0.5, 1.0), yon=0.9),
+    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1), aci_sapma=0.0, aci_t=(0.5, 0.6), yon=1.0),
 )
 BOT_SIRA = ['hic', 'kotu', 'orta', 'iyi', 'usta']
 
@@ -1026,7 +1068,36 @@ def aci_karar(bot, rng, sv):
     return min(hi, max(lo, a)), t
 
 
-def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False, aci=None):
+def bot_yon(bot, u, durum):
+    """Bot yönlendirmesi: yakıt varsa ekranda önde ve aşağıda kalan en yakın trambolinin üst kenarına hafifçe yönelir.
+    Kullanım oranı BOTLAR[bot]['yon'] (ayrı rastgele kaynak: bot dalış kararlarını kaydırmaz)."""
+    p = BOTLAR[bot].get('yon', 0)
+    if not p or u.yakit <= 0 or u.st['sekme'] == 0:   # açılış zeplininden ("vay") önce yönlendirmez
+        return None
+    durum['yt'] = durum.get('yt', 0.0) - AYAR['dt']
+    if durum['yt'] > 0:
+        return durum.get('yh')
+    durum['yt'] = AYAR['yon_bot_ara']
+    durum['yh'] = None
+    if durum['yrng'].random() >= p or u.dalis_t is not None:
+        return None
+    vl, vr, vb, vt, W, H = u.ekran()
+    lim = math.radians(AYAR['yon_sinir'] + AYAR['yon_sinir_sv'] * u.sv.get('yon', 0))
+    en = None
+    for o in u.nesneler:
+        if o.sinif != 'tr' or not o.aktif or u.t - o.son_t < AYAR['tekrar_sure'] or not (vl <= o.x <= vr and vb <= o.y <= vt):
+            continue
+        dx, dy = o.x - u.x, (o.y + 0.5 * o.r) - u.y
+        if dx <= 0 or dy >= -5:
+            continue
+        a = math.atan2(dy, dx)
+        if a >= -lim and (en is None or dx < en[0]):
+            en = (dx, a)
+    durum['yh'] = en[1] if en else None
+    return durum['yh']
+
+
+def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False, aci=None, yon=True):
     """aci: None → rampa_aci (eski sonuçlar aynen), sayı → sabit açı, 'bot' → bot seçer (ayrı rastgele kaynak; bot kararlarını kaydırmaz)."""
     rng = random.Random(seed * 7919 + 13)
     u = Ucus(seed, sv, tur, bayrak, bot, rakip_hp)
@@ -1035,10 +1106,12 @@ def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False, aci
         aci, at = aci_karar(bot, random.Random(seed * 7919 + 17), sv)
         rt += at
     u.kalkis(kalite, rt, aci)
-    durum = {'rng': rng}
+    durum = {'rng': rng, 'yrng': random.Random(seed * 7919 + 19)}
     while not u.bitti:
         if bot_karar(bot, u, rng, durum):
             u.dokun()
+        if yon:
+            u.yon_hedef = bot_yon(bot, u, durum)
         u.adim()
     r = u.sonuc()
     if gunluk:
@@ -1049,7 +1122,7 @@ def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False, aci
 
 
 # ---------------------------------------------------------------- ekonomi botu
-HIC_SIFIR = ('dalis', 'dolum', 'kapasite', 'bolge', 'm_bonus', 'yakit_ac', 'yakit_s', 'yakit_g', 'son_ates')
+HIC_SIFIR = ('dalis', 'dolum', 'kapasite', 'bolge', 'm_bonus', 'yakit_ac', 'yakit_s', 'yakit_g', 'son_ates', 'depo', 'yon')
 
 
 def deger(ad, sv, son, bot='iyi'):
@@ -1072,6 +1145,7 @@ def deger(ad, sv, son, bot='iyi'):
         'kademe_n': 30, 'kademe_itki': 5 * (1 + sv.get('kademe_n', 0)) * 0.6,
         'dalis': 2.2 * dal, 'dolum': 0.1 * dal * 20, 'kapasite': 30, 'son_ates': 4,
         'izlenme': para, 'kombo_s': 0.4 * para, 'kombo_t': 1.5 * para,
+        'depo': 3, 'yon': 4, 'hava': 5,
     }
     for f in ('yakit', 'fisek', 'konfeti', 'termal', 'jet', 'romorkor'):
         baz = dict(yakit=25, fisek=40, konfeti=28, termal=18, jet=35, romorkor=45)[f]

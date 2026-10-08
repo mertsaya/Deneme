@@ -253,8 +253,8 @@ def roket(pilot_ifade="heyecan", R=0.40):
         a = 2 * math.pi * i / 10
         kure(f"civata_{i}", 0.018, KMET, loc=(px_ + 0.235 * math.cos(a), -R - 0.012, 0.235 * math.sin(a)), parent=pen, seg=8, halka=6)
     kure("kabin_arka", 0.24, ICK, loc=(px_, -0.02, 0.0), parent=pen)
-    pk = pilot(govde=False, anten=False, ifadeler={pilot_ifade: PILOT_IFADE[pilot_ifade]}, olcek=0.2, ad="pilot_kabin")
-    pk.parent = pen; pk.location = (px_, -0.17, -0.03); pk.rotation_euler = (0, 0, math.radians(10))
+    pk = pilot(govde=False, anten=False, ifadeler={pilot_ifade: PILOT_IFADE[pilot_ifade]}, olcek=0.225, ad="pilot_kabin")
+    pk.parent = pen; pk.location = (px_, -0.19, -0.03); pk.rotation_euler = (0, 0, math.radians(10))
     camo = kure("pencere_cam", 0.215, cam_mat(), loc=(px_, -R + 0.01, 0.0), olcek=(1, 0.3, 1), parent=pen)
     camo.visible_shadow = False
     par = kure("cam_parilti", 0.055, isikli("parilti_beyaz", "#ffffff", 1.0, alfa=0.7), loc=(px_ - 0.08, -R - 0.06, 0.1), olcek=(1.0, 0.3, 0.4), parent=pen)
@@ -543,26 +543,35 @@ def balon(ifadeler=None):
 
 def _math(N, L, op, a, b=None): return _m(N, L, op, a, b)
 
-# ================================================================= BULUT
-def bulut(cesit, seed=1):
-    random.seed(seed)
-    kok = bos(f"bulut_{cesit}")
-    if cesit == 0:   # küçük kabarık
-        toplar = [(-0.9, 0, -0.1, 0.55), (-0.3, 0, 0.25, 0.75), (0.45, 0, 0.15, 0.68), (1.0, 0, -0.1, 0.5), (0.0, 0, -0.25, 0.6)]
-    elif cesit == 1:  # orta: iki tepeli
-        toplar = [(-1.6, 0, -0.2, 0.55), (-1.0, 0, 0.2, 0.75), (-0.2, 0, 0.55, 0.95), (0.7, 0, 0.35, 0.85), (1.45, 0, -0.05, 0.62),
-                  (2.0, 0, -0.25, 0.45), (0.0, 0, -0.3, 0.7), (-0.9, 0, -0.3, 0.6), (1.0, 0, -0.3, 0.6)]
-    else:             # geniş bulut kümesi (kule)
-        toplar = [(-2.6, 0, -0.4, 0.55), (-2.0, 0, -0.05, 0.75), (-1.2, 0, 0.45, 0.95), (-0.3, 0, 1.05, 1.1), (0.5, 0, 1.4, 0.85),
-                  (1.1, 0, 0.75, 1.0), (1.9, 0, 0.2, 0.8), (2.6, 0, -0.3, 0.55), (-0.5, 0, 0.0, 1.0), (0.9, 0, -0.2, 0.9), (-1.6, 0, -0.4, 0.7)]
-    toplar = [(x, y + random.uniform(-0.25, 0.25), z, r) for x, y, z, r in toplar]
-    # tabanı düzleştirmek için alttaki topları yassılt: alt kesim aşağıda yapılır
-    BUL = plastik("bulut", "#fbfdff", rough=0.75, coat=0.0, sss=0.45, kenar=0.9)
-    o = metatop(f"bulut_{cesit}_g", toplar, BUL, parent=kok, coz=0.06)
-    # tabanı yassılt
-    zmin = min(v.co.z for v in o.data.vertices); kes = zmin + 0.35
+# ================================================================= BULUT (kümülüs: düz taban + kabarık tepe, kemer/delik yok)
+def kumulus(gen, yuk, seed):
+    rnd = random.Random(seed); t = []
+    n = max(3, int(gen / 0.45))
+    for i in range(n):                      # taban sırası (sık, birbirine geçen)
+        x = -gen / 2 + gen * i / (n - 1)
+        t.append((x, rnd.uniform(-0.15, 0.15), 0.0, rnd.uniform(0.5, 0.62)))
+    m_ = max(2, int(gen / 0.75))
+    for i in range(m_):                     # orta kat
+        x = -gen / 2 * 0.8 + gen * 0.8 * i / max(1, m_ - 1)
+        h = (1 - (2 * x / gen) ** 2)
+        t.append((x + rnd.uniform(-0.15, 0.15), rnd.uniform(-0.2, 0.2), 0.3 + 0.45 * h * yuk, rnd.uniform(0.6, 0.85) * (0.75 + 0.35 * h)))
+    for i in range(rnd.randint(1, 3)):      # tepe kuleleri
+        x = rnd.uniform(-gen * 0.22, gen * 0.22)
+        t.append((x, 0.0, 0.75 * yuk + rnd.uniform(0.0, 0.35), rnd.uniform(0.75, 1.0) * yuk ** 0.5))
+    return t
+
+def bulut_mesh(ad, toplar, mat, parent=None, coz=0.06):
+    o = metatop(ad, toplar, mat, parent=parent, coz=coz)
+    zmin = min(v.co.z for v in o.data.vertices); kes = zmin + 0.38
     for v in o.data.vertices:
-        if v.co.z < kes: v.co.z = kes - (kes - v.co.z) * 0.35
+        if v.co.z < kes: v.co.z = kes - (kes - v.co.z) * 0.25
+    return o
+
+def bulut(cesit, seed=1):
+    kok = bos(f"bulut_{cesit}")
+    gen, yuk = [(2.2, 0.9), (3.6, 1.2), (5.2, 1.7)][cesit]
+    BUL = plastik("bulut", "#eef3ff", rough=0.8, coat=0.0, sss=0.25, kenar=0.45)
+    o = bulut_mesh(f"bulut_{cesit}_g", kumulus(gen, yuk, seed * 7 + cesit), BUL, parent=kok)
     o.scale = (1, 0.7, 1)
     return kok
 
@@ -641,9 +650,9 @@ def toz(kare):
     top = []
     for i in range(9):
         a = math.radians(i * 40 + random.uniform(-10, 10)); r = olc * random.uniform(0.9, 1.25)
-        top.append((math.cos(a) * r * 1.4, random.uniform(-0.2, 0.2), math.sin(a) * r * 0.7, 0.55 * kuc * random.uniform(0.8, 1.2)))
-    if kare == 0: top.append((0, 0, 0, 0.8))
-    o = metatop(f"toz_{kare}_g", top, plastik("toz", "#f4e7cf", rough=0.8, coat=0, sss=0.4, kenar=0.7), parent=kok, coz=0.05)
+        top.append((math.cos(a) * r * 1.2, random.uniform(-0.2, 0.2), math.sin(a) * r * 0.55, 0.75 * kuc * random.uniform(0.85, 1.2)))
+    if kare < 2: top.append((0, 0, 0, [0.9, 0.7][kare]))
+    o = metatop(f"toz_{kare}_g", top, plastik("toz", "#eadcc3", rough=0.85, coat=0, sss=0.3, kenar=0.5), parent=kok, coz=0.05)
     return kok
 
 def ses_duvari(kare):

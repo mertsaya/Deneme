@@ -97,12 +97,12 @@ def isik_kur():
     else:
         # GÖK KUBBESİ: oyunun kendi gökyüzü ışığı (mavi zenit, açık ufuk, alttan sıcak bulut sekmesi)
         # + yumuşak sıcak güneş (sol üst ön) + iki renkli kenar ışığı (arkadan sağ-üst soğuk, sol sıcak)
-        _dunya("#4f9dff", "#d9ecff", "#ffe2b8", 0.85)
-        isik("gunes", "SUN", (-5, -6, 8), guc=3.6, renk="#fff0d6", aci=12)
+        _dunya("#4f9dff", "#d9ecff", "#ffe2b8", 0.72)
+        isik("gunes", "SUN", (-5, -6, 8), guc=4.4, renk="#fff0d6", aci=12)
         isik("kenar_soguk", "AREA", (6, 9, 6), guc=2600, boy=4, renk="#d8f0ff")
         isik("kenar_sicak", "AREA", (-8, 8, 1), guc=1500, boy=4, renk="#ffd2a6")
         # yüz dolgusu: kameradan gelen zayıf, geniş, sıcak ışık (kask içindeki yüz kararmasın)
-        isik("yuz_dolgu", "AREA", (1, -14, 2), guc=900, boy=10, renk="#fff4e8")
+        isik("yuz_dolgu", "AREA", (1, -14, 2), guc=650, boy=10, renk="#fff4e8")
 
 # ---------------------------------------------------------------- malzemeler
 _MATS = {}
@@ -597,6 +597,19 @@ def detayli(ad, hexc, rough=0.42, coat=0.25, metal=0.0, sss=0.0, panel=None, per
         ao = N.new("ShaderNodeAmbientOcclusion"); ao.inputs["Distance"].default_value = 0.18; ao.samples = 8
         k = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", 1.0, ao.outputs["AO"]), kir * 0.55)
         renk = _mix(N, L, _m(N, L, "MINIMUM", k, 0.7), renk, lin("#3b2f2a"))
+    if STIL == "C":
+        # cel karşılığı: aynı renk/desen, toon BSDF ile (ayrıntı korunur, gölge basamaklı)
+        N.remove(p)
+        td = N.new("ShaderNodeBsdfToon"); td.inputs["Size"].default_value = 0.62; td.inputs["Smooth"].default_value = 0.06
+        tg = N.new("ShaderNodeBsdfToon"); tg.component = "GLOSSY"; tg.inputs["Size"].default_value = 0.12; tg.inputs["Smooth"].default_value = 0.04
+        amb = N.new("ShaderNodeEmission"); amb.inputs["Strength"].default_value = 0.30
+        for t in (td, amb):
+            if isinstance(renk, tuple): t.inputs["Color"].default_value = renk
+            else: L.new(renk, t.inputs["Color"])
+        a1 = N.new("ShaderNodeAddShader"); L.new(td.outputs[0], a1.inputs[0]); L.new(amb.outputs[0], a1.inputs[1])
+        mg = N.new("ShaderNodeMixShader"); mg.inputs[0].default_value = 0.12; L.new(a1.outputs[0], mg.inputs[1]); L.new(tg.outputs[0], mg.inputs[2])
+        L.new(mg.outputs[0], out.inputs[0])
+        return m
     if isinstance(renk, tuple): p.inputs["Base Color"].default_value = renk
     else: L.new(renk, p.inputs["Base Color"])
     p.inputs["Metallic"].default_value = metal

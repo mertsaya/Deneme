@@ -14,8 +14,8 @@ SIM = KOK / 'sim' / 'ucus_sim.py'
 B0 = KOK / 'b0'
 CIKTI, SAYFA = B0 / 'ayar.json', B0 / 'index.html'
 
-KARTLAR = ['rampa', 'bolge', 'verim', 'dalis', 'kademe_itki', 'yakit_ac', 'yakit_s']
-TIPLER_B0 = ['balon', 'parti', 'zeplin', 'marti', 'ucurtma']   # parti yalnız eşlik testi (?tipler=)
+KARTLAR = ['rampa', 'bolge', 'verim', 'dalis', 'kademe_itki', 'yakit_ac', 'yakit_s', 'depo', 'yon', 'hava']
+TIPLER_B0 = ['balon', 'parti', 'zeplin', 'dron', 'sicak', 'marti', 'ucurtma', 'afis', 'balina']   # parti yalnız eşlik testi (?tipler=)
 
 # Sim kodunun içine gömülü sayılar (işlev adı yorumda). Sim bunları sabite taşırsa buradan silinip sim'den okunur.
 SABIT_EK = {
@@ -32,7 +32,10 @@ SABIT_EK = {
     'firsat': {'ilk': [0.3, 0.7], 'sonra': [0.7, 0.6], 'tau': [1.6, 1.0], 'y_sapma': 12, 'y_min': 30},   # firsat_yonet
     'yakit': {'tut_ek': 0.25, 'cift_sv': 4, 'ek_sv': 2, 'ek': 0.25},         # firsat_al
     'aday': [0.15, 80],                                                       # adim
-    'bot_bolge_kat': 0.5,                                                     # rampa_karar (mükemmel olasılığına bölge/2)
+    'bot_bolge_kat': 0.5,
+    'tohum_yon': [7919, 19],                                                  # tur_oyna (bot yönlendirme kaynağı)
+    'termal': {'y': 140, 'w': 60, 'y_alt': 25, 'y_ust': 250, 'dogus_y_max': 300},   # firsat_yonet, adim (bantlar)
+    'jet': {'y': [400, 650], 'yari': 30, 'dogus_y': [250, 800]},             # firsat_yonet, adim (bantlar)                                                     # rampa_karar (mükemmel olasılığına bölge/2)
     'hedef_dy_min': 5, 'hedef_r_kat': 0.5,                                    # dalis_hedef
     'bot_karar_ara': 0.05,                                                    # bot_karar
     'tohum_bot': [7919, 13], 'tohum_tur': 1000, 'tohum_alici': [31, 7], 'tohum_aci': [7919, 17],   # tur_oyna, kampanya
@@ -62,7 +65,7 @@ def uret():
         'SONUM_ALT': m.SONUM_ALT,
         'DUVARLAR': {'ses': m.DUVARLAR['ses']},
         'TIPLER': {k: v for k, v in m.TIPLER.items() if k in TIPLER_B0},   # sim anahtar sırası korunur
-        'FIRSATLAR': {'yakit': m.FIRSATLAR['yakit']},
+        'FIRSATLAR': {k: m.FIRSATLAR[k] for k in ('yakit', 'termal', 'jet')},
         'GELISTIRME': G,
         'fiyatlar': {k: [m.fiyat(k, sv) for sv in range(G[k][0])] for k in KARTLAR},
         'BOTLAR': m.BOTLAR, 'BOT_SIRA': m.BOT_SIRA,
