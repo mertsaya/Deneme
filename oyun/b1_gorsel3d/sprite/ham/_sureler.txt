@@ -1,2 +1,6 @@
 stil_A_roket.png	512x246	48	21.1
 stil_A_zeplin.png	512x290	48	29.4
+stil_A_pilot.png	384x564	48	37.8
+stil_B_roket.png	512x246	48	24.0
+stil_B_zeplin.png	512x290	48	32.2
+stil_B_pilot.png	384x564	48	50.2
