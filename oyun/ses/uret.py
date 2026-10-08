@@ -497,7 +497,7 @@ def _():
     N = n_(0.6)
     t = np.arange(N) / SR
     e = np.clip(t / 0.004, 0, 1) * (0.35 + 0.65 * np.exp(-t / 0.06)) * np.exp(-t / 0.22)
-    fs = sweep(white(N), expc(3200, 1100, N), q=1.1, kind='bp') * e
+    fs = kuyruk(sweep(white(N), expc(3200, 1100, N), q=1.1, kind='bp') * e)
     puf = lp(brown(n_(0.25)), 400) * env_exp(n_(0.25), 0.05, 0.003)
     gov = yumusat(karis((klak, 0, 0.8), (fs, 0.008, 1.0), (puf, 0.008, 0.5)), 3.5)
     return verb(karis((gov, 0, 1.0), (tahta(0.3, 2100), 0.5, 1.0)), 0.3, 0.1)

@@ -41,9 +41,9 @@ SABIT_EK = {
 }
 
 
-# Yalnız B0'a ait (sim'de yok; K6 için koordinatör kararı (b)): uçuşun t0–t1 s arasında alçak bantta (y < y)
-# trambolin doğma ağırlığı doğrusal olarak en_az'a iner; sim seyrek çarpanıyla çarpılır. ?b0seyrek=0 kapatır.
-B0_SEYREK = {'y': 500.0, 't0': 25.0, 't1': 40.0, 'en_az': 0.1}
+# Yalnız B0'a ait (sim'de yok; K6 için koordinatör kararı (b)): roket alçak banttayken (y < y) uçuşun t0–t1 s arasında
+# yönetmen yoğunluk hedefi ve sekme garantisi doğrusal olarak en_az'a iner. ?b0seyrek=0 kapatır.
+B0_SEYREK = {'y': 1000.0, 't0': 30.0, 't1': 45.0, 'en_az': 0.05}   # 40 tohum: iyi t5-15 medyan 51 s, tavan %8
 
 
 def sim_yukle():
