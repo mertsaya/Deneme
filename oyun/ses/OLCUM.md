@@ -95,7 +95,7 @@ Hedef -12 LUFS (100 ms tepe), etkin süre 0.4–1.6 s. Spektrogram: `spektrogram
 | d. Patlamalı ayrılma | karma | -13.3 | -1.9 | 15.1 | 1.3 | 5.6 | 0 | 1.38 | 69/19/10/1/0 | 291 | 72 | geçti (9.) |
 | e. Yay fırlatma | sentez | -12.5 | -1.6 | 15.5 | 0.5 | 3.7 | 1 | 0.55 | 16/47/31/6/1 | 984 | 90 | geçti (6.) |
 | f. Çat! + paraşüt pufu | sentez | -12.2 | -2.3 | 14.1 | 0.2 | 5.2 | 0 | 0.64 | 0/80/14/5/1 | 729 | 88 | geçti (7.) |
-| g. Klak + pnömatik fşşt | sentez | -11.8 | -3.3 | 16.2 | 0.0 | 1.1 | 0 | 0.61 | 14/9/33/37/7 | 3151 | 96 | geçti (3.) |
+| g. Klak + pnömatik fşşt | sentez | -11.8 | -3.3 | 16.1 | 0.0 | 1.1 | 0 | 0.58 | 14/9/33/37/7 | 3151 | 96 | geçti (3.) |
 | h. Boing-pop + ıslıklı düşüş | sentez | -12.0 | -1.6 | 16.0 | 0.0 | 3.4 | 0 | 0.82 | 2/37/60/0/0 | 824 | 98 | geçti (2.) |
 | i. Fırlatma vuuş + yeniden tutuşma | sentez | -12.0 | -3.0 | 13.2 | 0.0 | 4.9 | 0 | 1.07 | 24/44/28/4/0 | 744 | 94 | geçti (4.) |
 | j. Tık + çiçek açan paraşüt | sentez | -12.5 | -1.4 | 16.5 | 0.4 | 3.4 | 1 | 0.60 | 0/66/28/5/1 | 880 | 92 | geçti (5.) |

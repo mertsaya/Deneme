@@ -17,7 +17,7 @@ Ben sesleri duyamıyorum. Öneriler ölçüme (telefon hoparlöründe ne kadar k
 | Trambolin | **F Telefon dostu tiz boing** | Ölçüm a–e boing'lerinin telefonda 6–15 dB kaybolduğunu gösterdi; F bunun üzerine bir oktav yukarı yeniden yapıldı (kayıp 2,9 dB). Kombo perde artışı simülasyonda dinlenebilir. |
 | Martı | **C Kenney yumruk + kumaş kanat** (yedek: D Çift çığlık) | Ölçümde 1.; gerçek kayıt vuruşu ve sentez çığlık karışımı. |
 | Balon | **D Büyük reklam balonu** (yedek: C hava kaçışı) | Ölçümde 1. İlk sürümü fazla uzundu, kısaltıldı. |
-| Kademe ayrılma | **E Yay fırlatma** | Ölçümde 1. "Üst kademe yeniden fırlar" kuralını sesle anlatıyor: klank, yay ve yukarı vuuş. |
+| Kademe ayrılma | **K Şak + bakır "ta-DAA"** (yedek: H Boing-pop, I Fırlatma + yeniden tutuşma) | 2. tur (F–K, sayfada mavi "yeni" rozeti): ilk beş aday beğenilmedi (en iyisi B, 3/5). Yenilerin hepsi umutlu, yukarı giden bir hareketle biter. K ölçümde 1. (99): tok vuruş + kısa bakır nida, "kurtuldun!" der. Eski A–E karşılaştırma için duruyor. |
 | Dalış | **B Vuuş + tok vuruş** | Ölçümde 1. Dengeli: hava süpürmesi tam vuruş anında biter. |
 | Mükemmel sekme | **B Arpej + parıltı + boing** veya **C FM çan** | Puanları eşit. B daha "aferin", C daha parlak. |
 | Ses duvarı | **B N-dalga çift çatlak** (sinematik isteniyorsa C Emme + BUM) | Gerçek ses patlaması gibi iki çatlak, telefonda kayıp 1,7 dB. Şartnamedeki 60 Hz'lik "BUM" telefonda 15 dB kaybolduğu için elendi. |
@@ -31,7 +31,7 @@ Ben sesleri duyamıyorum. Öneriler ölçüme (telefon hoparlöründe ne kadar k
 
 ## Teknik
 
-- Yeniden üretmek: `python3 oyun/ses/uret.py && python3 oyun/ses/olc.py` (~1,5 dk). Ara wav'lar `_ara/` içinde (git dışı).
+- Yeniden üretmek: `python3 oyun/ses/uret.py && python3 oyun/ses/olc.py` (~1,5 dk). Yalnız bazı adaylar: `python3 oyun/ses/uret.py kademe_ayrilma_f kademe_ayrilma_g` (önek eşleşir; diğer kayıtlar korunur), sonra `olc.py`. Ara wav'lar `_ara/` içinde (git dışı).
 - Ses düzeyleri: kategori hedefleri `uret.py` içindeki `KATEGORI[...]['hedef']` (LUFS). Simülasyonda efekt, müzik ve motor kaydırıcıları ayrı.
 - Döngüler (motor, müzik) başta ve sonda 0,5 s pay içerir. Oyunda `loopStart`/`loopEnd` değerleri `adaylar/liste.js` içindeki `dongu` alanından alınmalı (mp3 kodlayıcı gecikmesi olsa bile ek duyulmaz).
 - Motor eşlemesi (oyunda da aynısı): oynatma hızı 0,7 + 0,9·s, alçak geçiren 1200·2^(2,5·s) Hz, kazanç 0,55 + 0,45·s; s = hız / 300. Müzik: 2. katman s 0,25–0,40, 3. katman s 0,55–0,70 arasında açılır.

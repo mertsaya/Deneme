@@ -26,4 +26,6 @@ Adayların çoğu kodla üretildi (`uret.py`, `ses_lib.py`; projenin kendi kodu,
 | kenney_digital-audio/powerUp2.ogg | https://kenney.nl/assets/digital-audio | CC0 | mukemmel_d |
 | kenney_digital-audio/lowThreeTone.ogg | https://kenney.nl/assets/digital-audio | CC0 | son_sans_d |
 
+Kademe ayrılma 2. tur adayları (`kademe_ayrilma_f` … `_k`) tamamen sentezdir; dış örnek kullanılmadı.
+
 Diğer tüm adaylar (müzik dahil) sentezdir: `kaynak` sütunu `sentez` olanlar (OLCUM.md). Müzik ezgileri bu proje için yazıldı; bilinen bir esere dayanmaz.
