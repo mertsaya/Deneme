@@ -66,7 +66,7 @@ AYAR = dict(
     bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
     bos_dalis_yer=15.0,        # E1: boş dalışta y < kademe_y + 15 olunca hemen toparlanır (yere gömülmesin)
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
-    baslangic_bos_x=200.0, baslangic_bos_t=2.6,   # kullanıcı kararı: kalkış boş bölgesi = max(200, kalkış vx × 2,6 s); içinde hiç nesne (açılış zeplini, fırsat, hava akımı dahil) yok
+    baslangic_bos_x=120.0, baslangic_bos_t=2.6,   # kullanıcı kararı: kalkış boş bölgesi = max(120, kalkış vx × 2,6 s) (ilk temas kalkıştan ≥ ~2,6 s sonra); içinde hiç nesne (açılış zeplini, fırsat, hava akımı dahil) yok
     yavaslatici_ac_x=600.0, yavaslatici_tur=3,   # tur 1–3'te x < 600'de yavaşlatıcı (martı, uçurtma, afiş) doğmaz
     ogrenme_n=5,               # tur 1'de ilk 5 nesne birbirinden ve öncekilerden en az ayni_tur_ekran·W uzakta (öğrenme rampası)
     kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
