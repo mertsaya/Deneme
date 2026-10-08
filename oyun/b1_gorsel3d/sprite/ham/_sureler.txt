@@ -44,3 +44,5 @@ roket_aci_6.png	640x512	64	22.7
 roket_aci_7.png	640x512	64	21.4
 roket.png	768x260	64	21.5
 roket_kademe_1.png	512x310	64	21.5
+roket_kademe_2.png	512x200	64	15.5
+stil_A_roket.png	512x174	48	8.7
