@@ -167,3 +167,44 @@ Kalkışta iki dokunuş var: önce açı (26°–52°), sonra güç/zamanlama. `
   Bölge yaklaşık ilk ekran genişliği (W = 150, roket sol üçte birde).
 - **Hız ölçütü (`baslangic_bos_v`) uygulanmadı:** fizikte roket kalkıştan sonra hızlanmıyor (en yüksek hız kalkışta), bu yüzden "kalkış hızının %90'ını geçene kadar" ölçütü tanımsız.
 - **Etki** (tur 1, 200 tohum): hic mesafe 494 → 504, kazanç 88; iyi 773 → 786, kazanç 119 → 118; süreler aynı. Kampanyada (40 tohum, 25 tur) iyi botta ses duvarı medyanı tur 3, hic tur 6. Kampanya kazancı gürültülü (hic t15 362 → 277, iyi t5 387 → 518), ekonomi düzeltmesi yapılmadı.
+
+## 10. Büyük tur: yönlendirme, itiş, hava akımları, yeni nesneler, çeşitlilik, yay sekmesi (kullanıcı kararları, 2026-10-08)
+
+Hepsi sim'de ve B0'da birebir. Eşlik 200 tohumda 37/37 geçti; tur 10'da bütün B0 türleri ve yeni kartlarla da tuttu (16 ölçünün hepsi %13 içinde).
+
+- **Uçurtma:** gövde −%8 (`kayip` 0,08; önce 0,35 istendi, sonra 0,08'e çekildi). İp yavaşlatmıyor, yalnız kopuyor (`ip` 0). Kopunca 16 jeton tabanı veriyor (`ip_odul`) ve `ip_kopma` olayı düşüyor.
+- **Martı ve afiş:** martı −%3, afiş uçağı −%25.
+- **Yönlendirme + yakıt:**
+  - Burun hedef açıya dönüyor (60°/s + 12/sv), ±45° (+5/sv) sınırında. |v| korunuyor; dönerken yakıt 35/s.
+  - Depo 60 (+20/sv). Dalış ve itiş sırasında yönlendirme çalışmıyor.
+  - Botlar ilk sekmeden sonra, yakıt varsa, önde ve aşağıda kalan en yakın trambolinin üstüne yöneliyor. Kullanım oranı kotu 0,3 / orta 0,6 / iyi 0,9 / usta 1; ayrı rastgele kaynak.
+  - Yeni kartlar: `depo`, `yon`, `hava`.
+- **İtiş (boş dalışın yerine):** hedefsiz dokunuş = 0,3 s ileri-yukarı itiş.
+  - Burun en çok +30° döner, mutlak açı en çok 60°; roket asla aşağı dönmez.
+  - |v| en çok +%8 artar ve 150'yi aşmaz.
+  - 20 yakıt harcar; iki itiş arası en az 0,5 s.
+  - Orta/iyi/usta botlar hedef yokken alçakta inerken (y < 60) ya da hız 45'in altına düşünce kullanıyor.
+  - Boş dalış ve E1 artık kullanılmıyor (ayarları duruyor).
+- **Doğal hava akımları:** termal ve jet satın almadan çıkıyor. Aralık × 1,1, güç × (0,6 + 0,1·hava sv). Fırsat sınırına ve 6 s aralık kuralına girmiyorlar.
+- **Nesneler:**
+  - Parti balonu ve radyosonde kaldırıldı. Balon ailesi B0'da 2 tür: reklam balonu ve sıcak hava balonu.
+  - Yeni: balina zeplin (r 40, nadir) ve paraşütlü kargo kutusu (`kutu`, tur 5).
+  - Yük dronu tur 1'den. Ağırlıklar: balon 3→2, zeplin 1,2→1,8, dron 0,6→1,2.
+- **Trambolin yalnız üstten:** vy < 0 ve roket merkezi nesne merkezinin üstündeyse sekiyor. Alttan ve yandan içinden geçiliyor, etki yok. Açılış zeplini rotanın iniş kolunda.
+- **Yay sekmesi** (mantık kuralı 1'in bilinçli istisnası): |v'| = v·k + b·(1 − v/200), alt sınır 0.
+  - k eski değerlerinde; b 18–20.
+  - Tek sekmede en çok ~+%15; V_tavan üstüne sekmeyle çıkılmıyor (invaryant, `kontrol` testinde).
+  - Mükemmel sekme bonusu V_tavan ile sınırlı.
+- **Tekrardan kaçınma ve ritim** (aday reddi; rastgele çekim eklemiyor):
+  - Aynı aile art arda yok. Aile ağırlığı son 3 doğuşta görüldüyse × 0,25, son 6'da yoksa × 1,5.
+  - Balon ailesi en çok %20 (tur 1–3'te %15). Bir ekranda aynı aileden en çok 2. İlk 10 doğuşta en az 4 aile.
+  - Aynı tür arası en az 1,5 W; 0,2 W içinde ikinci nesne yok; ardışık doğuşlar arası yükseklik farkı ≥ 25.
+  - Her 400 b'nin son %35'i boş (nefes boşluğu). Tur 1'de ilk 5 nesne birbirinden ≥ 1,5 W uzakta.
+  - Sekme garantisi bu retlerden muaf.
+- **Yoğunluk:** `ekran_hedef` 3,5; retlerle ölçülen ortalama 2,0 nesne/ekran.
+- **Kalkış boş bölgesi:** max(120, kalkış vx × 2,6 s). Açılış zeplini, fırsat ve hava akımı dahil hiçbir şey yok. Tur 1–3'te x < 600'de yavaşlatıcı yok.
+- **Ekonomi düzeltmesi:**
+  - Değişen düğmeler: `km_odul` 75→50, `seyrek` (kat 0,75, en az 0,2), `yakit_kap` 60, `itki_yakit` 20, `sekme_v_tavan` 200.
+  - Sim kampanyası (15 tohum, 20 tur): iyi botta ses duvarı tur 2, tropopoz tur 10, tur 5 kazancı ~470, tur 5–15 medyanı 42 s. Hic botunda ses duvarı tur 7.
+  - **Açık:** sim kampanyasında iyi botun tavana çarpan payı %23 (hedef ≤ %10). B0'da `b0_seyrek` ile %0. Daha sert `seyrek` denemesi (kat 0,7, en az 0,1) etkisiz kaldı; uzun uçuşlar tropopoz üstünde, kural orada çalışmıyor. Yüksek bant için bir sınır kararı gerekiyor.
+  - Hic botunun tur 1 kazancı ~87'den ~71'e düştü (daha seyrek dünya).

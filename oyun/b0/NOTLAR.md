@@ -177,3 +177,34 @@ Bulgu bulgu durum: `MANTIK_RAPOR.md`; yeniden üretim: `test/mantik_test.py` (10
   - 800 tohumda ikisi aynı çıktı (0,72 / 0,74; tohum 200–800 arası 0,73 / 0,71). Yani ilk 200 tohumda sim tarafında örneklem sapması; port farkı değil.
 - **Menü arkası çizim:** kara kutu ve hangarda sahne artık bir kez çiziliyor (pil ve menü tepkisi için; boyut değişince yeniden çiziliyor).
 - **K7 notu:** oyun içinde TEKRAR UÇ'tan RAMPA'ya geçiş 1,7 ms. Playwright ölçümü 0,26–0,68 s arasında oynuyor. Sebep makinedeki yük: başka bir ajanın Blender süreci %300 CPU kullanıyordu, yük ortalaması 5, 4 çekirdek. Yük düşükken önceki koşularda 0,24–0,48 s ölçülmüştü.
+
+## Büyük tur (kullanıcı kararları; KARARLAR'a işlenmek üzere). Sim ayrıntısı: `oyun/sim/RAPOR.md` §10
+
+- **Kalkış boş bölgesi:** max(120, kalkış vx × 2,6 s). İlk temas kalkıştan ~2,7 s sonra; bölgede hiçbir şey yok (açılış zeplini, fırsat, akım dahil). Tur 1–3'te x < 600'de yavaşlatıcı yok. Tur 1'de ilk 5 nesne ≥ 1,5 ekran aralıklı.
+- **K1 gevşetildi:** vay kalkış anından ≤ 6,5 s (rampa beklemesi sayılmaz). `test/k1_gevsek.py`: hic ve iyi %100.
+  - `testci/kabul.py` K1 eski eşikle (rampa dahil ≤ 5 s) hic botunda %0 veriyor; beklenen bir sonuç. Testçinin K1'i yeni tanıma çekmesi gerekiyor.
+- **Uçurtma:** gövde −%8. İp yavaşlatmıyor; kopuyor, uçurtma kuyruğu dalgalanarak yukarı süzülüyor, "İP KOPTU +N" yazısı ve sentez kopma sesi (`SES.ip_kopma`) var. Ödül 16 tabanı. Martı −%3, afiş −%25.
+  - "İp kesici" geliştirmesi B0 kart listesinde yok. Sim'deki `ip` kartı artık anlamsız (ip kaybı 0); hangardan çıkarılması için karar gerekiyor.
+- **Yönlendirme + yakıt:**
+  - Uçuşta basılı tutup sürüklemek burnu çeviriyor; 100 px dikey = tam sınır açısı.
+  - Hızlı dokunuş (< 180 ms, < 10 px) dalış ya da itiş. Uçuşta karar parmak kalkınca veriliyor, dalış gecikmesi en çok 180 ms. Rampa dokunuşları eskisi gibi anında.
+  - Dalış düğmesinin solunda turkuaz yakıt çubuğu; boşalınca kırmızı, "YAKIT BİTTİ" ya da "YAKIT YOK" çıkıyor.
+  - Yeni kartlar: Yakıt deposu, Yönlendirme gücü, Hava akımı. Toplam 9 kart oldu, 3 sütun. İstenen "8 kart" ile "Hava akımı kartı" çelişiyordu; ikisi de konduğu için 9.
+- **İtiş (boş dalış yerine):** hedefsiz hızlı dokunuş = 0,3 s ileri-yukarı itiş. En çok +30° (mutlak ≤ 60°), |v| en çok +%8 (≤ 150), 20 yakıt, en çok 2/s. Alev uzuyor, kısa tutuşma sesi var.
+- **Hava akımları:** termal sütun (titreşen; bazıları leylekli, görsel) ve jet şeridi (çizgili). Satın almadan doğal (nadir/zayıf). Hava akımı kartı sıklık ve güç ekliyor.
+- **Nesneler:**
+  - Reklam balonu yuvarlak turuncu; sıcak hava balonu iri kırmızı-beyaz damla.
+  - Yük dronu, balina zeplin, paraşütlü kargo kutusu (tur 5), afiş uçağı (tur 4).
+  - Parti balonu ve radyosonde kaldırıldı. "Bulut sıçrama pedi" eklenmedi (yalnız gerekirse istenmişti).
+- **Trambolin yalnız üstten:** alttan ve yandan içinden geçiliyor (nesne hafifçe titriyor, roket etkilenmiyor).
+- **Yay sekmesi** (mantık kuralı 1'in bilinçli istisnası): |v'| = v·k + b·(1 − v/200). Enerjinin görünür sebebi: "BOING ×1,1" yazısı, nesne ezilip geri fırlıyor, hız göstergesi kısa parlıyor.
+- **Çeşitlilik ve ritim:** aile kuralları, aynı tür aralığı, küme ve nefes boşluğu (ayrıntı RAPOR §10). Ekranda ortalama ~2 nesne.
+- **Doğrulama:**
+  - Eşlik 37/37; tur 10'da tüm türlerle de tuttu.
+  - `kabul.py --hizli`: K1 (eski eşik) dışında geçme şartlıların hepsi geçti. K7 0,30 s; yük yüksekken (load 5) bile geçti.
+  - K5: iyi 2, orta 2, hic 7. K6 (B0): iyi 34 s, tavana çarpan %0.
+  - Diğer testler: mantik_test 10/10, bos_bolge 15/15, ses_test, k15_genis 9/9, k1_gevsek, yeni `test/yon_test.py` (sürükleme açıyı 18°→36° çeviriyor, yakıt harcanıyor; hızlı dokunuş itiş yapıyor), insan.py konsol temiz.
+- **Hata düzeltmesi:** insan yönlendirme hedefi ilk turda tanımsız kalıp konumu NaN yapıyordu (kayıtta jeton `null` oluyordu). Düzeltildi; ayrıca kara kutu toplamına sayı değilse 0 koruması kondu.
+- **Açık:**
+  - Sim kampanyasında iyi botun tavana çarpan payı %23 (B0'da %0). Yüksek bant sınırı kararı gerekiyor.
+  - Hic botunun erken kazancı ~%18 düştü.

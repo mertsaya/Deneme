@@ -480,7 +480,7 @@ class Ucus {
   }
   hava_k(o) { return o.dogal ? A.hava_guc[0] + A.hava_guc[1] * (this.sv.hava || 0) : 1; }
   yonlendir(dt) {   // sim yonlendir: burun hedefe döner, |v| korunur, dönerken yakıt harcanır
-    if (this.yon_hedef === null || this.yakit <= 0 || this.dalis_t !== null || this.bos) return;
+    if (this.yon_hedef == null || this.yakit <= 0 || this.dalis_t !== null || this.bos) return;
     const k = this.sv.yon || 0, lim = rad(A.yon_sinir + A.yon_sinir_sv * k), h = Math.min(lim, Math.max(-lim, this.yon_hedef));
     const a = Math.atan2(this.vy, this.vx), adim = rad(A.yon_hiz + A.yon_hiz_sv * k) * dt, d = Math.min(adim, Math.max(-adim, h - a));
     if (Math.abs(d) < 1e-9) return;
@@ -1341,7 +1341,7 @@ const G = {
   duraklat: false, sayim: 0, menu: null, sarsT: 9, sarsA: 0, donmus: false, ipucuBuTur: false, sonSonuc: null, kk: null,
   parca: [], halkaG: [], sayilar: [], iz: [], izN: 0, kademeP: [], hizCiz: [], koniT: 9, flasT: 9, flasX: 0, flasY: 0, flasSay: [-9, -9, -9], flasI: 0,
   bitisAbarti: false, dalisT: 9, botDokT: 9, kalkisT: 0, fps: 60, fpsDusuk: 0, vurguO: null, vurguT: 0, hedefIpucu: false,
-  uyari: 0, rampaKalite: null, itkiT: 9, kopan: { on: false, x: 0, y: 0, t: 0 }, bidon: { on: false, x: 0, y: 0, t: 0 },
+  uyari: 0, rampaKalite: null, yonHedef: null, itkiT: 9, kopan: { on: false, x: 0, y: 0, t: 0 }, bidon: { on: false, x: 0, y: 0, t: 0 },
 };
 for (let i = 0; i < B0_ARAYUZ.parcacik_max; i++) G.parca.push({ on: false, x: 0, y: 0, vx: 0, vy: 0, t: 0, s: 0, r: 0, renk: '#fff' });
 for (let i = 0; i < 10; i++) G.halkaG.push({ on: false, x: 0, y: 0, t: 0, s: 0, r: 0, renk: '#fff', w: 3 });
@@ -2265,7 +2265,7 @@ window.__oyun = {
   durum() {
     const u = G.u;
     return { asama: G.asama, t: G.asama === 'RAMPA' ? (G.rampaFaz === 'aci' ? G.aciT : G.aciSure + G.rampaT) : (u ? u.t : 0), rampa_t: G.rampaT, rampa_faz: G.rampaFaz, aci: G.aciGor, sarsinti: hareketAz() ? 0 : (G.sarsT < HIS.sarsinti_sure * 3 ? G.sarsA : 0), duraklat: G.duraklat, x: u?.x ?? 0, y: u?.y ?? A.rampa_y, vx: u?.vx ?? 0, vy: u?.vy ?? 0, gosterge: u?.gosterge ?? A.gosterge_bas,
-      kademe: u?.kademe ?? 1, kazanc: u?.st.kazanc ?? 0, nesne_n: u?.nesneler.length ?? 0, halka: u?.H.o ? { tau: u.H.tau, deneme: u.H.deneme } : null,
+      kademe: u?.kademe ?? 1, yakit: u?.yakit ?? 0, itki: u?.st.itki ?? 0, kazanc: u?.st.kazanc ?? 0, nesne_n: u?.nesneler.length ?? 0, halka: u?.H.o ? { tau: u.H.tau, deneme: u.H.deneme } : null,
       bitti: u?.bitti ?? null, seed: G.turSeed, fps: G.fps, pr: PR, uyari: UYARILAR.length, jeton: KAYIT.k.jeton, tur: KAYIT.k.tur };
   },
   adim(n = 1) { for (let i = 0; i < n && G.u && !G.u.bitti && G.asama === 'UCUS'; i++) fizikAdim(); return this.durum(); },
