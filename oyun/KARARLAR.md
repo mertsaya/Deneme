@@ -59,3 +59,4 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - (B0 telefon testi 3, kullanıcı onaylı) **Kalkış boş bölgesi uzatılır:** oyuncunun hızlanıp yönlendirip yol seçmesi için ilk nesne temasına kadar kalkıştan ~2,5–3 s (≈250–300 birim); 'vay' ölçütü kalkış anından ≤ ~6–7 s'ye gevşetilir (K1 gevşetmesi). İlk 600 birimde yavaşlatıcı yok; tur 1'de ilk 5 nesne ≥ 1,5 ekran aralıkla.
 - (B0 telefon testi 3, kullanıcı onaylı) **Uçurtma:** yalnız gövdesi yavaşlatır (−%35); ip yavaşlatmaz, değince kopar ve kopma sesi çalar.
 - (B0 telefon testi 3, kullanıcı onaylı) **Uçurtma ipi kopunca** uçurtma yukarı uçar ve jeton verir; ip yavaşlatmaz; gövde −%35.
+- (B0 telefon testi 3, kullanıcı onaylı, öncekini DEĞİŞTİRİR) **Uçurtmanın gövdesi hafif yavaşlatır (−%8)**; ip yavaşlatmaz, kopar, uçurtma yukarı uçar, jeton verir.
