@@ -1,0 +1,90 @@
+{
+ "iyi": {
+  "sure_ort": 16.47073722356751,
+  "sure_min": 11.50448400219907,
+  "sure_max": 24.610327182523196,
+  "sure_med": 15.829990043153312,
+  "ilk5_olay_ort": 2.8,
+  "ilk5_olay_min": 2,
+  "ilk_olay_t_ort": 2.054,
+  "olay_tipleri": [
+   "bos_dalis",
+   "dalis",
+   "sekme",
+   "son_sans"
+  ],
+  "tipler_ilk5_ornek": {
+   "dalis": 1,
+   "bos_dalis": 1,
+   "son_sans": 1
+  }
+ },
+ "orta": {
+  "sure_ort": 15.641827040624925,
+  "sure_min": 9.2692058200639,
+  "sure_max": 24.850373641028266,
+  "sure_med": 15.173539210948928,
+  "ilk5_olay_ort": 3.1,
+  "ilk5_olay_min": 2,
+  "ilk_olay_t_ort": 1.821578947368421,
+  "olay_tipleri": [
+   "bos_dalis",
+   "dalis",
+   "sekme",
+   "son_sans"
+  ],
+  "tipler_ilk5_ornek": {
+   "sekme": 1,
+   "dalis": 1,
+   "bos_dalis": 1
+  }
+ },
+ "kotu": {
+  "sure_ort": 15.256154081250072,
+  "sure_min": 9.231251086294803,
+  "sure_max": 24.985353545595483,
+  "sure_med": 14.463587391935206,
+  "ilk5_olay_ort": 2.9,
+  "ilk5_olay_min": 1,
+  "ilk_olay_t_ort": 2.13,
+  "olay_tipleri": [
+   "dalis",
+   "sekme",
+   "son_sans"
+  ],
+  "tipler_ilk5_ornek": {
+   "sekme": 2,
+   "dalis": 1
+  }
+ },
+ "hic": {
+  "sure_ort": 15.944999999999904,
+  "sure_min": 12.541666666666766,
+  "sure_max": 20.174999999999667,
+  "sure_med": 15.86249999999991,
+  "ilk5_olay_ort": 1.9,
+  "ilk5_olay_min": 1,
+  "ilk_olay_t_ort": 1.5455,
+  "olay_tipleri": [
+   "sekme",
+   "son_sans"
+  ],
+  "tipler_ilk5_ornek": {
+   "sekme": 1
+  }
+ },
+ "tepki": {
+  "rampa_tepki_ms": 2.300000000745058,
+  "dalis_tepki_ms": 17.800000000745058,
+  "dalis_g": [
+   1.13,
+   0.1299999999999999
+  ]
+ },
+ "olu_zaman": {
+  "bitis_to_kk_s": 1.0,
+  "kk_gosterim_to_tikla_s(0.5 bekleme)": 0.5,
+  "tikla_to_rampa_s": 0.19
+ },
+ "hata": []
+}

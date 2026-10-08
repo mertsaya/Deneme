@@ -1736,8 +1736,8 @@
    "ilk5_alim_olmayan": [
     5
    ],
-   "tur5_15_sure_medyan": 65.00361828113762,
-   "tavana_carpan": 6,
+   "tur5_15_sure_medyan": 52.61378874904247,
+   "tavana_carpan": 0,
    "tur5_sv": {
     "rampa": 4,
     "yakit_ac": 1,
@@ -1753,7 +1753,6 @@
     7,
     8,
     9,
-    10,
     11,
     12,
     13,
@@ -1770,7 +1769,7 @@
    "tur_sayisi": 15,
    "ilk5_alim_olmayan": [],
    "tur5_15_sure_medyan": 28.060628748063326,
-   "tavana_carpan": 1,
+   "tavana_carpan": 0,
    "tur5_sv": {
     "rampa": 5,
     "yakit_ac": 1,
