@@ -1016,8 +1016,9 @@ const SES_SECIM = {
     balon: 'carpma_balon_c.mp3', mukemmel: 'mukemmel_e.mp3', ses_duvari: 'ses_duvari_b.mp3', jeton: 'jeton_d.mp3', tik: 'ui_tik_a.mp3', satin: 'kart_satin_a.mp3', son_sans: 'son_sans_b.mp3',
   },
   gecici: ['motor'],   // puansız seçimler (motor uçuşu b, puan verilmedi); diğerleri kullanıcı onaylı
-  motor: { dosya: 'motor_ucus_b.mp3', dongu: [0.5, 2.5], s_bolen: 300, hiz: [0.7, 0.9], suzgec: [1200, 2.5], kazanc: [0.55, 0.45], duzey: 0.5 },   // oyun/ses/README "Teknik"
-  muzik: { dosyalar: ['muzik_a_k1.mp3', 'muzik_a_k2.mp3', 'muzik_a_k3.mp3'], dongu: [0.5, 24.5], katman: [[0, 0], [0.25, 0.40], [0.55, 0.70]], duzey: 0.45 },
+  motor: { dosya: 'motor_ucus_b.mp3', dongu: [0.5, 2.5], s_bolen: 300, hiz: [0.7, 0.9], suzgec: [1200, 2.5], kazanc: [0.55, 0.45], duzey: 0.8,   // oyun/ses/README "Teknik"; düzey 0,5→0,8 (kullanıcı: motor duyulmuyor)
+    sentez: { f0: 70, ust: 2, gurultu: 0.35, kazanc: 0.5 } },   // mp3 yoksa/çözülmediyse yedek motor: testere 70 Hz + kare 140 Hz + süzülmüş gürültü
+  muzik: { dosyalar: ['muzik_a_k1.mp3', 'muzik_a_k2.mp3', 'muzik_a_k3.mp3'], dongu: [0.5, 24.5], katman: [[0, 0], [0.25, 0.40], [0.55, 0.70]], duzey: 0.38 },   // 0,45→0,38: motor müziğin altında kalmasın
   kademe_gec: 0.12,   // son şans uyarısından sonra kademe ayrılma sesi (s)
 };
 const SES = (() => {
@@ -1075,17 +1076,30 @@ const SES = (() => {
       muzik = [0, 1, 2].map(i => { const g = ac.createGain(); g.gain.value = i === 0 ? 1 : 0; g.connect(muzikB); const s = dongu(B['_m' + i], M.dongu, g); s.start(t0, M.dongu[0]); return g; });
     } catch (e) { muzik = null; }
   }
-  function motorBasla() {
-    if (!hazir() || motor || !B._motor) return;
+  function motorBasla() {   // mp3 çözüldüyse onu, değilse sentez yedeği başlatır (her koşulda motor sesi)
+    if (!hazir() || motor) return;
     try {
-      const f = ac.createBiquadFilter(), g = ac.createGain(); f.type = 'lowpass'; g.gain.value = 0; f.connect(g); g.connect(efekt);
-      const s = dongu(B._motor, SES_SECIM.motor.dongu, f); s.start(ac.currentTime, SES_SECIM.motor.dongu[0]);
-      motor = { s, f, g }; MK[0] = -1;
+      const M = SES_SECIM.motor, f = ac.createBiquadFilter(), g = ac.createGain(); f.type = 'lowpass'; g.gain.value = 0; f.connect(g); g.connect(efekt);
+      if (B._motor) {
+        const s = dongu(B._motor, M.dongu, f); s.start(ac.currentTime, M.dongu[0]);
+        motor = { tur: 'mp3', s, f, g, osc: null };
+      } else {
+        const S = M.sentez, o1 = ac.createOscillator(), o2 = ac.createOscillator(), n = ac.createBufferSource(), gn = ac.createGain(), gs = ac.createGain();
+        o1.type = 'sawtooth'; o2.type = 'square'; o1.frequency.value = S.f0; o2.frequency.value = S.f0 * S.ust;
+        n.buffer = gurB; n.loop = true; gn.gain.value = S.gurultu; gs.gain.value = S.kazanc;
+        o1.connect(gs); o2.connect(gs); n.connect(gn); gn.connect(gs); gs.connect(f);
+        o1.start(); o2.start(); n.start();
+        motor = { tur: 'sentez', s: null, f, g, osc: [o1, o2], n };
+      }
+      MK[0] = -1;
     } catch (e) { motor = null; }
   }
   function motorDur() {
     if (!motor) return;
-    try { const t = ac.currentTime; motor.g.gain.setTargetAtTime(0, t, 0.05); motor.s.stop(t + 0.3); } catch (e) {}
+    try {
+      const t = ac.currentTime; motor.g.gain.setTargetAtTime(0, t, 0.05);
+      if (motor.s) motor.s.stop(t + 0.3); else { for (const o of motor.osc) o.stop(t + 0.3); motor.n.stop(t + 0.3); }
+    } catch (e) {}
     motor = null;
   }
   const ara = (a, b, x) => Math.max(0, Math.min(1, (x - a) / (b - a)));
@@ -1093,10 +1107,12 @@ const SES = (() => {
     if (!hazir() || ac.state !== 'running') return;
     const sv = Math.min(1.5, v / SES_SECIM.motor.s_bolen), t = ac.currentTime;
     if (ucus) {
+      if (motor && motor.tur === 'sentez' && B._motor) motorDur();   // mp3 sonradan çözüldü: yumuşak geçiş
       if (!motor) motorBasla();
       if (motor && Math.abs(sv - MK[0]) > 0.005) {
-        const M = SES_SECIM.motor; MK[0] = sv;
-        motor.s.playbackRate.setTargetAtTime(M.hiz[0] + M.hiz[1] * sv, t, 0.05);
+        const M = SES_SECIM.motor, h = M.hiz[0] + M.hiz[1] * sv; MK[0] = sv;
+        if (motor.s) motor.s.playbackRate.setTargetAtTime(h, t, 0.05);
+        else { motor.osc[0].frequency.setTargetAtTime(M.sentez.f0 * h, t, 0.05); motor.osc[1].frequency.setTargetAtTime(M.sentez.f0 * M.sentez.ust * h, t, 0.05); }
         motor.f.frequency.setTargetAtTime(M.suzgec[0] * 2 ** (M.suzgec[1] * sv), t, 0.05);
         motor.g.gain.setTargetAtTime((M.kazanc[0] + M.kazanc[1] * sv) * M.duzey, t, 0.05);
       }
@@ -1130,7 +1146,8 @@ const SES = (() => {
   }
   return {
     yukle, baslat, duzey, kare, motorDur, askiya, surdur,
-    durum: () => ac ? ac.state : 'yok',
+    durum: () => ({ ac: ac ? ac.state : 'yok', motorAktif: !!motor, motorTur: motor ? motor.tur : null, kazanc: motor ? motor.g.gain.value : 0,
+      perde: motor ? (motor.s ? motor.s.playbackRate.value : motor.osc[0].frequency.value) : 0, yuklu: Object.keys(B).length }),
     yuklu: () => Object.keys(B),
     boing(k) { const p = 2 ** (k / 12); cal('sekme', p) || ton('sine', 300 * p, 600 * p, 0.12, 0.35); },
     pof() { gur(0.06, 0.35, 'lowpass', 1800, 500); },
