@@ -72,8 +72,19 @@ def sayfa_url(taban, dosya, sorgu=""):
 def tarayici_baslat(p):
     args = ["--use-gl=swiftshader", "--use-angle=swiftshader", "--enable-unsafe-swiftshader",
             "--ignore-gpu-blocklist", "--autoplay-policy=document-user-activation-required", "--no-sandbox"]
+    yollar = [os.environ.get("CHROMIUM_YOLU", "")]
+    kok = Path(os.environ["PLAYWRIGHT_BROWSERS_PATH"])
+    yollar += [str(x) for x in sorted(kok.glob("chromium*/chrome-linux*/chrome"))]
+    yollar += [str(x) for x in sorted(kok.glob("chromium*/chrome-linux*/headless_shell"))]
+    son = None
+    for y in [None] + [y for y in yollar if y and Path(y).exists()]:
+        try:
+            return p.chromium.launch(headless=True, args=args, **({"executable_path": y} if y else {}))
+        except Exception as e:
+            son = e
+    e = son
     try:
-        return p.chromium.launch(headless=True, args=args)
+        raise e
     except Exception as e:
         dur("Chromium acilamadi: %s\n  PLAYWRIGHT_BROWSERS_PATH=%s" % (str(e).splitlines()[0], os.environ["PLAYWRIGHT_BROWSERS_PATH"]))
 
