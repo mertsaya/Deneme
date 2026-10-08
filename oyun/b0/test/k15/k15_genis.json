@@ -55,7 +55,7 @@
  {
   "gorunum": "360x780",
   "yazi": 1.2,
-  "gecti": false,
+  "gecti": true,
   "kara_kutu": {
    "kkTekrar": {
     "tam": true,
@@ -108,7 +108,7 @@
  {
   "gorunum": "360x780",
   "yazi": 1.4,
-  "gecti": false,
+  "gecti": true,
   "kara_kutu": {
    "kkTekrar": {
     "tam": true,
@@ -267,7 +267,7 @@
  {
   "gorunum": "384x832",
   "yazi": 1.4,
-  "gecti": false,
+  "gecti": true,
   "kara_kutu": {
    "kkTekrar": {
     "tam": true,
