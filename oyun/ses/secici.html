@@ -52,6 +52,7 @@ nav.sekme button[aria-pressed="true"] { background: var(--yazi); color: var(--ze
 .rozet { display: inline-block; font-size: .72rem; font-weight: 700; padding: 2px 8px; border-radius: 99px; margin-left: 4px; vertical-align: 2px; }
 .rozet.oneri { background: var(--iyi); color: #fff; }
 .rozet.elendi { background: var(--kotu); color: #fff; }
+.rozet.yeni { background: #2e86de; color: #fff; }
 .aciklama { font-size: .88rem; color: var(--soluk); }
 .olcu { font-size: .75rem; color: var(--soluk); margin-top: 2px; }
 .neden { font-size: .8rem; color: var(--kotu); }
@@ -276,7 +277,7 @@ function adayEl(a) {
     <div class="aday-ust">
       <button class="oynat" aria-label="${a.kod.toUpperCase()} dinle">▶</button>
       <div class="aday-bilgi">
-        <div class="aday-ad">${a.kod.toUpperCase()}. ${a.ad}${a.oneri ? '<span class="rozet oneri">ölçüm önerisi</span>' : ''}${a.elendi ? '<span class="rozet elendi">elendi</span>' : ''}</div>
+        <div class="aday-ad">${a.kod.toUpperCase()}. ${a.ad}${a.yeni ? '<span class="rozet yeni">yeni</span>' : ''}${a.oneri ? '<span class="rozet oneri">ölçüm önerisi</span>' : ''}${a.elendi ? '<span class="rozet elendi">elendi</span>' : ''}</div>
         <div class="aciklama">${a.aciklama}</div>
         <div class="olcu">${olcuMetni(a)}</div>
         ${a.elendi ? `<div class="neden">Elenme nedeni: ${a.neden.join('; ')}</div>` : ''}

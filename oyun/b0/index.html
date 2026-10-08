@@ -397,10 +397,12 @@ class Ucus {
   // ---------- dünya yönetmeni
   seyrek(y) {
     const S = A.seyrek;
-    let k = S && y < S.y ? Math.max(S.en_az, S.kat ** Math.floor(Math.max(0, this.t - S.t0) / S.adim)) : 1;
-    const b = this.b0s;   // B0 ek seyrekleşmesi: t0–t1 arasında alçak bantta doğrusal olarak en_az'a
-    if (b && y < b.y && this.t > b.t0) k *= Math.max(b.en_az, 1 - (1 - b.en_az) * Math.min(1, (this.t - b.t0) / (b.t1 - b.t0)));
-    return k;
+    return S && y < S.y ? Math.max(S.en_az, S.kat ** Math.floor(Math.max(0, this.t - S.t0) / S.adim)) : 1;
+  }
+  b0k() {   // B0 ek seyrekleşmesi (K6; sim'de yok): roket alçak banttayken t0–t1 arasında yoğunluk ve garanti doğrusal olarak en_az'a iner
+    const b = this.b0s;
+    if (!b || this.y >= b.y || this.t <= b.t0) return 1;
+    return Math.max(b.en_az, 1 - (1 - b.en_az) * Math.min(1, (this.t - b.t0) / (b.t1 - b.t0)));
   }
   tip_sec(y, sadece_tr = false) {
     const sk = this.seyrek(y);
@@ -438,7 +440,7 @@ class Ucus {
     const rl = vl, rr = vr + Y.on_ekran * W, rb = Math.max(Y.y_min, vb - Y.dikey_pay * H), rt = vt + Y.dikey_pay * H;
     if (rt <= rb) return;
     const yogun = A.ekran_hedef / (W * Math.max(1, vt - Math.max(Y.y_min, vb)));
-    const hedef = yogun * (rr - rl) * (rt - rb);
+    const hedef = yogun * (rr - rl) * (rt - rb) * this.b0k();
     let say = 0;
     for (const o of L) if ((o.sinif === 'tr' || o.sinif === 'yv') && rl <= o.x && o.x <= rr && rb <= o.y && o.y <= rt) say++;
     const eksik = Math.trunc(hedef - say);
@@ -459,6 +461,8 @@ class Ucus {
     if (n < 3) return;
     const sk = this.seyrek(this.y);
     if (sk < 1 && this.rng.random() > sk) return;
+    const bk = this.b0k();
+    if (bk < 1 && this.rng.random() > bk) return;   // B0 ek seyrekleşmesi garantiyi de kapsar
     const x0 = this.x + SE.garanti_x0, x1 = this.rx[n - 1];
     if (x1 - x0 < SE.garanti_x0) return;
     const pay = A.garanti_pay;

@@ -89,17 +89,17 @@ Hedef -12 LUFS (100 ms tepe), etkin süre 0.4–1.6 s. Spektrogram: `spektrogram
 
 | Aday | Kaynak | LUFS | Tepe dBTP | Tepe/RMS | Eksik | Tel. kaybı | Atak ms | Süre s | Bantlar % | Merkez Hz | Puan | Sonuç |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| a. Piro cıvata + metal halka | sentez | -14.7 | -2.1 | 15.9 | 2.2 | 4.3 | 0 | 0.93 | 78/1/21/0/0 | 261 | 71 | geçti (7.) |
-| b. Kenney metal + tıslama | karma | -12.4 | -1.4 | 16.7 | 0.2 | 7.2 | 0 | 0.83 | 66/0/2/11/21 | 3264 | 69 | geçti (8.) |
-| c. Ka-çank + pışşş | sentez | -13.3 | -1.6 | 18.7 | 1.3 | 3.5 | 4 | 1.02 | 35/35/23/6/1 | 905 | 84 | geçti (4.) |
-| d. Patlamalı ayrılma | karma | -13.3 | -1.9 | 15.1 | 1.3 | 5.6 | 0 | 1.38 | 69/19/10/1/0 | 291 | 72 | geçti (6.) |
-| e. Yay fırlatma | sentez | -12.5 | -1.6 | 15.5 | 0.5 | 3.7 | 1 | 0.55 | 16/47/31/6/1 | 984 | 90 | geçti (3.) |
-| f. Çat! + paraşüt pufu | sentez | -14.0 | -0.9 | 18.7 | 2.0 | 2.0 | 0 | 0.65 | 3/55/30/10/2 | 1260 | 73 | geçti (5.) |
-| g. Klak + pnömatik fşşt | sentez | -15.9 | -1.8 | 19.9 | 3.8 | 1.6 | 1 | 0.61 | 15/17/34/29/5 | 2580 | 51 | ELENDİ: çok sivri: hedef yüksekliğe 3.8 dB eksik kalıyor (tepe/RMS 20 dB) |
-| h. Boing-pop + ıslıklı düşüş | sentez | -12.0 | -1.6 | 16.0 | 0.0 | 3.4 | 0 | 0.82 | 2/37/60/0/0 | 824 | 98 | **ÖNERİ** (1.) |
-| i. Fırlatma vuuş + yeniden tutuşma | sentez | -13.8 | -1.5 | 16.5 | 1.7 | 7.0 | 0 | 1.06 | 52/24/21/3/0 | 565 | 60 | geçti (9.) |
-| j. Tık + çiçek açan paraşüt | sentez | -12.5 | -1.4 | 16.5 | 0.4 | 3.4 | 1 | 0.60 | 0/66/28/5/1 | 880 | 92 | geçti (2.) |
-| k. Şak + bakır "ta-DAA" | sentez | -16.4 | -1.5 | 18.9 | 4.5 | 3.3 | 1 | 0.90 | 7/44/47/2/0 | 828 | 45 | ELENDİ: çok sivri: hedef yüksekliğe 4.5 dB eksik kalıyor (tepe/RMS 19 dB) |
+| a. Piro cıvata + metal halka | sentez | -14.7 | -2.1 | 15.9 | 2.2 | 4.3 | 0 | 0.93 | 78/1/21/0/0 | 261 | 71 | geçti (10.) |
+| b. Kenney metal + tıslama | karma | -12.4 | -1.4 | 16.7 | 0.2 | 7.2 | 0 | 0.83 | 66/0/2/11/21 | 3264 | 69 | geçti (11.) |
+| c. Ka-çank + pışşş | sentez | -13.3 | -1.6 | 18.7 | 1.3 | 3.5 | 4 | 1.02 | 35/35/23/6/1 | 905 | 84 | geçti (8.) |
+| d. Patlamalı ayrılma | karma | -13.3 | -1.9 | 15.1 | 1.3 | 5.6 | 0 | 1.38 | 69/19/10/1/0 | 291 | 72 | geçti (9.) |
+| e. Yay fırlatma | sentez | -12.5 | -1.6 | 15.5 | 0.5 | 3.7 | 1 | 0.55 | 16/47/31/6/1 | 984 | 90 | geçti (6.) |
+| f. Çat! + paraşüt pufu | sentez | -12.2 | -2.3 | 14.1 | 0.2 | 5.2 | 0 | 0.64 | 0/80/14/5/1 | 729 | 88 | geçti (7.) |
+| g. Klak + pnömatik fşşt | sentez | -11.8 | -3.3 | 16.2 | 0.0 | 1.1 | 0 | 0.61 | 14/9/33/37/7 | 3151 | 96 | geçti (3.) |
+| h. Boing-pop + ıslıklı düşüş | sentez | -12.0 | -1.6 | 16.0 | 0.0 | 3.4 | 0 | 0.82 | 2/37/60/0/0 | 824 | 98 | geçti (2.) |
+| i. Fırlatma vuuş + yeniden tutuşma | sentez | -12.0 | -3.0 | 13.2 | 0.0 | 4.9 | 0 | 1.07 | 24/44/28/4/0 | 744 | 94 | geçti (4.) |
+| j. Tık + çiçek açan paraşüt | sentez | -12.5 | -1.4 | 16.5 | 0.4 | 3.4 | 1 | 0.60 | 0/66/28/5/1 | 880 | 92 | geçti (5.) |
+| k. Şak + bakır "ta-DAA" | sentez | -12.1 | -3.8 | 11.3 | 0.0 | 2.6 | 0 | 0.95 | 3/50/46/2/0 | 824 | 99 | **ÖNERİ** (1.) |
 
 ## Dalış (vuuş + vuruş) (`dalis`)
 
