@@ -147,3 +147,16 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 2. Tasarımcı: ayarlanmış sayıları ve KARARLAR.md'yi PLAN_B (6.2) ve ICERIK'e işlesin; evrensel tona çevirsin (yerel öğeler çıkacak); ilk 25 tur kapsamı.
 3. Denetçi yeniden incelesin → onaylanırsa B0 gri kutu kodlaması (uygulayıcı) → testçi (Playwright botları) → kullanıcı telefonda.
 4. Push için kullanıcı izni sorulmadı; son commitler yerel.
+
+## 8. oturum (2026-10-08) — simülasyon bitti, B0 hazırlığı
+- Simülasyon (`oyun/sim/ucus_sim.py`, `RAPOR.md`): 5 bot (hic/kotu/orta/iyi/usta), `kontrol` testleri geçiyor. Opus denetçisi ilk sürümü "hazır değil" buldu, Opus uygulayıcı düzeltti. `/denge` komutu: `.claude/commands/denge.md`.
+- Kararlar `oyun/KARARLAR.md` "8. oturum": altın jeton, balon 40°/habitat kayma sınıfı, zayıf oyuncu yavaş ilerler, kapsam (ayarlar/duraklat/erişilebilirlik), `vx_dur`, `firsat_tur_max=5`, dalış 14→54, sanat yönü onaylandı (`oyun/konsept/`).
+- Kural: kalite > tasarruf; çekirdek iş doğrudan Opus (CLAUDE.md).
+- GitHub girişi yapıldı (mertsaya). Push'u izin sistemi engelliyor; kullanıcı terminalde `git push -u origin <dal>` çalıştırıyor. Son push: 1e45ca9.
+- Kullanıcının 100$ bulut kredisi var (son kullanma 5 Kasım, yalnız bulut oturumlarında harcanır). Oturum limiti doluyor (Cuma 00:10 sıfırlanır) → ağır işi bulut oturumuna taşı.
+- Arka planda Opus tasarımcı çalışıyor: PLAN_B/ICERIK güncelleme + `oyun/b0/TASARIM.md`. Bitmediyse yeniden başlat (talimat: bu oturumun görevi; sim değerleri RAPOR §9.5, tutmayan hedefler: tur 25, kazanç eğrisi, kotu Kármán, erken eşikler).
+
+### Sıradaki
+1. Tasarımcı çıktısını kontrol et (PLAN_B 6.2, ICERIK, b0/TASARIM.md) → Opus denetçi.
+2. Onaylanırsa B0 gri kutu kodlaması (uygulayıcı, Opus, bulut oturumunda) → testçi (Playwright botları) → kullanıcı telefonda.
+3. Dosyaları commit et, kullanıcı push etsin.
