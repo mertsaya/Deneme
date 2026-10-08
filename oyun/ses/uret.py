@@ -181,6 +181,7 @@ def _():
     for k in range(6):
         i = n_(0.05 + k * 0.075)
         fit[i:i + 200] += white(200) * env_exp(200, 0.002) * 1.5
+    fit = fade(fit, 0, 0.04)
     N = n_(1.6)
     t = np.arange(N) / SR
     f = np.interp(t, [0, 0.35, 1.6], [70, 140, 120])
