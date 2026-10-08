@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Ses Seçici</title>
+<link rel="icon" href="data:,">
 <style>
 :root {
   --zemin: #f4f1ea; --kart: #ffffff; --yazi: #1d1b18; --soluk: #6b665d; --cizgi: #ddd6c8;
@@ -176,6 +177,9 @@ function ozetGuncelle() {
 const AC = new (window.AudioContext || window.webkitAudioContext)();
 try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) {}   // iOS: sessiz anahtarda da cal
 const ana = AC.createGain(); ana.connect(AC.destination);
+const olcer = AC.createAnalyser(); olcer.fftSize = 2048; ana.connect(olcer);
+// test kancasi: cikis seviyesi (son ~46 ms; tepe ve RMS, dBFS)
+window.__seviye = () => { const d = new Float32Array(olcer.fftSize); olcer.getFloatTimeDomainData(d); let t = 0, r = 0; for (const x of d) { t = Math.max(t, Math.abs(x)); r += x * x; } return { tepe: 20 * Math.log10(t + 1e-9), rms: 10 * Math.log10(r / d.length + 1e-18) }; };
 const sinir = AC.createDynamicsCompressor();   // ust uste binen seslerde kirpilmayi onler
 sinir.threshold.value = -6; sinir.knee.value = 6; sinir.ratio.value = 8; sinir.attack.value = 0.003; sinir.release.value = 0.15;
 sinir.connect(ana);
@@ -462,6 +466,7 @@ function sekme(sim_) {
   $('sekmeListe').setAttribute('aria-pressed', !sim_); $('sekmeSim').setAttribute('aria-pressed', sim_);
   $('liste').hidden = sim_; $('simBolum').hidden = !sim_;
   if (!sim_) simDurdur(); else onizlemeDurdur();
+  window.scrollTo(0, 0);
 }
 async function kur() {
   for (const k of L.kategori) katCiz(k.id);

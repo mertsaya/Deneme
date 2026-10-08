@@ -3,42 +3,42 @@
   {
    "bot": "hic",
    "olcu": "sure_tur",
-   "js": 18.07,
-   "sim": 17.65,
-   "fark": 2.4,
+   "js": 17.94,
+   "sim": 17.68,
+   "fark": 1.5,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "mesafe",
-   "js": 511.27,
-   "sim": 498.21,
-   "fark": 2.6,
+   "js": 504.22,
+   "sim": 504.3,
+   "fark": 0.0,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "max_v",
-   "js": 88.58,
-   "sim": 89.1,
+   "js": 88.36,
+   "sim": 88.86,
    "fark": 0.6,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "sekme",
-   "js": 3.3,
-   "sim": 3.15,
-   "fark": 4.8,
+   "js": 3.23,
+   "sim": 3.12,
+   "fark": 3.5,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "kazanc",
-   "js": 81.2,
-   "sim": 78.05,
-   "fark": 4.0,
-   "gecti": true
+   "js": 81.83,
+   "sim": 100.5,
+   "fark": 18.6,
+   "gecti": false
   },
   {
    "bot": "hic",
@@ -67,149 +67,149 @@
   {
    "bot": "hic",
    "olcu": "mesafe_g",
-   "js": 1.0,
-   "sim": 0.98,
-   "fark": 2.0,
+   "js": 0.98,
+   "sim": 1.0,
+   "fark": 1.3,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "vay<=5",
-   "js": 1.0,
-   "sim": 0.975
+   "js": 0.975,
+   "sim": 0.97
   },
   {
    "bot": "orta",
    "olcu": "sure_tur",
-   "js": 17.34,
-   "sim": 16.5,
-   "fark": 5.1,
+   "js": 17.02,
+   "sim": 16.99,
+   "fark": 0.1,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "mesafe",
-   "js": 685.66,
-   "sim": 659.75,
-   "fark": 3.9,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "max_v",
-   "js": 95.99,
-   "sim": 95.41,
-   "fark": 0.6,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "sekme",
-   "js": 3.42,
-   "sim": 3.1,
-   "fark": 10.5,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "kazanc",
-   "js": 93.89,
-   "sim": 91.15,
-   "fark": 3.0,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "mukemmel",
-   "js": 0.9,
-   "sim": 0.8,
-   "fark": 12.5,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "dalis",
-   "js": 1.07,
-   "sim": 1.15,
-   "fark": 6.5,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "son_sans",
-   "js": 1.0,
-   "sim": 1.0,
-   "fark": 0.0,
-   "gecti": true
-  },
-  {
-   "bot": "orta",
-   "olcu": "mesafe_g",
-   "js": 1.56,
-   "sim": 1.51,
+   "js": 653.98,
+   "sim": 679.19,
    "fark": 3.7,
    "gecti": true
   },
   {
    "bot": "orta",
+   "olcu": "max_v",
+   "js": 94.44,
+   "sim": 95.19,
+   "fark": 0.8,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "sekme",
+   "js": 3.38,
+   "sim": 3.29,
+   "fark": 2.9,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "kazanc",
+   "js": 93.4,
+   "sim": 119.51,
+   "fark": 21.8,
+   "gecti": false
+  },
+  {
+   "bot": "orta",
+   "olcu": "mukemmel",
+   "js": 0.77,
+   "sim": 0.82,
+   "fark": 6.1,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "dalis",
+   "js": 1.08,
+   "sim": 1.1,
+   "fark": 2.3,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "son_sans",
+   "js": 1.0,
+   "sim": 1.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "mesafe_g",
+   "js": 1.47,
+   "sim": 1.56,
+   "fark": 5.3,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
    "olcu": "vay<=5",
-   "js": 0.975,
-   "sim": 0.925
+   "js": 0.905,
+   "sim": 0.93
   },
   {
    "bot": "iyi",
    "olcu": "sure_tur",
-   "js": 17.76,
-   "sim": 17.44,
-   "fark": 1.8,
-   "gecti": true
-  },
-  {
-   "bot": "iyi",
-   "olcu": "mesafe",
-   "js": 742.99,
-   "sim": 732.56,
+   "js": 17.8,
+   "sim": 17.56,
    "fark": 1.4,
    "gecti": true
   },
   {
    "bot": "iyi",
+   "olcu": "mesafe",
+   "js": 723.32,
+   "sim": 730.22,
+   "fark": 0.9,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
    "olcu": "max_v",
-   "js": 97.86,
-   "sim": 97.46,
-   "fark": 0.4,
+   "js": 96.35,
+   "sim": 97.32,
+   "fark": 1.0,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "sekme",
-   "js": 3.48,
-   "sim": 3.38,
-   "fark": 3.0,
+   "js": 3.46,
+   "sim": 3.4,
+   "fark": 1.8,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "kazanc",
-   "js": 98.77,
-   "sim": 99.61,
-   "fark": 0.8,
-   "gecti": true
+   "js": 100.06,
+   "sim": 126.78,
+   "fark": 21.1,
+   "gecti": false
   },
   {
    "bot": "iyi",
    "olcu": "mukemmel",
-   "js": 1.1,
-   "sim": 0.95,
-   "fark": 15.8,
+   "js": 0.95,
+   "sim": 0.92,
+   "fark": 3.8,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "dalis",
-   "js": 1.18,
-   "sim": 1.18,
-   "fark": 0.0,
+   "js": 1.16,
+   "sim": 1.15,
+   "fark": 0.9,
    "gecti": true
   },
   {
@@ -223,16 +223,16 @@
   {
    "bot": "iyi",
    "olcu": "mesafe_g",
-   "js": 1.74,
-   "sim": 1.73,
-   "fark": 0.5,
+   "js": 1.67,
+   "sim": 1.72,
+   "fark": 2.6,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "vay<=5",
-   "js": 0.95,
-   "sim": 0.975
+   "js": 0.945,
+   "sim": 0.96
   }
  ],
  "deger_fark": [],
