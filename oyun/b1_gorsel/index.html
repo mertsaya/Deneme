@@ -313,15 +313,22 @@ const ex = x => CW / 3 + (x - S.K.x) * S.K.s + S.K.ox, ey = y => CH / 2 - (y - S
 const GOK = [[0, '#a6e4ff'], [120, '#5cc0ff'], [350, '#2f8ef5'], [600, '#3466dc'], [800, '#3a43a8'], [1000, '#1c2266'], [1300, '#0d1238'], [1700, '#070a22']];
 function gokRenk(y) { for (let i = 1; i < GOK.length; i++) if (y <= GOK[i][0]) { const [y0, a] = GOK[i - 1], [y1, b] = GOK[i]; return renkKaris(a, b, kis((y - y0) / (y1 - y0), 0, 1)); } return GOK[GOK.length - 1][1]; }
 const YILDIZ = Array.from({ length: 70 }, (_, i) => [hash(i, 1), hash(i, 2), 0.6 + hash(i, 3) * 1.4, hash(i, 4)]);
+const GOKC = { c: document.createElement('canvas'), k: '' };   // gök + güneş ışığı düşük çözünürlükte önbellekte (yalnız irtifa değişince yeniden çizilir)
+GOKC.c.width = 48; GOKC.c.height = 104;
 function gokCiz() {
   const K = S.K, ust = K.y + CH / 2 / K.s, alt = K.y - CH / 2 / K.s;
-  cx.setTransform(DPR, 0, 0, DPR, 0, 0); cx.globalAlpha = 1;
-  const g = cx.createLinearGradient(0, 0, 0, CH); g.addColorStop(0, gokRenk(ust)); g.addColorStop(0.55, gokRenk(lerp(ust, alt, 0.55))); g.addColorStop(1, gokRenk(alt));
-  cx.fillStyle = g; cx.fillRect(0, 0, CW, CH);
-  // güneş ışığı: alçakta sıcak, yükseldikçe soğuk ve sönük
-  const yk = kis(K.y / 1000, 0, 1), gx = CW * 0.88, gy = CH * 0.06, gr = CW * 1.05;
-  const gl = cx.createRadialGradient(gx, gy, 0, gx, gy, gr); gl.addColorStop(0, `rgba(${Math.round(lerp(255, 190, yk))},${Math.round(lerp(244, 205, yk))},${Math.round(lerp(214, 255, yk))},${lerp(0.55, 0.18, yk)})`); gl.addColorStop(1, 'rgba(255,255,255,0)');
-  cx.fillStyle = gl; cx.fillRect(0, 0, CW, CH);
+  const anahtar = Math.round(ust / 8) + ':' + Math.round(alt / 8);
+  if (anahtar !== GOKC.k) {
+    GOKC.k = anahtar; const c = GOKC.c.getContext('2d'), w = GOKC.c.width, h = GOKC.c.height;
+    const g = c.createLinearGradient(0, 0, 0, h); g.addColorStop(0, gokRenk(ust)); g.addColorStop(0.55, gokRenk(lerp(ust, alt, 0.55))); g.addColorStop(1, gokRenk(alt));
+    c.fillStyle = g; c.fillRect(0, 0, w, h);
+    // güneş ışığı: alçakta sıcak, yükseldikçe soğuk ve sönük
+    const yk = kis(K.y / 1000, 0, 1), gx = w * 0.88, gy = h * 0.06, gr = w * 1.05;
+    const gl = c.createRadialGradient(gx, gy, 0, gx, gy, gr); gl.addColorStop(0, `rgba(${Math.round(lerp(255, 190, yk))},${Math.round(lerp(244, 205, yk))},${Math.round(lerp(214, 255, yk))},${lerp(0.55, 0.18, yk)})`); gl.addColorStop(1, 'rgba(255,255,255,0)');
+    c.fillStyle = gl; c.fillRect(0, 0, w, h);
+  }
+  cx.setTransform(DPR, 0, 0, DPR, 0, 0); cx.globalAlpha = 1; cx.imageSmoothingEnabled = true;
+  cx.drawImage(GOKC.c, 0, 0, CW, CH);
   // yıldızlar (y > 500'de belirir)
   const ya = kis((ust - 550) / 400, 0, 1);
   if (ya > 0) {
@@ -354,7 +361,8 @@ function zeminCiz() {
   // uzak tepeler (f = 0,2)
   const f = 0.2, baz = S.K0 * s * (1 - f) - 12;
   const Yu = CH / 2 + K.y * s * f + baz;
-  if (Yu < CH + 40) { const tw = 300 * s * 0.8, off = ((K.x * s * f) % tw + tw) % tw; for (let X = -off; X < CW + 2; X += tw - 1) spr('uzak_tepe', X, Yu, 0, s * 0.8); }
+  if (Yu < CH + 40) { const tw = 300 * s * 0.8, off = ((K.x * s * f) % tw + tw) % tw; for (let X = -off; X < CW + 2; X += tw - 1) spr('uzak_tepe', X, Yu, 0, s * 0.8);
+    const alt = Yu + 26 * s * 0.8; if (alt < CH) { cx.setTransform(DPR, 0, 0, DPR, 0, 0); cx.globalAlpha = 1; cx.fillStyle = '#bcd0c0'; cx.fillRect(0, alt, CW, CH - alt); } }
   // ufukta sıcak pus: uzak tepelerin altını zemine eritir
   const Yg = ey(0);
   if (Yg < CH + 60) { const h = CH * 0.36; cx.setTransform(DPR, 0, 0, DPR, 0, 0); cx.globalAlpha = 1; const g = cx.createLinearGradient(0, Yg - h, 0, Yg + 4); g.addColorStop(0, 'rgba(255,220,185,0)'); g.addColorStop(0.75, 'rgba(255,224,192,.45)'); g.addColorStop(1, 'rgba(250,228,200,.8)'); cx.fillStyle = g; cx.fillRect(0, Yg - h, CW, h + 4); }

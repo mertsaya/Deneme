@@ -39,7 +39,7 @@ with o.sunucu() as taban, sync_playwright() as p:
             ctx.add_init_script("localStorage.setItem('sdp_kayit', JSON.stringify({v:1,jeton:420,tur:4,sv:{rampa:2,dalis:1},ayar:{yazi:%s,efekt:80,titresim:true,hareket_azalt:null,isik:false,kalite:'oto'}}))" % yazi)
             pg = o.sayfa_ac(ctx, f"{taban}/index.html?bot=orta&seed=9&hiz=8", hat)
             try:
-                bekle_asama(pg, "KARA_KUTU", 90000); pg.wait_for_timeout(5200)
+                bekle_asama(pg, "KARA_KUTU", 90000); pg.wait_for_timeout(2000)
                 k = pg.evaluate(KUTU_JS, ["kkBaslik", "kkToplam", "kkDokum", "kkRekor", "kkDurduran", "kkKart", "kkHangar", "kkTekrar"])
                 r[f"kk_y{yazi}"] = {"cakisma": cakisma(k), "tasan": k["tasan"]}
                 pg.screenshot(path=str(SS / f"g_{w}x{h}_kk_y{yazi}.png"))

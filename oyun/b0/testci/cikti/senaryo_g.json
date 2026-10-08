@@ -1,0 +1,321 @@
+{
+ "384x832": {
+  "rampa": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus5": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus9": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "kk_y1.0": {
+   "cakisma": [],
+   "tasan": []
+  },
+  "hangar_y1.0": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     273,
+     14,
+     95,
+     41
+    ],
+    "hRoket": [
+     16,
+     63,
+     352,
+     317
+    ],
+    "kartlar": [
+     16,
+     388,
+     352,
+     358
+    ],
+    "dislibtn": [
+     16,
+     754,
+     64,
+     64
+    ],
+    "ucBtn": [
+     90,
+     754,
+     278,
+     64
+    ]
+   }
+  },
+  "ayar_y1.0": {
+   "tasan": []
+  },
+  "konsol_y1.0": [],
+  "kk_y1.4": {
+   "cakisma": [],
+   "tasan": []
+  },
+  "hangar_y1.4": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     247,
+     14,
+     121,
+     52
+    ],
+    "hRoket": [
+     16,
+     74,
+     352,
+     173
+    ],
+    "kartlar": [
+     16,
+     255,
+     352,
+     485
+    ],
+    "dislibtn": [
+     16,
+     748,
+     64,
+     70
+    ],
+    "ucBtn": [
+     90,
+     748,
+     278,
+     70
+    ]
+   }
+  },
+  "ayar_y1.4": {
+   "tasan": []
+  },
+  "konsol_y1.4": []
+ },
+ "360x780": {
+  "rampa": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus5": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus9": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "kk_y1.0": {
+   "cakisma": [],
+   "tasan": []
+  },
+  "hangar_y1.0": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     249,
+     14,
+     95,
+     41
+    ],
+    "hRoket": [
+     16,
+     63,
+     328,
+     265
+    ],
+    "kartlar": [
+     16,
+     336,
+     328,
+     358
+    ],
+    "dislibtn": [
+     16,
+     702,
+     64,
+     64
+    ],
+    "ucBtn": [
+     90,
+     702,
+     254,
+     64
+    ]
+   }
+  },
+  "ayar_y1.0": {
+   "tasan": []
+  },
+  "konsol_y1.0": [],
+  "kk_y1.4": {
+   "cakisma": [],
+   "tasan": [
+    "DISARI alt 16,697,344,805",
+    "DISARI kkHangar 16,697,156,805",
+    "DISARI kkTekrar 166,697,344,805"
+   ]
+  },
+  "hangar_y1.4": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     223,
+     14,
+     121,
+     52
+    ],
+    "hRoket": [
+     16,
+     74,
+     328,
+     72
+    ],
+    "kartlar": [
+     16,
+     154,
+     328,
+     534
+    ],
+    "dislibtn": [
+     16,
+     696,
+     64,
+     70
+    ],
+    "ucBtn": [
+     90,
+     696,
+     254,
+     70
+    ]
+   }
+  },
+  "ayar_y1.4": {
+   "tasan": []
+  },
+  "konsol_y1.4": []
+ },
+ "412x915": {
+  "rampa": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus5": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "ucus9": {
+   "cakisma": [],
+   "tasan": [],
+   "hata": []
+  },
+  "kk_y1.0": {
+   "cakisma": [],
+   "tasan": []
+  },
+  "hangar_y1.0": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     301,
+     14,
+     95,
+     41
+    ],
+    "hRoket": [
+     16,
+     63,
+     380,
+     429
+    ],
+    "kartlar": [
+     16,
+     500,
+     380,
+     329
+    ],
+    "dislibtn": [
+     16,
+     837,
+     64,
+     64
+    ],
+    "ucBtn": [
+     90,
+     837,
+     306,
+     64
+    ]
+   }
+  },
+  "ayar_y1.0": {
+   "tasan": []
+  },
+  "konsol_y1.0": [],
+  "kk_y1.4": {
+   "cakisma": [],
+   "tasan": []
+  },
+  "hangar_y1.4": {
+   "cakisma": [],
+   "tasan": [],
+   "kutular": {
+    "hJeton": [
+     275,
+     14,
+     121,
+     52
+    ],
+    "hRoket": [
+     16,
+     74,
+     380,
+     276
+    ],
+    "kartlar": [
+     16,
+     358,
+     380,
+     465
+    ],
+    "dislibtn": [
+     16,
+     831,
+     64,
+     70
+    ],
+    "ucBtn": [
+     90,
+     831,
+     306,
+     70
+    ]
+   }
+  },
+  "ayar_y1.4": {
+   "tasan": []
+  },
+  "konsol_y1.4": []
+ }
+}

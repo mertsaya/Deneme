@@ -1,0 +1,366 @@
+{
+ "json_bozuk": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "{bozuk",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "null": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "null",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "dizi": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "[]",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "sayi": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "42",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "bos_nesne": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "{}",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "jeton_yazi": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "jeton_eksi": {
+  "asama": "HANGAR",
+  "jeton": 0,
+  "tur": 3,
+  "sv": {
+   "rampa": 2,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":3,\"sv\":{\"rampa\":2,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "jeton_dev": {
+  "asama": "HANGAR",
+  "jeton": 1e+308,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":1e308,\"tur\":3}",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "sv_asiri": {
+  "asama": "HANGAR",
+  "jeton": 10,
+  "tur": 3,
+  "sv": {
+   "rampa": 6,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":10,\"tur\":3,\"sv\":{\"rampa\":6,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "surum_yeni": {
+  "asama": "RAMPA",
+  "jeton": 0,
+  "tur": 0,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt okunamadı, yeni başlangıç",
+  "bozuk_anahtar": "{\"v\":99,\"jeton\":777,\"tur\":5}",
+  "ham_sonra": "{\"v\":1,\"jeton\":0,\"tur\":0,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar\"",
+  "hata": [],
+  "tur_sonu": {
+   "jeton": 115,
+   "tur": 1,
+   "kk": "115"
+  }
+ },
+ "ayar_bozuk": {
+  "asama": "HANGAR",
+  "jeton": 10,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":10,\"tur\":3,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "son_dizi_degil": {
+  "asama": "HANGAR",
+  "jeton": 10,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":10,\"tur\":3,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "bekleyen_garip": {
+  "asama": "HANGAR",
+  "jeton": 10,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":10,\"tur\":3,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "bekleyen_eksi": {
+  "asama": "HANGAR",
+  "jeton": 10,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Kayıt kısmen onarıldı",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":10,\"tur\":3,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s\":0},\"duvar",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "bekleyen_dev": {
+  "asama": "HANGAR",
+  "jeton": 1000000000010,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "Yarım kalan uçuş: +1.000.000.000.000 jeton",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":1000000000010,\"tur\":3,\"sv\":{\"rampa\":0,\"bolge\":0,\"verim\":0,\"dalis\":0,\"kademe_itki\":0,\"yakit_ac\":0,\"yakit_s",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ },
+ "ok_kayit_tur3": {
+  "asama": "HANGAR",
+  "jeton": 200,
+  "tur": 3,
+  "sv": {
+   "rampa": 1,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "yazi": 1,
+  "kalite": "oto",
+  "bildirim": "",
+  "bozuk_anahtar": null,
+  "ham_sonra": "{\"v\":1,\"jeton\":200,\"tur\":3,\"sv\":{\"rampa\":1}}",
+  "hata": [],
+  "tur_sonu": "KARA_KUTU gelmedi: HANGAR"
+ }
+}
