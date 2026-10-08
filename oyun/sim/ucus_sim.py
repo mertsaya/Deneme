@@ -1149,7 +1149,7 @@ def ana(tohum_n=20, tur_max=60):
         r1 = tek_tur_olc(hv, botlar, tohumlar)
         cikti.append(tablo_tek(r1, f'Tur 1, geliştirmesiz, {tohum_n} tohum'))
         fark = ort([r['mesafe'] for r in r1['iyi']]) / ort([r['mesafe'] for r in r1['hic']]) - 1
-        cikti.append(f'\nBeceri farkı (tur 1, mesafe): iyi / hiç − 1 = **%{fark * 100:.0f}** (hedef ≥ %60)\n')
+        cikti.append(f'\nBeceri farkı (tur 1, mesafe): iyi / hiç − 1 = **%{fark * 100:.0f}** (hedef ≥ %{HEDEF["beceri"][1] * 100:.0f})\n')
         # 2) kampanyalar
         kp = hv.map(kampanya, [(sd, b, tur_max) for b in botlar for sd in tohumlar])
         kb = {}
@@ -1158,7 +1158,7 @@ def ana(tohum_n=20, tur_max=60):
         H = HEDEF['esik']
         sat = ['**İlerleme: eşiklerin ilk kırıldığı tur (medyan · %10–%90), en uzun alışverişsiz seri**', '',
                '| Bot | Ses | Tropopoz | Isı | Kármán | Yörünge | Kaçış (taslak) | O ana dek harcanan jeton (ses/ısı/yörünge/kaçış) | Alışverişsiz seri: ilk 25 tur ort · maks · 60 tur maks |', '|---|---|---|---|---|---|---|---|---|',
-               f"| **hedef (iyi)** | {H['ses']} | {H['tropopoz']} | {H['isi']} | {H['karman'][0]}–{H['karman'][1]} | {H['yorunge']} | (40) | | ≤ 3 |"]
+               '| **hedef (iyi)** | ' + ' | '.join(f'{a}–{b}' for a, b in H.values()) + ' | (40) | | ≤ 3 |']
         for b in botlar:
             ks = kb[b]
             hucre = []
@@ -1324,16 +1324,57 @@ def guc_egrisi(havuz, tohum_n=10, botlar=('hic', 'iyi')):
     return '\n'.join(sat)
 
 
-# ---------------------------------------------------------------- hedefler (ilk 25 tur, iyi bot; tek birim: gösterge km, jeton)
-# PLAN_B §5 + ICERIK §5. Sim bunlara ayarlanır, hedef sim'e uydurulmaz. Süre: tur 15+ medyan 45–55 s (lead kararı, PLAN_B'deki 75 s'nin yerine)
+# ---------------------------------------------------------------- hedefler (ilk 25 tur; tek birim: gösterge km, jeton)
+# PLAN_B §5.3 S9 (D1–D6). Sim bunlara ayarlanır, hedef sim'e uydurulmaz. Eşik turu = 20+ tohum medyanı; ulaşamayan kampanya "ulaşamadı" sayılır.
 HEDEF = dict(
-    esik=dict(ses=3, tropopoz=10, isi=12, karman=(18, 19), yorunge=25),
-    rakip=(7, 14, 22),
-    kazanc={1: 120, 5: 400, 10: 900, 15: 1600, 20: 2600, 25: 4000},
-    mesafe_km={1: 1.2, 3: 4, 10: 25, 25: 150},
-    hiz={1: 70, 3: 110, 10: 260, 25: 600},
-    sure={1: 18, 3: 30, 10: 50, 15: (45, 55), 25: (45, 55)},
+    esik=dict(ses=(2, 3), tropopoz=(9, 10), isi=(11, 12), karman=(17, 19), yorunge=(24, 27)),   # iyi bot
+    yorunge_usta=24, yorunge_orta=34,          # D2: usta ≤ 24, orta (tipik oyuncu) ≤ 34 (en çok)
+    zayif=dict(isi=28, karman=50, karman_oran=0.75),   # kotu: ısı medyanı ≤ 28; Kármán ≤ 50 en az 15/20 kampanyada
+    rakip=(7, 14, 22),                          # bilgi
+    kazanc_ucus={1: 120, 5: 500, 10: 900, 15: 1600, 20: 2600, 25: 4000}, kazanc_tol=0.15,   # S2: uçuş kazancı, 3 tur kayan medyan (duvar + nakavt hariç)
+    sure_t15=(45, 55), tavan=0.10,              # tur 15–25 medyan süresi; tavana (65 s) çarpan tur oranı (her bot) ≤ %10
+    beceri={1: 0.30, 5: 0.60, 10: 0.60},        # D6: iyi / hiç − 1 (aynı geliştirmeler, mesafe)
+    bilgi=dict(mesafe_km_25=(90, 130), sure={1: 18, 3: 30, 10: 50}),   # D1: mesafe ayar hedefi değil, bilgi satırı; D2: tur 25 hızı kaldırıldı
 )
+
+
+def esik_medyan(ks, d, sinir=99):
+    """Ulaşamayan kampanya 'sinir' sayılır (sansürlü medyan); 99 = ulaşamadı."""
+    return yuzde([k['ilk'].get(d, sinir) for k in ks], .5)
+
+
+def hedef_kontrol(olc, bc):
+    """HEDEF tablosuna karşı tuttu/tutmadı listesi (ozet çıktısı)."""
+    H, sat = HEDEF, ['hedef kontrol:']
+    def yaz(ad, deger, hedef, ok):
+        sat.append(f"  {'✓' if ok else '✗'} {ad}: {deger} (hedef {hedef})")
+    i = olc.get('iyi')
+    if i:
+        for d, (a, b) in H['esik'].items():
+            m = i['sm'][d]
+            yaz(f'iyi {d}', m if m < 99 else 'ulaşamadı', f'{a}–{b}', a <= m <= b)
+        for t, h in H['kazanc_ucus'].items():
+            v = i['kazanc'][t]
+            yaz(f'iyi uçuş kazancı t{t}', round(v), f'{h} ±%{H["kazanc_tol"] * 100:.0f}', abs(v / h - 1) <= H['kazanc_tol'])
+        yaz('iyi tur 15–25 medyan süre', round(i['t15']), f"{H['sure_t15'][0]}–{H['sure_t15'][1]} s", H['sure_t15'][0] <= i['t15'] <= H['sure_t15'][1])
+    for b, hd in (('usta', H['yorunge_usta']), ('orta', H['yorunge_orta'])):
+        if b in olc:
+            m = olc[b]['sm']['yorunge']
+            yaz(f'{b} yörünge', m if m < 99 else 'ulaşamadı', f'≤ {hd}', m <= hd)
+    k = olc.get('kotu')
+    if k:
+        Z = H['zayif']
+        yaz('kotu ısı', k['sm']['isi'] if k['sm']['isi'] < 99 else 'ulaşamadı', f"≤ {Z['isi']}", k['sm']['isi'] <= Z['isi'])
+        oran = k['karman_le'] / k['n']
+        yaz(f"kotu Kármán ≤ {Z['karman']}", f"{k['karman_le']}/{k['n']}", f"≥ %{Z['karman_oran'] * 100:.0f}", oran >= Z['karman_oran'])
+    tv = {b: o['tavan'] for b, o in olc.items()}
+    yaz('tavana çarpan (en kötü bot)', ' '.join(f'{b} %{v * 100:.0f}' for b, v in tv.items()), f"≤ %{H['tavan'] * 100:.0f}", max(tv.values()) <= H['tavan'])
+    for t, h in H['beceri'].items():
+        if t in bc and 'iyi' in bc[t]:
+            yaz(f'beceri t{t} iyi/hiç', f"{bc[t]['iyi']:+.0%}", f'≥ +%{h * 100:.0f}', bc[t]['iyi'] >= h)
+    n_ok = sum(1 for x in sat[1:] if x.startswith('  ✓'))
+    sat.append(f'  → {n_ok}/{len(sat) - 1} tuttu')
+    return '\n'.join(sat)
 
 
 def kayan_medyan(k, t, alan='kazanc_ucus'):
@@ -1364,7 +1405,10 @@ def ozet(havuz, tohum_n=12, tur_max=None, botlar=None, rastgele=0.0):
             v = [k['ilk'].get(d) for k in ks]
             ok = [x for x in v if x]
             o[d] = (yuzde(ok, .5) if ok else None, len(ok), len(v))
-            h.append(f"{d}:{o[d][0] or '—'}" + (f"({len(ok)}/{len(v)})" if len(ok) < len(v) else ''))
+            o.setdefault('sm', {})[d] = sm = esik_medyan(ks, d)
+            h.append(f"{d}:{sm if sm < 99 else '—'}" + (f"({len(ok)}/{len(v)})" if len(ok) < len(v) else ''))
+        o['n'] = len(ks)
+        o['karman_le'] = sum(1 for k in ks if k['ilk'].get('karman', 99) <= HEDEF['zayif']['karman'])
         rk = []
         for i in range(1, 4):
             vv = sorted(next((x['tur'] for x in k['turlar'] if x['rakip'] >= i), 999) for k in ks)
@@ -1397,8 +1441,20 @@ def beceri(havuz, kb, t, tohum_n=12, botlar=None):
     return out
 
 
-def hedef_kontrol(olc, bc):
-    return ''
+def ozet_yaz(hv, n, rastgele=0.0):
+    """ozet + beceri farkı (tur 1, 5, 10; 3n uçuş) + hic maks testi + hedef kontrol."""
+    txt, kb, olc = ozet(hv, n, rastgele=rastgele)
+    out = [txt]
+    bc = {}
+    for t in (1, 5, 10):
+        r = beceri(hv, kb, t, 3 * n)
+        m = {b: ort([x['mesafe'] for x in rs]) for b, rs in r.items()}
+        bc[t] = {b: m[b] / m['hic'] - 1 for b in m if b != 'hic'}
+        out.append(f"beceri t{t}: " + ' '.join(f"{b}/hic {v:+.0%}" for b, v in bc[t].items()))
+    mx = [tur_oyna(sd, sv_oran(1.0), 'hic', 40, {'tropopoz', 'karman'}) for sd in range(1, 11)]
+    out.append(f"hic maks: irtifa ort {round(ort([r['max_y'] for r in mx]))} tropopoz {sum(r['max_y'] >= AYAR['y_tropopoz'] for r in mx)} /10")
+    out.append(hedef_kontrol(olc, bc))
+    return '\n'.join(out)
 
 
 def kontrol():
@@ -1461,18 +1517,7 @@ if __name__ == '__main__':
         kontrol()
     elif a and a[0] == 'ozet':   # python ucus_sim.py ozet [tohum] [rastgele]
         with Pool() as hv:
-            n = int(a[1]) if len(a) > 1 else 12
-            txt, kb, olc = ozet(hv, n, rastgele=float(a[2]) if len(a) > 2 else 0.0)
-            print(txt)
-            bc = {}
-            for t in (1, 5, 10):
-                out = beceri(hv, kb, t, 3 * n)
-                m = {b: ort([r['mesafe'] for r in rs]) for b, rs in out.items()}
-                bc[t] = {b: m[b] / m['hic'] - 1 for b in m if b != 'hic'}
-                print(f"beceri t{t}: " + ' '.join(f"{b}/hic {v:+.0%}" for b, v in bc[t].items()))
-            mx = [tur_oyna(sd, sv_oran(1.0), 'hic', 40, {'tropopoz', 'karman'}) for sd in range(1, 11)]
-            print('hic maks: irtifa ort', round(ort([r['max_y'] for r in mx])), 'tropopoz', sum(r['max_y'] >= AYAR['y_tropopoz'] for r in mx), '/10')
-            print(hedef_kontrol(olc, bc))
+            print(ozet_yaz(hv, int(a[1]) if len(a) > 1 else 12, float(a[2]) if len(a) > 2 else 0.0))
     else:
         n = 5 if a and a[0] == 'hizli' else 20
         print(ana(n, 60 if n == 20 else 50))
