@@ -60,3 +60,4 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - (B0 telefon testi 3, kullanıcı onaylı) **Uçurtma:** yalnız gövdesi yavaşlatır (−%35); ip yavaşlatmaz, değince kopar ve kopma sesi çalar.
 - (B0 telefon testi 3, kullanıcı onaylı) **Uçurtma ipi kopunca** uçurtma yukarı uçar ve jeton verir; ip yavaşlatmaz; gövde −%35.
 - (B0 telefon testi 3, kullanıcı onaylı, öncekini DEĞİŞTİRİR) **Uçurtmanın gövdesi hafif yavaşlatır (−%8)**; ip yavaşlatmaz, kopar, uçurtma yukarı uçar, jeton verir.
+- (B0 telefon testi 3, kullanıcı onaylı) **Sekme hız ARTIRIR (mantık kuralı 1'in bilinçli istisnası):** üstten sekme düşük hızda net kazanç verir, yüksek hızda kazancı biter (kendini sınırlayan: yeni_hız = v·k + b·(1 − v/V_tavan)); enerji kaynağı yay/elastik enerji (BOING). Eşik/ekonomi hedefleri korunur. **Martı −%3, afiş uçağı −%25.**
