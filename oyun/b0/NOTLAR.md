@@ -100,3 +100,19 @@ Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`,
 | hiç | 20 s / %0 | 20 s / %0 |
 
 - Ses duvarının ilk kırıldığı tur değişmedi (iyi 3, orta 4, hiç 6). Tur 1 süresi değişmedi; K8 eşliği kural açıkken de geçiyor (tur 1 uçuşları çoğunlukla 30 s'nin altında).
+
+## Mantık denetimi (Opus) düzeltmeleri
+
+Bulgu bulgu durum: `MANTIK_RAPOR.md`; yeniden üretim: `test/mantik_test.py` (10/10).
+
+- Sim'de `gorunur_hedef` önbelleği artık sayaçlı `Nesne.kimlik` kullanıyor (`ucus_sim.py`'ye yalnız bu değişiklik).
+- Sonrasında ölçüm:
+  - `ayar_uret --denetle` temiz.
+  - `dogrula.py 200`: eşlik 27/27, `deger()` sim'le aynı, belirlenimlilik doğru.
+  - `kabul.py --hizli`: geçme şartlılar geçti.
+  - K7 0,48 s (sınır 0,5; ölçüme Playwright gecikmesi de giriyor).
+- **Kullanıcıya bildirilecek yeni metin:** "Ses duvarına çok yakındın: hızını 0,3 saniye daha koru." (en yüksek hız ≥ ses eşiği ama 0,3 s tutulamadıysa).
+
+## Bilinen sınırlar
+
+- **Çoklu sekme:** aynı tarayıcıda oyun iki sekmede açılırsa her sekme kendi bellekteki kaydını yazar, son yazan kazanır (jeton/satın alma kaybolabilir). B0'da ele alınmadı (koordinatör kararı).

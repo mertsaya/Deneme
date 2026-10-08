@@ -420,7 +420,7 @@ function tuy(c) {
   c.beginPath(); c.moveTo(-2.6, 0.3); c.quadraticCurveTo(0, -0.3, 2.0, -0.2); c.strokeStyle = '#9aa6bd'; c.lineWidth = 0.2; c.stroke();
 }
 function sesKonisi(c) {   // ses duvarı buhar konisi: tepe (0,0) sağda = roket burnu; geriye açılır
-  for (const [s, a] of [[1, 0.5], [0.8, 0.45], [0.6, 0.5]]) {
+  for (const [s, a] of [[1, 0.8], [0.8, 0.7], [0.6, 0.7]]) {
     c.beginPath(); c.moveTo(1, 0); c.bezierCurveTo(-4 * s, -3 * s, -9 * s, -9 * s, -15 * s, -10.5 * s);
     c.bezierCurveTo(-13 * s, -4 * s, -13 * s, 4 * s, -15 * s, 10.5 * s); c.bezierCurveTo(-9 * s, 9 * s, -4 * s, 3 * s, 1, 0); c.closePath();
     const g = c.createLinearGradient(0, 0, -15 * s, 0); g.addColorStop(0, 'rgba(255,255,255,0)'); g.addColorStop(0.7, `rgba(235,248,255,${a * 0.6})`); g.addColorStop(1, `rgba(255,255,255,${a})`);

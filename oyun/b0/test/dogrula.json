@@ -82,56 +82,56 @@
    "bot": "orta",
    "olcu": "sure_tur",
    "js": 16.17,
-   "sim": 16.66,
-   "fark": 2.9,
+   "sim": 16.68,
+   "fark": 3.1,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "mesafe",
    "js": 616.82,
-   "sim": 637.23,
-   "fark": 3.2,
+   "sim": 635.43,
+   "fark": 2.9,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "max_v",
    "js": 94.34,
-   "sim": 93.97,
-   "fark": 0.4,
+   "sim": 93.89,
+   "fark": 0.5,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "sekme",
    "js": 3.0,
-   "sim": 3.17,
-   "fark": 5.5,
+   "sim": 3.19,
+   "fark": 5.8,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "kazanc",
    "js": 116.14,
-   "sim": 117.59,
-   "fark": 1.2,
+   "sim": 117.84,
+   "fark": 1.4,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "mukemmel",
    "js": 0.77,
-   "sim": 0.78,
-   "fark": 1.9,
+   "sim": 0.77,
+   "fark": 0.0,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "dalis",
    "js": 1.08,
-   "sim": 1.07,
-   "fark": 1.4,
+   "sim": 1.06,
+   "fark": 1.9,
    "gecti": true
   },
   {
@@ -147,7 +147,7 @@
    "olcu": "mesafe_g",
    "js": 1.39,
    "sim": 1.43,
-   "fark": 2.9,
+   "fark": 2.5,
    "gecti": true
   },
   {
@@ -160,23 +160,23 @@
    "bot": "iyi",
    "olcu": "sure_tur",
    "js": 17.03,
-   "sim": 16.98,
-   "fark": 0.3,
+   "sim": 17.03,
+   "fark": 0.0,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "mesafe",
    "js": 701.95,
-   "sim": 688.58,
-   "fark": 1.9,
+   "sim": 689.84,
+   "fark": 1.8,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "max_v",
    "js": 97.11,
-   "sim": 96.32,
+   "sim": 96.36,
    "fark": 0.8,
    "gecti": true
   },
@@ -184,16 +184,16 @@
    "bot": "iyi",
    "olcu": "sekme",
    "js": 3.19,
-   "sim": 3.12,
-   "fark": 2.4,
+   "sim": 3.14,
+   "fark": 1.6,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "kazanc",
    "js": 125.87,
-   "sim": 123.64,
-   "fark": 1.8,
+   "sim": 123.99,
+   "fark": 1.5,
    "gecti": true
   },
   {
@@ -224,8 +224,8 @@
    "bot": "iyi",
    "olcu": "mesafe_g",
    "js": 1.65,
-   "sim": 1.6,
-   "fark": 2.7,
+   "sim": 1.61,
+   "fark": 2.5,
    "gecti": true
   },
   {

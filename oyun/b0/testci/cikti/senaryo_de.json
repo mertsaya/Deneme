@@ -1,0 +1,70 @@
+{
+ "d": {
+  "duraklatta_x_degisti": false,
+  "duraklat_bayrak": true,
+  "menu_metin": "DURAKLATILDI\nDEVAM\nYENİDEN BAŞLA\nHANGAR\nAYARLAR\nTohum 21",
+  "menude_dokunus_dalis": false,
+  "sayimda_dalis": false,
+  "sayimda_x_ilerledi": false,
+  "devamdan_sonra_duraklat": false,
+  "devamdan_sonra_x_ilerliyor": true,
+  "sayim_sirasinda_duraklat_dugmesi": "tiklandi: duraklat=True",
+  "son_durum": {
+   "asama": "UCUS",
+   "duraklat": true
+  },
+  "yeniden_sonrasi": {
+   "asama": "RAMPA",
+   "duraklat": false,
+   "jeton_once": 0,
+   "jeton_sonra": 54,
+   "tur_once": 0,
+   "tur_sonra": 0,
+   "elle": 1
+  },
+  "yeniden_bildirim": "Yarım uçuş: +54 jeton",
+  "rampada_duraklat_igne_durdu": false,
+  "rampa_devam_asama": "RAMPA",
+  "hangar_asama": "HANGAR",
+  "hangar_jeton": 61,
+  "hangardan_uc": "RAMPA",
+  "hata": []
+ },
+ "e": {
+  "gizlenince": {
+   "duraklat": true,
+   "bekleyen": {
+    "j": 39,
+    "ses": false
+   },
+   "jeton": 0
+  },
+  "gizliyken_x_ilerledi": false,
+  "gorununce": {
+   "duraklat": true,
+   "bekleyen": null,
+   "asama": "UCUS"
+  },
+  "cift_gizle_bekleyen": null,
+  "tur_sonu": {
+   "jeton_once": 0,
+   "jeton_sonra": 139,
+   "kk_toplam_metin": "139",
+   "bekleyen": null
+  },
+  "olduruldu": {
+   "jeton_once": 139,
+   "bekleyen_yazildi": {
+    "j": 35,
+    "ses": false
+   },
+   "reload_sonrasi_jeton": 174,
+   "bekleyen": null,
+   "asama": "HANGAR",
+   "bildirim": "Yarım kalan uçuş: +35 jeton"
+  },
+  "ikinci_reload_jeton": 174,
+  "hata": [],
+  "gercek_sekme_hidden": false
+ }
+}

@@ -1,0 +1,201 @@
+{
+ "satirlar": [
+  {
+   "tur": 1,
+   "kayit_tur": 1,
+   "jeton_fark": 131,
+   "kk_toplam": 131,
+   "fark_esit": true,
+   "son": [
+    131
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 1.7061161514802867,
+    "max_v": 93.63284439294416,
+    "max_y": 148.85036122433465
+   }
+  },
+  {
+   "tur": 2,
+   "kayit_tur": 2,
+   "jeton_fark": 152,
+   "kk_toplam": 152,
+   "fark_esit": true,
+   "son": [
+    131,
+    152
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 3,
+   "kayit_tur": 3,
+   "jeton_fark": 100,
+   "kk_toplam": 100,
+   "fark_esit": true,
+   "son": [
+    131,
+    152,
+    100
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 4,
+   "kayit_tur": 4,
+   "jeton_fark": 147,
+   "kk_toplam": 147,
+   "fark_esit": true,
+   "son": [
+    152,
+    100,
+    147
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 5,
+   "kayit_tur": 5,
+   "jeton_fark": 127,
+   "kk_toplam": 127,
+   "fark_esit": true,
+   "son": [
+    100,
+    147,
+    127
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 6,
+   "kayit_tur": 6,
+   "jeton_fark": 146,
+   "kk_toplam": 146,
+   "fark_esit": true,
+   "son": [
+    147,
+    127,
+    146
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 7,
+   "kayit_tur": 7,
+   "jeton_fark": 172,
+   "kk_toplam": 172,
+   "fark_esit": true,
+   "son": [
+    127,
+    146,
+    172
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 8,
+   "kayit_tur": 8,
+   "jeton_fark": 133,
+   "kk_toplam": 133,
+   "fark_esit": true,
+   "son": [
+    146,
+    172,
+    133
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 9,
+   "kayit_tur": 9,
+   "jeton_fark": 157,
+   "kk_toplam": 157,
+   "fark_esit": true,
+   "son": [
+    172,
+    133,
+    157
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  },
+  {
+   "tur": 10,
+   "kayit_tur": 10,
+   "jeton_fark": 209,
+   "kk_toplam": 209,
+   "fark_esit": true,
+   "son": [
+    133,
+    157,
+    209
+   ],
+   "bekleyen": null,
+   "elle": 0,
+   "rekor": {
+    "mesafe_g": 2.2108564284525105,
+    "max_v": 108.36067818459784,
+    "max_y": 210.75270262442822
+   }
+  }
+ ],
+ "reload_ayni": false,
+ "Ka": [
+  1474,
+  10
+ ],
+ "Kb": [
+  1475,
+  10
+ ],
+ "hata": []
+}
