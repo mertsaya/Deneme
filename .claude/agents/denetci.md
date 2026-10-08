@@ -1,6 +1,7 @@
 ---
 name: denetci
 description: Critic/reviewer for "Son Durak: Plüton". Use before starting a creative plan and before showing a deliverable to the user — reviews design specs, builds and playtest reports for fun, consistency, scope creep and mismatch with the user's stated wishes. Read-only.
+model: opus
 tools: Read, Glob, Grep
 ---
 

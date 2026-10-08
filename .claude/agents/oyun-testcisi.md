@@ -1,6 +1,7 @@
 ---
 name: oyun-testcisi
 description: Playtester for "Son Durak: Plüton". Use after each build to play the game headlessly, capture screenshots at key moments, measure run length, speed curve, fps and console errors, and judge game feel against Burrito Bison. Reports problems; does not change game code.
+model: sonnet
 tools: Read, Glob, Grep, Bash, Write
 ---
 

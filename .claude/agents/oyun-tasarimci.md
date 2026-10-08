@@ -1,6 +1,7 @@
 ---
 name: oyun-tasarimci
 description: Game designer for "Son Durak: Plüton". Use to design or revise the core loop, obstacle types, economy, upgrade tree and difficulty curve, and to turn playtest feedback into concrete numeric changes. Writes design specs (Markdown, Turkish) under oyun/; does not write game code.
+model: opus
 tools: Read, Glob, Grep, Write, Edit, WebSearch, WebFetch
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: uygulayici
 description: Implementer for "Son Durak: Plüton". Use to write or change game code (Three.js, single-page HTML under oyun/) from a design spec, and to fix bugs found in playtests. Verifies its own work with headless screenshots before reporting.
+model: sonnet
 ---
 
 You implement "Son Durak: Plüton", a mobile browser game (Samsung Galaxy S24 Ultra, portrait, touch).
