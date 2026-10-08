@@ -11,3 +11,4 @@ pilot_notr.png	512x698	64	61.3
 pilot_heyecan.png	512x698	64	74.8
 pilot_saskin.png	512x698	64	68.7
 pilot_korku.png	512x698	64	72.6
+pilot_zafer.png	512x698	64	69.9
