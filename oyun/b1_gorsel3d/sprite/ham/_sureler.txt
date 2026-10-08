@@ -13,3 +13,6 @@ alev_0.png	384x166	32	1.6
 alev_1.png	384x166	32	1.5
 alev_2.png	384x166	32	1.5
 alev_3.png	384x166	32	1.5
+arka_uzak.png	768x384	64	43.4
+arka_yakin.png	768x288	64	37.8
+pilot_notr.png	512x602	64	60.8

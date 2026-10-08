@@ -555,6 +555,10 @@ def kumulus(gen, yuk, seed):
         x = -gen / 2 * 0.8 + gen * 0.8 * i / max(1, m_ - 1)
         h = (1 - (2 * x / gen) ** 2)
         t.append((x + rnd.uniform(-0.15, 0.15), rnd.uniform(-0.2, 0.2), 0.3 + 0.45 * h * yuk, rnd.uniform(0.6, 0.85) * (0.75 + 0.35 * h)))
+    k_ = max(4, int(gen / 0.3))
+    for i in range(k_):                     # gövde çekirdeği: boşluk/kemer kalmasın
+        x = -gen / 2 * 0.85 + gen * 0.85 * i / (k_ - 1); h = (1 - (2 * x / gen) ** 2)
+        t.append((x, 0.0, 0.25 + 0.2 * h * yuk, 0.62 + 0.15 * h))
     for i in range(rnd.randint(1, 3)):      # tepe kuleleri
         x = rnd.uniform(-gen * 0.22, gen * 0.22)
         t.append((x, 0.0, 0.75 * yuk + rnd.uniform(0.0, 0.35), rnd.uniform(0.75, 1.0) * yuk ** 0.5))
@@ -644,15 +648,25 @@ def patlama(kare):
     return kok
 
 def toz(kare):
-    random.seed(11)
+    """Toz bulutu: 0 sıkışık patlama, 1 genişleyen halka, 2 dağılan küçük öbekler."""
+    rnd = random.Random(11 + kare)
     kok = bos(f"toz_{kare}")
-    olc = [0.6, 1.0, 1.3][kare]; kuc = [1.0, 0.85, 0.5][kare]
     top = []
-    for i in range(9):
-        a = math.radians(i * 40 + random.uniform(-10, 10)); r = olc * random.uniform(0.9, 1.25)
-        top.append((math.cos(a) * r * 1.2, random.uniform(-0.2, 0.2), math.sin(a) * r * 0.55, 0.75 * kuc * random.uniform(0.85, 1.2)))
-    if kare < 2: top.append((0, 0, 0, [0.9, 0.7][kare]))
-    o = metatop(f"toz_{kare}_g", top, plastik("toz", "#eadcc3", rough=0.85, coat=0, sss=0.3, kenar=0.5), parent=kok, coz=0.05)
+    if kare == 0:
+        for i in range(9):
+            a = 2 * math.pi * i / 9 + rnd.uniform(-0.2, 0.2); r = rnd.uniform(0.35, 0.6)
+            top.append((math.cos(a) * r * 1.3, rnd.uniform(-0.2, 0.2), math.sin(a) * r * 0.7, rnd.uniform(0.32, 0.45)))
+        top.append((0, 0, 0, 0.5))
+    elif kare == 1:
+        for i in range(14):
+            a = 2 * math.pi * i / 14 + rnd.uniform(-0.1, 0.1); r = rnd.uniform(0.95, 1.1)
+            top.append((math.cos(a) * r * 1.4, rnd.uniform(-0.2, 0.2), math.sin(a) * r * 0.6, rnd.uniform(0.32, 0.42)))
+    else:
+        for i in range(11):
+            a = 2 * math.pi * i / 11 + rnd.uniform(-0.15, 0.15); r = rnd.uniform(1.35, 1.55)
+            for j in range(2):
+                top.append((math.cos(a + j * 0.12) * r * 1.4, 0, math.sin(a + j * 0.12) * r * 0.6, rnd.uniform(0.16, 0.24)))
+    metatop(f"toz_{kare}_g", top, plastik("toz", "#eadcc3", rough=0.85, coat=0, sss=0.3, kenar=0.5), parent=kok, coz=0.04)
     return kok
 
 def ses_duvari(kare):

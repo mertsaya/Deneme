@@ -55,6 +55,7 @@ AYAR = dict(
     kalite=dict(mukemmel=1.30, iyi=1.0, zayif=0.80),
     mukemmel_bolge=0.12, mukemmel_bolge_sv=0.024,
     mukemmel_bonus_sv=0.05,    # +%30 → +%55
+    acilis_inis_pay=0.2,       # açılış zeplini rota tepesinden en az bu kadar s sonra (iniş kolu)
     acilis_sekme_dt=1.8,       # açılış zeplini: kalkıştan 1,6 s sonraki rota noktasına konur ("vay" garantisi)
     # sekme
     k_tavan=0.92, k_sv=0.012,  # Sekme verimi: k + 0,012/sv, tavan 0,92
@@ -345,7 +346,8 @@ class Ucus:
             s.st['kazanc_rakip'] = h * A['rakip_odul']
         s.ilk_doldur()
         # açılış zeplini: "vay" anı garantisi
-        px, py = s.rota_nokta(A['acilis_sekme_dt'])
+        # açılış zeplini rotanın iniş kolunda (yalnız üstten sekilir): tepeden en az acilis_inis_pay s sonra
+        px, py = s.rota_nokta(max(A['acilis_sekme_dt'], s.vy / max(1e-6, s.g_etkin(s.vx)) + A['acilis_inis_pay']))
         z = TIPLER['zeplin']
         if px < A['baslangic_bos_x'] + z['r'] + A['r_roket']:   # boş bölgenin hemen ötesi, rota üstü
             px, py = s.rota_nokta((A['baslangic_bos_x'] + z['r'] + A['r_roket'] - s.x) / max(s.vx, 1.0))
@@ -711,19 +713,14 @@ class Ucus:
         A = s.A
         if s.t - o.son_t < A['tekrar_sure'] or not o.aktif:
             return
+        if o.sinif == 'tr' and not (s.vy < 0 and s.y >= o.y):
+            return   # kullanıcı kararı: trambolin yalnız üstten (inerken, merkezin üstünde); alttan/yandan içinden geçilir, etki yok
         o.son_t = s.t
         s.st['temas'] += 1
         s.kad_izle = None
         if o.sinif == 'tr':
             T = TIPLER[o.tip]
-            ust = s.y >= o.y and s.vy < 0.35 * math.hypot(s.vx, s.vy)   # üst yarıya değiyor ve dik yükselmiyor
-            if ust:
-                s.sekme(o, T)
-            else:
-                s.yavaslat(T['yan'])
-                s.gosterge_ekle(A['gosterge_diger'])
-                s.dalis_t = None
-                s.bos = None
+            s.sekme(o, T)   # yalnız üstten (yukarıdaki süzgeç)
             o.vurus += 1
             if o.vurus >= T['omur']:
                 o.aktif = False
