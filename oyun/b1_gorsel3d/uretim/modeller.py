@@ -8,7 +8,7 @@ from ortak import (plastik, isikli, kabuk, yumusat, torna, yay, plaka, kure, sil
 
 # ================================================================= renk paleti (sRGB)
 P = dict(kirmizi="#ff2e45", kirmizi_k="#c8102e", beyaz="#f7f4ee", gri="#9aa6c2", koyu_gri="#4a5270", civit=O.CIVIT,
-         mor="#7d4cf0", sari="#ffc93a", mavi="#2f8cff", ten="#ffc79e", sac="#8a4520", turuncu="#ff8a1f",
+         mor="#7d4cf0", sari="#ffc93a", mavi="#2f8cff", ten="#ffd4b4", sac="#8a4520", turuncu="#ff8a1f",
          agiz_ic="#7a1232", dil="#ff6f8e", yanak="#ff7a9a", ter="#8fdcff", cam="#7fd0ff", altin="#ffb62e")
 
 # ================================================================= karton yüz kurucu
@@ -82,7 +82,7 @@ def yuz_kur(ad, yuzey, kok, F, ifadeler, kas_renk=None, yanak=True, birim=0.004)
                 sek = agiz(mx, my, w2, lambda s: w2 * 0.12 * s * s - w2 * 0.01, lambda s: w2 * 0.12 * s * s - w2 * 0.46 * (1 - s * s) ** 0.8)
                 dil = ic_bolge(sek, 0.45, 0.04); dis = ic_bolge(sek, 0.97, 0.78); disa = P0
             elif t == "O":
-                sek = elips(mx, my - mw * 0.04, mw * 0.17, mw * 0.23)
+                sek = elips(mx, my - mw * 0.06, mw * 0.21, mw * 0.28)
                 dil = ic_bolge(sek, 0.38, 0.05); dis = disa = P0
             elif t == "korku":
                 hh = lambda s: mw * 0.15 * (1 - s ** 8) ** 0.5
@@ -179,6 +179,20 @@ def roket(pilot_ifade="heyecan", R=0.52):
     par.rotation_euler = (0, math.radians(35), 0); par.visible_shadow = False
     return kok
 
+def vizor_mat():
+    """Kalkık vizör: renkli, yarı saydam cam (altındaki beyaz kask görünür -> şapka gibi okunmaz)."""
+    m, nt, N, L = O._yeni("vizor")
+    out = N.new("ShaderNodeOutputMaterial"); tr = N.new("ShaderNodeBsdfTransparent"); tr.inputs[0].default_value = lin("#7fd8ff")
+    gl = N.new("ShaderNodeBsdfGlossy"); gl.inputs["Roughness"].default_value = 0.05; gl.inputs["Color"].default_value = lin("#c8f0ff")
+    em = N.new("ShaderNodeEmission"); em.inputs["Color"].default_value = lin("#2aa8ff"); em.inputs["Strength"].default_value = 0.08
+    lw = N.new("ShaderNodeLayerWeight"); lw.inputs["Blend"].default_value = 0.3
+    mr = N.new("ShaderNodeMapRange"); mr.inputs["To Min"].default_value = 0.12; mr.inputs["To Max"].default_value = 0.8
+    L.new(lw.outputs["Fresnel"], mr.inputs["Value"])
+    a1 = N.new("ShaderNodeAddShader"); L.new(tr.outputs[0], a1.inputs[0]); L.new(em.outputs[0], a1.inputs[1])
+    mx = N.new("ShaderNodeMixShader"); L.new(mr.outputs["Result"], mx.inputs[0]); L.new(a1.outputs[0], mx.inputs[1]); L.new(gl.outputs[0], mx.inputs[2])
+    L.new(mx.outputs[0], out.inputs[0])
+    return m
+
 def cam_mat():
     m, nt, N, L = O._yeni("cam")
     out = N.new("ShaderNodeOutputMaterial"); tr = N.new("ShaderNodeBsdfTransparent"); tr.inputs[0].default_value = lin("#cdeeff")
@@ -193,10 +207,10 @@ def cam_mat():
 # ================================================================= PİLOT
 PILOT_IFADE = {
     "notr":    dict(goz="acik", bebek=0.56, bakis=(0.25, 0.05), kas=(0.10, 0.0, 0.06), agiz="gulumse"),
-    "heyecan": dict(goz="acik", goz_olcek=1.06, bebek=0.60, bakis=(0.2, 0.15), kas=(0.22, -0.1, 0.10), agiz="acik_gulus", yanak=1.25),
-    "saskin":  dict(goz="genis", goz_olcek=1.28, goz_gen=1.08, bebek=0.36, bakis=(0, 0), kas=(0.42, 0.0, 0.12), agiz="O", yanak=0.6),
-    "korku":   dict(goz="genis", goz_olcek=1.22, bebek=0.27, bakis=(0.0, -0.2), kas=(0.25, 0.75, 0.0), agiz="korku", ter=True, yanak=0.0),
-    "zafer":   dict(goz="mutlu", kas=(0.30, -0.15, 0.12), agiz="zafer", yanak=1.35),
+    "heyecan": dict(goz="acik", goz_olcek=1.06, bebek=0.60, bakis=(0.2, 0.15), kas=(0.2, -0.25, 0.12), agiz="acik_gulus", yanak=1.25),
+    "saskin":  dict(goz="genis", goz_olcek=1.25, goz_gen=1.08, bebek=0.36, bakis=(0, 0), kas=(0.26, 0.0, 0.14), agiz="O", yanak=0.6),
+    "korku":   dict(goz="genis", goz_olcek=1.2, bebek=0.27, bakis=(0.0, -0.2), kas=(0.16, 0.8, 0.0), agiz="korku", ter=True, yanak=0.0),
+    "zafer":   dict(goz="mutlu", kas=(0.18, -0.2, 0.12), agiz="zafer", yanak=1.35),
 }
 
 def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
@@ -226,9 +240,9 @@ def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
     hal = simit("kask_halka", math.sin(ac) * 0.985, 0.075, GRI, loc=(0, -math.cos(ac) * 0.98, 0), rot=(math.pi / 2, 0, 0), parent=kok)
     kabuk(yumusat(hal, 1), hk)
     # açık vizör: kaskın üstüne kalkmış altın cam
-    viz = kapak_kure("vizor", 1.06, lambda c: c.y < -math.cos(math.radians(44)) * 1.06, plastik("vizor", "#46b8ff", rough=0.06, sss=0, coat=1.0, kenar=1.2))
-    so = viz.modifiers.new("kalinlik", "SOLIDIFY"); so.thickness = 0.04; so.offset = -1
-    viz.rotation_euler = (math.radians(-80), 0, 0); yumusat(viz, 1); kabuk(viz, hk)
+    viz = kapak_kure("vizor", 1.035, lambda c: c.y < -math.cos(math.radians(40)) * 1.035, vizor_mat())
+    so = viz.modifiers.new("kalinlik", "SOLIDIFY"); so.thickness = 0.03; so.offset = -1
+    viz.rotation_euler = (math.radians(-74), 0, 0); yumusat(viz, 1); kabuk(viz, hk)
     # kulaklıklar
     for sd in (-1, 1):
         k = silindir(f"kulak_{'l' if sd < 0 else 'r'}", 0.27, 0.16, KIR, loc=(sd * 0.98, 0.0, -0.02), rot=(0, math.pi / 2, 0), parent=kok, seg=32, pah=0.05)
@@ -245,7 +259,7 @@ def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
                           (0.48, -0.36, 0.38, 0.2), (0.0, -0.2, 0.62, 0.35), (-0.05, -0.62, 0.40, 0.14), (0.22, -0.63, 0.36, 0.12)], SAC, parent=kok, coz=0.035)
     sac.location = hc; kabuk(sac, hk)
     yz = Yuzey(lambda a: math.sqrt(max(Rh * Rh - a * a, 0.0)), "Z", merkez=hc)
-    F = dict(ex=0.27, ey=0.0, rx=0.155, ry=0.195, lw=0.035, mx=0.0, my=-0.33, mw=0.40, yx=0.47, yy=-0.2, yr=0.11,
+    F = dict(ex=0.27, ey=-0.04, rx=0.16, ry=0.2, lw=0.036, mx=0.0, my=-0.36, mw=0.44, yx=0.47, yy=-0.2, yr=0.11,
              terx=0.50, tery=0.20, terr=0.06)
     yuz_kur("pilot", yz, kok, F, ifadeler, kas_renk="#5a2a10", birim=0.004)
     if govde:
@@ -260,7 +274,7 @@ def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
 
 # ================================================================= ortak nesne yüzü
 NESNE_IFADE = {
-    "normal": dict(goz="yari", kapak=0.45, bebek=0.58, bakis=(0.35, 0.05), kas=(0.18, -0.1, 0.02), agiz="gulumse"),
+    "normal": dict(goz="yari", kapak=0.75, bebek=0.58, bakis=(0.35, 0.05), kas=(0.18, -0.1, 0.02), agiz="gulumse"),
     "ezik":   dict(goz="sikik", kas=(0.05, 0.5, -0.05), agiz="ezik_acik", yanak=0.0),
     "saskin": dict(goz="genis", goz_olcek=1.25, bebek=0.34, bakis=(0, 0.1), kas=(0.45, 0.0, 0.12), agiz="O", yanak=0.6),
 }

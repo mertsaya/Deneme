@@ -35,7 +35,7 @@ SABIT_EK = {
     'bot_bolge_kat': 0.5,                                                     # rampa_karar (mükemmel olasılığına bölge/2)
     'hedef_dy_min': 5, 'hedef_r_kat': 0.5,                                    # dalis_hedef
     'bot_karar_ara': 0.05,                                                    # bot_karar
-    'tohum_bot': [7919, 13], 'tohum_tur': 1000, 'tohum_alici': [31, 7],       # tur_oyna, kampanya
+    'tohum_bot': [7919, 13], 'tohum_tur': 1000, 'tohum_alici': [31, 7], 'tohum_aci': [7919, 17],   # tur_oyna, kampanya
     'duvar_sonraki': 0.1,                                                     # kampanya (sonraki kırılış ödülü oranı)
     'alis_ufuk': [2.2, 60.0, 100.0],                                          # alisveris
 }

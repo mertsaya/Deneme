@@ -49,7 +49,8 @@ AYAR = dict(
     rampa_y=60.0, rampa_aci=38.0, rampa_v=70.0, rampa_v_sv=16.0,   # 12→16: üst sınır 190→230 (zayıf oyuncu tabanı)
     rampa_oto=3.0,             # dokunmazsan 3 s sonra otomatik "iyi"
     aci_aralik=(26.0, 52.0),   # kalkış açısı seçimi (kullanıcı kararı): oyuncu girdisi; verilmezse rampa_aci (38) — eski sonuçlar/eşlik aynen
-    aci_hiz_k=0.0,             # açıya bağlı kalkış hızı: v × (1 + k·(38 − açı)/26) (alçak açı biraz hızlı)
+    aci_hiz_k=0.07,            # açıya bağlı kalkış hızı: v × (1 + k·(38 − açı)/26). 0: tur 1'de alçak, geliştirmeyle yüksek açı baskın; 0,15: alçak açı her yerde baskın; 0,07: geniş plato (§8 RAPOR)
+    aci_opt=(28.0, 2.0),       # botların hedef açısı: 28° + 2°/Rampa gücü sv (ölçülen optimum geliştirmeyle yükselir)
     aci_oto=3.0,               # açı fazı: dokunmazsan 3 s sonra orta açı (rampa_aci)
     kalite=dict(mukemmel=1.30, iyi=1.0, zayif=0.80),
     mukemmel_bolge=0.12, mukemmel_bolge_sv=0.024,
@@ -917,10 +918,10 @@ class Ucus:
 # ayrıca saniyede rastgele_s amaçsız dokunuş yapar. hic: rampada bekler, uçuşta hiç dokunmaz.
 BOTLAR = dict(
     hic=dict(tut=0.0),
-    kotu=dict(tepki=(0.40, 0.70), gurultu=0.50, ongoru=0.2, tut=0.25, vazgec=0.3, rampa_t=(0.4, 2.0), zayif=0.25, rastgele_s=0.15),
-    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4)),
-    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1)),
-    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1)),
+    kotu=dict(tepki=(0.40, 0.70), gurultu=0.50, ongoru=0.2, tut=0.25, vazgec=0.3, rampa_t=(0.4, 2.0), zayif=0.25, rastgele_s=0.15, aci_sapma=None, aci_t=(0.5, 2.0)),
+    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4), aci_sapma=6.0, aci_t=(0.6, 1.4)),
+    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1), aci_sapma=3.0, aci_t=(0.5, 1.0)),
+    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1), aci_sapma=0.0, aci_t=(0.5, 0.6)),
 )
 BOT_SIRA = ['hic', 'kotu', 'orta', 'iyi', 'usta']
 
@@ -1000,11 +1001,32 @@ def bot_karar(bot, u, rng, durum):
     return False
 
 
-def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False):
+def aci_karar(bot, rng, sv):
+    """Kalkış açısı seçimi (açı, açı fazı süresi). hic: dokunmaz, orta açı otomatik; kotu: rastgele; orta/iyi: optimum + gürültü; usta: optimum."""
+    A = AYAR
+    lo, hi = A['aci_aralik']
+    if bot == 'hic':
+        return A['rampa_aci'], A['aci_oto']
+    B = BOTLAR[bot]
+    t0, t1 = B['aci_t']
+    t = t0 + (t1 - t0) * rng.random()
+    if B['aci_sapma'] is None:
+        return lo + (hi - lo) * rng.random(), t
+    a = A['aci_opt'][0] + A['aci_opt'][1] * sv.get('rampa', 0)
+    if B['aci_sapma'] > 0:
+        a += rng.gauss(0, B['aci_sapma'])
+    return min(hi, max(lo, a)), t
+
+
+def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False, aci=None):
+    """aci: None → rampa_aci (eski sonuçlar aynen), sayı → sabit açı, 'bot' → bot seçer (ayrı rastgele kaynak; bot kararlarını kaydırmaz)."""
     rng = random.Random(seed * 7919 + 13)
     u = Ucus(seed, sv, tur, bayrak, bot, rakip_hp)
     kalite, rt = rampa_karar(bot, rng, sv)
-    u.kalkis(kalite, rt)
+    if aci == 'bot':
+        aci, at = aci_karar(bot, random.Random(seed * 7919 + 17), sv)
+        rt += at
+    u.kalkis(kalite, rt, aci)
     durum = {'rng': rng}
     while not u.bitti:
         if bot_karar(bot, u, rng, durum):
@@ -1014,6 +1036,7 @@ def tur_oyna(seed, sv, bot, tur=1, bayrak=None, rakip_hp=None, gunluk=False):
     if gunluk:
         r['olay'] = u.olay
     r['kalite'] = kalite
+    r['aci'] = u.aci
     return r
 
 

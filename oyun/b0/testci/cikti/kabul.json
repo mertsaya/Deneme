@@ -26,7 +26,7 @@
   },
   "K7": {
    "durum": "GECTI",
-   "ayrinti": "TEKRAR UC -> RAMPA 0.39s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~1.81s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+   "ayrinti": "TEKRAR UC -> RAMPA 0.48s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~1.89s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
   },
   "K8": {
    "durum": "GECTI",
@@ -42,7 +42,7 @@
   },
   "K11": {
    "durum": "ELLE",
-   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 59 min 15"
+   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 58 min 10"
   },
   "K12": {
    "durum": "GECTI",
@@ -50,7 +50,7 @@
   },
   "K13": {
    "durum": "GECTI",
-   "ayrinti": "yenileyince jeton/sv ayni=True; gizlenince bekleyen={'j': 335, 'ses': True}, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak"
+   "ayrinti": "yenileyince jeton/sv ayni=True; gizlenince bekleyen={'j': 331, 'ses': True}, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak"
   },
   "K14": {
    "durum": "GECTI",
@@ -73,6 +73,22 @@
   [
    "console.error",
    "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  [
+   "requestfailed",
+   "http://127.0.0.1:33521/ses/muzik_a_k2.mp3"
+  ],
+  [
+   "requestfailed",
+   "http://127.0.0.1:33521/ses/muzik_a_k1.mp3"
+  ],
+  [
+   "requestfailed",
+   "http://127.0.0.1:33521/ses/motor_ucus_b.mp3"
+  ],
+  [
+   "requestfailed",
+   "http://127.0.0.1:33521/ses/muzik_a_k3.mp3"
   ],
   [
    "console.error",

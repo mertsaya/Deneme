@@ -233,6 +233,86 @@
    "olcu": "vay<=5",
    "js": 0.975,
    "sim": 0.98
+  },
+  {
+   "bot": "orta+aci",
+   "olcu": "sure_tur",
+   "js": 16.41,
+   "sim": 16.65,
+   "fark": 1.5,
+   "gecti": true
+  },
+  {
+   "bot": "orta+aci",
+   "olcu": "mesafe",
+   "js": 668.68,
+   "sim": 697.02,
+   "fark": 4.1,
+   "gecti": true
+  },
+  {
+   "bot": "orta+aci",
+   "olcu": "max_v",
+   "js": 97.03,
+   "sim": 97.73,
+   "fark": 0.7,
+   "gecti": true
+  },
+  {
+   "bot": "orta+aci",
+   "olcu": "kazanc",
+   "js": 112.49,
+   "sim": 115.61,
+   "fark": 2.7,
+   "gecti": true
+  },
+  {
+   "bot": "orta+aci",
+   "olcu": "aci",
+   "js": 30.0,
+   "sim": 29.02,
+   "fark": 3.4,
+   "gecti": true
+  },
+  {
+   "bot": "iyi+aci",
+   "olcu": "sure_tur",
+   "js": 17.2,
+   "sim": 16.95,
+   "fark": 1.5,
+   "gecti": true
+  },
+  {
+   "bot": "iyi+aci",
+   "olcu": "mesafe",
+   "js": 759.91,
+   "sim": 775.76,
+   "fark": 2.0,
+   "gecti": true
+  },
+  {
+   "bot": "iyi+aci",
+   "olcu": "max_v",
+   "js": 100.05,
+   "sim": 101.26,
+   "fark": 1.2,
+   "gecti": true
+  },
+  {
+   "bot": "iyi+aci",
+   "olcu": "kazanc",
+   "js": 124.0,
+   "sim": 123.6,
+   "fark": 0.3,
+   "gecti": true
+  },
+  {
+   "bot": "iyi+aci",
+   "olcu": "aci",
+   "js": 28.74,
+   "sim": 28.09,
+   "fark": 2.3,
+   "gecti": true
   }
  ],
  "deger_fark": [],

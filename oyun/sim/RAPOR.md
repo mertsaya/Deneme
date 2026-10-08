@@ -118,3 +118,35 @@ Kullanıcı B0'ı telefonda denedi: "nesneler çok yoğun, bir şeye çarpmadan 
 | tur 1 süre (iyi / hic) | 17,3 / 16,2 s | 16,5 / 15,9 s | — |
 
 - **Kalan sapma:** hic botunun tur 5 kazancı eskiden %13 düşük (139'a karşı 160); tur 15'te aynı. İyi botun tur 1 vay ≤ 5 s oranı 0,90'dan 0,97'ye çıktı (daha az martı/uçurtma freni).
+
+## 8. Kalkış açısı seçimi (kullanıcı kararı, 2026-10-08)
+
+Kalkışta iki dokunuş var: önce açı (26°–52°), sonra güç/zamanlama. `tur_oyna(..., aci=None)` eski davranışı aynen korur: açı 38°, hız çarpanı 1, rastgele çekim yok. `aci='bot'` ile bot açıyı seçer; ayrı rastgele kaynak kullanır (`seed·7919 + 17`), bot kararları kaymaz. `kampanya` değişmedi (38°).
+
+- **Açı–hız ödünleşimi:** kalkış hızı × (1 + `aci_hiz_k`·(38 − açı)/26). Alçak açı biraz hızlı ama alçakta kalır; yüksek açı irtifa ve zeplin kazandırır ama ilk hızı düşüktür.
+- **Ölçüm** (sabit açıyla mesafe, 100–150 tohum, * = en iyinin %5 içinde):
+
+| k | tur 1 (iyi) | tur 5 sv (iyi) | tur 12 sv (iyi) | Sonuç |
+|---|---|---|---|---|
+| 0 (yalnız fizik) | 26–32* (+50*) | yalnız 50* | 38, 47, 50* | geliştirmeyle yüksek açı baskın |
+| 0,15 | 26–32* | 26–29, 38, 44* | çoğu alçak* | alçak açı her yerde baskın |
+| **0,07 (seçilen)** | 26–29* | 29, 35–41, 47–50* (geniş plato) | 38* (gürültülü) | plato ≥ 3 açı; en iyi açı geliştirmeyle alçaktan ortaya kayar |
+
+- **Bot açısı:**
+  - Hedef açı `aci_opt` = 28° + 2°·Rampa sv.
+  - hic: dokunmaz, 3 s sonra 38° (`aci_oto`).
+  - kotu: rastgele açı.
+  - orta / iyi: hedef ± σ 6° / 3°.
+  - usta: tam hedef.
+  - Açı fazı süreleri `BOTLAR[*].aci_t`.
+- **Tur 1 (100 tohum, 38° → bot açısı):**
+
+| Bot | Mesafe | Tur süresi (+ açı fazı) |
+|---|---|---|
+| hic | 457 → 457 | 15,6 → 18,6 s |
+| kotu | 520 → 504 | — |
+| orta | 671 → 700 | — |
+| iyi | 726 → 793 | 16,3 → 17,2 s |
+| usta | 770 → 822 | — |
+
+  Beceri farkı biraz açılıyor.

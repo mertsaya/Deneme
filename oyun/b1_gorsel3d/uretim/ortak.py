@@ -387,14 +387,6 @@ def sisir(sekil, w):
         else:
             k = 1.0 if i in (0, K - 1) else 1.0
             u2.append((pu[0] + vx / n * w * k, pu[1] + vy / n * w * k)); a2.append((pa[0] - vx / n * w * k, pa[1] - vy / n * w * k))
-    # uç sütunları dışa uzat
-    for idx, sgn in ((0, -1), (K - 1, 1)):
-        j = 1 if idx == 0 else K - 2
-        mx, my = (ust[idx][0] + alt[idx][0]) / 2, (ust[idx][1] + alt[idx][1]) / 2
-        jx, jy = (ust[j][0] + alt[j][0]) / 2, (ust[j][1] + alt[j][1]) / 2
-        dx, dy = mx - jx, my - jy; n = math.hypot(dx, dy) or 1
-        u2[idx] = (u2[idx][0] + dx / n * w, u2[idx][1] + dy / n * w)
-        a2[idx] = (a2[idx][0] + dx / n * w, a2[idx][1] + dy / n * w)
     return u2, a2
 
 def ic_bolge(sekil, kesir_ust, kesir_alt, tumsek=0.0):

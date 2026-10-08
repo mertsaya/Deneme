@@ -144,3 +144,20 @@ Bulgu bulgu durum: `MANTIK_RAPOR.md`; yeniden üretim: `test/mantik_test.py` (10
   - Motor düzeyi 0,5 → 0,8, müzik 0,45 → 0,38.
   - `__oyun.sesDurum()` artık `{ac, motorAktif, motorTur, kazanc, perde, yuklu}` döndürüyor.
 - **Test:** `test/ses_test.py` iki yolu ölçüyor, ikisi de geçti. Normal yolda motor mp3, engelli yolda sentez; uçuşta aktif ve kazanç > 0, duraklatınca kesiliyor.
+
+## Kalkış açısı seçimi (kullanıcı kararı; ölçüm `oyun/sim/RAPOR.md` §8)
+
+- **Rampa iki faz:**
+  - **Açı fazı:** ibre 26°→52°→26° gidip geliyor (tam tur 1,8 s, `B0_ARAYUZ.aci_T`); kesik nişan çizgisi ve "NN°" göstergesi var. Dokunuşla açı kilitleniyor; dokunulmazsa 3 s sonra 38°.
+  - **Güç fazı:** eski gösterge. Açı kilidinden sonra 0,25 s dokunuş kilidi var (`rampa_kilit`, çift dokunuş koruması).
+  - Uçuşta tek dokunuş değişmedi.
+- İlk kez açılışta ipucu "Önce açıyı seç, sonra gücü"; güç fazında "Yeşilde dokun". Kayda `ipucu.aci` eklendi.
+- **Sayılar sim'den:** `aci_aralik`, `aci_hiz_k` 0,07, `aci_oto`, `aci_opt`, `BOTLAR[*].aci_sapma/aci_t`, `SABIT_EK.tohum_aci`.
+- **Kalkış hızı:** × (1 + 0,07·(38 − açı)/26). Alçak açı biraz hızlı ama alçakta kalıyor; yüksek açı irtifa ve zeplin getiriyor. En iyi açı tur 1'de ~28°, geliştirmeyle ortaya kayıyor; ≥ 3 açılık plato var.
+- **Test kancaları:**
+  - `?aci=<derece>` açı fazını atlıyor.
+  - `__oyun.tur(seed, sv, bot, tur, {aci: sayı | 'bot'})`. Açı verilmezse 38° kullanılıyor; sim eşliği ve kabul.py böylece bozulmuyor.
+  - Görüntülü bot açıyı kendisi seçiyor (`aci_karar`).
+  - `durum()` içinde `rampa_faz` ve `aci` alanları var; `t` rampada açı + güç fazı süresi.
+- **Eşlik (200 tohum, `aci='bot'`, orta ve iyi):** süre, mesafe, en yüksek hız, kazanç ve açı ortalaması geçti (fark %0,3–4,1).
+- **Tur süresine etkisi:** insan için +1–3 s (açı fazı).

@@ -58,6 +58,13 @@ def main():
                 sat.append(dict(bot=b, olcu=ad, js=round(ort(a), 2), sim=round(ort(c), 2), fark=round(fark * 100, 1), gecti=ok))
             vay = lambda rs: sum(1 for r in rs if r['vay_t'] is not None and r['vay_t'] <= 5) / len(rs)
             sat.append(dict(bot=b, olcu='vay<=5', js=vay(js), sim=vay(py)))
+        for b in ('orta', 'iyi'):   # kalkış açısı seçimi (aci='bot') eşliği
+            js = pg.evaluate('([b,n]) => { const o=[]; for (let i=1;i<=n;i++) o.push(window.__oyun.tur(i,{},b,1,{aci:"bot"})); return o; }', [b, N])
+            py = [m.tur_oyna(s, {}, b, 1, aci='bot') for s in range(1, N + 1)]
+            for ad in ('sure_tur', 'mesafe', 'max_v', 'kazanc', 'aci'):
+                a, c = [r[ad] for r in js], [r[ad] for r in py]
+                fark = abs(ort(a) - ort(c)) / max(1e-9, abs(ort(c))); ca, cc = ci(a), ci(c)
+                sat.append(dict(bot=b + '+aci', olcu=ad, js=round(ort(a), 2), sim=round(ort(c), 2), fark=round(fark * 100, 1), gecti=fark <= 0.10 or (ca[0] <= cc[1] and cc[0] <= ca[1])))
         rapor['eslik'] = sat
         # 2) deger() birim testi
         dd = []

@@ -69,7 +69,7 @@ with sync_playwright() as p:
     pg.goto(URL + '?kayit=0&seed=1'); hazir(); pg.wait_for_timeout(200)
     i0 = pg.evaluate("document.querySelector('#ipucu span').textContent")
     pg.click('#durBtn'); i1 = pg.evaluate("document.querySelector('#ipucu span').textContent")
-    yaz('6', i0 == 'Başlamak için dokun' and i1 == 'Yeşilde dokun', f'{i0!r} → {i1!r}')
+    yaz('6', i0 == 'Başlamak için dokun' and i1 in ('Yeşilde dokun', 'Önce açıyı seç, sonra gücü'), f'{i0!r} → {i1!r}')
     # 7) alan bazında onarım, NaN yok; ikinci bozulma ilk yedeği ezmez
     k = json.loads(json.dumps(taban)); k['tur'] = 3; k['jeton'] = 77; k['ayar']['efekt'] = 'x'; k['ayar']['yazi'] = 9; k['duvar']['ses'] = 'evet'; k['rekor']['max_v'] = -1
     kayitla(k)

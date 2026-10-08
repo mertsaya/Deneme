@@ -37,3 +37,17 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - (Ses, kullanıcı seçimi, 2. seçim) Seçimler `oyun/ses/SECIM.md`: müzik A, motor tutuşma c, motor uçuş b (puansız), trambolin c, martı c, balon c, kademe ayrılma i, dalış b, mükemmel e, ses duvarı b, jeton d, tık a, kart satın alma a, son şans b.
 - (B1 görsel dilimi, kullanıcı onaylı) Roket boyu kararı Claude'a bırakıldı: **kamera yakınlaşır** (B1'de; ekran yoğunluğu/ileriyi görme sim'de yeniden ölçülecek). Arayüz onaylı konsept düzeni + küçük pilot rozeti. Pilot: açık vizörlü mevcut maskot. Engel yüzleri: balon, zeplin, uçurtma, dron, martı hepsinde yüz.
 - (B0 telefon testi, kullanıcı onaylı) Kalkış açısı oyuncu seçimi: rampada önce açı ibresi (kilitlenir), sonra güç ibresi (iki dokunuş); açılar arasında mantıklı tatlı nokta, tek açı baskın olmasın. Nesne yoğunluğu ~%30 seyreltilir (ekran başı 7→5). Motor uçuş sesi her koşulda çalmalı (sentez yedeği).
+
+## B1 kararları (2026-10-08, kullanıcı onaylı; kaynak: oyun/B1_ONERI.md, 12 soru)
+- **Görsel yol:** B1 başında önce görsel dilim (roket, pilot, B0'ın 5 nesnesi son kalitede); kullanıcı onaylayınca aynı kaliteyle kalan nesneler çoğaltılır. Çizim kalitesi Burrito Bison'un altında bulundu; kodla çizilmiş vektör yol yeterli değil (Blender 3B→sprite denemesi sürüyor).
+- **Pilot:** yüz ifadesi (6) + kısa anlamsız sesler, yazı yok.
+- **Komik ton:** tokat-şaklak komedi (abartılı şaşkın gözler, sersemleme yıldızları, savrulup toparlanma); şiddet yok, herkes toparlanır.
+- **Roket evrimi:** her hangar sekmesinin görünür parçası, parça 2 kademede büyür, belli seviyelerde bütün roket evrim geçirir (~12 parça modeli).
+- **Vay anları (B1'e girer):** bant başlık kartı, yeni nesne tanıtımı, zengin bant dekoru, kartpostal anı.
+- **Kara kutu:** sonraki hedefe kalan (gerçek sayı) + bu tur ve en iyi tur eğrisi. (Sonraki alıma kalan jeton ve anlık tekrar B1'e alınmadı.)
+- **B1 sonrası ilk meta:** görevler (aynı anda 3, rütbe).
+- **Seri ödülü:** seri yok, cezasız (hoş geldin hediyesi).
+- **Rekabet:** yalnız kendi rekorları (sunucu yok).
+- **Kayıt:** yerel çift kayıt.
+- **Hedef yaş:** herkes, çocuk hedefli değil (içerik şiddetsiz ve çocuk dostu kalır).
+- **Para modeli:** ilke şimdi: parayla güç satılmaz, enerji yok, reklam yok; model yayına yakın sorulur.
