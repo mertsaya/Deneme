@@ -3,135 +3,135 @@
   {
    "bot": "hic",
    "olcu": "sure_tur",
-   "js": 16.55,
-   "sim": 16.2,
-   "fark": 2.2,
+   "js": 15.82,
+   "sim": 15.73,
+   "fark": 0.6,
    "gecti": true
   },
   {
    "bot": "hic",
    "olcu": "mesafe",
-   "js": 451.55,
-   "sim": 442.64,
-   "fark": 2.0,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "max_v",
-   "js": 87.83,
-   "sim": 88.15,
-   "fark": 0.4,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "sekme",
-   "js": 2.65,
-   "sim": 2.5,
-   "fark": 5.6,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "kazanc",
-   "js": 97.16,
-   "sim": 93.58,
-   "fark": 3.8,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "mukemmel",
-   "js": 0.0,
-   "sim": 0.0,
-   "fark": 0.0,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "dalis",
-   "js": 0.0,
-   "sim": 0.0,
-   "fark": 0.0,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "son_sans",
-   "js": 1.0,
-   "sim": 1.0,
-   "fark": 0.0,
-   "gecti": true
-  },
-  {
-   "bot": "hic",
-   "olcu": "mesafe_g",
-   "js": 0.89,
-   "sim": 0.88,
+   "js": 453.88,
+   "sim": 458.75,
    "fark": 1.1,
    "gecti": true
   },
   {
    "bot": "hic",
+   "olcu": "max_v",
+   "js": 89.49,
+   "sim": 89.51,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "sekme",
+   "js": 2.2,
+   "sim": 2.12,
+   "fark": 3.8,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "kazanc",
+   "js": 87.87,
+   "sim": 86.44,
+   "fark": 1.7,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "mukemmel",
+   "js": 0.0,
+   "sim": 0.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "dalis",
+   "js": 0.0,
+   "sim": 0.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "son_sans",
+   "js": 1.0,
+   "sim": 1.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "mesafe_g",
+   "js": 0.92,
+   "sim": 0.94,
+   "fark": 1.9,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
    "olcu": "vay<=5",
-   "js": 0.98,
-   "sim": 0.985
+   "js": 0.995,
+   "sim": 0.99
   },
   {
    "bot": "orta",
    "olcu": "sure_tur",
-   "js": 16.17,
-   "sim": 16.68,
-   "fark": 3.1,
+   "js": 15.62,
+   "sim": 15.93,
+   "fark": 1.9,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "mesafe",
-   "js": 616.82,
-   "sim": 635.43,
-   "fark": 2.9,
+   "js": 645.23,
+   "sim": 666.26,
+   "fark": 3.2,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "max_v",
-   "js": 94.34,
-   "sim": 93.89,
-   "fark": 0.5,
+   "js": 96.63,
+   "sim": 96.69,
+   "fark": 0.1,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "sekme",
-   "js": 3.0,
-   "sim": 3.19,
-   "fark": 5.8,
+   "js": 2.65,
+   "sim": 2.67,
+   "fark": 0.6,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "kazanc",
-   "js": 116.14,
-   "sim": 117.84,
-   "fark": 1.4,
+   "js": 107.73,
+   "sim": 108.82,
+   "fark": 1.0,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "mukemmel",
-   "js": 0.77,
-   "sim": 0.77,
-   "fark": 0.0,
+   "js": 0.69,
+   "sim": 0.69,
+   "fark": 1.4,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "dalis",
-   "js": 1.08,
-   "sim": 1.06,
-   "fark": 1.9,
+   "js": 1.01,
+   "sim": 1.02,
+   "fark": 1.0,
    "gecti": true
   },
   {
@@ -145,71 +145,71 @@
   {
    "bot": "orta",
    "olcu": "mesafe_g",
-   "js": 1.39,
-   "sim": 1.43,
-   "fark": 2.5,
+   "js": 1.52,
+   "sim": 1.58,
+   "fark": 3.7,
    "gecti": true
   },
   {
    "bot": "orta",
    "olcu": "vay<=5",
-   "js": 0.915,
-   "sim": 0.925
+   "js": 0.94,
+   "sim": 0.955
   },
   {
    "bot": "iyi",
    "olcu": "sure_tur",
-   "js": 17.03,
-   "sim": 17.03,
-   "fark": 0.0,
+   "js": 16.83,
+   "sim": 16.49,
+   "fark": 2.0,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "mesafe",
-   "js": 701.95,
-   "sim": 689.84,
-   "fark": 1.8,
+   "js": 729.54,
+   "sim": 732.77,
+   "fark": 0.4,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "max_v",
-   "js": 97.11,
-   "sim": 96.36,
-   "fark": 0.8,
+   "js": 98.25,
+   "sim": 98.55,
+   "fark": 0.3,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "sekme",
-   "js": 3.19,
-   "sim": 3.14,
-   "fark": 1.6,
+   "js": 2.97,
+   "sim": 2.78,
+   "fark": 6.8,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "kazanc",
-   "js": 125.87,
-   "sim": 123.99,
+   "js": 118.41,
+   "sim": 116.7,
    "fark": 1.5,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "mukemmel",
-   "js": 0.95,
-   "sim": 0.85,
-   "fark": 11.8,
+   "js": 0.84,
+   "sim": 0.83,
+   "fark": 1.2,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "dalis",
-   "js": 1.09,
-   "sim": 1.06,
-   "fark": 3.3,
+   "js": 1.03,
+   "sim": 1.01,
+   "fark": 1.5,
    "gecti": true
   },
   {
@@ -223,16 +223,16 @@
   {
    "bot": "iyi",
    "olcu": "mesafe_g",
-   "js": 1.65,
-   "sim": 1.61,
-   "fark": 2.5,
+   "js": 1.76,
+   "sim": 1.8,
+   "fark": 2.2,
    "gecti": true
   },
   {
    "bot": "iyi",
    "olcu": "vay<=5",
-   "js": 0.94,
-   "sim": 0.945
+   "js": 0.975,
+   "sim": 0.98
   }
  ],
  "deger_fark": [],
@@ -240,104 +240,104 @@
  "kampanya_iyi": [
   [
    1,
-   22,
-   162,
+   14,
+   141,
    [
     "rampa"
    ]
   ],
   [
    2,
-   19,
-   147,
+   18,
+   160,
    [
-    "yakit_ac",
-    "rampa"
+    "yakit_ac"
    ]
   ],
   [
    3,
-   19,
-   480,
+   24,
+   179,
    [
     "rampa",
-    "yakit_s",
     "rampa"
    ]
   ],
   [
    4,
-   32,
-   328,
+   26,
+   530,
    [
-    "dalis",
     "yakit_s",
-    "verim"
+    "rampa",
+    "dalis",
+    "yakit_s"
    ]
   ],
   [
    5,
-   28,
-   307,
+   39,
+   378,
    [
-    "dalis"
+    "dalis",
+    "verim"
    ]
   ],
   [
    6,
-   40,
-   511,
+   33,
+   368,
    [
-    "dalis",
-    "verim",
     "rampa",
     "bolge"
    ]
   ],
   [
    7,
-   16,
-   235,
+   18,
+   223,
    [
     "yakit_s"
    ]
   ],
   [
    8,
-   18,
-   201,
+   36,
+   326,
    [
-    "bolge"
-   ]
-  ],
-  [
-   9,
-   34,
-   450,
-   [
-    "dalis",
     "verim"
    ]
   ],
   [
-   10,
-   44,
-   459,
-   []
-  ],
-  [
-   11,
-   65,
-   768,
+   9,
+   29,
+   368,
    [
-    "dalis",
     "rampa"
    ]
   ],
   [
+   10,
+   34,
+   448,
+   [
+    "dalis",
+    "dalis",
+    "bolge"
+   ]
+  ],
+  [
+   11,
+   43,
+   495,
+   [
+    "verim"
+   ]
+  ],
+  [
    12,
-   65,
-   792,
+   51,
+   612,
    [
     "dalis",
     "yakit_s"
@@ -346,34 +346,33 @@
   [
    13,
    65,
-   781,
+   885,
    [
-    "verim",
-    "bolge",
-    "kademe_itki"
+    "dalis",
+    "verim"
    ]
   ],
   [
    14,
    65,
-   840,
+   843,
    [
-    "verim",
-    "bolge"
+    "bolge",
+    "kademe_itki"
    ]
   ],
   [
    15,
-   38,
-   416,
+   65,
+   827,
    [
-    "kademe_itki"
+    "dalis"
    ]
   ]
  ],
  "kampanya_ilk": {
-  "ses": 3,
-  "ses_harcama": 303
+  "ses": 4,
+  "ses_harcama": 447
  },
  "goruntu": [
   "t0_5_rampa",

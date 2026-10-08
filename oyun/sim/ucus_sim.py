@@ -61,6 +61,7 @@ AYAR = dict(
     bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
     bos_dalis_yer=15.0,        # E1: boş dalışta y < kademe_y + 15 olunca hemen toparlanır (yere gömülmesin)
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
+    kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -72,7 +73,7 @@ AYAR = dict(
     son_ates=19.5,             # Son ateşleme: +19,5/sv (15'ten +%30), yatay < 30 ve kademe yokken 1 kez
     # kamera / ekran (dikey telefon)
     ekran_w0=150.0, ekran_wk=0.5, ekran_wmax=500.0, ekran_oran=2.1,
-    ekran_hedef=7,             # ekranda her an hedef nesne sayısı (6–10)
+    ekran_hedef=5,             # ekranda her an hedef nesne sayısı (kullanıcı kararı 2026-10-08: 7→5, ~%30 seyrek; 'bir şeye çarpmadan uçulmuyor')
     romorkor_garanti=False,    # SEÇENEK (kapalı): uçuşta romorkor_y ilk geçilince römorkör garanti çıkar (RAPOR §6)
     romorkor_y=1500.0,         # uzay römorkörü yalnız bu yüksekliğin üstünde çıkar (üst atmosfer sonu / yörünge girişi)
     seyrek=dict(y=1000.0, t0=30.0, adim=10.0, kat=0.9, en_az=0.5),   # S8: y < 1.000'de (300 yetmedi: tavana çarpanlar bulut bandında) trambolin ağırlığı uçuşun 30. s'sinden sonra her 10 s'de ×0,9 (en az ×0,5)
@@ -253,6 +254,7 @@ class Ucus:
         s.x, s.y, s.vx, s.vy = 0.0, A['rampa_y'], 0.0, 0.0
         s.tepe_rampa = A['rampa_y']
         s.kad_izle, s.kad_y0 = None, 0.0
+        s._rota_t, s._rota_p = None, []
 
     # ---------- yardımcılar
     def ekran(s):
@@ -376,9 +378,29 @@ class Ucus:
         p = s.A['dogus_pay']
         return any(o.sinif != 'bant' and (o.x - x) ** 2 + (o.y - y) ** 2 < (o.r + r + p) ** 2 for o in s.nesneler)
 
+    def gecit(s, x, y, r):
+        """E3: aday roketin öngörülen (pasif) yolundaysa, aynı sütunda üstünde ya da altında roketin geçebileceği
+        en az 2·(r_roket + kacis_pay) boşluk kalmalı (alt sınır zemin). Rastgele çekim yok."""
+        A = s.A
+        if s._rota_t != s.t:
+            s._rota_t, s._rota_p = s.t, s.rota()
+        py = next((q for p, q in s._rota_p if p >= x), None)
+        if py is None or abs(y - py) >= r + A['r_roket']:
+            return True
+        g = 2 * (A['r_roket'] + A['kacis_pay'])
+        ust, alt = 1e18, y - r
+        for o in s.nesneler:
+            if o.sinif == 'bant' or not o.aktif or abs(o.x - x) >= o.r + r:
+                continue
+            if o.y > y:
+                ust = min(ust, (o.y - o.r) - (y + r))
+            else:
+                alt = min(alt, (y - r) - (o.y + o.r))
+        return ust >= g or alt >= g
+
     def ekle(s, tip, x, y):
         T = TIPLER[tip]
-        if s.cakisir(x, y, T['r']):
+        if s.cakisir(x, y, T['r']) or not s.gecit(x, y, T['r']):
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
         return True
@@ -1500,7 +1522,7 @@ def kontrol():
     # (d) yoğunluk ekran başına: 40 tur, ortalama ekrandaki nesne 7–12
     rs = [tur_oyna(sd, {}, b) for sd in range(1, 21) for b in ('iyi', 'orta')]
     ek = [r['ekran_ort'] for r in rs]
-    assert 7 <= sum(ek) / len(ek) <= 12, ek
+    assert 5 <= sum(ek) / len(ek) <= 9, ek   # ekran_hedef 5 (eski 7: 7–12)
     # tur tavanı yalnız emniyet: geliştirmesiz tur 1'de hiçbir tur tavana çarpmaz
     assert all(r['sure_tur'] <= A['tur_tavan'] + A['dt'] and r['bitis'] != 'sure' for r in rs)
     # irtifa göstergesi tek yönlü ve Kármán = 100 km; uzay nesneleri Kármán'ın üstünde, atmosfer nesneleri altında
