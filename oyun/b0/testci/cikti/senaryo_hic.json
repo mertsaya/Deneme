@@ -1,0 +1,132 @@
+{
+ "mod": "hic",
+ "turlar": [
+  {
+   "tur": 1,
+   "olay_t": [],
+   "ss": [],
+   "rampa_gercek_s": 2.72,
+   "ilk5s_olay": [
+    "sekme"
+   ],
+   "ucus_gercek_s": 11.4,
+   "max_v_ornek": 91.4,
+   "en_yavas": [
+    35.05572331381672,
+    7.558333333333499
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 1\n92\nNesneler (6 vuruş)\n34\nMesafe (0,8 km)\n27\nKalkış primi\n6\nSponsor tabanı\n25\nEn yüksek hız\n1064 km/saYENİ!\nMesafe\n0,8 kmYENİ!\nSENİ DURDURAN\nDalış hakkın dururken bitti. Altında balon ya da zeplin görünce dokun.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 92,
+    "tur": 1
+   }
+  },
+  {
+   "tur": 2,
+   "olay_t": [],
+   "ss": [],
+   "rampa_gercek_s": 2.96,
+   "ilk5s_olay": [
+    "sekme"
+   ],
+   "ucus_gercek_s": 14.3,
+   "max_v_ornek": 86.3,
+   "en_yavas": [
+    16.061381434592942,
+    10.875000000000023
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 2\n110\nNesneler (10 vuruş)\n52\nMesafe (0,6 km)\n27\nKalkış primi\n6\nSponsor tabanı\n25\nEn yüksek hız\n950 km/sa\nMesafe\n0,6 km\nSENİ DURDURAN\nDalış hakkın dururken bitti. Altında balon ya da zeplin görünce dokun.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 202,
+    "tur": 2
+   }
+  },
+  {
+   "tur": 3,
+   "olay_t": [],
+   "ss": [],
+   "rampa_gercek_s": 2.98,
+   "ilk5s_olay": [
+    "sekme",
+    "son_sans"
+   ],
+   "ucus_gercek_s": 14.3,
+   "max_v_ornek": 87.5,
+   "en_yavas": [
+    30.203640482265204,
+    10.641666666666703
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 3\n98\nNesneler (9 vuruş)\n34\nMesafe (0,9 km)\n33\nKalkış primi\n6\nSponsor tabanı\n25\nEn yüksek hız\n973 km/sa\nMesafe\n0,9 kmYENİ!\nSENİ DURDURAN\nDalış hakkın dururken bitti. Altında balon ya da zeplin görünce dokun.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 300,
+    "tur": 3
+   }
+  }
+ ],
+ "fps": {
+  "kare": 3565,
+  "ort_fps": 57.547380084054325,
+  "min_fps": 6.662225183211197,
+  "p95_ms": 16.800000000000182,
+  "en_uzun_ms": 183.39999999999998
+ },
+ "kayit": {
+  "v": 1,
+  "jeton": 300,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "duvar": {
+   "ses": null
+  },
+  "rekor": {
+   "mesafe_g": 0.8870852374342271,
+   "max_v": 91.86440534565743,
+   "max_y": 124.86243122487392
+  },
+  "son": [
+   92,
+   110,
+   98
+  ],
+  "son_dalis": [
+   0,
+   0,
+   0
+  ],
+  "son_mesafe": [
+   0.7627837942432214,
+   0.6473023074258392,
+   0.8870852374342271
+  ],
+  "elle": 0,
+  "ipucu": {
+   "rampa": false,
+   "dalis": true,
+   "sekme": false,
+   "yakit": false
+  },
+  "ayar": {
+   "efekt": 80,
+   "muzik": true,
+   "titresim": true,
+   "hareket_azalt": null,
+   "isik": false,
+   "yazi": 1,
+   "kalite": "oto"
+  },
+  "bekleyen": null
+ },
+ "hata": [],
+ "sure_s": 61.7
+}

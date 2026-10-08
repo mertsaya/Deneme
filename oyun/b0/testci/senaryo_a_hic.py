@@ -14,8 +14,9 @@ def kk_oku(pg):
 with o.sunucu() as taban, sync_playwright() as p:
     br, ctx, pg, hat = yeni(p, "seed=11", taban)
     t0 = time.time()
+    pg.wait_for_timeout(1500)
+    pg.mouse.click(190, 400)  # ilk acilis: igne ilk dokunusa kadar bekler (o dokunus yalniz baslatir)
     if MOD == "spam":
-        pg.mouse.click(190, 400)  # sesi/ilk dokunus baslatici
         pg.evaluate(SPAM_JS)
     for tur in range(3):
         kayit = {"tur": tur + 1, "olay_t": [], "ss": []}
@@ -30,8 +31,7 @@ with o.sunucu() as taban, sync_playwright() as p:
             pg.screenshot(path=str(SS / "a_hic_rampa.png"))
         if MOD == "rampa":
             # rampada yesilde dokun: p>0.84 civari. iglenin konumunu rampa_t'den tahmin etmeden: sabit gecikmeyle deneme
-            pg.wait_for_timeout(840)
-            pg.mouse.click(190, 400)
+            pg.evaluate("""() => new Promise(r => { const f = () => { const d = window.__oyun.durum(); if (d.asama !== 'RAMPA') return r(); const tt = d.rampa_t % 2; if (tt >= 0.88 && tt < 1.1) { document.body.dispatchEvent(new PointerEvent('pointerdown', {isPrimary: true, bubbles: true, pointerType: 'touch', clientX: 190, clientY: 400})); return r(); } requestAnimationFrame(f); }; f(); })""")
         # ucus
         ilk5 = None
         try:

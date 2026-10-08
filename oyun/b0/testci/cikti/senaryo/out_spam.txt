@@ -1,0 +1,144 @@
+{
+ "mod": "spam",
+ "turlar": [
+  {
+   "tur": 1,
+   "olay_t": [],
+   "ss": [],
+   "not": "UCUS gelmedi",
+   "rampa_gercek_s": 8.04,
+   "ilk5s_olay": [
+    "dalis",
+    "bos_dalis",
+    "son_sans"
+   ],
+   "ucus_gercek_s": 5.5,
+   "max_v_ornek": 0,
+   "en_yavas": [
+    1000000000.0,
+    null
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 1\n68\nNesneler (2 vuruş)\n16\nMesafe (0,8 km)\n27\nKalkış primi\n0\nSponsor tabanı\n25\nEn yüksek hız\n1121 km/saYENİ!\nMesafe\n0,8 kmYENİ!\nSENİ DURDURAN\nYere indin. Alçalırken altındaki balon ya da zeplinlere dalış yap.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 68,
+    "tur": 1
+   },
+   "spam_n": 1991
+  },
+  {
+   "tur": 2,
+   "olay_t": [],
+   "ss": [],
+   "not": "UCUS gelmedi",
+   "rampa_gercek_s": 8.02,
+   "ilk5s_olay": [
+    "dalis",
+    "bos_dalis",
+    "son_sans"
+   ],
+   "ucus_gercek_s": 5.0,
+   "max_v_ornek": 0,
+   "en_yavas": [
+    1000000000.0,
+    null
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 2\n91\nNesneler (9 vuruş)\n41\nMesafe (0,6 km)\n24\nKalkış primi\n0\nSponsor tabanı\n25\nEn yüksek hız\n1024 km/sa\nMesafe\n0,6 km\nSENİ DURDURAN\n5 uçurtma ipine takıldın. İpler alçakta: yüksekte kalırsan geçersin.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 159,
+    "tur": 2
+   },
+   "spam_n": 4101
+  },
+  {
+   "tur": 3,
+   "olay_t": [],
+   "ss": [],
+   "not": "UCUS gelmedi",
+   "rampa_gercek_s": 8.02,
+   "ilk5s_olay": [
+    "dalis",
+    "bos_dalis",
+    "sekme",
+    "son_sans"
+   ],
+   "ucus_gercek_s": 5.0,
+   "max_v_ornek": 0,
+   "en_yavas": [
+    1000000000.0,
+    null
+   ],
+   "kk": "UÇUŞ RAPORU · TUR 3\n90\nNesneler (7 vuruş)\n42\nMesafe (0,6 km)\n23\nKalkış primi\n0\nSponsor tabanı\n25\nEn yüksek hız\n902 km/sa\nMesafe\n0,6 km\nSENİ DURDURAN\n2 uçurtma ipine takıldın. İpler alçakta: yüksekte kalırsan geçersin.\nBUNU ÇÖZEN KART\nRampa gücü · 60 jeton\nŞimdi alınabilir\nHANGAR\nTEKRAR UÇ",
+   "res": {
+    "sonuc": null,
+    "jeton": 249,
+    "tur": 3
+   },
+   "spam_n": 6238
+  }
+ ],
+ "fps": {
+  "kare": 6343,
+  "ort_fps": 57.630313490365126,
+  "min_fps": 7.496251874062887,
+  "p95_ms": 16.80000000000291,
+  "en_uzun_ms": 133.40000000000146
+ },
+ "kayit": {
+  "v": 1,
+  "jeton": 249,
+  "tur": 3,
+  "sv": {
+   "rampa": 0,
+   "bolge": 0,
+   "verim": 0,
+   "dalis": 0,
+   "kademe_itki": 0,
+   "yakit_ac": 0,
+   "yakit_s": 0
+  },
+  "duvar": {
+   "ses": null
+  },
+  "rekor": {
+   "mesafe_g": 0.833730549449749,
+   "max_v": 94.61241445638284,
+   "max_y": 116.5363063977143
+  },
+  "son": [
+   68,
+   91,
+   90
+  ],
+  "son_dalis": [
+   1,
+   1,
+   1
+  ],
+  "son_mesafe": [
+   0.833730549449749,
+   0.6183385258673012,
+   0.5648373233922127
+  ],
+  "elle": 0,
+  "ipucu": {
+   "rampa": true,
+   "dalis": false,
+   "sekme": false,
+   "yakit": false
+  },
+  "ayar": {
+   "efekt": 80,
+   "muzik": true,
+   "titresim": true,
+   "hareket_azalt": null,
+   "isik": false,
+   "yazi": 1,
+   "kalite": "oto"
+  },
+  "bekleyen": null
+ },
+ "hata": [],
+ "sure_s": 109.7
+}

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Sprite üretici</title></head>
+<body style="margin:0;background:#333">
+<script src="cizim.js"></script>
+<script>
+'use strict';
+// uret.py bu sayfayı açar ve window.uret(...) çağırır. Çıktılar dataURL olarak döner.
+const D0 = 7;   // piksel / dünya birimi (en yakın kamerada ~2,3 CSS px/birim × 3 DPR)
+
+function spriteCiz(s, D) {
+  const d = D * s.d, ol = s.ol * d, pad = Math.ceil(ol + 2);
+  const w = Math.ceil((s.x1 - s.x0) * d + 2 * pad), h = Math.ceil((s.y1 - s.y0) * d + 2 * pad);
+  const A = document.createElement('canvas'); A.width = w; A.height = h;
+  const a = A.getContext('2d');
+  a.save(); a.translate(pad - s.x0 * d, pad - s.y0 * d); a.scale(d, d); s.ciz(a); a.restore();
+  let out = A;
+  if (ol > 0 && ST.kontur) {
+    const B = document.createElement('canvas'); B.width = w; B.height = h; const b = B.getContext('2d');
+    for (const [n, k] of [[32, 1], [16, 0.66], [8, 0.33]]) for (let i = 0; i < n; i++) { const t = i / n * 6.2832; b.drawImage(A, Math.cos(t) * ol * k, Math.sin(t) * ol * k); }
+    b.globalCompositeOperation = 'source-in'; b.fillStyle = INK; b.fillRect(0, 0, w, h);
+    b.globalCompositeOperation = 'source-over'; b.drawImage(A, 0, 0); out = B;
+  }
+  return { c: out, w, h, ax: pad - s.x0 * d, ay: pad - s.y0 * d, d };
+}
+
+function atlasla(D, maxW = 2048) {
+  const liste = SPRITE.map(s => ({ s, r: spriteCiz(s, D) })).sort((p, q) => q.r.h - p.r.h);
+  const sayfalar = []; let sayfa = null, x = 0, y = 0, satH = 0;
+  const yeni = () => { sayfa = { ogeler: [], h: 0 }; sayfalar.push(sayfa); x = 0; y = 0; satH = 0; };
+  yeni();
+  for (const o of liste) {
+    if (x + o.r.w > maxW) { x = 0; y += satH + 2; satH = 0; }
+    if (y + o.r.h > maxW) { yeni(); }
+    sayfa.ogeler.push({ o, x, y }); x += o.r.w + 2; satH = Math.max(satH, o.r.h); sayfa.h = Math.max(sayfa.h, y + o.r.h);
+  }
+  const json = { D, birim: 'dünya birimi', sayfalar: [], sprite: {} };
+  const png = [];
+  sayfalar.forEach((p, i) => {
+    let W = 0; for (const e of p.ogeler) W = Math.max(W, e.x + e.o.r.w);
+    const C = document.createElement('canvas'); C.width = W; C.height = p.h; const c = C.getContext('2d');
+    for (const e of p.ogeler) { c.drawImage(e.o.r.c, e.x, e.y); json.sprite[e.o.s.ad] = [i, e.x, e.y, e.o.r.w, e.o.r.h, +e.o.r.ax.toFixed(2), +e.o.r.ay.toFixed(2), +e.o.r.d.toFixed(3)]; }
+    json.sayfalar.push(`atlas_${i}.png`); png.push(C.toDataURL('image/png'));
+  });
+  return { json, png };
+}
+
+// kontak sayfası: her sprite gök zemininde, adıyla
+function kontak(D) {
+  const ogeler = SPRITE.filter(s => !['zemin', 'uzak_tepe'].includes(s.ad)).map(s => ({ s, r: spriteCiz(s, D) }));
+  const W = 1800; let x = 10, y = 10, satH = 0; const yer = [];
+  for (const o of ogeler) { const w = Math.max(o.r.w, 90) + 14; if (x + w > W) { x = 10; y += satH + 30; satH = 0; } yer.push([o, x, y]); x += w; satH = Math.max(satH, o.r.h); }
+  const C = document.createElement('canvas'); C.width = W; C.height = y + satH + 40; const c = C.getContext('2d');
+  const g = c.createLinearGradient(0, 0, 0, C.height); g.addColorStop(0, '#2f8cf0'); g.addColorStop(1, '#8fd4ff'); c.fillStyle = g; c.fillRect(0, 0, W, C.height);
+  c.font = '14px sans-serif'; c.fillStyle = '#fff';
+  for (const [o, x, y] of yer) { c.drawImage(o.r.c, x, y); c.fillText(o.s.ad, x, y + o.r.h + 16); }
+  return C.toDataURL('image/png');
+}
+
+// tarz karşılaştırması: aynı nesneler üç tarzda, oyun boyutunda ve 2× yakın
+function sahneCiz(c, ox, oy, D, isimler) {
+  let x = ox;
+  for (const ad of isimler) { const s = SPRITE.find(q => q.ad === ad), r = spriteCiz(s, D); c.drawImage(r.c, x, oy - r.ay + (ad.startsWith('zeplin') ? 0 : 10)); x += r.w + 8 * D / 7; }
+}
+function karsilastir() {
+  const tarzlar = [['A · kalın çivit kontur + yumuşak gölge (öneri)', true, 'yumusak'], ['B · kalın kontur + düz (cel) gölge', true, 'duz'], ['C · kontursuz parlak (konsept görsele yakın)', false, 'parlak']];
+  const C = document.createElement('canvas'); C.width = 1500; C.height = 3 * 330 + 20; const c = C.getContext('2d');
+  const g = c.createLinearGradient(0, 0, 0, C.height); g.addColorStop(0, '#2f8cf0'); g.addColorStop(1, '#8fd4ff'); c.fillStyle = g; c.fillRect(0, 0, C.width, C.height);
+  tarzlar.forEach(([ad, k, gl], i) => {
+    ST.kontur = k; ST.golge = gl; const y = 20 + i * 330;
+    c.fillStyle = 'rgba(0,0,0,.25)'; c.fillRect(0, y - 14, C.width, 26); c.fillStyle = '#fff'; c.font = 'bold 18px sans-serif'; c.fillText(ad, 12, y + 5);
+    // 2× yakın (D = 7: üç katlı ekranda ~2,3 CSS px/birim)
+    const Y = y + 150;
+    const rc = (n, X, YY, D) => { const s = SPRITE.find(q => q.ad === n), r = spriteCiz(s, D); c.drawImage(r.c, X - r.ax, YY - r.ay); return r; };
+    rc('roket_alt', 150, Y, 7); rc('roket_ust', 150, Y, 7); rc('pilot_heyecan', 150 + 0.3 * 7 * 1, Y - 0.1 * 7, 7); rc('cam', 150, Y, 7);
+    rc('balon', 390, Y - 20, 7); rc('zeplin_normal', 640, Y + 10, 7); rc('marti_yukari', 870, Y - 40, 7); rc('marti_orta', 960, Y + 30, 7);
+    rc('ucurtma_a', 1060, Y - 30, 7); rc('dron_a', 1180, Y - 20, 7);
+    // telefon boyutu (gerçek oyun ölçeği, 1,9 CSS px/birim, DPR 1)
+    const y2 = y + 270, D2 = 1.9;
+    rc('roket_alt', 1340, y2 - 30, D2); rc('roket_ust', 1340, y2 - 30, D2);
+    rc('balon', 1420, y2 - 50, D2); rc('marti_yukari', 1300, y2 + 25, D2); rc('zeplin_normal', 1420, y2 + 20, D2);
+    c.fillStyle = '#fff'; c.font = '12px sans-serif'; c.fillText('telefon ölçeği (1×)', 1300, y2 + 50);
+  });
+  ST.kontur = true; ST.golge = 'yumusak';
+  return C.toDataURL('image/png');
+}
+function pilotKarsilastir() {
+  const C = document.createElement('canvas'); C.width = 1100; C.height = 560; const c = C.getContext('2d');
+  c.fillStyle = '#2f7fe0'; c.fillRect(0, 0, C.width, C.height);
+  c.fillStyle = '#fff'; c.font = 'bold 18px sans-serif';
+  c.fillText('A · açık vizör, görünür yüz (öneri; konsepte uygun)', 12, 26); c.fillText('B · kapalı vizör, parlayan ekran yüz', 12, 296);
+  const ifs = ['notr', 'heyecan', 'saskin', 'kararli'];
+  ifs.forEach((f, i) => {
+    for (const [satir, fn] of [[0, (cc, R) => pilotKafa(cc, R, f, true)], [1, (cc, R) => pilotVizor(cc, R, f === 'kararli' ? 'notr' : f)]]) {
+      const y0 = 40 + satir * 270;
+      c.save(); c.translate(110 + i * 170, y0 + 110); c.scale(5, 5); fn(c, 15); c.restore();
+      // pencerede gerçek boyut (D = 7) ve telefon 1×
+      c.save(); c.translate(80 + i * 170, y0 + 215); c.scale(7, 7); fn(c, 2.35); c.restore();
+      c.save(); c.translate(140 + i * 170, y0 + 215); c.scale(1.9, 1.9); fn(c, 2.35); c.restore();
+      c.fillStyle = '#fff'; c.font = '13px sans-serif'; c.fillText(f + ' · pencere 3× / 1×', 60 + i * 170, y0 + 250);
+    }
+  });
+  return C.toDataURL('image/png');
+}
+window.uret = (D = D0) => ({ atlas: atlasla(D), kontak: kontak(D), karsilastir: karsilastir(), pilot: pilotKarsilastir() });
+window.hazir = true;
+</script>
+</body></html>
