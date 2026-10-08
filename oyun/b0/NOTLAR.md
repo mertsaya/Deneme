@@ -16,7 +16,7 @@ Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`,
 2. **Denge (eski ölçüm, aşağıdaki "Sim S1–S9 eşlemesi" bölümüne bak).** Sim güncellendikten sonra `kabul.py --hizli` sonuçları:
    - K5: iyi bot ses duvarını medyan 4. turda kırıyor (hedef 2–3).
    - K6: iyi bot 5–15. turlarda medyan 52 s uçuyor, turların %42'si 65 s tavanına çarpıyor (hedef 20–40 s, ≤ %5).
-3. **K6 sapması B0 kapsamından geliyor (karar gerekiyor).** Ayrıntı aşağıda.
+3. **K6:** koordinatör seçenek (b)'yi seçti; uygulandı (aşağıda "B0 seyrekleşmesi").
 
 ## Denetim düzeltmeleri (uygulandı)
 
@@ -84,3 +84,19 @@ Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`,
   - Kara kutu sayacı bitince jeton sesi.
   - Uçurtma, ip, dron halkası ve tam dolum: sentez kaldı (seçim listesinde karşılığı yok).
 - Sayfa gizlenince ses bağlamı askıya alınıyor, görünür olunca sürüyor.
+
+## B0 seyrekleşmesi (K6, koordinatör kararı (b))
+
+- **Kural:** yalnız B0'da (sim'de yok). Ayar JSON'unda `b0_seyrek` bloğu: `{y: 1000, t0: 30, t1: 45, en_az: 0.05}`. Değerler `araclar/ayar_uret.py` içindeki `B0_SEYREK`'ten gelir.
+  - Roket y < 1000'deyken uçuşun 30–45. saniyeleri arasında iki şey doğrusal olarak ×1'den ×0,05'e iner: yönetmenin yoğunluk hedefi, ve sekme garantisinin çalışma olasılığı (o noktada ek bir rastgele çekim yapılıyor).
+  - Varsayılan açık; `?b0seyrek=0` kapatır. `test/dogrula.py` eşliği kapalıyken ölçer, `kabul.py` K6'yı açıkken ölçer. `?b0s=y,t0,t1,en_az` yalnız ayar denemesi içindir.
+- **Neden yoğunluk, ağırlık değil:** önce trambolin doğma ağırlığını düşürmeyi denedim, işe yaramadı (tavan ~%27'de kaldı). Sebebi şu: y > 220'de yalnız trambolin türleri var, hepsinin ağırlığı aynı oranda düşünce seçim değişmiyor. Ağırlık 0 olsa bile `tip_sec` ilk türü döndürüyor (sim'deki davranış).
+- **Ölçüm (40 tohum, 15 turluk kampanya, 5–15. turlar):**
+
+| Bot | Kapalı: medyan / tavan | Açık: medyan / tavan |
+|---|---|---|
+| iyi | 62 s / %49 | **51 s / %8** |
+| orta | 30 s / %15 | 30 s / %1 |
+| hiç | 20 s / %0 | 20 s / %0 |
+
+- Ses duvarının ilk kırıldığı tur değişmedi (iyi 3, orta 4, hiç 6). Tur 1 süresi değişmedi; K8 eşliği kural açıkken de geçiyor (tur 1 uçuşları çoğunlukla 30 s'nin altında).

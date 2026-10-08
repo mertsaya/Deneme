@@ -10,7 +10,7 @@
   },
   "K3": {
    "durum": "GECTI",
-   "ayrinti": "tur1 iyi/hic mesafe orani 1.63 (>=1,30); tur5 sv={'rampa': 4, 'yakit_ac': 1, 'dalis': 2, 'yakit_s': 2}: 2.80 (>=1,60)"
+   "ayrinti": "tur1 iyi/hic mesafe orani 1.63 (>=1,30); tur5 sv={'rampa': 4, 'yakit_ac': 1, 'dalis': 2, 'yakit_s': 2}: 2.69 (>=1,60)"
   },
   "K4": {
    "durum": "BILGI",
@@ -22,11 +22,11 @@
   },
   "K6": {
    "durum": "BILGI",
-   "ayrinti": "iyi t5-15 sure medyan 49.9s, tavan %33; orta t5-15 sure medyan 25.0s, tavan %6; hic t5-15 sure medyan 20.3s, tavan %0 (hedef 20-40s, tavan <=%5)"
+   "ayrinti": "iyi t5-15 sure medyan 53.3s, tavan %3; orta t5-15 sure medyan 23.6s, tavan %0; hic t5-15 sure medyan 20.3s, tavan %0 (hedef 20-40s, tavan <=%5)"
   },
   "K7": {
    "durum": "GECTI",
-   "ayrinti": "TEKRAR UC -> RAMPA 0.29s (<=0,5), BITIS->KARA_KUTU 1.01s, bitis->rampa toplam ~1.71s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+   "ayrinti": "TEKRAR UC -> RAMPA 0.45s (<=0,5), BITIS->KARA_KUTU 1.01s, bitis->rampa toplam ~1.86s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
   },
   "K8": {
    "durum": "GECTI",
@@ -42,11 +42,11 @@
   },
   "K11": {
    "durum": "ELLE",
-   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 57 min 15"
+   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 58 min 20"
   },
   "K12": {
    "durum": "GECTI",
-   "ayrinti": "kampanya(iyi,50) cokmedi; konsol hata 0; heap artisi 0.1 MB (<20)"
+   "ayrinti": "kampanya(iyi,50) cokmedi; konsol hata 0; heap artisi 0.3 MB (<20)"
   },
   "K13": {
    "durum": "GECTI",
