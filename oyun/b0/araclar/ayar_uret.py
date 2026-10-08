@@ -41,6 +41,11 @@ SABIT_EK = {
 }
 
 
+# Yalnız B0'a ait (sim'de yok; K6 için koordinatör kararı (b)): uçuşun t0–t1 s arasında alçak bantta (y < y)
+# trambolin doğma ağırlığı doğrusal olarak en_az'a iner; sim seyrek çarpanıyla çarpılır. ?b0seyrek=0 kapatır.
+B0_SEYREK = {'y': 500.0, 't0': 25.0, 't1': 40.0, 'en_az': 0.1}
+
+
 def sim_yukle():
     sp = importlib.util.spec_from_file_location('ucus_sim', SIM)
     m = importlib.util.module_from_spec(sp)
@@ -64,6 +69,7 @@ def uret():
         'HIC_SIFIR': [k for k in m.HIC_SIFIR if k in KARTLAR],
         'IRTIFA_TABLO': m.IRTIFA_TABLO,
         'SABIT_EK': SABIT_EK,
+        'b0_seyrek': B0_SEYREK,
     }
 
 

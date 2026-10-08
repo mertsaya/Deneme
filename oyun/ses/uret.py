@@ -43,9 +43,10 @@ KATEGORI = {
 ADAYLAR = []
 
 
-def aday(kat, kod, ad, aciklama, kaynak='sentez'):
+def aday(kat, kod, ad, aciklama, kaynak='sentez', yeni=False):
+    """yeni=True: secici sayfada "yeni" rozetiyle gosterilir (kullaniciya sonradan eklenen adaylar)."""
     def deco(fn):
-        ADAYLAR.append(dict(kat=kat, kod=kod, ad=ad, aciklama=aciklama, kaynak=kaynak, fn=fn))
+        ADAYLAR.append(dict(kat=kat, kod=kod, ad=ad, aciklama=aciklama, kaynak=kaynak, yeni=yeni, fn=fn))
         return fn
     return deco
 
@@ -456,6 +457,97 @@ def _():
     t = np.arange(N) / SR
     yay = osc(expc(600, 200, N) * (1 + 0.1 * np.sin(2 * np.pi * 18 * t)), N) * env_exp(N, 0.15)
     return karis((metal((520, 1310), (1, .5), 0.06, 0.3), 0, 0.6), (tok(120, 50, 0.06, 0.3), 0, 0.7), (yay, 0.03, 0.5), (vuus(0.45, 500, 3500, 1.2, 'tepe'), 0.12, 0.6))
+
+
+# ---- kademe ayrilma, ikinci tur (f..k): kullanici a-e'yi begenmedi (en iyisi b, 3/5). Hedef: umutlu, tok, hizli;
+# "kurtuldun, devam" hissi. Hepsi yukari giden ya da acilan bir hareketle biter (dusus/hayal kirikligi yok).
+def kumas_puf(n=0.5, f0=1300, f1=480, atak=0.02, tau=0.11, govde=0.7):
+    """Parasut/kumas "puf"u: yumusak atakli, kapanan bant gurultu + alcalan govde sinusu."""
+    N = n_(n)
+    t = np.arange(N) / SR
+    e = np.clip(t / atak, 0, 1) ** 2 * np.exp(-np.maximum(t - atak, 0) / tau)
+    x = sweep(white(N), expc(f0, f1, N), q=0.8, kind='bp') * 1.6 + govde * osc(expc(260, 150, N), N)
+    return kuyruk(x * e)
+
+
+def bakir_akor(ms, d, v=1.0, kay=0.04):
+    """Cizgi film bakir "taa": testere akoru, yarim tondan yukari kayarak oturur, parlak filtre zarfi."""
+    N = n_(d)
+    t = np.arange(N) / SR
+    bk = 2 ** (-np.clip(1 - t / kay, 0, 1) / 12)
+    x = sum(osc(mf(m) * bk, N, 'saw') + osc(mf(m) * 1.004 * bk, N, 'saw') for m in ms) / len(ms)
+    f = 700 + 3000 * (1 - np.exp(-t / 0.025)) * (0.55 + 0.45 * np.exp(-t / 0.15))
+    return sweep(x, f, q=0.9, kind='lp') * env_adsr(N, 0.008, 0.1, 0.75, min(0.15, d * 0.4)) * v
+
+
+@aday('kademe_ayrilma', 'f', 'Çat! + paraşüt pufu', 'Patlayıcı cıvatanın kısa, kuru "çat"ı ve tok vuruş; hemen ardından boş kademenin paraşütü yumuşak bir "puf"la açılır.', yeni=True)
+def _():
+    N = n_(0.12)
+    cat = bp(white(N), 900, 5000) * env_exp(N, 0.012, 0.0003)
+    cat[:n_(0.0015)] += white(n_(0.0015)) * 1.5
+    cat = yumusat(cat, 2.5)
+    vur = yumusat(karis((cat, 0, 0.8), (tok(180, 80, 0.08, 0.3), 0, 1.0)), 4.0)
+    puf = yumusat(kumas_puf(0.55), 2.0)
+    return verb(karis((vur, 0, 1.0), (puf, 0.16, 0.75), (kanat(0.4, 30, 0.12), 0.2, 0.25)), 0.35, 0.12)
+
+
+@aday('kademe_ayrilma', 'g', 'Klak + pnömatik fşşt', 'Kilit dili "klak" diye açılır, basınçlı hava "fşşt" diye kademeyi iter; sonunda küçük bir "tık" ile kapanır.', yeni=True)
+def _():
+    klak = karis((metal((880, 2240, 3350), (1, .45, .2), 0.03, 0.2), 0, 0.7), (tok(210, 95, 0.03, 0.2), 0, 0.8), (tahta(0.6, 1400), 0, 1.0))
+    N = n_(0.6)
+    t = np.arange(N) / SR
+    e = np.clip(t / 0.004, 0, 1) * (0.35 + 0.65 * np.exp(-t / 0.06)) * np.exp(-t / 0.22)
+    fs = sweep(white(N), expc(3200, 1100, N), q=1.1, kind='bp') * e
+    puf = lp(brown(n_(0.25)), 400) * env_exp(n_(0.25), 0.05, 0.003)
+    gov = yumusat(karis((klak, 0, 0.8), (fs, 0.008, 1.0), (puf, 0.008, 0.5)), 3.5)
+    return verb(karis((gov, 0, 1.0), (tahta(0.3, 2100), 0.5, 1.0)), 0.3, 0.1)
+
+
+@aday('kademe_ayrilma', 'h', 'Boing-pop + ıslıklı düşüş', 'Mantar "pop"u ve yukarı sıçrayan yay "boing"i (üst kademe fırlar); boş kademe aşağıda ıslık çalarak uzaklaşır (perde düşer, ses azalır).', yeni=True)
+def _():
+    N = n_(0.09)
+    pop = osc(expc(380, 1150, N), N) * env_exp(N, 0.025, 0.0005) + bp(white(N), 1200, 4500) * env_exp(N, 0.004, 0.0003) * 0.6
+    by = boing(330, 720, 0.5, 16, 0.1, 0.15)
+    M = n_(0.75)
+    t = np.arange(M) / SR
+    f = expc(1900, 620, M) * (1 + 0.012 * np.sin(2 * np.pi * 7 * t))
+    isl = (osc(f, M) + 0.15 * osc(2 * f, M)) * np.clip(t / 0.03, 0, 1) * (1 - t / t[-1]) ** 1.6
+    return verb(karis((pop, 0, 0.9), (tok(160, 80, 0.04, 0.25), 0, 0.6), (by, 0.02, 0.8), (isl, 0.14, 0.28)), 0.3, 0.1)
+
+
+@aday('kademe_ayrilma', 'i', 'Fırlatma vuuş + yeniden tutuşma', 'İki aşamalı (~1,1 s): klank ve kısa "vuuş" ile kademe ayrılır, ardından üst motor "pff-VRUUM" diye yeniden tutuşur; perde yukarı gider.', yeni=True)
+def _():
+    ayr = karis((tok(170, 80, 0.07, 0.35), 0, 1.0), (metal((480, 1250, 2050), (1, .5, .3), 0.05, 0.3), 0, 0.55),
+                (vuus(0.3, 700, 2800, 1.2, 'tepe'), 0.02, 0.55))
+    N = n_(0.75)
+    t = np.arange(N) / SR
+    e = np.clip(t / 0.05, 0, 1) * (0.75 + 0.25 * np.exp(-t / 0.08))
+    gur = sweep(pink(N) * 0.7 + white(N) * 0.3, 450 + 2300 * (1 - np.exp(-t / 0.12)), q=0.9, kind='lp')
+    gur = hp(gur, 220, 2)
+    govde = sweep(osc(expc(110, 190, N), N, 'saw'), 1400, q=1.0, kind='lp')
+    isl = osc(expc(650, 1350, N), N) * np.clip(t / 0.2, 0, 1) * 0.18
+    tut = kuyruk(yumusat((gur + 0.8 * govde + isl) * e, 2.0) * np.r_[np.ones(N - n_(0.3)), np.linspace(1, 0, n_(0.3)) ** 1.5])
+    pff = pat(0.05) * 0.5
+    return verb(karis((yumusat(ayr, 2.5), 0, 1.0), (pff, 0.33, 0.4), (tut, 0.35, 0.62)), 0.4, 0.12)
+
+
+@aday('kademe_ayrilma', 'j', 'Tık + çiçek açan paraşüt', 'Küçük bir ayrılma "tık"ı, paraşütün tok "flump"u ve çiçek açar gibi yukarı tırmanan dört nota (Sol majör arpej). Komik ve umutlu.', yeni=True)
+def _():
+    tik = karis((tahta(0.9, 1600), 0, 1.0), (tok(190, 100, 0.025, 0.12), 0, 0.6))
+    flump = kumas_puf(0.45, 1100, 420, 0.012, 0.08, 0.9)
+    notlar = [(67, 0.10), (71, 0.15), (74, 0.20), (79, 0.25)]
+    arp = karis(*[(ksilofon(mf(m), 0.35, 1.0), t0, 0.22 + 0.04 * i) for i, (m, t0) in enumerate(notlar)])
+    M = n_(0.22)
+    kay = osc(expc(500, 1300, M), M) * np.sin(np.pi * np.linspace(0, 1, M)) ** 2 * 0.12
+    return verb(karis((tik, 0, 0.8), (flump, 0.05, 1.0), (kanat(0.3, 34, 0.08), 0.07, 0.2), (arp, 0, 1.0), (kay, 0.08, 1.0)), 0.5, 0.15)
+
+
+@aday('kademe_ayrilma', 'k', 'Şak + bakır "ta-DAA"', 'Kopçanın tok "şak"ı ve kısa çizgi film bakır nidası "ta-DAA" (Sol majör, müzikteki Mi minörün akrabası): "kurtuldun!" mesajı.', yeni=True)
+def _():
+    sak = yumusat(karis((tok(170, 80, 0.05, 0.3), 0, 1.0), (pat(0.06), 0, 0.35), (tahta(0.6, 1200), 0, 0.6)), 3.0)
+    ta = bakir_akor([71, 74], 0.12, 0.8, 0.02)
+    daa = bakir_akor([67, 71, 74, 79], 0.6, 1.0, 0.04)
+    return verb(karis((sak, 0, 0.75), (yumusat(ta, 1.5), 0.05, 0.6), (yumusat(daa, 1.5), 0.19, 0.8)), 0.6, 0.15)
 
 
 # ================================================================ dalis
@@ -1039,16 +1131,26 @@ def dongu_dosyasi(y):
 
 
 def main():
+    """Arguman verilirse yalniz adi bu oneklerle baslayan adaylar uretilir (or. `uret.py kademe_ayrilma_f kademe_ayrilma_g`);
+    digerlerinin kaydi mevcut _ara/uretim.json'dan korunur."""
     os.makedirs(ADAY, exist_ok=True)
     os.makedirs(ARA, exist_ok=True)
+    secim = sys.argv[1:]
+    eski = {}
+    if secim:
+        eski = {b['id']: b for b in json.load(open(os.path.join(ARA, 'uretim.json')))['adaylar']}
     kayit = []
     for a in ADAYLAR:
         kat, kod = a['kat'], a['kod']
-        L.tohum(sum(map(ord, kat + kod)) * 7919)
         ad = f'{kat}_{kod}'
+        if secim and not any(ad.startswith(o) for o in secim):
+            if ad in eski:
+                kayit.append(eski[ad])
+            continue
+        L.tohum(sum(map(ord, kat + kod)) * 7919)
         print('uretiliyor', ad, flush=True)
         x = a['fn']()
-        bilgi = dict(id=ad, kat=kat, kod=kod, ad=a['ad'], aciklama=a['aciklama'], kaynak=a['kaynak'])
+        bilgi = dict(id=ad, kat=kat, kod=kod, ad=a['ad'], aciklama=a['aciklama'], kaynak=a['kaynak'], yeni=a['yeni'])
         if kat == 'muzik':
             katman = x.bitir()
             tum = sum(katman)

@@ -44,7 +44,7 @@ def main():
         pg = ctx.new_page()
         pg.on('console', lambda x: hatalar.append(x.text) if x.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e: hatalar.append(str(e)))
-        pg.goto(url + '?kayit=0&seed=1&tipler=balon,parti,zeplin,marti,ucurtma'); pg.wait_for_function('window.__oyun && window.__oyun.hazir')
+        pg.goto(url + '?kayit=0&seed=1&b0seyrek=0&tipler=balon,parti,zeplin,marti,ucurtma'); pg.wait_for_function('window.__oyun && window.__oyun.hazir')
         # 1) sim eşliği
         sat = []
         for b in ('hic', 'orta', 'iyi'):

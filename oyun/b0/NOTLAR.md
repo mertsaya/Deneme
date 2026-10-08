@@ -13,10 +13,10 @@ Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`,
 ## Sorulacak
 
 1. **Elle bitirilen turda kara kutu** gösterilsin mi? Şimdilik gösterilmiyor; kazanç bildirimle yazılıyor.
-2. **Denge (bilgi; sim ayarıyla birlikte bakılacak).** Sim güncellendikten sonra `kabul.py --hizli` sonuçları:
+2. **Denge (eski ölçüm, aşağıdaki "Sim S1–S9 eşlemesi" bölümüne bak).** Sim güncellendikten sonra `kabul.py --hizli` sonuçları:
    - K5: iyi bot ses duvarını medyan 4. turda kırıyor (hedef 2–3).
    - K6: iyi bot 5–15. turlarda medyan 52 s uçuyor, turların %42'si 65 s tavanına çarpıyor (hedef 20–40 s, ≤ %5).
-3. **Denetçiden bekleyenler (koordinatör: YAPMA).** Boş dalışın y < kademe_y+15'te hemen toparlanması ve nesnelerin üst üste doğmaması. İkisi de rastgele sayı sırasını ve sim eşliğini etkiliyor; sim ayarı bitince birlikte yapılacak.
+3. **K6 sapması B0 kapsamından geliyor (karar gerekiyor).** Ayrıntı aşağıda.
 
 ## Denetim düzeltmeleri (uygulandı)
 
@@ -48,3 +48,39 @@ Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`,
 - **Tam ekran, yön kilidi, titreşim:** hepsi try/catch içinde ve isteğe bağlı. Titreşim ilk dokunuştan önce çağrılmıyor. Ses yalnız ilk `pointerdown`'dan sonra başlıyor. alert/confirm yok: kayıt sıfırlama onayı sayfanın içinde.
 - **`?t=` (görüntülü):** fizik gerçek ekran oranını kullanıyor, görüntüsüz `__oyun.tur` ise 2,1'i (§14). Bu yüzden aynı tohumda olay zamanları biraz kayabilir. `kontak.py`'nin `__oyun.tur` günlüğünden seçtiği anlar bu yüzden yaklaşık.
 - **Kampanya (bilgi):** sim kampanyasında tur 6'dan sonra ölümcül kargo var, B0'da yok. K4–K6 bu yüzden sim kampanyasıyla birebir karşılaştırılamaz.
+
+## Sim S1–S9 eşlemesi (sim ayarı tamamlandıktan sonra)
+
+- `ayar_uret.py` yeniden koşuldu, `--denetle` temiz. S5/S6/S8/S9 sayıları (`bos_dalis_kayip` 0, bant çarpanları, `nesne_prim` vb.) JSON'dan geliyor; kodda gömülü sayı yok.
+- **E1 aktarıldı:** boş dalışta y < kademe_y + `bos_dalis_yer` olunca hemen toparlanır.
+- **E2 aktarıldı:** `cakisir` ile yeni nesne mevcut nesneyle d < r1 + r2 + `dogus_pay` ise doğmaz; garanti sayacı yalnız nesne gerçekten eklendiyse artar. Fırsat nesnesi doğarken üst üste binen eski tr/yv nesneleri etkisizleştirilir. Rastgele çekim sırası sim'le aynı.
+- **Eşlik:** 200 tohum, hic/orta/iyi: dokuz ölçünün hepsi geçti (`test/dogrula.json`).
+- **K5:** ses duvarının ilk kırıldığı tur sim'le aynı. Tohum 1–3 iyi botta JS medyanı 4, sim medyanı da 4 (sim'in kendi 20 tohumlu medyanı 3).
+- **K6 (B0'da iyi botta tavana çarpan tur %58–61, sim'de ~%20) port hatası değil:** JS, sim'i B0 koşullarında birebir tekrarlıyor.
+  - Sim'in kendisini B0 koşullarına kısıtlayınca (yalnız 5 nesne, yalnız yakıt fırsatı, B0 kartları, ısı/ölümcül/rakip nakavtı yok) tavan %52–58 çıkıyor.
+  - Etkenleri tek tek ayırdım. Asıl sebep, nesne kümesinin yalnız balon/parti/zeplin/martı/uçurtma olması: sim'de yalnız bu kısıt bile tavanı %51'e çıkarıyor.
+  - Özellikle `bilim` balonu eksik (tropopozdan sonra açılıyor, 40°). B0 nesneleri + bilim → %22.
+  - Sebep: B0'da y > 500'de hiç nesne yok. İyi oyuncu alçak bantta zeplinden zeplin sekip 65 s boyunca düşmüyor. Sim'de bilim balonu oyuncuyu üst atmosfere taşıyor; orada `vx_dur` ve üst sönüm turu bitiriyor.
+  - Öbür kısıtların etkisi küçük: yalnız B0 kartları %25, ölümcül yok %17, ısı yok %17.
+  - **Çözüm önerisi (karar verilmedi, uygulanmadı):**
+    - (a) `bilim`i ve tropopoz bayrağını B0'a almak.
+    - (b) B0'a özel daha sert `seyrek`.
+    - (c) K6'yı B0'da bilgi olarak bırakmak (şartnamede zaten bilgi amaçlı).
+
+## Ses (oyun/ses/SECIM.md bağlandı)
+
+- Seçilen 12 efekt, motor döngüsü ve müzik A'nın 3 katmanı `ses/` altına kopyalandı (1,1 MB; lisans `ses/LISANS.md`).
+- Sayfa açılışta göreli `fetch` ile indiriyor, ilk dokunuşta çözüyor. Hata olursa sessizce sentez seslere düşüyor (dosyalar engelliyken de denendi: oyun açılıyor, uçuyor).
+- Seçimler tek yerde: `SES_SECIM` nesnesi. Puansız seçimler `SES_SECIM.gecici` listesinde.
+- **Motor:** uçuşta döngü. Oynatma hızı 0,7 + 0,9·s, alçak geçiren 1200·2^(2,5·s), kazanç 0,55 + 0,45·s; s = hız / 300 (README "Teknik").
+- **Müzik:** 1. katman hep çalıyor; 2. katman s 0,25–0,40, 3. katman s 0,55–0,70 arasında açılıyor (uçuş hızına göre).
+- Ayarlar: efekt kaydırıcısı efektleri ve motoru kısıyor; yeni **Müzik açık/kapalı** düğmesi var. Kayıtta `ayar.muzik` alanı.
+- **Eşlemeler:**
+  - Kalkış: tutuşma (mükemmelde ek olarak mükemmel sesi).
+  - Trambolin sekmesi: kombo başına +1 yarım ton.
+  - Martı ve balon patlaması: kendi sesleri.
+  - Son şans: uyarı sesi, 0,12 s sonra kademe ayrılma.
+  - Ses duvarı, dalış, kart satın alma, düğme tıkı: kendi sesleri. Boş dokunuşta da tık.
+  - Kara kutu sayacı bitince jeton sesi.
+  - Uçurtma, ip, dron halkası ve tam dolum: sentez kaldı (seçim listesinde karşılığı yok).
+- Sayfa gizlenince ses bağlamı askıya alınıyor, görünür olunca sürüyor.

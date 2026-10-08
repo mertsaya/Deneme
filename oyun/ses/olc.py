@@ -273,6 +273,8 @@ def secici_verisi(KAT, sonuc):
         d = dict(id=s['id'], kat=s['kat'], kod=s['kod'], ad=s['ad'], aciklama=s['aciklama'], kaynak=s['kaynak'],
                  dosyalar=s['dosyalar'], elendi=s['elendi'], neden=s['neden'], oneri=bool(s.get('oneri')), sira=s.get('sira'),
                  puan=s['puan'], lufs=round(m['lufs'], 1), tel=round(m['telefon_kaybi_db'], 1), sure=round(m['aktif_s'], 2))
+        if s.get('yeni'):
+            d['yeni'] = True
         if 'dongu' in s:
             d['dongu'] = s['dongu']
         if 'demo' in s:
