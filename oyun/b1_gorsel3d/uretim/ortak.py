@@ -208,7 +208,7 @@ def kabuk(o, kalinlik, hexc=None):
     o.data.materials.append(kabuk_mat(hexc))
     sm = o.modifiers.new("kabuk", "SOLIDIFY"); sm.thickness = kalinlik; sm.offset = 1
     sm.use_flip_normals = True; sm.use_rim = False; sm.material_offset = len(o.data.materials) - 1
-    sm.use_even_offset = True
+    sm.use_even_offset = False  # True iken ezilmiş kutupta diken oluşuyordu
     return o
 
 def yumusat(o, seviye=1, bevel=None, seg=3):

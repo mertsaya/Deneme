@@ -67,7 +67,7 @@ body.rampada #ipucu{bottom:calc(env(safe-area-inset-bottom,0px) + 43% + 40vw + 1
 #hRoket{flex:1 0 110px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #hRoket svg{height:100%;max-height:220px;width:auto}
 #hangar{gap:8px}
-#kartlar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+#kartlar{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
 .kart{display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:3px;padding:7px 8px;border-radius:14px;background:#26314f;border:2px solid #44527a}
 .kart b{font-size:.95rem;line-height:1.15}
 .kart p{margin:0;font-size:max(13px,.72rem);color:var(--soluk);line-height:1.25;flex:1}
@@ -696,7 +696,7 @@ class Ucus {
     const mukemmel = this.dalis_t !== null;
     const Vt = A.sekme_v_tavan;
     let yv = Math.max(0, v * this.k_etkin(T.k) + T.b * (1 - v / Vt));   // yay enerjisi: kendini sınırlayan sekme (sim)
-    if (yv > v) this.kaynak |= 4;
+    this.kaynak |= 4;   // sekme kayıtlı hız kaynağı (yay enerjisi; ek_vy dahil), sınırı V_tavan denetimi
     if (mukemmel) { yv = Math.min(yv + Math.min(v * A.mukemmel_sekme, A.mukemmel_sekme_tavan), Math.max(Vt, yv)); this.st.mukemmel++; this.kaynak |= 4; }
     this.sekme_oran = yv / Math.max(1e-6, v);
     const a = rad(T.aci);
@@ -1901,8 +1901,9 @@ function turSonu(elle) {   // tur kazancını hesapla ve kaydet (tek setItem; be
   const duvarOdul = sesVar ? (ilkSes ? KONF.DUVARLAR.ses : KONF.DUVARLAR.ses * SE.duvar_sonraki) : 0;
   const nesne = r.kazanc_nesne - r.kazanc_rakip;
   const toplam = elle ? nesne + r.kazanc_km + duvarOdul : r.kazanc + duvarOdul;
+  if (!isFinite(toplam)) { console.error('[kazanç] sayı değil', r); }   // kayıt bozulmasın diye aşağıda 0'a düşer
   const rek = { mesafe: r.mesafe_g > K.rekor.mesafe_g, hiz: r.max_v > K.rekor.max_v };
-  const kk = { r, elle, nesne, km: r.kazanc_km, prim: elle ? null : r.kazanc_rakip, taban: elle ? null : A.taban_odul, ses: duvarOdul, toplam: Math.round(toplam), rek, tur: ucusNo() };
+  const kk = { r, elle, nesne, km: r.kazanc_km, prim: elle ? null : r.kazanc_rakip, taban: elle ? null : A.taban_odul, ses: duvarOdul, toplam: isFinite(toplam) ? Math.round(toplam) : 0, rek, tur: ucusNo() };
   if (!SV_Q) {   // ?sv'li oyun kayda yazmaz (?kayit=0 hiç yazmaz)
     K.jeton += kk.toplam; K.bekleyen = null; K.askida = null;
     if (elle) K.elle += 1; else K.tur += 1;   // elle bitirmeler ayrı sayılır (K16 "kendiliğinden tur" şişmesin)
@@ -1998,16 +1999,16 @@ const ROKET_SVG = (sv) => {
 function kartEtki(ad, sv) {
   const s = sv[ad] || 0, n = Math.min(svMaks(ad), s + 1), ok = s < svMaks(ad) ? ' → ' : '';
   switch (ad) {
-    case 'rampa': { const f = (k) => Math.round(kmsa(A.rampa_v + A.rampa_v_sv * k)); return `Kalkış hızı ${f(s)}${ok ? ok + f(n) : ''} km/sa`; }
-    case 'bolge': { const f = (k) => Math.round((A.mukemmel_bolge + A.mukemmel_bolge_sv * k) * 100); return `Yeşil bölge %${f(s)}${ok ? ok + '%' + f(n) : ''}`; }
-    case 'verim': { const f = (k) => Math.round(Math.min(A.k_tavan, TIPLER.balon.k + A.k_sv * k) * 100); return `Sekmede korunan hız %${f(s)}${ok ? ok + '%' + f(n) : ''} (balon)`; }
-    case 'dalis': { const f = (k) => Math.round(A.dalis_itki + A.dalis_itki_sv * k); return `Dalış itişi +${f(s)}${ok ? ok + '+' + f(n) : ''}`; }
-    case 'kademe_itki': { const f = (k) => Math.round(A.kademe_vy + A.kademe_vy_sv * k); return `Son şans fırlatması: dikey ${f(s)}${ok ? ok + f(n) : ''}`; }
-    case 'yakit_ac': return 'Yakıt dronları çıkar (+1 dalış; halkayı tuttur, tam dolum)';
-    case 'depo': { const f = (k) => Math.round(A.yakit_kap + A.yakit_kap_sv * k); return `Yönlendirme yakıtı ${f(s)}${ok ? ok + f(n) : ''}`; }
-    case 'yon': { const f = (k) => Math.round(A.yon_hiz + A.yon_hiz_sv * k); return `Dönüş hızı ${f(s)}${ok ? ok + f(n) : ''}°/s, sınır ±${Math.round(A.yon_sinir + A.yon_sinir_sv * s)}°`; }
-    case 'hava': { const f = (k) => Math.round((A.hava_guc[0] + A.hava_guc[1] * k) * 100); return `Termal ve jet akımı gücü %${f(s)}${ok ? ok + '%' + f(n) : ''}, daha sık`; }
-    case 'yakit_s': { const f = (k) => Math.round(A.firsat_ara / (1 + A.firsat_ara_sv * k)); return `Dron aralığı ort. ${f(s)}${ok ? ok + f(n) : ''} s`; }
+    case 'rampa': { const f = (k) => Math.round(kmsa(A.rampa_v + A.rampa_v_sv * k)); return `Kalkış ${f(s)}${ok ? '→' + f(n) : ''} km/sa`; }
+    case 'bolge': { const f = (k) => Math.round((A.mukemmel_bolge + A.mukemmel_bolge_sv * k) * 100); return `Yeşil %${f(s)}${ok ? '→%' + f(n) : ''}`; }
+    case 'verim': { const f = (k) => Math.round(Math.min(A.k_tavan, TIPLER.balon.k + A.k_sv * k) * 100); return `Sekme verimi %${f(s)}${ok ? '→%' + f(n) : ''}`; }
+    case 'dalis': { const f = (k) => Math.round(A.dalis_itki + A.dalis_itki_sv * k); return `Dalış +${f(s)}${ok ? '→+' + f(n) : ''}`; }
+    case 'kademe_itki': { const f = (k) => Math.round(A.kademe_vy + A.kademe_vy_sv * k); return `Son şans ${f(s)}${ok ? '→' + f(n) : ''}`; }
+    case 'yakit_ac': return 'Dron: +1 dalış';
+    case 'depo': { const f = (k) => Math.round(A.yakit_kap + A.yakit_kap_sv * k); return `Yakıt ${f(s)}${ok ? '→' + f(n) : ''}`; }
+    case 'yon': { const f = (k) => Math.round(A.yon_hiz + A.yon_hiz_sv * k); return `Dönüş ${f(s)}${ok ? '→' + f(n) : ''}°/s`; }
+    case 'hava': { const f = (k) => Math.round((A.hava_guc[0] + A.hava_guc[1] * k) * 100); return `Akım %${f(s)}${ok ? '→%' + f(n) : ''}`; }
+    case 'yakit_s': { const f = (k) => Math.round(A.firsat_ara / (1 + A.firsat_ara_sv * k)); return `Dron ${f(s)}${ok ? '→' + f(n) : ''} s`; }
   }
   return '';
 }

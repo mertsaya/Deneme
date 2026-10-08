@@ -1,9 +1,82 @@
 {
  "sonuc": {
-  "K7": {
+  "K1": {
    "durum": "KALDI",
-   "ayrinti": "TEKRAR UC -> RAMPA 0.58s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~2.01s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+   "ayrinti": "vay_t<=5s orani: iyi %100, hic %0 (hedef >=%90)"
+  },
+  "K2": {
+   "durum": "GECTI",
+   "ayrinti": "ort tur suresi 18.2s (16-30), 65s'ye carpan 0"
+  },
+  "K3": {
+   "durum": "GECTI",
+   "ayrinti": "tur1 iyi/hic mesafe orani 1.81 (>=1,30); tur5 sv={'rampa': 5, 'yakit_ac': 1, 'yakit_s': 2, 'dalis': 2, 'verim': 1}: 2.02 (>=1,60)"
+  },
+  "K4": {
+   "durum": "BILGI",
+   "ayrinti": "iyi: en uzun alisverissiz 1 (<=3); orta: en uzun alisverissiz 1 (<=3); hic: en uzun alisverissiz 1 (<=3)"
+  },
+  "K5": {
+   "durum": "BILGI",
+   "ayrinti": "ses duvari ilk kirilis medyan tur: {'iyi': 2, 'orta': 2, 'hic': 7} (iyi 2-3, hic <=8)"
+  },
+  "K6": {
+   "durum": "BILGI",
+   "ayrinti": "iyi t5-15 sure medyan 34.0s, tavan %0; orta t5-15 sure medyan 33.1s, tavan %0; hic t5-15 sure medyan 21.9s, tavan %0 (hedef 20-40s, tavan <=%5)"
+  },
+  "K7": {
+   "durum": "GECTI",
+   "ayrinti": "TEKRAR UC -> RAMPA 0.30s (<=0,5), BITIS->KARA_KUTU 1.02s, bitis->rampa toplam ~1.72s (<=3), igne ilerliyor=True. Animasyon sirasinda TEKRAR UC ayri elle bakilmali"
+  },
+  "K8": {
+   "durum": "GECTI",
+   "ayrinti": "n=40; ayar_uret --denetle temiz; tum olculer uyumlu"
+  },
+  "K9": {
+   "durum": "GECTI",
+   "ayrinti": "ayni tohum ayni sonuc=True; hiz=4 vs hiz=8 olay gunlugu ayni=True (hiz=1 yerine 4 kullanildi, sure icin)"
+  },
+  "K10": {
+   "durum": "GECTI",
+   "ayrinti": "debug=1 toplu=20: konsol uyari/hata 0; __oyun.uyarilar=0. NOT: oyun enerji denetimini konsola uyari olarak yazmali (uyar/enerji/ihlal ya da console.warn); yazmiyorsa bu madde guvenilir degil"
+  },
+  "K11": {
+   "durum": "ELLE",
+   "ayrinti": "telefon olcumu sart; headless swiftshader bilgisi: fps ort 60 min 30"
+  },
+  "K12": {
+   "durum": "GECTI",
+   "ayrinti": "kampanya(iyi,50) cokmedi; konsol hata 0; heap artisi 0.1 MB (<20)"
+  },
+  "K13": {
+   "durum": "GECTI",
+   "ayrinti": "yenileyince jeton/sv ayni=True; gizlenince bekleyen={'j': 329, 'ses': True}, gorunur olunca=None; bekleyen 40 acilista jeton 50 (beklenen 50), tekrar acinca 50; bozuk kayit tasindi=True, varsayilan jeton=0, yeni konsol hata=0. 'Elle bitirilen turda taban/prim yok' ve 'hicbir senaryoda tur iki kez sayilmaz' tam kontrol icin elle de bak"
+  },
+  "K14": {
+   "durum": "GECTI",
+   "ayrinti": "gizlenince fizik durdu=True (dt=0.000); 3-2-1 sirasinda dokunus dalis yapmadi=True (gosterge 1.00->1.00); duraklat dugmesi dalis yapmadi=True; toplu'da blur duraklatmadi=True"
+  },
+  "K15": {
+   "durum": "GECTI",
+   "ayrinti": "yazi x1.0: kucuk dugme [], tasan [], yatay kayma False; yazi x1.2: kucuk dugme [], tasan [], yatay kayma False; yazi x1.4: kucuk dugme [], tasan [], yatay kayma False; hareket azaltma: sarsinti degeri=0 (durum() alani yoksa elle). Flas <=3/s ve parlama alani/suresi icin kontak sayfasina ELLE bak (kontak.py)"
+  },
+  "K16": {
+   "durum": "ELLE",
+   "ayrinti": "telefonda 10 dk, 3 soru + kayit 'tur' farki (kullanici). Uyari metni: 'Bu gri kutu yalniz his testidir...'"
+  },
+  "EK": {
+   "durum": "GECTI",
+   "ayrinti": "AudioContext dokunustan once [] -> sonra ['running']; tam ekran/kilit/titresim reddi: (1, 0, 0) (oyun reddedilmis gibi calismaya devam etti)"
   }
  },
- "konsol_hata": []
+ "konsol_hata": [
+  [
+   "console.error",
+   "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ],
+  [
+   "console.error",
+   "Failed to load resource: the server responded with a status of 404 (File not found)"
+  ]
+ ]
 }

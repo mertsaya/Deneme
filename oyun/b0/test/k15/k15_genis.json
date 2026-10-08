@@ -48,7 +48,7 @@
    }
   },
   "kart_px": 13,
-  "roket_px": 220,
+  "roket_px": 110,
   "ayar_cakisan": [],
   "kucuk": []
  },
@@ -101,7 +101,7 @@
    }
   },
   "kart_px": 13.824,
-  "roket_px": 174,
+  "roket_px": 110,
   "ayar_cakisan": [],
   "kucuk": []
  },
@@ -207,7 +207,7 @@
    }
   },
   "kart_px": 13,
-  "roket_px": 220,
+  "roket_px": 199,
   "ayar_cakisan": [],
   "kucuk": []
  },
@@ -260,7 +260,7 @@
    }
   },
   "kart_px": 13.824,
-  "roket_px": 220,
+  "roket_px": 110,
   "ayar_cakisan": [],
   "kucuk": []
  },
@@ -313,7 +313,7 @@
    }
   },
   "kart_px": 16.128,
-  "roket_px": 171,
+  "roket_px": 110,
   "ayar_cakisan": [],
   "kucuk": []
  },
@@ -472,7 +472,7 @@
    }
   },
   "kart_px": 16.128,
-  "roket_px": 220,
+  "roket_px": 110,
   "ayar_cakisan": [],
   "kucuk": []
  }

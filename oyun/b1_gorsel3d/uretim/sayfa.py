@@ -130,9 +130,9 @@ def sahne(dosya="sahne_onizleme.png", olc=1.0):
         z.alpha_composite(im, (int(x - im.width / 2), int(y - im.height / 2)))
     koy("bulut_2", 230, 300, 250, 1.4); koy("bulut_0", 110, 60, 120, 1.2); koy("bulut_1", 150, 70, 560, 1.3)
     koy("balon_normal", 100, 300, 430)
-    koy("zeplin_ezilme_1", 128, 150, 650)
+    koy("zeplin_ezilme_1", 150, 150, 650)
     # roket: 3. açı karesi (~+2°) yerine dalış sonrası yükseliş karesi; alev roketin arkasına
-    koy("efekt_ses_1", 120, 238, 520, 0)
+    koy("efekt_ses_1", 110, 214, 528, 0, aci=30)
     ra = 6  # +34° kare
     im = K.kucult_konturla(os.path.join(HAM, f"roket_aci_{ra}.png"), int(118 * olc), 1.7 * olc)
     al = K.kucult_konturla(os.path.join(HAM, "alev_1.png"), int(44 * olc), 1.2 * olc).rotate(34, Image.BICUBIC, expand=True)
@@ -153,20 +153,20 @@ def eski_yeni():
     kon = Image.open(os.path.join(OYUN, "konsept", "oyun_ici_1.jpg")).convert("RGBA").resize((336, 597), Image.LANCZOS)
     eski = Image.open(os.path.join(OYUN, "b1_gorsel", "onizleme", "sahne_04_zeplin.png")).convert("RGBA").resize((384, 832), Image.LANCZOS)
     yeni = sahne("sahne_onizleme.png")
-    yazi(d, (30, 18), "Konsept (onaylı, 112 px küçük görsel ×3)", 18); z.alpha_composite(kon, (30, 60))
-    yazi(d, (400, 18), "Eski: Canvas2D vektör (b1_gorsel)", 18); z.alpha_composite(eski, (400, 60))
-    yazi(d, (810, 18), "Yeni: Blender 3B → sprite (b1_gorsel3d)", 18); z.alpha_composite(yeni.convert("RGBA"), (810, 60))
+    yazi(d, (30, 18), "Konsept (onaylı)", 18); z.alpha_composite(kon, (30, 60))
+    yazi(d, (400, 18), "Eski: Canvas2D vektör", 18); z.alpha_composite(eski, (400, 60))
+    yazi(d, (810, 18), "Yeni: Blender 3B (b1_gorsel3d)", 18); z.alpha_composite(yeni.convert("RGBA"), (810, 60))
     # yakın plan sprite çiftleri
     at = Image.open(os.path.join(OYUN, "b1_gorsel", "sprite", "atlas_0.png")).convert("RGBA")
     js = json.load(open(os.path.join(OYUN, "b1_gorsel", "sprite", "atlas.json")))["sprite"]
     def eski_s(ad):
         p, x, y, w, h = js[ad][:5]; return at.crop((x, y, x + w, y + h))
     x = 1215; y = 60
-    yazi(d, (x, y - 42), "eski | yeni", 18)
+    yazi(d, (x + 30, 18), "eski | yeni", 18)
     for e, n in (("zeplin_normal", "zeplin_normal"), ("balon", "balon_normal"), ("portre_heyecan", "pilot_heyecan"), ("roket_ust", "roket_kademe_2")):
         a = sigdir(eski_s(e), 130, 130); b = sigdir(spr(n), 130, 130)
         z.alpha_composite(a, (x, y + (130 - a.height) // 2)); z.alpha_composite(b, (x + 140, y + (130 - b.height) // 2)); y += 150
-    yazi(d, (30, 680), "Not: konsept görseli yalnız 112×199 px mevcut; büyütme bulanık.", 15, kalin=False)
+    yazi(d, (30, 670), "Konsept yalnız 112×199 px;", 15, kalin=False); yazi(d, (30, 692), "büyütme bulanık.", 15, kalin=False)
     z.convert("RGB").save(os.path.join(ONI, "karsilastirma_eski_yeni.png")); print("onizleme/karsilastirma_eski_yeni.png")
 
 if __name__ == "__main__":

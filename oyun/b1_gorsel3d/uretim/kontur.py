@@ -96,5 +96,7 @@ if __name__ == "__main__":
     for y in sorted(glob.glob(os.path.join(HAM, "*.png"))):
         ad = os.path.basename(y)[:-4]
         if not ad.startswith(filt) or ad.startswith("stil_"): continue
+        if ad.startswith("arka_"):   # paralaks katmanı: 3x döşenip konturlanır (dikişsiz) -> sayfa.arka
+            import sayfa; sayfa.arka(ad).save(os.path.join(CIK, ad + ".png"), optimize=True); print("kontur", ad); continue
         out = isle(y, sabit_px=sabit(ad)); out.save(os.path.join(CIK, ad + ".png"), optimize=True)
         print("kontur", ad, out.size)
