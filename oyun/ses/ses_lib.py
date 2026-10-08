@@ -204,7 +204,8 @@ def kenney(rel):
     p = os.path.join(KOK, 'kaynak', 'kenney', rel)
     out = subprocess.run(['ffmpeg', '-v', 'error', '-nostdin', '-i', p, '-f', 'f32le', '-ac', '1', '-ar', str(SR), '-'],
                          capture_output=True, check=True).stdout
-    return np.frombuffer(out, np.float32).astype(float)
+    x = np.frombuffer(out, np.float32).astype(float)
+    return fade(x, 0, min(0.03, 0.2 * len(x) / SR))   # bazi Kenney dosyalari kesik bitiyor
 
 
 def coz(yol, kanal=None):

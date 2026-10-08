@@ -51,12 +51,17 @@ def aday(kat, kod, ad, aciklama, kaynak='sentez'):
 
 
 # ================================================================ ortak parcalar
+def kuyruk(x):
+    """Parca sonunu yumusak kapatir (son %30, en cok 100 ms): kesik kuyruk tiki olmasin."""
+    return fade(x, 0, min(0.1, 0.3 * len(x) / SR))
+
+
 def tok(f0=120, f1=45, tau=0.09, n=0.5):
     """Tok vurus: alcalan sinus + kisa tik."""
     N = n_(n)
     x = osc(expc(f0, f1, N), N) * env_exp(N, tau, 0.001)
     k = lp(white(N), 3500) * env_exp(N, 0.006, 0.0005) * 0.5
-    return x + k
+    return kuyruk(x + k)
 
 
 def pat_ince(n=0.3):
@@ -89,7 +94,7 @@ def boing(f_bas=160, f_ust=420, n=0.55, vib=14, derin=0.08, tau=0.18):
     t = np.arange(N) / SR
     f = (f_bas + (f_ust - f_bas) * (1 - np.exp(-t / 0.05))) * (1 + derin * np.exp(-t / 0.3) * np.sin(2 * np.pi * vib * t))
     x = osc(f, N) + 0.35 * osc(2 * f, N) + 0.12 * osc(f, N, 'saw')
-    return x * env_exp(N, tau, 0.003)
+    return kuyruk(x * env_exp(N, tau, 0.003))
 
 
 def ciglik(n=0.22, f0=1300, f1=850, rr=38):
@@ -113,7 +118,7 @@ def kanat(n=0.5, flap=22, tau=0.22):
 def metal(fs=(613, 1187, 1964, 2871), gs=(1, .7, .45, .3), tau=0.25, n=1.0):
     N = n_(n)
     x = sum(g * osc(f * np.linspace(1, 0.996, N), N) * env_exp(N, tau / (1 + 0.4 * i), 0.0005) for i, (f, g) in enumerate(zip(fs, gs)))
-    return x
+    return kuyruk(x)
 
 
 def vuus(n=0.3, f0=400, f1=3000, q=1.4, sekil='artan'):
@@ -125,7 +130,7 @@ def vuus(n=0.3, f0=400, f1=3000, q=1.4, sekil='artan'):
 
 def can(f, n=0.6, tau=0.25, harm=((1, 1), (2.0, 0.25), (3.01, 0.1))):
     N = n_(n)
-    return sum(g * osc(f * r, N) * env_exp(N, tau / r ** 0.5, 0.001) for r, g in harm)
+    return kuyruk(sum(g * osc(f * r, N) * env_exp(N, tau / r ** 0.5, 0.001) for r, g in harm))
 
 
 def fm_can(fc=1320, oran=3.5, indeks=4.0, n=1.0, tau=0.35):
@@ -133,7 +138,7 @@ def fm_can(fc=1320, oran=3.5, indeks=4.0, n=1.0, tau=0.35):
     t = np.arange(N) / SR
     I = indeks * np.exp(-t / (tau * 0.4))
     mod = np.sin(2 * np.pi * fc * oran * t) * I
-    return np.sin(2 * np.pi * fc * t + mod) * env_exp(N, tau, 0.001)
+    return kuyruk(np.sin(2 * np.pi * fc * t + mod) * env_exp(N, tau, 0.001))
 
 
 def kivilcim(n=0.6, adet=8, f=(4000, 8000), bas=0.0, yay=0.5):
@@ -150,7 +155,7 @@ def kivilcim(n=0.6, adet=8, f=(4000, 8000), bas=0.0, yay=0.5):
 
 def gurultu_patlama(n=1.5, lpf=900, tau=0.4):
     N = n_(n)
-    return lp(brown(N) * 0.6 + pink(N) * 0.4, lpf) * env_exp(N, tau, 0.004)
+    return kuyruk(lp(brown(N) * 0.6 + pink(N) * 0.4, lpf) * env_exp(N, tau, 0.004))
 
 
 # ================================================================ motor tutusma
