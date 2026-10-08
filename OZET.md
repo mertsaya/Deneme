@@ -132,3 +132,18 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
   - Yerel test: `.claude/launch.json` → "a0" (python http.server 8765).
 - Engeller görünür yapıldı (martılar 7x, uçak 1.6x, oyuncunun rotasına doğar, karşılaşma çekimi); uçak çarpışmada parçalanır. Telefon testi: ort. 77 fps, en düşük 58 fps.
 - **2026-10-08: Kullanıcı minyatür sürümü beğenmedi ve projeyi burada bitirmek istedi.** Tüm kod ve modeller depoda duruyor; yayın linki (sürüm 6) açık.
+
+## 7. oturum (2026-10-08) — Plan B: Burrito Bison mantığı
+- Kullanıcı A0'ı (gerçekçi simülasyon) reddetti; yön: **Burrito Bison mantığı**, yandan 2.5B, tek dokunuş, renkli çizgi film, her şey gökyüzünde, kademe ayırma = son şans. Tüm kararlar: `oyun/KARARLAR.md` (ajanlar kesin kabul eder).
+- Plan: `oyun/PLAN_B.md` (Taslak 6.1). İçerik kitabı: `oyun/ICERIK.md` (38 nesne, 12 nadir, 10 fırsat, 5 rakip, 36 görev, 60 tur takvimi).
+- Ajan ekibi `.claude/agents/`: oyun-tasarimci, uygulayici, gorsel-sanatci, ses-tasarimci, oyun-testcisi, denetci. Yeni oturumda alt ajan türü olarak görünürler.
+- Denetçi ICERIK+PLAN'ı "hazır değil" buldu: sekme kuralı roketi yükseltemiyor (hız büyüklüğü ×k korunup yön 40–55°'ye çevrilmeli), tur profilleri imkânsız, g_etkin negatif olmamalı/yörüngede tur bitmiyor, yoğunluk ekran/saniye başına olmalı, kalıntılar (kaya, helikopter rotor akımı, su sütunu), takvimde ilk turlarda yük, eksik sistemler (ayarlar, duraklat, kayıt şeması, ışığa duyarlılık). Ayrıntı: bu oturumun denetçi raporu (özet burada).
+- Uygulayıcı ajana `oyun/sim/ucus_sim.py` + `oyun/sim/RAPOR.md` yazdırıldı (başsız uçuş+ekonomi simülasyonu, 4 bot, sayı ayarı). Bitmediyse yeniden başlat.
+- Kurulanlar: Playwright (Python) + Chromium, gltf-transform, adb. KTX-Software indirildi, kurulumu yönetici onayı ister (B2'de).
+- Gece zamanlanmış görevi çalışmadı (bilgisayar uyudu / izin sorusu) ve silindi; tekrar kurulmadı.
+
+### Sıradaki (yeni oturumda, tercihen Sonnet)
+1. `oyun/sim/RAPOR.md` var mı bak; yoksa uygulayıcıya simülasyonu yeniden yaptır (talimat: denetçinin 8 düzeltmesi + KARARLAR.md).
+2. Tasarımcı: ayarlanmış sayıları ve KARARLAR.md'yi PLAN_B (6.2) ve ICERIK'e işlesin; evrensel tona çevirsin (yerel öğeler çıkacak); ilk 25 tur kapsamı.
+3. Denetçi yeniden incelesin → onaylanırsa B0 gri kutu kodlaması (uygulayıcı) → testçi (Playwright botları) → kullanıcı telefonda.
+4. Push için kullanıcı izni sorulmadı; son commitler yerel.
