@@ -286,9 +286,9 @@ PILOT_IFADE = {
 
 def kafa_r(z):
     """Yumurta kafa profili (çene daralır)."""
-    if z >= 0: return 0.56 * math.sqrt(max(0.0, 1 - (z / 0.66) ** 2))
-    t = -z / 0.78
-    return 0.56 * math.sqrt(max(0.0, 1 - t * t)) * (1 - 0.16 * t)
+    if z >= 0: return 0.62 * math.sqrt(max(0.0, 1 - (z / 0.72) ** 2))
+    t = -z / 0.84
+    return 0.62 * math.sqrt(max(0.0, 1 - t * t)) * (1 - 0.16 * t)
 
 def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
     ifadeler = ifadeler or PILOT_IFADE
@@ -334,17 +334,17 @@ def pilot(govde=True, anten=True, ifadeler=None, olcek=1.0, ad="pilot"):
         a = silindir("anten", 0.018, 0.55, MET, loc=(-0.55, 0.25, 0.98), rot=(0, math.radians(-28), 0), parent=kok); kabuk(a, hk)
         kabuk(kure("anten_uc", 0.04, isikli("anten_led", "#ff4a3a", 2.0), loc=(-0.68, 0.25, 1.23), parent=kok), hk)
     # kafa (yumurta) + burun + saç
-    hc = (0, -0.08, -0.06)
-    prf = [(-0.78, 0)] + [(z, kafa_r(z)) for z in [-0.78 + 1.44 * i / 40 for i in range(1, 40)]] + [(0.66, 0)]
+    hc = (0, -0.05, -0.08)
+    prf = [(-0.84, 0)] + [(z, kafa_r(z)) for z in [-0.84 + 1.56 * i / 40 for i in range(1, 40)]] + [(0.72, 0)]
     kafa = torna("kafa", prf, TEN, eksen="Z", parent=kok, seg=48); kafa.location = hc
     yz = Yuzey(kafa_r, "Z", merkez=hc)
-    burun_p = yz.nokta(0.0, -0.12, 0.0)
+    burun_p = yz.nokta(0.0, -0.13, 0.0)
     kabuk(kure("burun_pilot", 0.075, TEN, loc=tuple(burun_p), olcek=(0.85, 0.9, 1.15), parent=kok, seg=20, halka=10), hk * 0.7)
-    sac = metatop("sac", [(-0.4, -0.3, 0.42, 0.2), (-0.2, -0.4, 0.5, 0.22), (0.05, -0.42, 0.52, 0.22), (0.28, -0.36, 0.5, 0.2),
-                          (0.45, -0.22, 0.42, 0.17), (0.0, -0.1, 0.6, 0.32), (-0.45, -0.05, 0.35, 0.22), (0.5, 0.0, 0.3, 0.2),
-                          (0.18, -0.48, 0.45, 0.13)], SAC, parent=kok, coz=0.03)
+    sac = metatop("sac", [(-0.440, -0.330, 0.462, 0.210), (-0.220, -0.440, 0.550, 0.231), (0.055, -0.462, 0.572, 0.231), (0.308, -0.396, 0.550, 0.210),
+                          (0.495, -0.242, 0.462, 0.179), (0.000, -0.110, 0.660, 0.336), (-0.495, -0.055, 0.385, 0.231), (0.550, 0.000, 0.330, 0.210),
+                          (0.198, -0.528, 0.495, 0.137)], SAC, parent=kok, coz=0.03)
     sac.location = hc; kabuk(sac, hk)
-    F = dict(ex=0.215, ey=0.02, rx=0.115, ry=0.07, lw=0.03, mx=0.0, my=-0.29, mw=0.34, terx=0.40, tery=0.22, terr=0.05)
+    F = dict(ex=0.24, ey=0.02, rx=0.13, ry=0.08, lw=0.032, mx=0.0, my=-0.33, mw=0.38, terx=0.44, tery=0.24, terr=0.055)
     yuz_kur("pilot", yz, kok, F, ifadeler, kas_renk="#2e1a10", birim=0.004)
     if govde:
         TUL = detayli("giysi", "#e9e6df", rough=0.75, coat=0.0, panel=dict(eksen="Z", adim=0.55, n=4, R=0.9, x0=0.3), kumas=0.05, kir=0.4, kenar=0.3)
@@ -505,7 +505,11 @@ def balon(ifadeler=None):
     for i in range(NG):
         f = 2 * math.pi * i / NG - math.pi / 2 + math.pi / NG * 0 + math.pi / NG
         pts = [(balon_r(z) * 0.985 * math.cos(f), balon_r(z) * 0.985 * math.sin(f), z) for z in [-1.24 + 2.2 * j / 40 for j in range(41)]]
-        kabuk(boru(f"yuk_serit_{i}", pts, 0.012, IP, parent=govde, seg=6), hk * 0.5)
+        ys = boru(f"yuk_serit_{i}", pts, 0.012, IP, parent=govde, seg=6); kabuk(ys, hk * 0.5)
+        ys.shape_key_add(name="Basis", from_mix=False); kb2 = ys.shape_key_add(name="cokme", from_mix=False)
+        for j, v in enumerate(ys.data.vertices):
+            x, y, z = v.co; w = max(0.0, z) ** 2.2 * math.exp(-(x * x) / 0.5)
+            kb2.data[j].co = (x * (1 + 0.06 * w), y * (1 + 0.06 * w), z - 0.4 * w)
     MET = _metal("metal"); KMET = _metal("koyu_metal", P["koyu_gri"], 0.4)
     kabuk(torna("balon_boyun", [(-1.36, 0), (-1.36, 0.16), (-1.26, 0.2), (-1.22, 0)], KMET, eksen="Z", parent=govde), hk)
     # brülör + çerçeve
@@ -530,6 +534,9 @@ def balon(ifadeler=None):
     yz = Yuzey(balon_r, "Z")
     F = dict(cx=0.0, ex=0.29, ey=0.16, rx=0.17, ry=0.12, lw=0.034, mx=0.0, my=-0.22, mw=0.4)
     yuz_kur("balon", yz, govde, F, ifadeler, birim=0.012, kas_renk="#1d1430", iris_renk="#2f8f86")
+    # ezilme boyunda sabit kalsın: gövde boşluğunun dayanak noktası zarfın boynu
+    govde.location.z = -1.36
+    for c in govde.children: c.location.z += 1.36
     kok.rotation_euler = (0, 0, math.radians(10))
     return kok
 

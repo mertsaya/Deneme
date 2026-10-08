@@ -83,9 +83,20 @@ def set_pilot():
     kayit_blend("pilot")
     O.ifade_sec(p, "notr"); glb(p, "pilot")
 
+class _CokmeHepsi:
+    """Gövdedeki tüm 'cokme' şekil anahtarlarını birlikte süren vekil (zarf + yük şeritleri)."""
+    def __init__(self, kok):
+        self.kbs = [o.data.shape_keys.key_blocks["cokme"] for o in O.alt_nesneler(kok)
+                    if o.type == "MESH" and o.data.shape_keys and "cokme" in o.data.shape_keys.key_blocks]
+    @property
+    def value(self): return self.kbs[0].value
+    @value.setter
+    def value(self, v):
+        for k in self.kbs: k.value = v
+
 def _ezilme(kok, govde, zarf, ad, olcekler, ifadeler, gen):
     """olcekler: (sz, cokme) kare başına; hacim korunur: sx=sy=1/sqrt(sz)."""
-    kb = zarf.data.shape_keys.key_blocks["cokme"]
+    kb = _CokmeHepsi(kok)
     durum = []
     for (sz, ck), ifd in zip(olcekler, ifadeler):
         durum.append((sz, ck, ifd))
@@ -106,9 +117,9 @@ def set_nesne(ad):
     for ifd in M.NESNE_IFADE:
         O.ifade_sec(kok, ifd)
         if ifd == "ezik":
-            zarf.data.shape_keys.key_blocks["cokme"].value = 0.7; s = 1 / math.sqrt(0.78); govde.scale = (s, s, 0.78)
+            _CokmeHepsi(kok).value = 0.7; s = 1 / math.sqrt(0.78); govde.scale = (s, s, 0.78)
         O.cek([kok], f"{ad}_{ifd}", gen)
-        zarf.data.shape_keys.key_blocks["cokme"].value = 0; govde.scale = (1, 1, 1)
+        _CokmeHepsi(kok).value = 0; govde.scale = (1, 1, 1)
     # ezilme dizisi (çarpma → geri sıçrama → toparlanma)
     _ezilme(kok, govde, zarf, ad, [(1.0, 0.0), (0.70, 1.0), (1.14, 0.0), (0.95, 0.15)], ["normal", "ezik", "saskin", "normal"], gen)
     kayit_blend(ad); O.ifade_sec(kok, "normal"); glb(kok, ad)
