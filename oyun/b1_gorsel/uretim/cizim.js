@@ -317,11 +317,14 @@ function marti(c, kare) {
   if (acik) { poli(c, [-4.8, -0.2, -6.8, 0.8, -4.6, 0.5]); dol(c, '#ffae1a'); cizgi(c, IL * 0.8); }
   else { daire(c, -6.4, -0.45, 0.32); dol(c, '#ff3346'); }
   if (acik) {
-    c.beginPath(); for (let a = 0; a < 10; a += 0.3) c.lineTo(-3.3 + Math.cos(a) * a * 0.08, -1.2 + Math.sin(a) * a * 0.08); c.strokeStyle = INK; c.lineWidth = 0.24; c.stroke();
+    elips(c, -3.45, -1.25, 1.0, 1.15); dol(c, '#fff'); cizgi(c, 0.24);
+    c.beginPath(); for (let a = 0; a < 11; a += 0.3) c.lineTo(-3.45 + Math.cos(a) * a * 0.075, -1.25 + Math.sin(a) * a * 0.075); c.strokeStyle = INK; c.lineWidth = 0.22; c.stroke();
+    c.beginPath(); c.ellipse(-6.0, 0.55, 0.45, 0.7, 0.4, 0, 6.283); dol(c, '#ff6f8a'); cizgi(c, 0.15);
   } else {
-    elips(c, -3.4, -1.2, 0.8, 0.95); dol(c, '#fff'); cizgi(c, 0.22);
-    daire(c, -3.7, -1.05, 0.45); dol(c, INK); daire(c, -3.85, -1.25, 0.15); dol(c, '#fff');
-    c.beginPath(); c.moveTo(-4.5, -2.4); c.lineTo(-2.6, -1.85); c.strokeStyle = INK; c.lineWidth = 0.4; c.lineCap = 'round'; c.stroke();
+    elips(c, -3.45, -1.25, 1.0, 1.15); dol(c, '#fff'); cizgi(c, 0.24);
+    daire(c, -3.8, -1.1, 0.55); dol(c, INK); daire(c, -3.98, -1.35, 0.18); dol(c, '#fff');
+    c.beginPath(); c.moveTo(-4.7, -2.65); c.lineTo(-2.5, -2.0); c.strokeStyle = INK; c.lineWidth = 0.45; c.lineCap = 'round'; c.stroke();
+    c.save(); c.globalAlpha = 0.45; elips(c, -2.4, -0.1, 0.6, 0.35); dol(c, '#ff7a8a'); c.restore();
   }
   c.beginPath(); c.moveTo(1.2, 2.2); c.lineTo(2.6, 2.9); c.moveTo(2.0, 2.0); c.lineTo(3.4, 2.6); c.strokeStyle = '#ff8a1f'; c.lineWidth = 0.5; c.stroke();
   kanat(K[1], gri);
@@ -541,14 +544,14 @@ function rampa(c) {   // rampa: ray (−76.8, 0) → (0, 60) dünya; sprite'ta y
 // ---------------------------------------------------------------- SPRITE TANIMLARI
 // x0,y0,x1,y1: sınır (birim). d: yoğunluk çarpanı. ol: dış kontur (birim; 0 = yok).
 const SPRITE = [];
-const OLPX = 2.5, KN = 1.9, ol = (m = 1) => OLPX / (KN * m);   // dış kontur (birim) = 2,5 px / (1,9 px/birim × görüntüleme çarpanı)
+const OLPX = 2.5, KN = 2.6, ol = (m = 1) => OLPX / (KN * m);   // dış kontur (birim) = 2,5 px / (1,9 px/birim × görüntüleme çarpanı)
 const ekle = (ad, x0, y0, x1, y1, ciz, o = {}) => SPRITE.push({ ad, x0, y0, x1, y1, ciz, d: o.d ?? 1, ol: o.ol ?? ol(1), olRenk: o.olRenk || null });
 ekle('roket_ust', -7.4, -7.8, 13, 7.8, roketUst);
 ekle('roket_alt', -21, -10.4, -4.6, 10.4, roketAlt);
 ekle('cam', -2.5, -2.8, 3, 2.6, camParlak, { ol: 0 });
 for (const f of ['notr', 'heyecan', 'saskin', 'kararli']) {
   ekle('pilot_' + f, -2.6, -2.6, 2.6, 2.6, c => pilotKafa(c, 2.35, f, false), { ol: 0, d: 1.5 });
-  ekle('portre_' + f, -17.5, -23.5, 17.5, 16.5, c => pilotKafa(c, 15, f, true), { ol: ol(1.75 / 1.9) });
+  ekle('portre_' + f, -17.5, -23.5, 17.5, 16.5, c => pilotKafa(c, 15, f, true), { ol: ol(1.25 / 2.6) });
 }
 for (let i = 0; i < 4; i++) { ekle('alev_' + i, -13, -4, 1, 4, c => alev(c, i, false), { ol: 0 }); ekle('alev_dalis_' + i, -21, -5, 1, 5, c => alev(c, i, true), { ol: 0 }); }
 ekle('balon', -13, -13, 13, 23, c => balon(c, 'normal'));
@@ -568,9 +571,9 @@ ekle('balon_parca', -2.2, -1.6, 2.4, 1.3, balonParca, { ol: ol(1.2) });
 ekle('ses_konisi', -17, -11.5, 1.5, 11.5, sesKonisi, { ol: 0 });
 ekle('jeton', -2.6, -2.6, 2.6, 2.6, jeton, { ol: ol(1.1) });
 ekle('parasut', -8.5, -16.5, 8.5, 0.8, parasut, { ol: 0 });
-ekle('bulut_0', -31, -19, 31, 10, c => bulut(c, 60, 16, 3, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
-ekle('bulut_1', -23, -16.5, 23, 9, c => bulut(c, 44, 14, 8, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
-ekle('bulut_2', -37.5, -21, 37.5, 11, c => bulut(c, 76, 18, 21, false), { ol: 1.2 / 1.9, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_0', -31, -19, 31, 10, c => bulut(c, 60, 16, 3, false), { ol: 1.2 / 2.6, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_1', -23, -16.5, 23, 9, c => bulut(c, 44, 14, 8, false), { ol: 1.2 / 2.6, olRenk: '#a8c8f0', d: 0.6 });
+ekle('bulut_2', -37.5, -21, 37.5, 11, c => bulut(c, 76, 18, 21, false), { ol: 1.2 / 2.6, olRenk: '#a8c8f0', d: 0.6 });
 ekle('bulut_uzak_0', -39, -6, 39, 6, c => bulut(c, 80, 10, 5, true), { ol: 0, d: 0.35 });
 ekle('bulut_uzak_1', -30, -5.5, 30, 5.5, c => bulut(c, 60, 9, 13, true), { ol: 0, d: 0.35 });
 ekle('zemin', 0, -16, 200, 90, c => zemin(c, 200), { ol: 0, d: 0.5 });
