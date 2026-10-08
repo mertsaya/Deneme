@@ -25,11 +25,11 @@ with o.sunucu() as taban, sync_playwright() as p:
     pg.screenshot(path=str(SS / "d_menu.png"))
     R["d"]["menu_metin"] = pg.evaluate("document.getElementById('menu').innerText")
     # ekrana (menu disi) dokunus: dalis olmamali
-    g0 = durum(pg)["gosterge"]; pg.mouse.click(30, 300); pg.wait_for_timeout(200)
+    g0 = durum(pg)["gosterge"]; pg.mouse.click(30, 120); pg.wait_for_timeout(200)
     R["d"]["menude_dokunus_dalis"] = durum(pg)["gosterge"] != g0
     pg.click("#mDevam"); pg.wait_for_timeout(250)
     pg.screenshot(path=str(SS / "d_sayim.png"))
-    ds = durum(pg); pg.mouse.click(30, 300); pg.wait_for_timeout(100)
+    ds = durum(pg); pg.mouse.click(30, 120); pg.wait_for_timeout(100)
     R["d"]["sayimda_dalis"] = durum(pg)["gosterge"] != ds["gosterge"]
     R["d"]["sayimda_x_ilerledi"] = durum(pg)["x"] != ds["x"]
     pg.wait_for_timeout(1800)

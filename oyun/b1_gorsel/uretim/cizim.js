@@ -226,7 +226,7 @@ function balon(c, ifade) {
     for (const [x, s] of [[-2.4, 1], [1.8, -1]]) { c.beginPath(); c.moveTo(x - 1.0, -1.1); c.lineTo(x + 0.3 * s, -0.2); c.lineTo(x - 1.0, 0.7); c.strokeStyle = INK; c.lineWidth = 0.55; c.lineCap = 'round'; c.lineJoin = 'round'; c.stroke(); }
     c.beginPath(); c.moveTo(-2.6, 2.6); c.quadraticCurveTo(-1.2, 1.8, 0, 2.6); c.quadraticCurveTo(1.2, 3.4, 2.2, 2.4); c.strokeStyle = INK; c.lineWidth = 0.5; c.stroke();
   } else {
-    goz(c, k, -2.4, -0.4, 1.25, 1.65, -0.45, 0.15, 0.7); goz(c, k, 1.7, -0.4, 1.15, 1.55, -0.45, 0.15, 0.65);
+    goz(c, k, -2.6, -0.6, 1.55, 2.0, -0.5, 0.2, 0.85); goz(c, k, 1.8, -0.6, 1.4, 1.85, -0.5, 0.2, 0.78);
     c.beginPath(); c.moveTo(-2.6, 2.0); c.quadraticCurveTo(-0.6, 4.6, 1.8, 2.3); c.quadraticCurveTo(-0.5, 3.0, -2.6, 2.0); c.closePath(); dol(c, '#7a1f33'); cizgi(c, 0.4);
     kas(c, k, -3.3, -2.6, -1.4, -2.7, 0.4); kas(c, k, 0.9, -2.6, 2.6, -2.3, 0.4);
   }
@@ -242,16 +242,17 @@ function zeplin(c, ifade, renk = RENK.mor) {
     poli(c, p); dol(c, dikey(c, RENK.kirmizi, cy - 14 * (s < 0), cy + 14 * (s > 0))); cizgi(c, IL, RENK.kirmizi);
   }
   // trambolin ayakları (yaylar)
-  c.strokeStyle = ST.kontur ? INK : RENK.koyuMetal; c.lineWidth = 0.55; c.lineJoin = 'round';
+  c.lineJoin = 'round';
   for (const x of [-11, -3.5, 4, 11.5]) {
     const yb = cy - Y * Math.sqrt(1 - (x / X) ** 2) + 1.2;
-    c.beginPath(); c.moveTo(x, yb); const n = 5, h = (yb - (-19.4)) / n;
-    for (let i = 1; i <= n; i++) c.lineTo(x + (i % 2 ? 1.1 : -1.1), yb - h * i + (i === n ? 0 : 0)); c.stroke();
+    c.beginPath(); c.moveTo(x, yb); const n = 6, h = (yb - (-19.4)) / n;
+    for (let i = 1; i <= n; i++) c.lineTo(x + (i === n ? 0 : i % 2 ? 0.9 : -0.9), yb - h * i);
+    c.strokeStyle = ST.kontur ? INK : RENK.koyuMetal; c.lineWidth = 0.75; c.stroke(); c.strokeStyle = '#dfe6f2'; c.lineWidth = 0.32; c.stroke();
   }
   // gövde
   elips(c, 0, cy, X, Y); c.save(); dol(c, dikey(c, renk, cy - Y, cy + Y)); c.clip();
   c.globalAlpha = 0.9; c.fillStyle = dikey(c, RENK.sari, cy + 4, cy + 10); c.fillRect(-X, cy + 5.2, 2 * X, 3.4); c.globalAlpha = 1;
-  c.strokeStyle = ST.kontur ? INK : ko(renk, 0.4); c.lineWidth = IL * 0.6; c.globalAlpha = ST.kontur ? 0.55 : 0.4;
+  c.strokeStyle = ST.kontur ? INK : ko(renk, 0.4); c.lineWidth = IL * 0.5; c.globalAlpha = 0.3;
   for (const f of [0.45, 0.82]) { c.beginPath(); c.ellipse(0, cy, X * f, Y, 0, -Math.PI / 2, Math.PI / 2); c.stroke(); c.beginPath(); c.ellipse(0, cy, X * f, Y, 0, Math.PI / 2, Math.PI * 1.5); c.stroke(); }
   c.globalAlpha = 1;
   const g = c.createRadialGradient(-8, cy - 9, 2, -4, cy - 2, X * 1.1); g.addColorStop(0, 'rgba(255,255,255,.25)'); g.addColorStop(0.4, 'rgba(255,255,255,0)'); g.addColorStop(1, 'rgba(42,29,92,.25)'); c.fillStyle = g; c.fillRect(-X, cy - Y, 2 * X, 2 * Y);
@@ -294,40 +295,36 @@ function zeplin(c, ifade, renk = RENK.mor) {
 
 // ---------------------------------------------------------------- MARTI (sola bakar)
 function marti(c, kare) {
-  const gri = '#cfd8e8', uc = '#3b4466';
-  const kanatCiz = (p, renk, ucu) => {
-    poli(c, p); dol(c, dikey(c, renk, Math.min(...p.filter((_, i) => i % 2)), Math.max(...p.filter((_, i) => i % 2))));
-    c.save(); c.clip(); c.fillStyle = uc; daire(c, ucu[0], ucu[1], 2.0); c.fill(); c.restore(); poli(c, p); cizgi(c, IL, renk);
-  };
-  const W = {
-    yukari: [[0.3, -0.8, 1.0, -4.6, 3.6, -8.4, 4.0, -5.4, 3.2, -0.8], [-1.4, -0.9, -1.0, -5.2, 1.6, -9.0, 2.6, -6.2, 2.6, -0.8]],
-    orta: [null, [-1.6, -0.9, 0.6, -2.8, 6.8, -3.6, 4.8, -1.4, 2.6, -0.2]],
-    asagi: [null, [-1.2, -0.3, 0.2, 2.6, 2.2, 6.2, 3.1, 3.4, 2.8, 0.2]],
-    sersem: [[0.8, -0.6, 3.0, -5.2, 6.2, -6.4, 5.0, -3.0, 3.4, 0.0], [-1.4, 0.2, -3.6, 3.6, -1.6, 6.8, 0.4, 3.0, 1.6, 0.6]],
+  const gri = '#d3dcec', uc = '#3b4466';
+  const K = {   // [p0, kontrol, uç, kontrol, kök] + uç bölgesi (dikdörtgen: x0,y0,x1,y1)
+    yukari: [[-0.2, -0.7, -1.2, -5.4, 1.4, -9.8, 2.6, -5.6, 3.4, -0.7, [-3, -12, 6, -7.2]], [-1.6, -0.6, -2.8, -5.2, -0.6, -10.4, 1.2, -5.8, 2.4, -0.6, [-4, -12, 5, -7.6]]],
+    orta: [[0.2, -1.0, 3.2, -4.6, 8.6, -4.4, 5.0, -2.2, 3.0, -0.6, [6.2, -7, 10, 0]], [-1.6, -0.8, 1.8, -3.6, 8.2, -3.0, 4.4, -0.8, 2.8, 0.2, [5.8, -6, 10, 2]]],
+    asagi: [null, [-1.4, -0.3, -1.2, 4.0, 2.0, 8.0, 3.6, 3.6, 3.0, 0.0, [-3, 5.6, 6, 10]]],
+    sersem: [[0.6, -0.8, 4.6, -5.2, 7.8, -5.6, 5.0, -2.6, 3.0, -0.2, [5.8, -8, 10, -3.6]], [-1.4, 0.4, -4.4, 3.4, -2.2, 7.6, 0.4, 4.0, 1.6, 0.6, [-6, 5.4, 2, 10]]],
   }[kare];
-  const ucNokta = (p) => [p[4], p[5]];
-  if (W[0]) kanatCiz(W[0], ko(gri, 0.15), ucNokta(W[0]));
-  // kuyruk, gövde, baş
+  const kanat = (p, renk) => {
+    const yol = () => { c.beginPath(); c.moveTo(p[0], p[1]); c.quadraticCurveTo(p[2], p[3], p[4], p[5]); c.quadraticCurveTo(p[6], p[7], p[8], p[9]); c.closePath(); };
+    yol(); dol(c, dikey(c, renk, Math.min(p[1], p[5]), Math.max(p[1], p[5]) + 1)); c.save(); c.clip();
+    const r = p[10]; c.fillStyle = uc; c.fillRect(r[0], r[1], r[2] - r[0], r[3] - r[1]); c.restore(); yol(); cizgi(c, IL, renk);
+  };
+  if (K[0]) kanat(K[0], ko(gri, 0.18));
   poli(c, [3.4, -0.6, 6.4, -1.3, 6.1, 1.0, 3.6, 1.3]); dol(c, dikey(c, '#ffffff', -1.3, 1.3)); cizgi(c, IL, '#fff');
   c.fillStyle = uc; c.beginPath(); c.moveTo(6.4, -1.3); c.lineTo(6.1, 1.0); c.lineTo(5.3, 0.9); c.lineTo(5.6, -1.1); c.closePath(); c.fill();
   elips(c, 0.6, 0.3, 4.0, 2.0, -0.06); dol(c, dikey(c, '#ffffff', -1.7, 2.3)); cizgi(c, IL, '#fff');
   daire(c, -3.1, -0.8, 2.0); dol(c, kure(c, '#ffffff', -3.1, -0.8, 2.0)); cizgi(c, IL, '#fff');
-  // gaga
   const acik = kare === 'sersem';
   poli(c, acik ? [-4.7, -1.2, -7.3, -1.4, -4.8, -0.4] : [-4.7, -1.3, -7.4, -0.5, -4.8, 0.0]); dol(c, dikey(c, '#ffc21a', -1.4, 0)); cizgi(c, IL * 0.8, '#ffc21a');
   if (acik) { poli(c, [-4.8, -0.2, -6.8, 0.8, -4.6, 0.5]); dol(c, '#ffae1a'); cizgi(c, IL * 0.8); }
   else { daire(c, -6.4, -0.45, 0.32); dol(c, '#ff3346'); }
-  // göz
-  if (kare === 'sersem') {
-    c.beginPath(); for (let a = 0; a < 10; a += 0.3) c.lineTo(-3.3 + Math.cos(a) * a * 0.07, -1.2 + Math.sin(a) * a * 0.07); c.strokeStyle = INK; c.lineWidth = 0.22; c.stroke();
+  if (acik) {
+    c.beginPath(); for (let a = 0; a < 10; a += 0.3) c.lineTo(-3.3 + Math.cos(a) * a * 0.08, -1.2 + Math.sin(a) * a * 0.08); c.strokeStyle = INK; c.lineWidth = 0.24; c.stroke();
   } else {
-    elips(c, -3.4, -1.2, 0.75, 0.9); dol(c, '#fff'); cizgi(c, 0.22);
-    daire(c, -3.65, -1.05, 0.42); dol(c, INK); daire(c, -3.8, -1.25, 0.14); dol(c, '#fff');
-    c.beginPath(); c.moveTo(-4.4, -2.35); c.lineTo(-2.6, -1.85); c.strokeStyle = INK; c.lineWidth = 0.38; c.lineCap = 'round'; c.stroke();
+    elips(c, -3.4, -1.2, 0.8, 0.95); dol(c, '#fff'); cizgi(c, 0.22);
+    daire(c, -3.7, -1.05, 0.45); dol(c, INK); daire(c, -3.85, -1.25, 0.15); dol(c, '#fff');
+    c.beginPath(); c.moveTo(-4.5, -2.4); c.lineTo(-2.6, -1.85); c.strokeStyle = INK; c.lineWidth = 0.4; c.lineCap = 'round'; c.stroke();
   }
-  // ayak
   c.beginPath(); c.moveTo(1.2, 2.2); c.lineTo(2.6, 2.9); c.moveTo(2.0, 2.0); c.lineTo(3.4, 2.6); c.strokeStyle = '#ff8a1f'; c.lineWidth = 0.5; c.stroke();
-  kanatCiz(W[1], gri, ucNokta(W[1]));
+  kanat(K[1], gri);
 }
 
 // ---------------------------------------------------------------- UÇURTMA (baklava, r = 7; ip çalışma anında çizilir)
@@ -538,13 +535,13 @@ for (let i = 0; i < 4; i++) { ekle('alev_' + i, -13, -4, 1, 4, c => alev(c, i, f
 ekle('balon', -13, -13, 13, 23, c => balon(c, 'normal'));
 ekle('balon_ezik', -13, -13, 13, 23, c => balon(c, 'ezik'));
 for (const f of ['normal', 'ezik', 'yama']) ekle('zeplin_' + f, -28.5, -23, 33.5, 21, c => zeplin(c, f));
-for (const f of ['yukari', 'orta', 'asagi', 'sersem']) ekle('marti_' + f, -8, -9.6, 7.2, 7.4, c => marti(c, f));
+for (const f of ['yukari', 'orta', 'asagi', 'sersem']) ekle('marti_' + f, -8, -11, 10.5, 8.6, c => marti(c, f));
 for (const [f, k] of [['a', 'a'], ['b', 'b'], ['saskin', 'a']]) ekle('ucurtma_' + f, -6.6, -9.2, 6.6, 18.6, c => ucurtma(c, f === 'saskin' ? 'saskin' : 'normal', k));
 ekle('dron_a', -13, -5.6, 13, 9.8, c => dron(c, 'a'));
 ekle('dron_b', -13, -5.6, 13, 9.8, c => dron(c, 'b'));
 ekle('dron_bos', -13, -5.6, 13, 2.6, c => dron(c, 'a', false));
 ekle('bidon', -2.8, -1, 2.8, 5.6, c => bidon(c, 0, 0));
-for (let i = 0; i < 4; i++) ekle('toz_' + i, -9, -7, 9, 7, c => toz(c, i), { ol: 0 });
+for (let i = 0; i < 4; i++) ekle('toz_' + i, -13, -11, 13, 11, c => toz(c, i), { ol: 0 });
 for (let i = 0; i < 3; i++) ekle('yildiz_' + i, -11.5, -11.5, 11.5, 11.5, c => yildizPatlama(c, i), { ol: i === 1 ? 0.6 : 0 });
 ekle('parilti', -2.8, -2.8, 2.8, 2.8, parilti, { ol: 0 });
 ekle('tuy', -2.8, -1.4, 2.6, 1.3, tuy, { ol: 0.4 });
@@ -552,11 +549,11 @@ ekle('balon_parca', -2.2, -1.6, 2.4, 1.3, balonParca, { ol: 0 });
 ekle('ses_konisi', -17, -11.5, 1.5, 11.5, sesKonisi, { ol: 0 });
 ekle('jeton', -2.6, -2.6, 2.6, 2.6, jeton, { ol: 0.5 });
 ekle('parasut', -8, -16, 8, 0.5, parasut, { ol: 0.7 });
-ekle('bulut_0', -30, -11, 30, 6, c => bulut(c, 60, 16, 3, false), { ol: 0, d: 0.6 });
-ekle('bulut_1', -22, -9, 22, 6, c => bulut(c, 44, 14, 8, false), { ol: 0, d: 0.6 });
-ekle('bulut_2', -38, -12, 38, 7, c => bulut(c, 76, 18, 21, false), { ol: 0, d: 0.6 });
-ekle('bulut_uzak_0', -40, -7, 40, 4, c => bulut(c, 80, 10, 5, true), { ol: 0, d: 0.35 });
-ekle('bulut_uzak_1', -30, -6, 30, 4, c => bulut(c, 60, 9, 13, true), { ol: 0, d: 0.35 });
+ekle('bulut_0', -30, -17, 30, 9, c => bulut(c, 60, 16, 3, false), { ol: 0, d: 0.6 });
+ekle('bulut_1', -22, -15, 22, 8, c => bulut(c, 44, 14, 8, false), { ol: 0, d: 0.6 });
+ekle('bulut_2', -38, -19, 38, 10, c => bulut(c, 76, 18, 21, false), { ol: 0, d: 0.6 });
+ekle('bulut_uzak_0', -40, -11, 40, 6, c => bulut(c, 80, 10, 5, true), { ol: 0, d: 0.35 });
+ekle('bulut_uzak_1', -30, -10, 30, 6, c => bulut(c, 60, 9, 13, true), { ol: 0, d: 0.35 });
 ekle('zemin', 0, -16, 200, 90, c => zemin(c, 200), { ol: 0, d: 0.5 });
 ekle('uzak_tepe', 0, -14, 300, 30, c => uzakTepe(c, 300), { ol: 0, d: 0.3 });
 ekle('rampa', -80, -60, 4, 2.5, rampa, { ol: 0, d: 0.6 });

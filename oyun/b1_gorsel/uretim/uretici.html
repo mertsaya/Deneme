@@ -84,14 +84,14 @@ function karsilastir() {
   return C.toDataURL('image/png');
 }
 function pilotKarsilastir() {
-  const C = document.createElement('canvas'); C.width = 1100; C.height = 560; const c = C.getContext('2d');
+  const C = document.createElement('canvas'); C.width = 1100; C.height = 600; const c = C.getContext('2d');
   c.fillStyle = '#2f7fe0'; c.fillRect(0, 0, C.width, C.height);
   c.fillStyle = '#fff'; c.font = 'bold 18px sans-serif';
-  c.fillText('A · açık vizör, görünür yüz (öneri; konsepte uygun)', 12, 26); c.fillText('B · kapalı vizör, parlayan ekran yüz', 12, 296);
+  c.fillText('A · açık vizör, görünür yüz (öneri; konsepte uygun)', 12, 26); c.fillText('B · kapalı vizör, parlayan ekran yüz', 12, 312);
   const ifs = ['notr', 'heyecan', 'saskin', 'kararli'];
   ifs.forEach((f, i) => {
     for (const [satir, fn] of [[0, (cc, R) => pilotKafa(cc, R, f, true)], [1, (cc, R) => pilotVizor(cc, R, f === 'kararli' ? 'notr' : f)]]) {
-      const y0 = 40 + satir * 270;
+      const y0 = 40 + satir * 290;
       c.save(); c.translate(110 + i * 170, y0 + 110); c.scale(5, 5); fn(c, 15); c.restore();
       // pencerede gerçek boyut (D = 7) ve telefon 1×
       c.save(); c.translate(80 + i * 170, y0 + 215); c.scale(7, 7); fn(c, 2.35); c.restore();

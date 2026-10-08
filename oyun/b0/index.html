@@ -222,6 +222,7 @@ const B0_ARAYUZ = {
   alt_pay_px: 160,                                     // zemin ekran altından bu kadar yukarıda: alt göstergeler roketi örtmesin (denetim)
   ust_bas: [0.15, 2.5],                                // ~ üstten sekmede trambolin görsel basılması (s, birim)
   bidon_sure: 0.3,
+  rampa_kilit: 0.25,                                   // ~ rampaya girişten sonra dokunuş kilidi (s): UÇ/TEKRAR UÇ çift dokunuşu zayıf kalkış yapmasın
   durduran_ses_v: 100,                                 // ~ 'ses duvarı' kuralının en yüksek hız eşiği (iç hız; kullanıcı kararı)
   abarti_rekor: 1.10, abarti_kisa: 0.5,                // kullanıcı kararı: abartılı bitiş = mesafe rekoru %10'dan fazla aşıldı (ilk tur hariç) ya da son 3 turun ortalamasının yarısından kısa                                     // ~ dron bidonunun rokete uçuşu (s)
   bot_kk_bekle: 3.0,                                   // görüntülü bot: kara kutuda bekleyip yeniden uçar
@@ -238,6 +239,7 @@ const GUVENLIK = { flas_max_hz: 3, parlama_alan_max: 0.30, parlama_ms_max: 100 }
 // Kullanıcıya görünen metinler (anahtardan okunur). "durduran.*": §20 K-C öğretici ton (koordinatör/kullanıcı düzeltmeleri işlendi)
 const METIN = {
   'durduran.ses': 'Ses duvarına {Δ} km/sa kaldı. Balon ya da zeplinin üstüne dalış yap: mükemmel sekme hız ekler.',
+  'durduran.ses_yakin': 'Ses duvarına çok yakındın: hızını {s} saniye daha koru.',
   'durduran.dalis': 'Dalış hakkın dururken bitti. Altında balon ya da zeplin görünce dokun.',
   'durduran.ip': '{n} uçurtma ipine takıldın. İpler alçakta: yüksekte kalırsan geçersin.',
   'durduran.yuksek': 'Yüksekte ileri hızın tükendi. Dalışla aşağı inip balon ya da zeplinlerden hız topla.',
@@ -247,7 +249,7 @@ const METIN = {
   kart: { rampa: 'Rampa gücü', bolge: 'Mükemmel bölge', verim: 'Sekme verimi', dalis: 'Dalış gücü', kademe_itki: 'Kademe itkisi', yakit_ac: 'Yakıt dronu', yakit_s: 'Yakıt dronu sıklığı' },
 };
 
-const B0S = Q.has('b0s') ? Object.fromEntries(['y', 't0', 't1', 'en_az'].map((k, i) => [k, +Q.get('b0s').split(',')[i]])) : KONF.b0_seyrek;   // ?b0s= yalnız ayar denemesi
+const B0S = Q.has('b0s') ? Object.fromEntries(['y', 't0', 't1', 'en_az'].map((k, i) => { const v = (Q.get('b0s').split(',')[i] ?? '').trim(); return [k, v !== '' && isFinite(+v) ? +v : KONF.b0_seyrek[k]]; })) : KONF.b0_seyrek;   // ?b0s= yalnız ayar denemesi; eksik/bozuk değer → varsayılan
 const DT = A.dt, rad = (d) => d * Math.PI / 180;
 const HIZ_P = Math.log(7900 / 343) / Math.log(6);
 const hizGosterge = (v) => v <= 600 ? 343 * (Math.max(v, 0) / 100) ** HIZ_P : 7900 * v / 600;
@@ -922,16 +924,28 @@ function tasi(k) {   // sürüm taşıma: v'ye göre adım adım (B0'da yalnız 
   if (k.v !== 1) throw new Error('sürüm');
   return k;
 }
-function gecerli(k) {
-  const d = varsayilanKayit(), say = (x) => typeof x === 'number' && isFinite(x) && x >= 0;
-  if (!k || typeof k !== 'object' || !say(k.jeton) || !Number.isInteger(k.tur) || k.tur < 0) return false;
-  for (const a in d.sv) if (!Number.isInteger(k.sv?.[a]) || k.sv[a] < 0 || k.sv[a] > GEL[a][0]) return false;
-  if (!k.rekor || !say(k.rekor.mesafe_g) || !say(k.rekor.max_v) || !say(k.rekor.max_y)) return false;
-  if (!Array.isArray(k.son) || !Array.isArray(k.son_dalis) || !k.ipucu || !k.ayar || !k.duvar) return false;
-  if ((k.son_mesafe !== undefined && !Array.isArray(k.son_mesafe)) || (k.elle !== undefined && !(Number.isInteger(k.elle) && k.elle >= 0))) return false;
-  const bk = k.bekleyen;   // eski biçim sayı; yeni { j, ses }
-  if (bk !== null && !say(bk) && !(bk && typeof bk === 'object' && say(bk.j) && typeof bk.ses === 'boolean')) return false;
-  return true;
+function onar(h) {   // alan bazında doğrulama: geçersiz alan → varsayılan (sv seviyeleri svMaks'a kırpılır). Dönüş [kayıt, onarılan alanlar]
+  const d = varsayilanKayit(), bozuk = [], say = (x) => typeof x === 'number' && isFinite(x) && x >= 0, tam = (x) => Number.isInteger(x) && x >= 0;
+  const al = (ad, ok, v, vars) => { if (ok) return v; if (v !== undefined) bozuk.push(ad); return vars; };
+  const dizi = (ad, x) => Array.isArray(x) && x.every(say) ? x.slice(-3) : al(ad, false, x, []);
+  const k = d;
+  k.jeton = al('jeton', say(h.jeton), h.jeton, 0);
+  k.tur = al('tur', tam(h.tur), h.tur, 0);
+  k.elle = al('elle', tam(h.elle), h.elle, 0);
+  for (const a in d.sv) { const v = h.sv?.[a]; k.sv[a] = tam(v) ? Math.min(v, svMaks(a)) : al('sv.' + a, false, v, 0); if (tam(v) && v > svMaks(a)) bozuk.push('sv.' + a); }
+  const ds = h.duvar?.ses; k.duvar.ses = al('duvar.ses', ds === null || tam(ds), ds, null);
+  for (const a in d.rekor) k.rekor[a] = al('rekor.' + a, say(h.rekor?.[a]), h.rekor?.[a], 0);
+  k.son = dizi('son', h.son); k.son_dalis = dizi('son_dalis', h.son_dalis); k.son_mesafe = dizi('son_mesafe', h.son_mesafe);
+  for (const a in d.ipucu) k.ipucu[a] = al('ipucu.' + a, typeof h.ipucu?.[a] === 'boolean', h.ipucu?.[a], false);
+  const ay = h.ayar || {}, A0 = d.ayar, bool = (x) => typeof x === 'boolean';
+  k.ayar.efekt = al('ayar.efekt', say(ay.efekt) && ay.efekt <= 100, ay.efekt, A0.efekt);
+  for (const a of ['muzik', 'titresim', 'isik']) k.ayar[a] = al('ayar.' + a, bool(ay[a]), ay[a], A0[a]);
+  k.ayar.hareket_azalt = al('ayar.hareket_azalt', ay.hareket_azalt === null || bool(ay.hareket_azalt), ay.hareket_azalt, null);
+  k.ayar.yazi = al('ayar.yazi', [1, 1.2, 1.4].includes(ay.yazi), ay.yazi, A0.yazi);
+  k.ayar.kalite = al('ayar.kalite', ['oto', 'dusuk', 'orta', 'yuksek'].includes(ay.kalite), ay.kalite, A0.kalite);
+  const bk = h.bekleyen;   // eski biçim sayı; yeni { j, ses }
+  k.bekleyen = al('bekleyen', bk === null || say(bk) || (bk && typeof bk === 'object' && say(bk.j) && typeof bk.ses === 'boolean'), bk, null);
+  return [k, bozuk];
 }
 const KAYIT = {
   k: varsayilanKayit(), bellek: null, bildirim: null,
@@ -940,17 +954,18 @@ const KAYIT = {
     if (!KAYIT_AC) return this.k;
     try { ham = localStorage.getItem(KAYIT_ANAHTAR); } catch (e) { ham = this.bellek; }
     if (ham == null) return this.k;
-    try {
-      const k = tasi(JSON.parse(ham));
-      if (!gecerli(k)) throw new Error('şema');
-      const d = varsayilanKayit();
-      this.k = { ...d, ...k, ipucu: { ...d.ipucu, ...k.ipucu }, ayar: { ...d.ayar, ...k.ayar }, duvar: { ...d.duvar, ...k.duvar } };
-    } catch (e) {
-      try { localStorage.setItem(KAYIT_ANAHTAR + '_bozuk', ham); } catch (e2) {}
+    let h = null;
+    try { h = tasi(JSON.parse(ham)); if (!h || typeof h !== 'object' || Array.isArray(h)) throw new Error('nesne değil'); }
+    catch (e) {   // yalnız ayrıştırma/sürüm hatasında kayıt bütünüyle yenilenir; ilk yedek korunur, sonrakiler zaman damgalı
+      try { const yk = KAYIT_ANAHTAR + '_bozuk'; localStorage.setItem(localStorage.getItem(yk) === null ? yk : yk + '_' + Date.now(), ham); } catch (e2) {}
       this.k = varsayilanKayit();
       this.bildirim = 'Kayıt okunamadı, yeni başlangıç';
       this.yaz();
+      return this.k;
     }
+    const [k, bozuk] = onar(h);
+    this.k = k;
+    if (bozuk.length) { this.bildirim = 'Kayıt kısmen onarıldı'; this.onarilan = bozuk; this.yaz(); }
     return this.k;
   },
   yaz(o) {
@@ -1160,14 +1175,14 @@ const BULUT = [50, 150, 400].map((z, i) => ({ z, b: Array.from({ length: 9 }, (_
 
 function parcacik(x, y, n, renk, hiz = 60, s = 2.5) {
   for (let k = 0; k < n; k++) {
-    const p = G.parca.find(q => !q.on); if (!p) return;
+    let p = null; for (const q of G.parca) if (!q.on) { p = q; break; } if (!p) return;
     const a = Math.random() * 6.283, h = hiz * (0.4 + Math.random() * 0.8);
     p.on = true; p.x = x; p.y = y; p.vx = Math.cos(a) * h; p.vy = Math.sin(a) * h; p.t = 0; p.s = 0.35 + Math.random() * 0.3; p.r = s * (0.6 + Math.random() * 0.8); p.renk = renk;
   }
 }
-function halkaFx(x, y, r, renk = '#fff', s = 0.35, w = 3) { const h = G.halkaG.find(q => !q.on); if (!h) return; h.on = true; h.x = x; h.y = y; h.r = r; h.t = 0; h.s = s; h.renk = renk; h.w = w; }
+function halkaFx(x, y, r, renk = '#fff', s = 0.35, w = 3) { let h = null; for (const q of G.halkaG) if (!q.on) { h = q; break; } if (!h) return; h.on = true; h.x = x; h.y = y; h.r = r; h.t = 0; h.s = s; h.renk = renk; h.w = w; }
 function ucanSayi(x, y, d, kc) {
-  const s = G.sayilar.find(q => !q.on); if (!s) return;
+  let s = null; for (const q of G.sayilar) if (!q.on) { s = q; break; } if (!s) return;
   s.on = true; s.x = x; s.y = y; s.t = 0; s.m = '+' + Math.round(d); s.k = kc >= 1.2 ? '×' + fmt1(kc) : '';
 }
 // mükemmel parlaması: alan ≤ %30, < 100 ms, saniyede ≤ 3 (GUVENLIK); ışık modunda yerine kontur halkası
@@ -1571,7 +1586,7 @@ function turBasla() {
   G.u = new Ucus(G.turSeed, G.sv, turNo, G.bot, { oran: CH / CW, kay: kayOran(), ol: olay, denetim: DEBUG, prim: B0.kalkis_primi });
   SON_OLAY = null;
   if (G.bot) { G.botRng = RNG(G.turSeed * SE.tohum_bot[0] + SE.tohum_bot[1]); G.botRampa = rampa_karar(G.bot, G.botRng, G.sv); G.botD = botDurum(G.botRng); }
-  G.asama = 'RAMPA'; G.rampaT = 0; G.acc = 0; G.hitstop = 0; G.slowT = 0; G.kuyruk = 0; G.bitisT = 0; G.ipucuBuTur = false; G.sesIlkVerildi = false; G.vurguO = null; G.hedefIpucu = false;
+  G.asama = 'RAMPA'; G.rampaGirisT = performance.now() / 1000; G.rampaT = 0; G.acc = 0; G.hitstop = 0; G.slowT = 0; G.kuyruk = 0; G.bitisT = 0; G.ipucuBuTur = false; G.sesIlkVerildi = false; G.vurguO = null; G.hedefIpucu = false;
   for (const p of G.parca) p.on = false; for (const p of G.kademeP) p.on = false; for (const s of G.sayilar) s.on = false; for (const p of G.iz) p.t = -9;
   G.koniT = 9; G.flasT = 9;
   ekranGoster(null); $('hud').hidden = false; $('rampa').hidden = false; rampaKur(); igneCiz();
@@ -1595,6 +1610,7 @@ function kalkisYap(kalite, rt = G.rampaT, insan = false) {   // bot ve otomatik 
   else { mesaj('ZAYIF'); SES.tik(); $('rampa').classList.add('titre'); }
   u.px = u.x; u.py = u.y;
 }
+const ucusNo = () => KAYIT.k.tur + KAYIT.k.elle + 1;   // doğal + elle bitirilen uçuşların sırası (kara kutu başlığı ve duvar.ses aynı sayıyı kullanır)
 function turSonu(elle) {   // tur kazancını hesapla ve kaydet (tek setItem; bekleyen aynı yazımda null)
   const u = G.u, r = u.sonuc(), K = KAYIT.k;
   const sesVar = r.duvar.includes('ses'), ilkSes = sesVar && K.duvar.ses === null;
@@ -1602,7 +1618,7 @@ function turSonu(elle) {   // tur kazancını hesapla ve kaydet (tek setItem; be
   const nesne = r.kazanc_nesne - r.kazanc_rakip;
   const toplam = elle ? nesne + r.kazanc_km + duvarOdul : r.kazanc + duvarOdul;
   const rek = { mesafe: r.mesafe_g > K.rekor.mesafe_g, hiz: r.max_v > K.rekor.max_v };
-  const kk = { r, elle, nesne, km: r.kazanc_km, prim: elle ? null : r.kazanc_rakip, taban: elle ? null : A.taban_odul, ses: duvarOdul, toplam: Math.round(toplam), rek, tur: K.tur + 1 + (elle ? K.elle : 0) };
+  const kk = { r, elle, nesne, km: r.kazanc_km, prim: elle ? null : r.kazanc_rakip, taban: elle ? null : A.taban_odul, ses: duvarOdul, toplam: Math.round(toplam), rek, tur: ucusNo() };
   if (!SV_Q) {   // ?sv'li oyun kayda yazmaz (?kayit=0 hiç yazmaz)
     K.jeton += kk.toplam; K.bekleyen = null;
     if (elle) K.elle += 1; else K.tur += 1;   // elle bitirmeler ayrı sayılır (K16 "kendiliğinden tur" şişmesin)
@@ -1624,7 +1640,7 @@ function bitisBasla() {
   G.kk = turSonu(false);
 }
 function karaKutuAc() {
-  G.asama = 'KARA_KUTU'; G.kkT = 0; G.kkJeton = false; $('hud').hidden = true; ekranGoster('karakutu');
+  G.asama = 'KARA_KUTU'; G.kkT = 0; G.kkAcikT = 0; G.kkJeton = false; $('hud').hidden = true; ekranGoster('karakutu');
   const kk = G.kk, r = kk.r;
   $('kkBaslik').textContent = 'UÇUŞ RAPORU · TUR ' + kk.tur;
   const sat = [['Nesneler (' + r.temas + ' vuruş)', fmtN(kk.nesne)], ['Mesafe (' + fmt1(r.mesafe_g) + ' km)', fmtN(kk.km)], ['Kalkış primi', kk.prim === null ? '—' : fmtN(kk.prim)], ['Sponsor tabanı', kk.taban === null ? '—' : fmtN(kk.taban)]];
@@ -1643,10 +1659,12 @@ function karaKutuAc() {
   } else kb.hidden = true;
   $('kkToplam').textContent = '0';
   for (const b of ['kkTekrar', 'kkHangar', 'kkKart']) $(b).disabled = true;
+  G.kkSatir = document.querySelectorAll('#karakutu .satir');
 }
 const ort = (a) => a.length ? a.reduce((x, y) => x + y, 0) / a.length : 0;
 function durduranMetin(r) {
   const yer = (a, o) => METIN[a].replace(/\{(\S)\}/g, (_, k) => o[k]);
+  if (!r.duvar.includes('ses') && r.max_v >= A.ses_v) return yer('durduran.ses_yakin', { s: fmt1(A.ses_sure) });   // eşiği geçti ama süre yetmedi: Δ negatif olurdu
   if (!r.duvar.includes('ses') && r.max_v >= B0_ARAYUZ.durduran_ses_v) return yer('durduran.ses', { 'Δ': Math.round((hizGosterge(A.ses_v) - hizGosterge(r.max_v)) * 3.6) });
   if (G.u.gosterge >= 1.0) return METIN['durduran.dalis'];
   if (r.ip >= 2) return yer('durduran.ip', { n: r.ip });
@@ -1672,10 +1690,11 @@ function karaKutuSur(dt) {
   const f = Math.min(1, G.kkT / U.kara_kutu_sayac);
   $('kkToplam').textContent = fmtN(kk.toplam * f);
   if (f >= 1 && !G.kkJeton) { G.kkJeton = true; SES.jeton(); }
-  const s = document.querySelectorAll('#karakutu .satir'), adim = (U.kara_kutu_max - U.kara_kutu_sayac) / Math.max(1, s.length);
-  s.forEach((e, i) => e.classList.toggle('on', G.kkT >= U.kara_kutu_sayac * 0.5 + i * adim * 0.5));
-  if (G.kkT >= U.kara_kutu_kilit) for (const b of ['kkTekrar', 'kkHangar', 'kkKart']) $(b).disabled = false;
-  if (G.bot && !TEST_T && G.kkT > U.bot_kk_bekle) turBasla();
+  const s = G.kkSatir, adim = (U.kara_kutu_max - U.kara_kutu_sayac) / Math.max(1, s.length);
+  for (let i = 0; i < s.length; i++) s[i].classList.toggle('on', G.kkT >= U.kara_kutu_sayac * 0.5 + i * adim * 0.5);
+  G.kkAcikT += dt;   // düğme kilidi gerçek zamanla (atlama yalnız animasyonu ilerletir)
+  if (G.kkAcikT >= U.kara_kutu_kilit && $('kkTekrar').disabled) for (const b of ['kkTekrar', 'kkHangar', 'kkKart']) $(b).disabled = false;
+  if (G.bot && !TEST_T && G.kkAcikT > U.bot_kk_bekle) turBasla();
 }
 function karaKutuAtla() { G.kkT = Math.max(G.kkT, B0_ARAYUZ.kara_kutu_max); }
 
@@ -1720,7 +1739,7 @@ function hangarCiz(vurgu = null, zipla = null) {
     const b = document.createElement('button');
     b.className = 'kart' + (p === null ? ' maks' : p > K.jeton ? ' yetersiz' : '') + (vurgu && grup.includes(vurgu) ? ' vurgu' : '') + (zipla === ad ? ' zipla' : '');
     b.setAttribute('aria-label', `${METIN.kart[ad]}, seviye ${s} / ${mx}${p === null ? ', maksimum' : ', fiyat ' + p + ' jeton'}`);
-    b.innerHTML = `<b>${METIN.kart[ad]}</b><span class="sv">${'<i class="d"></i>'.repeat(s)}${'<i></i>'.repeat(mx - s)}</span><p>${kartEtki(ad, sv)}</p>` +
+    b.innerHTML = `<b>${METIN.kart[ad]}</b><span class="sv">${'<i class="d"></i>'.repeat(s)}${'<i></i>'.repeat(Math.max(0, mx - s))}</span><p>${kartEtki(ad, sv)}</p>` +
       `<span class="fiyat">${p === null ? 'MAKS' : p > K.jeton ? fmtN(p) + ' · ' + fmtN(p - K.jeton) + ' eksik' : fmtN(p)}</span>`;
     b.addEventListener('click', () => satinAl(ad));
     kap.append(b);
@@ -1734,8 +1753,8 @@ function satinAl(ad) {
 }
 
 // ---- duraklat, devam, elle bitirme (§13.3)
-function duraklat() {
-  if (G.duraklat || !(G.asama === 'RAMPA' || G.asama === 'UCUS') || G.donmus) return;
+function duraklat() {   // geri sayım sırasında da çalışır: sayım iptal, menü yeniden açılır
+  if ((G.duraklat && G.sayim <= 0) || !(G.asama === 'RAMPA' || G.asama === 'UCUS') || G.donmus) return;
   G.duraklat = true; G.sayim = 0; $('sayim').hidden = true; SES.vinDur(); SES.motorDur();
   ekranGoster('menu'); $('mTohum').textContent = 'Tohum ' + G.turSeed + (G.bot ? ' · bot ' + G.bot : '');
 }
@@ -1757,7 +1776,7 @@ window.addEventListener('blur', () => { if (!GORUNTUSUZ && TEST_T === null) dura
 
 // ---- ayarlar (§13.2)
 let ayarDon = null;
-function ayarAc(geri) { ayarDon = geri; ekranGoster('ayarlar'); ayarCiz(); $('aOnay').hidden = true; }
+function ayarAc(geri) { ayarDon = geri; ekranGoster('ayarlar'); ayarCiz(); $('aOnay').hidden = true; $('aSifirla').hidden = geri !== 'hangar'; }   // sıfırlama yalnız hangardan (süren tur yok)
 function ayarCiz() {
   const a = KAYIT.k.ayar;
   $('aEfekt').value = a.efekt;
@@ -1792,9 +1811,9 @@ document.addEventListener('pointerdown', (e) => {
   if (ilkDokunus) {
     const bekle = rampaBekle() && G.asama === 'RAMPA';
     ilkDokunus = false; tamEkran();
-    if (bekle && !e.target.closest('button')) {   // bu dokunuş yalnız başlatır
+    if (bekle) {   // bekleme bitti: hangi yoldan olursa olsun ipucu değişir; düğme dışı dokunuş yalnız başlatır
       if (!KAYIT.k.ipucu.rampa) ipucu('Yeşilde dokun', 2.5); else { ipucuZ = 0; $('ipucu').classList.remove('on'); }
-      return;
+      if (!e.target.closest('button')) return;
     }
   }
   if (!e.isPrimary) return;
@@ -1804,7 +1823,7 @@ document.addEventListener('pointerdown', (e) => {
 }, { passive: true });
 function dokunus() {
   if (G.duraklat || G.sayim > 0 || G.donmus) return;
-  if (G.asama === 'RAMPA') { if (!G.bot) kalkisYap(rampaKalite(rampaP(G.rampaT)), G.rampaT, true); return; }
+  if (G.asama === 'RAMPA') { if (!G.bot && performance.now() / 1000 - G.rampaGirisT >= B0_ARAYUZ.rampa_kilit) kalkisYap(rampaKalite(rampaP(G.rampaT)), G.rampaT, true); return; }
   if (G.asama === 'UCUS') { if (!G.bot) G.kuyruk = 1; return; }   // bir sonraki fizik adımında uygulanır; kuyrukta en çok 1
   if (G.asama === 'BITIS') { G.bitisT = B0_ARAYUZ.bitis_sure; return; }
   if (G.asama === 'KARA_KUTU') karaKutuAtla();
@@ -1912,9 +1931,9 @@ $('aSifirla').addEventListener('click', () => { $('aOnay').hidden = false; });
 $('aVazgec').addEventListener('click', () => { $('aOnay').hidden = true; });
 $('aSil').addEventListener('click', () => { KAYIT.sifirla(); $('aOnay').hidden = true; ayarCiz(); bildirim('Kayıt sıfırlandı'); if (ayarDon === 'hangar') hangarCiz(); });
 $('ucBtn').addEventListener('click', () => { tamEkran(); turBasla(); });
-$('kkTekrar').addEventListener('click', () => { if (G.kkT >= B0_ARAYUZ.kara_kutu_kilit) turBasla(); });
-$('kkHangar').addEventListener('click', () => { if (G.kkT >= B0_ARAYUZ.kara_kutu_kilit) hangarAc(); });
-$('kkKart').addEventListener('click', (e) => { if (G.kkT >= B0_ARAYUZ.kara_kutu_kilit) hangarAc(e.currentTarget.dataset.ad); });
+$('kkTekrar').addEventListener('click', () => { if (G.kkAcikT >= B0_ARAYUZ.kara_kutu_kilit) turBasla(); });
+$('kkHangar').addEventListener('click', () => { if (G.kkAcikT >= B0_ARAYUZ.kara_kutu_kilit) hangarAc(); });
+$('kkKart').addEventListener('click', (e) => { if (G.kkAcikT >= B0_ARAYUZ.kara_kutu_kilit) hangarAc(e.currentTarget.dataset.ad); });
 window.addEventListener('resize', () => { boyut(); if (G.u) { G.u.oran = CH / CW; G.u.kay = kayOran(); } });
 
 // ================================================================== test arayüzü (§17.2)
@@ -1931,7 +1950,7 @@ window.__oyun = {
   dokun() { if (G.asama === 'RAMPA') { dokunus(); return true; } if (G.asama !== 'UCUS') return false; const r = G.u.oyuncu_dokun(); return r === 'dalis' || r === 'halka'; },
   tur(seed, sv = {}, bot = 'hic', tur = 1, op = {}) { return tur_oyna(seed, sv, bot, tur, op); },
   kampanya(seed, bot = 'iyi', n = 15, op = {}) { return kampanya(seed, bot, n, op); },
-  deger, alisveris, fiyatB0, hizGosterge, irtifaKm,
+  deger, alisveris, fiyatB0, durduranMetin, onar, B0S, hizGosterge, irtifaKm,
   olaylar: [], sonuclar: null, uyarilar: UYARILAR, sesDurum: () => SES.durum(), sesYuklu: () => SES.yuklu(),
   kayit: { oku: () => derin(KAYIT.k), yaz: (o) => { KAYIT.yaz(o); }, sifirla: () => KAYIT.sifirla() },
   hazir: false,
@@ -1986,7 +2005,8 @@ function acilis() {
   const K = KAYIT.k;
   if (K.bekleyen) {   // gizliyken öldürülmüş tur: kazanç bir kez eklenir; ses duvarı kırıldıysa ilk kırılış kaydedilir (ödül ikinci kez alınamaz)
     const bk = typeof K.bekleyen === 'number' ? { j: K.bekleyen, ses: false } : K.bekleyen, b = Math.round(bk.j);
-    K.jeton += b; K.elle += 1; if (bk.ses && K.duvar.ses === null) K.duvar.ses = K.tur + 1;
+    K.jeton += b; if (bk.ses && K.duvar.ses === null) K.duvar.ses = ucusNo();
+    K.elle += 1;
     K.bekleyen = null; KAYIT.yaz(); bildirim('Yarım kalan uçuş: +' + fmtN(b) + ' jeton');
   }
   if (KAYIT.bildirim) bildirim(KAYIT.bildirim);

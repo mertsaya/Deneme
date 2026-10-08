@@ -14,7 +14,7 @@ Kullanım:
   python ucus_sim.py kontrol    # değişmez testleri (g_etkin >= 0, sekme büyüklüğü/açısı, ekran yoğunluğu, irtifa eşlemesi)
 Para birimi: altın jeton.
 """
-import math, random, sys, json
+import itertools, math, random, sys, json
 from multiprocessing import Pool
 
 # ---------------------------------------------------------------- ayar (tek yerde)
@@ -195,12 +195,16 @@ def cd_ses(v):
 
 
 # ---------------------------------------------------------------- nesne
+_KIMLIK = itertools.count(1)   # nesne kimliği (bot tahmin hatası önbelleği için; id() çöp toplamadan sonra yeniden kullanılabilir)
+
+
 class Nesne:
-    __slots__ = ('tip', 'x', 'y', 'r', 'sinif', 'vurus', 'son_t', 'aktif', 'ek', 'dogus')
+    __slots__ = ('tip', 'x', 'y', 'r', 'sinif', 'vurus', 'son_t', 'aktif', 'ek', 'dogus', 'kimlik')
 
     def __init__(s, tip, x, y, sinif, r, ek=None, dogus=0.0):
         s.tip, s.x, s.y, s.sinif, s.r = tip, x, y, sinif, r
         s.vurus, s.son_t, s.aktif, s.ek, s.dogus = 0, -99.0, True, ek or {}, dogus
+        s.kimlik = next(_KIMLIK)
 
 
 # ---------------------------------------------------------------- uçuş
@@ -928,7 +932,7 @@ def gorunur_hedef(u, bot, durum, on=0.0):
             continue
         if not (vl <= o.x <= vr and vb <= o.y <= vt):
             continue
-        k = id(o)
+        k = o.kimlik
         if k not in hata:
             hata[k] = (durum['rng'].uniform(-gm, gm), durum['rng'].uniform(-gm, gm)) if gm else (0.0, 0.0)
         ex, ey = hata[k]
