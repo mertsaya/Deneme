@@ -59,7 +59,7 @@ AYAR = dict(
     acilis_sekme_dt=1.8,       # açılış zeplini: kalkıştan 1,6 s sonraki rota noktasına konur ("vay" garantisi)
     # sekme
     k_tavan=0.96, k_sv=0.012,  # Sekme verimi: k + 0,012/sv, tavan 0,96
-    sekme_v_tavan=300.0,       # kullanıcı kararı (mantık kuralı 1'in bilinçli istisnası, yay enerjisi): sekme |v'| = v·k + b·(1 − v/V_tavan), alt sınır 0; düşük hızda kazanç, V_tavan üstünde kayıp
+    sekme_v_tavan=200.0,       # kullanıcı kararı (mantık kuralı 1'in bilinçli istisnası, yay enerjisi): sekme |v'| = v·k + b·(1 − v/V_tavan), alt sınır 0; düşük hızda kazanç, V_tavan üstünde kayıp
     tekrar_sure=2.0,           # aynı nesne 2 s içinde ikinci kez etki vermez
     # dalış
     dalis_aci=70.0, dalis_koni=(66.0, 76.0), dalis_menzil=150.0, dalis_menzil_k=1.0,   # koni içinde hedef varsa ona nişan alır. 60–80→66–76: zamanlama beceri farkı yaratsın
@@ -72,7 +72,7 @@ AYAR = dict(
     ogrenme_n=5,               # tur 1'de ilk 5 nesne birbirinden ve öncekilerden en az ayni_tur_ekran·W uzakta (öğrenme rampası)
     kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     # yönlendirme + yakıt (kullanıcı kararı): basılı tutup sürükleyince burun hedef açıya döner, |v| korunur; dönerken yakıt harcanır
-    yakit_kap=100.0, yakit_kap_sv=30.0, yakit_harca=35.0,   # tur başı dolu depo; 'depo' kartı kapasite; birim/s (dönerken)
+    yakit_kap=60.0, yakit_kap_sv=20.0, yakit_harca=35.0,   # tur başı dolu depo; 'depo' kartı kapasite; birim/s (dönerken)
     yon_hiz=60.0, yon_hiz_sv=12.0, yon_sinir=45.0, yon_sinir_sv=5.0,   # derece/s dönüş hızı, ± derece hedef sınırı; 'yon' kartı
     yon_bot_ara=0.2,           # botların yönlendirme kararı aralığı (s)
     # doğal hava akımları (kullanıcı kararı): termal ve jet satın almadan çıkar; erken turlarda nadir/zayıf, 'hava' kartı sıklık+güç
@@ -90,7 +90,7 @@ AYAR = dict(
     # itiş (kullanıcı kararı): hedefsiz dokunuş = kısa ileri-yukarı itiş (boş dalış/toparlanma yerine); yakıt harcar
     itki_aci=30.0, itki_aci_max=60.0,   # burun en çok 30° yukarı döner, mutlak açı en çok +60°; asla aşağı dönmez
     itki_sure=0.3, itki_kat=0.08, itki_v_tavan=150.0,   # 0,3 s'de |v| en çok +%8; itişle hız bu tavanı aşamaz
-    itki_yakit=15.0, itki_bekle=0.5,    # yakıt/itiş; iki itiş arası en az 0,5 s (saniyede en çok 2)
+    itki_yakit=20.0, itki_bekle=0.5,    # yakıt/itiş; iki itiş arası en az 0,5 s (saniyede en çok 2)
     itki_bot_y=60.0, itki_bot_v=45.0,   # orta/iyi/usta bot hedef yokken itişi alçakta inerken ya da yavaşlayınca kullanır
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
@@ -106,7 +106,7 @@ AYAR = dict(
     ekran_hedef=3.5,           # ekranda her an hedef nesne sayısı (kullanıcı kararı 2026-10-08: 7→5→3,5; 'çok sıklık var')
     romorkor_garanti=False,    # SEÇENEK (kapalı): uçuşta romorkor_y ilk geçilince römorkör garanti çıkar (RAPOR §6)
     romorkor_y=1500.0,         # uzay römorkörü yalnız bu yüksekliğin üstünde çıkar (üst atmosfer sonu / yörünge girişi)
-    seyrek=dict(y=1000.0, t0=30.0, adim=10.0, kat=0.9, en_az=0.5),   # S8: y < 1.000'de (300 yetmedi: tavana çarpanlar bulut bandında) trambolin ağırlığı uçuşun 30. s'sinden sonra her 10 s'de ×0,9 (en az ×0,5)
+    seyrek=dict(y=1000.0, t0=30.0, adim=10.0, kat=0.75, en_az=0.2),   # S8: y < 1.000'de (300 yetmedi: tavana çarpanlar bulut bandında) trambolin ağırlığı uçuşun 30. s'sinden sonra her 10 s'de ×0,9 (en az ×0,5)
     garanti_pay=25.0,          # sekme garantisi: rotanın en az 25 b altında, y ≥ 25
     # fırsat / ölümcül aralıkları (süre)
     firsat_ara=30.0, firsat_ara_sv=0.25, firsat_min=6.0,   # tür başına ortalama aralık /(1+0,25·sv), türler arası ≥ firsat_min s
@@ -121,7 +121,7 @@ AYAR = dict(
     odul_kat=0.10,             # izlenme → jeton çevrimi (KULLANICI KARARI bekliyor; değiştirme)
     nesne_prim=3.1,            # nesne ödülüne sponsor primi (çevrimden bağımsız). S4 2,4→2,0 önerdi; geliri hedefin yarısına düşürdü, ayarla 2,8; seyreltme (ekran_hedef 7→5) sonrası 3,1 (iyi ses duvarı tur 3'e döndü)
     rakip_odul=0.2,             # rampa zeplin vuruşu: hasar × 0,2 jeton. S4 0,6→0,45 önerdi; tur 1 kazancının büyük payı olduğu için 0,2
-    km_odul=75.0,              # iç km (1.000 b) başına jeton, bant çarpanıyla (S3). S4 55 önerdi, ayarla 75
+    km_odul=50.0,              # iç km (1.000 b) başına jeton, bant çarpanıyla (S3). S4 55 önerdi, ayarla 75
     taban_odul=25.0, sure_odul=0.0,   # sponsor tabanı: tur başına sabit (para sıfırken bile kazanç > 0). Saniye ödemesi kaldırıldı (uzun turu ödüllendirmesin)
     firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=5.5),   # S7: römorkör 4,5→5,5. FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
     fiyat_us=1.55,
@@ -137,22 +137,23 @@ RAKIPLER = [(700, 500), (1100, 1500), (1800, 4000), (3200, 8000), (5200, 15000)]
 # sinif: tr = trambolin, yv = yavaşlatıcı, fr = fırsat (hızlandırıcı/toplanır), ol = ölümcül
 _YK = AYAR['y_karman']   # uzay bantları Kármán eşiğinden türer
 TIPLER = {
-    'balon':   dict(aile='balon', sinif='tr', r=12,  ymin=40,   ymax=200,  w=2.0, k=0.90, b=18, aci=50, yan=0.06, odul=15, omur=3, acilis=1),
-    'parti':   dict(aile='balon', sinif='tr', r=10,  ymin=30,   ymax=150,  w=2.0, k=0.85, b=12, aci=42, yan=0.02, odul=10, omur=2, acilis=1),
-    'zeplin':  dict(aile='zeplin', sinif='tr', r=22, ymin=80,   ymax=500,  w=1.8, k=0.92, b=20, aci=45, yan=0.10, odul=40, omur=3, acilis=1),
-    'dron':    dict(aile='makine', sinif='tr', r=11,  ymin=60,   ymax=450,  w=1.2, k=0.92, b=20, aci=55, yan=0.25, odul=60, omur=1, acilis=1, ek_vy=15),
-    'sicak':   dict(aile='balon', sinif='tr', r=20, ymin=250,  ymax=950,  w=1.0, k=0.90, b=20, aci=40, yan=0.08, odul=30, omur=3, acilis=9),
+    'balon':   dict(aile='balon', sinif='tr', r=12,  ymin=40,   ymax=200,  w=2.0, k=0.80, b=18, aci=50, yan=0.06, odul=15, omur=3, acilis=1),
+    # 'parti' kaldırıldı (kullanıcı kararı: B0'da balon türü 2: reklam balonu + sıcak hava balonu)
+    'zeplin':  dict(aile='zeplin', sinif='tr', r=22, ymin=80,   ymax=500,  w=1.8, k=0.85, b=20, aci=45, yan=0.10, odul=40, omur=3, acilis=1),
+    'dron':    dict(aile='makine', sinif='tr', r=11,  ymin=60,   ymax=450,  w=1.2, k=0.80, b=20, aci=55, yan=0.25, odul=60, omur=1, acilis=1, ek_vy=15),
+    'sicak':   dict(aile='balon', sinif='tr', r=20, ymin=250,  ymax=950,  w=1.0, k=0.85, b=20, aci=40, yan=0.08, odul=30, omur=3, acilis=9),
     # bilim 40° (8. oturum kararı); fazla irtifa AYAR['ust_sonum'] ile kesilir
-    'bilim':   dict(aile='balon', sinif='tr', r=26, ymin=800,  ymax=_YK - 100, w=1.2, k=0.90, b=20, aci=40, yan=0.03, odul=30, omur=3, acilis='tropopoz'),
+    'bilim':   dict(aile='balon', sinif='tr', r=26, ymin=800,  ymax=_YK - 100, w=1.2, k=0.85, b=20, aci=40, yan=0.03, odul=30, omur=3, acilis='tropopoz'),
     # habitat: ayrı sınıf "kayma yüzeyi" (sığ 15°, fizik trambolinle aynı; görseli kullanıcı onayında)
-    'habitat': dict(aile='habitat', sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.92, b=20, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
+    'habitat': dict(aile='habitat', sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.90, b=20, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
     'marti':   dict(aile='kus', sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.03,   # 0,06→0,03 (kullanıcı kararı)
                       odul=20, acilis=1),
     'ucurtma': dict(aile='ucurtma', sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.08, ip=0.0, ip_odul=16, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,08 hafif, kullanıcı kararı; 0,02→0,35→0,08); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
-    'balina':  dict(aile='zeplin', sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.93, b=20, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
+    'balina':  dict(aile='zeplin', sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.88, b=20, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
+    'kutu':    dict(aile='kutu', sinif='tr', r=18, ymin=100,  ymax=600,  w=1.0, k=0.85, b=20, aci=48, yan=0.10, odul=50, omur=2, acilis=5),   # paraşütlü kargo kutusu (kullanıcı kararı; ICERIK S6 kubbe görünümü)
     'afis':    dict(aile='makine', sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.25,   # 0,35→0,25 (kullanıcı kararı)
                       odul=25, acilis=4, ip_tip=True),
-    'sonde':   dict(aile='balon', sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
+    # 'sonde' kaldırıldı (kullanıcı kararı: B0'da balon türü 2: reklam balonu + sıcak hava balonu)
     'goktasi': dict(aile='goktasi', sinif='yv', r=12, ymin=1000, ymax=_YK - 100, w=0.8, kayip=0.05, odul=20, acilis='tropopoz'),
     'uydu':    dict(aile='uydu', sinif='yv', r=10, ymin=_YK + 100, ymax=9000, w=1.0, kayip=0.12, odul=50, acilis='karman'),
     'cop':     dict(aile='cop', sinif='yv', r=6,  ymin=_YK, ymax=9000, w=2.0, kayip=0.08, odul=15, acilis='karman'),

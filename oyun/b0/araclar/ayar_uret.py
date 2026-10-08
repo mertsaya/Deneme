@@ -15,7 +15,7 @@ B0 = KOK / 'b0'
 CIKTI, SAYFA = B0 / 'ayar.json', B0 / 'index.html'
 
 KARTLAR = ['rampa', 'bolge', 'verim', 'dalis', 'kademe_itki', 'yakit_ac', 'yakit_s', 'depo', 'yon', 'hava']
-TIPLER_B0 = ['balon', 'parti', 'zeplin', 'dron', 'sicak', 'marti', 'ucurtma', 'afis', 'balina']   # parti yalnız eşlik testi (?tipler=)
+TIPLER_B0 = ['balon', 'zeplin', 'dron', 'sicak', 'marti', 'ucurtma', 'balina', 'kutu', 'afis']   # sim sırası korunur
 
 # Sim kodunun içine gömülü sayılar (işlev adı yorumda). Sim bunları sabite taşırsa buradan silinip sim'den okunur.
 SABIT_EK = {

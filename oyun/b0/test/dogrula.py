@@ -32,7 +32,7 @@ def ci(a):
 def main():
     m = sim()
     for k in list(m.TIPLER):
-        if k not in ('balon', 'parti', 'zeplin', 'marti', 'ucurtma'):
+        if k not in ('balon', 'zeplin', 'marti', 'ucurtma'):
             del m.TIPLER[k]
     srv = http.server.ThreadingHTTPServer(('127.0.0.1', 0), functools.partial(H, directory=str(B0)))
     threading.Thread(target=srv.serve_forever, daemon=True).start()
@@ -44,7 +44,7 @@ def main():
         pg = ctx.new_page()
         pg.on('console', lambda x: hatalar.append(x.text) if x.type in ('error', 'warning') else None)
         pg.on('pageerror', lambda e: hatalar.append(str(e)))
-        pg.goto(url + '?kayit=0&seed=1&b0seyrek=0&tipler=balon,parti,zeplin,marti,ucurtma'); pg.wait_for_function('window.__oyun && window.__oyun.hazir')
+        pg.goto(url + '?kayit=0&seed=1&b0seyrek=0&tipler=balon,zeplin,marti,ucurtma'); pg.wait_for_function('window.__oyun && window.__oyun.hazir')
         # 1) sim eşliği
         sat = []
         for b in ('hic', 'orta', 'iyi'):

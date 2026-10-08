@@ -34,6 +34,10 @@ button:disabled{opacity:.45}
 #hizg{position:absolute;left:8px;bottom:calc(env(safe-area-inset-bottom,0px) + 8px);width:132px;height:132px}
 #hizg.titre{animation:titre .08s linear infinite}
 @keyframes titre{0%{transform:translate(1px,0)}50%{transform:translate(-1px,1px)}100%{transform:translate(0,-1px)}}
+#yakitBar{position:absolute;right:108px;bottom:calc(env(safe-area-inset-bottom,0px) + 18px);width:14px;height:80px;border-radius:7px;background:rgba(16,24,48,.7);border:1px solid var(--cizgi);overflow:hidden}
+#yakitBar i{position:absolute;left:0;right:0;bottom:0;background:#2ee6d6}
+#yakitBar.bos i{background:#ff5a5a}
+#hizg.parla{filter:brightness(1.8) drop-shadow(0 0 6px #fff)}
 #dalisd{position:absolute;right:12px;bottom:calc(env(safe-area-inset-bottom,0px) + 14px);width:88px;height:88px}
 #dalisd.salla{animation:salla .08s linear}
 @keyframes salla{0%,100%{transform:translateX(0)}33%{transform:translateX(-5px)}66%{transform:translateX(5px)}}
@@ -113,7 +117,7 @@ body.rampada #ipucu{bottom:calc(env(safe-area-inset-bottom,0px) + 43% + 40vw + 1
 </head>
 <body>
 <!-- Üretilmiş yapılandırma (oyun/b0/araclar/ayar_uret.py yazar; elle düzenleme) -->
-<script type="application/json" id="ayar">{"kaynak":"oyun/sim/ucus_sim.py (ayar_uret.py ile üretildi; elle düzenleme)","AYAR":{"dt":0.008333333333333333,"g":30.0,"v_yorunge":600.0,"v_kacis":848.5281374238571,"g_yatay":true,"rho_olcek":400.0,"c_suruk":0.00012,"cd_ses":[[85,1.0],[100,2.4],[115,1.1]],"ses_v":115.0,"ses_sure":0.3,"isi_duvar_v":250.0,"duvar_sure":1.0,"isi_sure":2.5,"uzay_kosul":true,"isi_v":250.0,"isi_y":1000.0,"isi_hiz":3.0,"isi_sogu":25.0,"isi_cd":2.5,"y_karman":3500.0,"y_tropopoz":1000.0,"sonum":22.0,"sonum_yorunge":22.0,"sonum_alt":{"y0":300.0,"y1":3500.0,"ek":7.0},"ust_sonum":[2900.0,6.0],"v_dur":25.0,"dur_sure":2.0,"vx_dur":110.0,"tur_tavan":65.0,"r_roket":4.0,"rampa_y":60.0,"rampa_aci":38.0,"rampa_v":70.0,"rampa_v_sv":16.0,"rampa_oto":3.0,"aci_aralik":[26.0,52.0],"aci_hiz_k":0.07,"aci_opt":[28.0,2.0],"aci_oto":3.0,"kalite":{"mukemmel":1.3,"iyi":1.0,"zayif":0.8},"mukemmel_bolge":0.12,"mukemmel_bolge_sv":0.024,"mukemmel_bonus_sv":0.05,"acilis_inis_pay":0.2,"acilis_sekme_dt":1.8,"k_tavan":0.92,"k_sv":0.012,"tekrar_sure":2.0,"dalis_aci":70.0,"dalis_koni":[66.0,76.0],"dalis_menzil":150.0,"dalis_menzil_k":1.0,"dalis_itki":14.0,"dalis_itki_sv":4.0,"dalis_sure":1.2,"bos_dalis_sure":0.4,"bos_dalis_kayip":0.0,"bos_dalis_aci":[-10.0,45.0],"bos_dalis_yer":15.0,"dogus_pay":4.0,"baslangic_bos_x":120.0,"baslangic_bos_t":2.6,"yavaslatici_ac_x":600.0,"yavaslatici_tur":3,"ogrenme_n":5,"kacis_pay":4.0,"yakit_kap":100.0,"yakit_kap_sv":30.0,"yakit_harca":35.0,"yon_hiz":60.0,"yon_hiz_sv":12.0,"yon_sinir":45.0,"yon_sinir_sv":5.0,"yon_bot_ara":0.2,"hava_dogal":["termal","jet"],"hava_ara_kat":1.5,"hava_guc":[0.6,0.1],"cesit_max":1,"ayni_tur_ekran":1.5,"kume_dx":0.2,"yakin_agirlik":[0.3,4.0],"yuk_cesit":25.0,"ritim":{"P":400.0,"bosluk":0.35},"itki_aci":30.0,"itki_aci_max":60.0,"itki_sure":0.3,"itki_kat":0.08,"itki_v_tavan":150.0,"itki_yakit":15.0,"itki_bekle":0.5,"itki_bot_y":60.0,"itki_bot_v":45.0,"dalis_kap":2,"gosterge_bas":1.0,"gosterge_tr":0.08,"gosterge_diger":0.13,"gosterge_m":0.1,"gosterge_firsat":0.3,"gosterge_sv":0.1,"mukemmel_sekme":0.1,"mukemmel_sekme_tavan":12.0,"kademe_y":25.0,"kademe_vy":78.0,"kademe_vy_sv":6.5,"kademe_vx":15.0,"kademe_vx_sv":6.5,"kademe_x_kayip":0.9,"kademe_ust_vy_kat":0.5,"kademe_cd":0.85,"son_ates":19.5,"ekran_w0":150.0,"ekran_wk":0.5,"ekran_wmax":500.0,"ekran_oran":2.1,"ekran_hedef":3.5,"romorkor_garanti":false,"romorkor_y":1500.0,"seyrek":{"y":1000.0,"t0":30.0,"adim":10.0,"kat":0.9,"en_az":0.5},"garanti_pay":25.0,"firsat_ara":30.0,"firsat_ara_sv":0.25,"firsat_min":6.0,"firsat_tur_max":5,"firsat_tur_muaf":["romorkor"],"olumcul_ara":22.0,"olumcul_uyari":1.5,"olumcul_rota":true,"kombo_sure":3.0,"kombo_sure_sv":0.5,"kombo_adim":0.05,"kombo_tavan":2.0,"kombo_tavan_sv":0.33,"carpan_tavan":4.0,"bant_carpan":[[1000.0,2.4],[3500.0,4.3]],"izlenme_sv":0.1,"odul_kat":0.1,"nesne_prim":3.1,"rakip_odul":0.2,"km_odul":75.0,"taban_odul":25.0,"sure_odul":0.0,"firsat_guc_kat":{"fisek":2.8,"konfeti":2.8,"jet":3.5,"romorkor":5.5},"fiyat_us":1.55,"ayar_tur":25},"SONUM_ALT":{"y0":300.0,"y1":3500.0,"ek":7.0},"DUVARLAR":{"ses":300},"TIPLER":{"balon":{"sinif":"tr","r":12,"ymin":40,"ymax":200,"w":3.0,"k":0.8,"aci":50,"yan":0.06,"odul":15,"omur":3,"acilis":1},"parti":{"sinif":"tr","r":10,"ymin":30,"ymax":150,"w":2.0,"k":0.7,"aci":42,"yan":0.02,"odul":10,"omur":2,"acilis":1},"zeplin":{"sinif":"tr","r":22,"ymin":80,"ymax":500,"w":1.2,"k":0.85,"aci":45,"yan":0.1,"odul":40,"omur":3,"acilis":1},"dron":{"sinif":"tr","r":11,"ymin":60,"ymax":450,"w":0.6,"k":0.8,"aci":55,"yan":0.25,"odul":60,"omur":1,"acilis":2,"ek_vy":15},"sicak":{"sinif":"tr","r":20,"ymin":250,"ymax":950,"w":1.0,"k":0.85,"aci":40,"yan":0.08,"odul":30,"omur":3,"acilis":9},"marti":{"sinif":"yv","r":13,"ymin":25,"ymax":180,"w":3.0,"kayip":0.06,"odul":20,"acilis":1},"ucurtma":{"sinif":"yv","r":7,"ymin":40,"ymax":220,"w":1.5,"kayip":0.08,"ip":0.0,"ip_odul":16,"odul":6,"acilis":1},"balina":{"sinif":"tr","r":40,"ymin":120,"ymax":450,"w":0.15,"k":0.88,"aci":45,"yan":0.12,"odul":120,"omur":4,"acilis":2},"afis":{"sinif":"yv","r":14,"ymin":60,"ymax":200,"w":0.4,"kayip":0.35,"odul":25,"acilis":4,"ip_tip":true}},"FIRSATLAR":{"yakit":{"r":9,"odul":20,"guc":1,"guc_sv":0.25,"f":"F1"},"termal":{"r":60,"odul":3,"guc":8,"guc_sv":1.6,"sure":3.0,"f":"F4"},"jet":{"r":30,"odul":5,"guc":12,"guc_sv":1.2,"V":180,"V_sv":24,"uzun":1500,"f":"F6"}},"GELISTIRME":{"rampa":[10,60,1],"bolge":[5,80,2],"verim":[8,90,1],"dalis":[10,70,1],"kademe_itki":[8,200,1],"yakit_ac":[1,[150],2],"yakit_s":[4,100,2],"depo":[5,110,1],"yon":[5,130,1],"hava":[5,140,1]},"fiyatlar":{"rampa":[60,93,144,223,346,537,832,1290,1999,3098],"bolge":[80,124,192,298,462],"verim":[90,140,216,335,519,805,1248,1934],"dalis":[70,108,168,261,404,626,971,1505,2332,3615],"kademe_itki":[200,310,481,745,1154,1789,2773,4299],"yakit_ac":[150],"yakit_s":[100,155,240,372],"depo":[110,170,264,410,635],"yon":[130,202,312,484,750],"hava":[140,217,336,521,808]},"BOTLAR":{"hic":{"tut":0.0},"kotu":{"tepki":[0.4,0.7],"gurultu":0.5,"ongoru":0.2,"tut":0.25,"vazgec":0.3,"rampa_t":[0.4,2.0],"zayif":0.25,"rastgele_s":0.15,"aci_sapma":null,"aci_t":[0.5,2.0],"yon":0.3},"orta":{"tepki":[0.25,0.4],"gurultu":0.25,"ongoru":0.7,"mukemmel":[0.5,0.6],"tut":0.35,"vazgec":0.5,"rampa_t":[0.6,1.4],"aci_sapma":6.0,"aci_t":[0.6,1.4],"yon":0.6,"itki":true},"iyi":{"tepki":[0.18,0.3],"gurultu":0.1,"ongoru":0.8,"mukemmel":[0.8,0.95],"tut":0.5,"vazgec":0.8,"rampa_t":[0.8,1.1],"aci_sapma":3.0,"aci_t":[0.5,1.0],"yon":0.9,"itki":true},"usta":{"tepki":[0.0,0.05],"gurultu":0.0,"ongoru":1.0,"mukemmel":[0.97,0.97],"tut":1.0,"vazgec":1.0,"rampa_t":[0.8,1.1],"aci_sapma":0.0,"aci_t":[0.5,0.6],"yon":1.0,"itki":true}},"BOT_SIRA":["hic","kotu","orta","iyi","usta"],"HIC_SIFIR":["dalis","bolge","yakit_ac","yakit_s","depo","yon"],"IRTIFA_TABLO":[[0,0],[25,0.2],[300,2],[1000,12],[3500.0,100],[6500.0,400]],"SABIT_EK":{"ust_vy_oran":0.35,"marti_donus_derece":2,"acilis_zeplin":{"dx":4,"y_min":65,"r_kat":0.5},"rakip_kalite":{"mukemmel":1.0,"iyi":0.4,"zayif":0.0},"cam_tau":0.8,"yonet_ara":0.1,"yonet":{"on_ekran":1,"dikey_pay":0.3,"y_min":25,"deneme":8},"temizlik":{"arka_ekran":1,"dikey_ekran":2.5,"sonuk_sure":0.5},"ekran_az":4,"garanti_ara":0.25,"garanti_adim":0.1,"rota_sure":6.0,"rota_adim":0.1,"garanti_pay_kat":0.6,"garanti_y_min":30,"garanti_x0":20,"garanti_tr_y_min":25,"firsat":{"ilk":[0.3,0.7],"sonra":[0.7,0.6],"tau":[1.6,1.0],"y_sapma":12,"y_min":30},"yakit":{"tut_ek":0.25,"cift_sv":4,"ek_sv":2,"ek":0.25},"aday":[0.15,80],"bot_bolge_kat":0.5,"tohum_yon":[7919,19],"termal":{"y":140,"w":60,"y_alt":25,"y_ust":250,"dogus_y_max":300},"jet":{"y":[400,650],"yari":30,"dogus_y":[250,800]},"hedef_dy_min":5,"hedef_r_kat":0.5,"bot_karar_ara":0.05,"tohum_bot":[7919,13],"tohum_tur":1000,"tohum_alici":[31,7],"tohum_aci":[7919,17],"duvar_sonraki":0.1,"alis_ufuk":[2.2,60.0,100.0]},"b0_seyrek":{"y":1000.0,"t0":30.0,"t1":45.0,"en_az":0.05}}</script>
+<script type="application/json" id="ayar">{"kaynak":"oyun/sim/ucus_sim.py (ayar_uret.py ile üretildi; elle düzenleme)","AYAR":{"dt":0.008333333333333333,"g":30.0,"v_yorunge":600.0,"v_kacis":848.5281374238571,"g_yatay":true,"rho_olcek":400.0,"c_suruk":0.00012,"cd_ses":[[85,1.0],[100,2.4],[115,1.1]],"ses_v":115.0,"ses_sure":0.3,"isi_duvar_v":250.0,"duvar_sure":1.0,"isi_sure":2.5,"uzay_kosul":true,"isi_v":250.0,"isi_y":1000.0,"isi_hiz":3.0,"isi_sogu":25.0,"isi_cd":2.5,"y_karman":3500.0,"y_tropopoz":1000.0,"sonum":22.0,"sonum_yorunge":22.0,"sonum_alt":{"y0":300.0,"y1":3500.0,"ek":7.0},"ust_sonum":[2900.0,6.0],"v_dur":25.0,"dur_sure":2.0,"vx_dur":110.0,"tur_tavan":65.0,"r_roket":4.0,"rampa_y":60.0,"rampa_aci":38.0,"rampa_v":70.0,"rampa_v_sv":16.0,"rampa_oto":3.0,"aci_aralik":[26.0,52.0],"aci_hiz_k":0.07,"aci_opt":[28.0,2.0],"aci_oto":3.0,"kalite":{"mukemmel":1.3,"iyi":1.0,"zayif":0.8},"mukemmel_bolge":0.12,"mukemmel_bolge_sv":0.024,"mukemmel_bonus_sv":0.05,"acilis_inis_pay":0.2,"acilis_sekme_dt":1.8,"k_tavan":0.96,"k_sv":0.012,"sekme_v_tavan":200.0,"tekrar_sure":2.0,"dalis_aci":70.0,"dalis_koni":[66.0,76.0],"dalis_menzil":150.0,"dalis_menzil_k":1.0,"dalis_itki":14.0,"dalis_itki_sv":4.0,"dalis_sure":1.2,"bos_dalis_sure":0.4,"bos_dalis_kayip":0.0,"bos_dalis_aci":[-10.0,45.0],"bos_dalis_yer":15.0,"dogus_pay":4.0,"baslangic_bos_x":120.0,"baslangic_bos_t":2.6,"yavaslatici_ac_x":600.0,"yavaslatici_tur":3,"ogrenme_n":5,"kacis_pay":4.0,"yakit_kap":60.0,"yakit_kap_sv":20.0,"yakit_harca":35.0,"yon_hiz":60.0,"yon_hiz_sv":12.0,"yon_sinir":45.0,"yon_sinir_sv":5.0,"yon_bot_ara":0.2,"hava_dogal":["termal","jet"],"hava_ara_kat":1.1,"hava_guc":[0.6,0.1],"cesit_max":1,"aile":{"son_n":3,"son_kat":0.25,"uzak_n":6,"uzak_kat":1.5,"balon_pay":0.2,"balon_pay_erken":0.15,"erken_tur":3,"ekran_max":2,"ilk_n":10,"ilk_cesit":4},"ayni_tur_ekran":1.5,"kume_dx":0.2,"yakin_agirlik":[0.3,4.0],"yuk_cesit":25.0,"ritim":{"P":400.0,"bosluk":0.35},"itki_aci":30.0,"itki_aci_max":60.0,"itki_sure":0.3,"itki_kat":0.08,"itki_v_tavan":150.0,"itki_yakit":20.0,"itki_bekle":0.5,"itki_bot_y":60.0,"itki_bot_v":45.0,"dalis_kap":2,"gosterge_bas":1.0,"gosterge_tr":0.08,"gosterge_diger":0.13,"gosterge_m":0.1,"gosterge_firsat":0.3,"gosterge_sv":0.1,"mukemmel_sekme":0.1,"mukemmel_sekme_tavan":12.0,"kademe_y":25.0,"kademe_vy":78.0,"kademe_vy_sv":6.5,"kademe_vx":15.0,"kademe_vx_sv":6.5,"kademe_x_kayip":0.9,"kademe_ust_vy_kat":0.5,"kademe_cd":0.85,"son_ates":19.5,"ekran_w0":150.0,"ekran_wk":0.5,"ekran_wmax":500.0,"ekran_oran":2.1,"ekran_hedef":3.5,"romorkor_garanti":false,"romorkor_y":1500.0,"seyrek":{"y":1000.0,"t0":30.0,"adim":10.0,"kat":0.75,"en_az":0.2},"garanti_pay":25.0,"firsat_ara":30.0,"firsat_ara_sv":0.25,"firsat_min":6.0,"firsat_tur_max":5,"firsat_tur_muaf":["romorkor"],"olumcul_ara":22.0,"olumcul_uyari":1.5,"olumcul_rota":true,"kombo_sure":3.0,"kombo_sure_sv":0.5,"kombo_adim":0.05,"kombo_tavan":2.0,"kombo_tavan_sv":0.33,"carpan_tavan":4.0,"bant_carpan":[[1000.0,2.4],[3500.0,4.3]],"izlenme_sv":0.1,"odul_kat":0.1,"nesne_prim":3.1,"rakip_odul":0.2,"km_odul":50.0,"taban_odul":25.0,"sure_odul":0.0,"firsat_guc_kat":{"fisek":2.8,"konfeti":2.8,"jet":3.5,"romorkor":5.5},"fiyat_us":1.55,"ayar_tur":25},"SONUM_ALT":{"y0":300.0,"y1":3500.0,"ek":7.0},"DUVARLAR":{"ses":300},"TIPLER":{"balon":{"aile":"balon","sinif":"tr","r":12,"ymin":40,"ymax":200,"w":2.0,"k":0.8,"b":18,"aci":50,"yan":0.06,"odul":15,"omur":3,"acilis":1},"zeplin":{"aile":"zeplin","sinif":"tr","r":22,"ymin":80,"ymax":500,"w":1.8,"k":0.85,"b":20,"aci":45,"yan":0.1,"odul":40,"omur":3,"acilis":1},"dron":{"aile":"makine","sinif":"tr","r":11,"ymin":60,"ymax":450,"w":1.2,"k":0.8,"b":20,"aci":55,"yan":0.25,"odul":60,"omur":1,"acilis":1,"ek_vy":15},"sicak":{"aile":"balon","sinif":"tr","r":20,"ymin":250,"ymax":950,"w":1.0,"k":0.85,"b":20,"aci":40,"yan":0.08,"odul":30,"omur":3,"acilis":9},"marti":{"aile":"kus","sinif":"yv","r":13,"ymin":25,"ymax":180,"w":3.0,"kayip":0.03,"odul":20,"acilis":1},"ucurtma":{"aile":"ucurtma","sinif":"yv","r":7,"ymin":40,"ymax":220,"w":1.5,"kayip":0.08,"ip":0.0,"ip_odul":16,"odul":6,"acilis":1},"balina":{"aile":"zeplin","sinif":"tr","r":40,"ymin":120,"ymax":450,"w":0.15,"k":0.88,"b":20,"aci":45,"yan":0.12,"odul":120,"omur":4,"acilis":2},"kutu":{"aile":"kutu","sinif":"tr","r":18,"ymin":100,"ymax":600,"w":1.0,"k":0.85,"b":20,"aci":48,"yan":0.1,"odul":50,"omur":2,"acilis":5},"afis":{"aile":"makine","sinif":"yv","r":14,"ymin":60,"ymax":200,"w":0.4,"kayip":0.25,"odul":25,"acilis":4,"ip_tip":true}},"FIRSATLAR":{"yakit":{"r":9,"odul":20,"guc":1,"guc_sv":0.25,"f":"F1"},"termal":{"r":60,"odul":3,"guc":8,"guc_sv":1.6,"sure":3.0,"f":"F4"},"jet":{"r":30,"odul":5,"guc":12,"guc_sv":1.2,"V":180,"V_sv":24,"uzun":1500,"f":"F6"}},"GELISTIRME":{"rampa":[10,60,1],"bolge":[5,80,2],"verim":[8,90,1],"dalis":[10,70,1],"kademe_itki":[8,200,1],"yakit_ac":[1,[150],2],"yakit_s":[4,100,2],"depo":[5,110,1],"yon":[5,130,1],"hava":[5,140,1]},"fiyatlar":{"rampa":[60,93,144,223,346,537,832,1290,1999,3098],"bolge":[80,124,192,298,462],"verim":[90,140,216,335,519,805,1248,1934],"dalis":[70,108,168,261,404,626,971,1505,2332,3615],"kademe_itki":[200,310,481,745,1154,1789,2773,4299],"yakit_ac":[150],"yakit_s":[100,155,240,372],"depo":[110,170,264,410,635],"yon":[130,202,312,484,750],"hava":[140,217,336,521,808]},"BOTLAR":{"hic":{"tut":0.0},"kotu":{"tepki":[0.4,0.7],"gurultu":0.5,"ongoru":0.2,"tut":0.25,"vazgec":0.3,"rampa_t":[0.4,2.0],"zayif":0.25,"rastgele_s":0.15,"aci_sapma":null,"aci_t":[0.5,2.0],"yon":0.3},"orta":{"tepki":[0.25,0.4],"gurultu":0.25,"ongoru":0.7,"mukemmel":[0.5,0.6],"tut":0.35,"vazgec":0.5,"rampa_t":[0.6,1.4],"aci_sapma":6.0,"aci_t":[0.6,1.4],"yon":0.6,"itki":true},"iyi":{"tepki":[0.18,0.3],"gurultu":0.1,"ongoru":0.8,"mukemmel":[0.8,0.95],"tut":0.5,"vazgec":0.8,"rampa_t":[0.8,1.1],"aci_sapma":3.0,"aci_t":[0.5,1.0],"yon":0.9,"itki":true},"usta":{"tepki":[0.0,0.05],"gurultu":0.0,"ongoru":1.0,"mukemmel":[0.97,0.97],"tut":1.0,"vazgec":1.0,"rampa_t":[0.8,1.1],"aci_sapma":0.0,"aci_t":[0.5,0.6],"yon":1.0,"itki":true}},"BOT_SIRA":["hic","kotu","orta","iyi","usta"],"HIC_SIFIR":["dalis","bolge","yakit_ac","yakit_s","depo","yon"],"IRTIFA_TABLO":[[0,0],[25,0.2],[300,2],[1000,12],[3500.0,100],[6500.0,400]],"SABIT_EK":{"ust_vy_oran":0.35,"marti_donus_derece":2,"acilis_zeplin":{"dx":4,"y_min":65,"r_kat":0.5},"rakip_kalite":{"mukemmel":1.0,"iyi":0.4,"zayif":0.0},"cam_tau":0.8,"yonet_ara":0.1,"yonet":{"on_ekran":1,"dikey_pay":0.3,"y_min":25,"deneme":8},"temizlik":{"arka_ekran":1,"dikey_ekran":2.5,"sonuk_sure":0.5},"ekran_az":4,"garanti_ara":0.25,"garanti_adim":0.1,"rota_sure":6.0,"rota_adim":0.1,"garanti_pay_kat":0.6,"garanti_y_min":30,"garanti_x0":20,"garanti_tr_y_min":25,"firsat":{"ilk":[0.3,0.7],"sonra":[0.7,0.6],"tau":[1.6,1.0],"y_sapma":12,"y_min":30},"yakit":{"tut_ek":0.25,"cift_sv":4,"ek_sv":2,"ek":0.25},"aday":[0.15,80],"bot_bolge_kat":0.5,"tohum_yon":[7919,19],"termal":{"y":140,"w":60,"y_alt":25,"y_ust":250,"dogus_y_max":300},"jet":{"y":[400,650],"yari":30,"dogus_y":[250,800]},"hedef_dy_min":5,"hedef_r_kat":0.5,"bot_karar_ara":0.05,"tohum_bot":[7919,13],"tohum_tur":1000,"tohum_alici":[31,7],"tohum_aci":[7919,17],"duvar_sonraki":0.1,"alis_ufuk":[2.2,60.0,100.0]},"b0_seyrek":{"y":1000.0,"t0":30.0,"t1":45.0,"en_az":0.05}}</script>
 
 <canvas id="cv" aria-label="Oyun sahnesi"></canvas>
 
@@ -132,6 +136,7 @@ body.rampada #ipucu{bottom:calc(env(safe-area-inset-bottom,0px) + 43% + 40vw + 1
     <text id="hizBirim" x="66" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#b7c3dd" stroke="#000" stroke-width="2" paint-order="stroke">km/sa</text>
     <text id="hizSes" x="66" y="122" text-anchor="middle" font-size="11" font-weight="900" fill="#ffd23f" stroke="#000" stroke-width="2" paint-order="stroke" visibility="hidden">SES DUVARI</text>
   </svg>
+  <div id="yakitBar" aria-label="Yakıt"><i></i></div>
   <svg id="dalisd" viewBox="0 0 88 88" aria-hidden="true">
     <circle cx="44" cy="44" r="40" fill="rgba(16,24,48,.8)" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
     <circle id="dalisHalka" cx="44" cy="44" r="34" fill="none" stroke="#ffd23f" stroke-width="7" pathLength="100" stroke-dasharray="0 100" transform="rotate(-90 44 44)"/>
@@ -201,7 +206,7 @@ const Q = new URLSearchParams(location.search);
 const qsay = (k, d) => Q.has(k) && Q.get(k) !== '' && isFinite(+Q.get(k)) ? +Q.get(k) : d;
 
 const B0 = {
-  tipler: Q.has('tipler') ? Q.get('tipler').split(',').filter(k => TIPLER[k]) : ['balon', 'zeplin', 'dron', 'sicak', 'marti', 'ucurtma', 'afis', 'balina'],   // açılış turu TIPLER[*].acilis
+  tipler: Q.has('tipler') ? Q.get('tipler').split(',').filter(k => TIPLER[k]) : ['balon', 'zeplin', 'dron', 'sicak', 'marti', 'ucurtma', 'balina', 'kutu', 'afis'],   // açılış turu TIPLER[*].acilis
   firsatlar: ['yakit', 'termal', 'jet'],                // sim FIRSATLAR sırası; termal ve jet satın almadan doğal (A.hava_dogal)
   yon: Q.get('yon') !== '0',                           // botların yönlendirmesi; ?yon=0 kapatır
   kartlar: [['rampa'], ['bolge'], ['verim'], ['dalis'], ['kademe_itki'], ['yakit_ac', 'yakit_s'], ['depo'], ['yon'], ['hava']],
@@ -227,6 +232,8 @@ const B0_ARAYUZ = {
   alt_pay_px: 160,                                     // zemin ekran altından bu kadar yukarıda: alt göstergeler roketi örtmesin (denetim)
   ust_bas: [0.15, 2.5],                                // ~ üstten sekmede trambolin görsel basılması (s, birim)
   bidon_sure: 0.3,
+  dokun_ms: 180, dokun_px: 10, yon_px: 100,               // ~ hızlı dokunuş (dalış/itiş) eşiği; sürükleme: 100 px dikey = tam sınır açısı
+  ucurtma_kac_s: 2.0,                                  // ~ ipi kopan uçurtmanın yukarı süzülme süresi (görsel)
   rampa_kilit: 0.25,                                   // ~ rampaya girişten sonra dokunuş kilidi (s): UÇ/TEKRAR UÇ çift dokunuşu zayıf kalkış yapmasın
   durduran_ses_v: 100,                                 // ~ 'ses duvarı' kuralının en yüksek hız eşiği (iç hız; kullanıcı kararı)
   abarti_rekor: 1.10, abarti_kisa: 0.5,                // kullanıcı kararı: abartılı bitiş = mesafe rekoru %10'dan fazla aşıldı (ilk tur hariç) ya da son 3 turun ortalamasının yarısından kısa                                     // ~ dron bidonunun rokete uçuşu (s)
@@ -337,7 +344,7 @@ class Ucus {
     this.E = new Float64Array(6); this.RN = new Float64Array(2);
     this.rx = new Float64Array(80); this.ry = new Float64Array(80); this.ai = new Int32Array(80);
     this.hedef_a = 0; this.kaynak = 0;
-    this.yakit = A.yakit_kap + A.yakit_kap_sv * (sv.depo || 0); this.yon_hedef = null; this.son_tip = null; this.son_y = null; this.tip_t = {}; this.termal_t = 0; this.st.yon_s = 0; this.st.itki = 0; this.st.dogan = 0;
+    this.yakit = A.yakit_kap + A.yakit_kap_sv * (sv.depo || 0); this.yon_hedef = null; this.son_tip = null; this.son_y = null; this.tip_t = {}; this.aile_gecmis = []; this.yasak = new Set(); this.sekme_oran = 1; this.termal_t = 0; this.st.yon_s = 0; this.st.itki = 0; this.st.dogan = 0;
     this.itki = false; this.itki_k = 0; this.itki_h = 0; this.itki_dvs = 0; this.itki_son = -99; this.bos_x = A.baslangic_bos_x;
     this.H = { o: null, tau: 9, bas_t: 0, deneme: null, temas_t: null, alindi: false, r0: 0 };   // yakıt dronu halkası (§7.4)
   }
@@ -423,17 +430,28 @@ class Ucus {
     const ya = A.yakin_agirlik, w = (n, T) => T.w * (T.sinif === 'tr' ? sk : 1) * (n in this.tip_t ? ya[0] + (1 - ya[0]) * Math.min(1, (this.t - this.tip_t[n]) / ya[1]) : 1);
     let say = 0;
     for (const n of this.tipSira) if (uy(n, TIPLER[n])) say++;
-    const dis = this.son_tip !== null && say > 1 ? this.son_tip : null;   // aynı tür art arda en çok 1 kez (sim cesit_max)
+    // aile kuralları (sim tip_sec): art arda aynı aile yok, balon payı sınırı, ilk 10 doğuşta ≥ 4 aile; son 3 ailesi ×0,25, uzak ×1,5
+    const AI = A.aile, Gg = this.aile_gecmis, n0 = Gg.length, yasak = this.yasak;
+    yasak.clear();
+    if (n0) yasak.add(Gg[n0 - 1]);
+    let nb = 0; for (const f of Gg) if (f === 'balon') nb++;
+    if ((nb + 1) / (n0 + 1) > (this.tur <= AI.erken_tur ? AI.balon_pay_erken : AI.balon_pay)) yasak.add('balon');
+    if (n0 < AI.ilk_n) { const fs = new Set(Gg); if (AI.ilk_n - n0 <= AI.ilk_cesit - fs.size) for (const f of fs) yasak.add(f); }
+    let kalan = 0;
+    for (const n of this.tipSira) { const T = TIPLER[n]; if (uy(n, T) && !yasak.has(T.aile)) kalan++; }
+    const yas = (n) => kalan > 0 && yasak.has(TIPLER[n].aile);
+    const fk = (n) => { const f = TIPLER[n].aile; for (let i = Math.max(0, n0 - AI.son_n); i < n0; i++) if (Gg[i] === f) return AI.son_kat;
+      if (n0 >= AI.uzak_n) { for (let i = n0 - AI.uzak_n; i < n0; i++) if (Gg[i] === f) return 1; return AI.uzak_kat; } return 1; };
     let top = 0, son = null;
     for (const n of this.tipSira) {
       const T = TIPLER[n];
-      if (n !== dis && uy(n, T)) { top += w(n, T); son = n; }
+      if (uy(n, T) && !yas(n)) { top += w(n, T) * fk(n); son = n; }
     }
     if (son === null) return null;
     let r = this.rng.random() * top;
     for (const n of this.tipSira) {
       const T = TIPLER[n];
-      if (n !== dis && uy(n, T)) { r -= w(n, T); if (r <= 0) return n; }
+      if (uy(n, T) && !yas(n)) { r -= w(n, T) * fk(n); if (r <= 0) return n; }
     }
     return son;
   }
@@ -476,9 +494,11 @@ class Ucus {
   tekrar_ret(tip, x, y) {   // sim tekrar_ret: nefes boşluğu, aynı tür aralığı, küme, öğrenme rampası, yükseklik çeşitliliği
     const R = A.ritim;
     if (((x % R.P) + R.P) % R.P >= R.P * (1 - R.bosluk)) return true;   // Python % gibi (negatif x)
-    const W = this.ekran()[4], ogren = this.tur === 1 && this.st.dogan < A.ogrenme_n;
+    const W = this.ekran()[4], ogren = this.tur === 1 && this.st.dogan < A.ogrenme_n, aile = TIPLER[tip].aile;
+    let ayni = 0;
     for (const o of this.nesneler) {
       if ((o.sinif === 'tr' || o.sinif === 'yv') && o.aktif) {
+        if (TIPLER[o.tip].aile === aile && Math.abs(o.x - x) < W && ++ayni >= A.aile.ekran_max) return true;   // bir ekranda aynı aileden en çok 2
         if (ogren && Math.abs(o.x - x) < A.ayni_tur_ekran * W) return true;
         if (o.tip === tip && Math.abs(o.x - x) < A.ayni_tur_ekran * W) return true;
         if (Math.abs(o.x - x) < A.kume_dx * W) return true;
@@ -491,7 +511,7 @@ class Ucus {
     if (!garanti && this.tekrar_ret(tip, x, y)) return false;   // sekme garantisi muaf
     const xk = x - T.r - A.r_roket;   // nesnenin rokete değebileceği en küçük x
     if (xk < this.bos_x || (T.sinif === 'yv' && this.tur <= A.yavaslatici_tur && xk < A.yavaslatici_ac_x)) return false;   // kalkış boş bölgesi; erken turlarda yavaşlatıcısız başlangıç (sim ekle)
-    if (this.cakisir(x, y, T.r) || !this.gecit(x, y, T.r)) return false; this.nesneler.push(nesneAl(tip, x, y, T.sinif, T.r, this.t)); this.son_tip = tip; this.son_y = y; this.tip_t[tip] = this.t; this.st.dogan++; return true; }
+    if (this.cakisir(x, y, T.r) || !this.gecit(x, y, T.r)) return false; this.nesneler.push(nesneAl(tip, x, y, T.sinif, T.r, this.t)); this.son_tip = tip; this.son_y = y; this.tip_t[tip] = this.t; this.aile_gecmis.push(T.aile); this.st.dogan++; return true; }
   birak(o) { if (this.H.o === o) this.halkaBitir(); HAVUZ.push(o); }
   yonet(ilk = false) {
     const E = this.ekran(), vl = E[0], vr = E[1], vb = E[2], vt = E[3], W = E[4], H = E[5];
@@ -674,14 +694,17 @@ class Ucus {
   sekme(o, T) {
     const v = Math.hypot(this.vx, this.vy);
     const mukemmel = this.dalis_t !== null;
-    let yv;
-    if (mukemmel) { yv = v + Math.min(v * A.mukemmel_sekme, A.mukemmel_sekme_tavan); this.st.mukemmel++; this.kaynak |= 4; }
-    else yv = v * this.k_etkin(T.k);
+    const Vt = A.sekme_v_tavan;
+    let yv = Math.max(0, v * this.k_etkin(T.k) + T.b * (1 - v / Vt));   // yay enerjisi: kendini sınırlayan sekme (sim)
+    if (yv > v) this.kaynak |= 4;
+    if (mukemmel) { yv = Math.min(yv + Math.min(v * A.mukemmel_sekme, A.mukemmel_sekme_tavan), Math.max(Vt, yv)); this.st.mukemmel++; this.kaynak |= 4; }
+    this.sekme_oran = yv / Math.max(1e-6, v);
     const a = rad(T.aci);
     this.vx = yv * Math.cos(a); this.vy = yv * Math.sin(a) + (T.ek_vy || 0);
     if (this.denetim) {   // K10
       const v2 = Math.hypot(this.vx, this.vy - (T.ek_vy || 0));
-      if (mukemmel ? v2 > v + A.mukemmel_sekme_tavan + 1e-6 : v2 > v * this.k_etkin(T.k) + 1e-6) denetimUyari('sekme hızı ' + o.tip + ' ' + v.toFixed(2) + ' → ' + v2.toFixed(2), this);
+      const ust = Math.max(Vt, v * this.k_etkin(T.k)) + 1e-6;   // invaryant: sekme hızı V_tavan üstüne çıkarmaz
+      if (v2 > ust && v2 > v + 1e-6) denetimUyari('sekme hızı ' + o.tip + ' ' + v.toFixed(2) + ' → ' + v2.toFixed(2), this);
     }
     this.dalis_t = null; this.bos = false; this.itki = false;
     this.st.sekme++;
@@ -1275,6 +1298,8 @@ const SES = (() => {
     bum() { cal('ses_duvari') || (ton('sine', 60, 45, 0.4, 0.6), gur(0.4, 0.5, 'lowpass', 900, 120)); },
     tik() { cal('tik') || ton('square', 1200, 1200, 0.03, 0.12); },
     cin() { cal('satin') || (ton('triangle', 1568, 1568, 0.18, 0.25), ton('triangle', 2093, 2093, 0.25, 0.18, 0.06)); },
+    ip_kopma() { ton('square', 1800, 400, 0.08, 0.14); ton('triangle', 2400, 2200, 0.18, 0.16, 0.05); },   // yay kopması: bzzt-tınk (sentez)
+    itki() { cal('tutusma', 1.5, 0.5) || gur(0.2, 0.3, 'bandpass', 600, 2000); },
     jeton() { cal('jeton') || ton('triangle', 1760, 1760, 0.12, 0.2); },
   };
 })();
@@ -1316,7 +1341,7 @@ const G = {
   duraklat: false, sayim: 0, menu: null, sarsT: 9, sarsA: 0, donmus: false, ipucuBuTur: false, sonSonuc: null, kk: null,
   parca: [], halkaG: [], sayilar: [], iz: [], izN: 0, kademeP: [], hizCiz: [], koniT: 9, flasT: 9, flasX: 0, flasY: 0, flasSay: [-9, -9, -9], flasI: 0,
   bitisAbarti: false, dalisT: 9, botDokT: 9, kalkisT: 0, fps: 60, fpsDusuk: 0, vurguO: null, vurguT: 0, hedefIpucu: false,
-  uyari: 0, rampaKalite: null, bidon: { on: false, x: 0, y: 0, t: 0 },
+  uyari: 0, rampaKalite: null, itkiT: 9, kopan: { on: false, x: 0, y: 0, t: 0 }, bidon: { on: false, x: 0, y: 0, t: 0 },
 };
 for (let i = 0; i < B0_ARAYUZ.parcacik_max; i++) G.parca.push({ on: false, x: 0, y: 0, vx: 0, vy: 0, t: 0, s: 0, r: 0, renk: '#fff' });
 for (let i = 0; i < 10; i++) G.halkaG.push({ on: false, x: 0, y: 0, t: 0, s: 0, r: 0, renk: '#fff', w: 3 });
@@ -1371,7 +1396,8 @@ function olay(ad, a, b, c) {
     case 'sekme': {
       const o = a, muk = b; o.g.ezil_t = 0; o.g.bas_t = 0;
       if (muk) { his('mukemmel'); mesaj('MÜKEMMEL!'); SES.ding(); titres(HIS.titresim.mukemmel); halkaFx(u.x, u.y, 8, '#fff', 0.4, 4); parlama(u.x, u.y); }
-      else { his('sekme'); SES.boing(Math.min(12, u.kombo_n)); titres(HIS.titresim.hafif); }
+      else { his('sekme'); SES.boing(Math.min(12, u.kombo_n)); titres(HIS.titresim.hafif); if (u.sekme_oran > 1.02) mesaj('BOING', '×' + fmt1(u.sekme_oran), 0.5); }
+      if (u.sekme_oran > 1.02) { const h = $('hizg'); h.classList.add('parla'); clearTimeout(G.parlaZ); G.parlaZ = setTimeout(() => h.classList.remove('parla'), 300); }   // yay enerjisi görünür
       parcacik(u.x, u.y - 3, 5, '#fff', 50);
       break;
     }
@@ -1381,7 +1407,8 @@ function olay(ad, a, b, c) {
       parcacik(o.x, o.y, o.tip === 'marti' ? 6 : 4, o.tip === 'marti' ? '#fff' : '#ffd23f', 60, 2);
       break;
     }
-    case 'ip': { his('hafif'); SES.tinn(); titres(HIS.titresim.hafif); a.g.kt = 0; parcacik(a.x, u.y, 4, '#333', 40, 1.5); break; }
+    case 'ip': { SES.ip_kopma(); titres(HIS.titresim.hafif); parcacik(a.x, u.y, 4, '#333', 40, 1.5); const k = G.kopan; k.on = true; k.x = a.x; k.y = a.y; k.t = 0;
+      mesaj('İP KOPTU', '+' + Math.round(TIPLER.ucurtma.ip_odul * A.odul_kat * A.nesne_prim), 0.6); break; }
     case 'sondu': { const o = a; if (o.tip === 'balon' || o.tip === 'parti') { parcacik(o.x + o.g.ox, o.y + o.g.oy, 12, '#ff7eb6', 90, 3); SES.balon(); } break; }
     case 'firsat': {
       const o = a, tut = b; yanKayma(o); his('firsat'); SES.vinDur();
@@ -1400,6 +1427,8 @@ function olay(ad, a, b, c) {
     case 'halka_dokun': { if (a === 'erken') { mesaj('ERKEN'); SES.tik(); } else halkaFx(u.H.o.x, u.H.o.y, u.H.o.r + 4, '#2ee6d6', 0.3, 5); break; }
     case 'halka_bitti': SES.vinDur(); break;
     case 'dalis': { G.dalisT = 0; SES.vuus(); parcacik(u.x, u.y, 6, '#ff9a3c', 50); break; }
+    case 'itki': { G.itkiT = 0; SES.itki(); parcacik(u.x, u.y, 5, '#ffd23f', 40); break; }
+    case 'itki_yok': { if (u.yakit < A.itki_yakit) { mesaj('YAKIT YOK', '', 0.5); const d = $('yakitBar'); d.classList.remove('bos'); void d.offsetWidth; d.classList.add('bos'); } SES.tik(); break; }
     case 'bos_dalis': break;
     case 'gecis': if (a.g.ezil_t > 0.6) a.g.ezil_t = 0.2; break;   // alttan/yandan geçiş: nesne hafif titrer, roket etkilenmez
     case 'yakit_bitti': mesaj('YAKIT BİTTİ', '', 0.8); SES.tik(); break;
@@ -1570,8 +1599,38 @@ function ciz(alfa, gdt) {
 }
 
 function nesneleriCiz(c, gdt) {
-  const u = G.u, H = u.H;
+  const u = G.u, H = u.H, zt0 = u.t;
+  for (const o of u.nesneler) {   // hava akımları: titreşen termal sütun (leylekli olabilir), çizgili jet şeridi; çarpışmasız
+    if (o.sinif !== 'bant') continue;
+    if (o.tip === 'termal') {
+      const w = SE.termal.w, y0 = SE.termal.y_alt, y1 = SE.termal.y_ust;
+      if (o.x + w < KAM.x - KAM.W || o.x - w > KAM.x + KAM.W) continue;
+      c.globalAlpha = o.dogal ? 0.18 : 0.28; c.fillStyle = '#ffb36b'; c.fillRect(o.x - w, y0, 2 * w, y1 - y0);
+      c.globalAlpha = 0.5; c.strokeStyle = '#fff3e0'; c.lineWidth = 1;
+      for (let i = 0; i < 4; i++) { c.beginPath(); for (let k = 0; k <= 10; k++) { const yy = y0 + (y1 - y0) * k / 10, xx = o.x - w * 0.6 + i * w * 0.4 + Math.sin(yy * 0.08 + zt0 * 4 + i) * 4; k ? c.lineTo(xx, yy) : c.moveTo(xx, yy); } c.stroke(); }
+      if (o.kimlik % 3 === 0) {   // leylek sürüsü termali (görsel)
+        c.globalAlpha = 0.9; c.strokeStyle = '#fff'; c.lineWidth = 1.4;
+        for (let i = 0; i < 5; i++) { const by = y0 + ((zt0 * 25 + i * 45) % (y1 - y0)), bx = o.x + Math.sin(zt0 * 1.5 + i * 2) * w * 0.6; c.beginPath(); c.moveTo(bx - 5, by + 2); c.lineTo(bx, by); c.lineTo(bx + 5, by + 2); c.stroke(); }
+      }
+      c.globalAlpha = 1;
+    } else if (o.tip === 'jet') {
+      const L = o.L, yr = SE.jet.yari;
+      if (o.x > KAM.x + KAM.W || o.x + L < KAM.x - KAM.W) continue;
+      c.globalAlpha = o.dogal ? 0.14 : 0.24; c.fillStyle = '#9fe8ff'; c.fillRect(o.x, o.y - yr, L, 2 * yr);
+      c.globalAlpha = 0.45; c.strokeStyle = '#fff'; c.lineWidth = 1.2; c.beginPath();
+      const s0 = Math.max(o.x, KAM.x - KAM.W), s1 = Math.min(o.x + L, KAM.x + KAM.W), off = (zt0 * 80) % 30;
+      for (let xx = s0 - ((s0 - o.x) % 30) + off; xx < s1; xx += 30) { c.moveTo(xx, o.y - yr * 0.6); c.lineTo(xx + 14, o.y + yr * 0.6); }
+      c.stroke(); c.globalAlpha = 1;
+    }
+  }
+  if (G.kopan.on) {   // ipi kopan uçurtma yukarı süzülür
+    const k = G.kopan, f = k.t / B0_ARAYUZ.ucurtma_kac_s, kx = k.x + k.t * 20, ky = k.y + k.t * 60 + Math.sin(k.t * 8) * 3;
+    c.globalAlpha = 1 - f * f; c.save(); c.translate(kx, ky); c.rotate(Math.sin(k.t * 6) * 0.4); c.fillStyle = '#ffd23f'; c.strokeStyle = '#8a6a00'; c.lineWidth = 1;
+    c.beginPath(); c.moveTo(0, 7); c.lineTo(5, 0); c.lineTo(0, -7); c.lineTo(-5, 0); c.closePath(); c.fill(); c.stroke();
+    c.strokeStyle = '#ff5a5a'; c.beginPath(); c.moveTo(0, -7); for (let i = 1; i < 6; i++) c.lineTo(Math.sin(k.t * 10 + i) * 3, -7 - i * 4); c.stroke(); c.restore(); c.globalAlpha = 1;
+  }
   for (const o of u.nesneler) {
+    if (o.sinif === 'bant') continue;
     const g = o.g;
     const x = o.x + g.ox, y = o.y + g.oy;
     if (x < KAM.x - KAM.W || x > KAM.x + KAM.W || Math.abs(y - KAM.y) > KAM.Hg) continue;
@@ -1581,10 +1640,54 @@ function nesneleriCiz(c, gdt) {
     const zt = u.t + g.faz, UB = B0_ARAYUZ.ust_bas;
     const bas = g.bas_t < UB[0] ? UB[1] * Math.sin(Math.PI * g.bas_t / UB[0]) : 0;   // üstten sekmede aşağı itilme (görsel)
     switch (o.tip) {
-      case 'balon': case 'parti': {
+      case 'sicak': {   // sıcak hava balonu: iri kırmızı-beyaz çizgili damla + sepet
+        c.save(); c.translate(x, y - bas - sonuk * 15); c.scale(1 + ez * 0.6, 1 - ez);
+        c.beginPath(); c.moveTo(0, -o.r * 1.15); c.bezierCurveTo(o.r * 1.3, -o.r * 0.3, o.r * 1.1, o.r * 1.1, 0, o.r * 1.05); c.bezierCurveTo(-o.r * 1.1, o.r * 1.1, -o.r * 1.3, -o.r * 0.3, 0, -o.r * 1.15); c.closePath();
+        c.fillStyle = '#e53935'; c.fill(); c.save(); c.clip(); c.fillStyle = '#fff'; for (let i = -2; i <= 2; i += 2) c.fillRect(i * o.r * 0.25 - o.r * 0.12, -o.r * 1.2, o.r * 0.24, o.r * 2.4); c.restore();
+        c.strokeStyle = '#7a1212'; c.lineWidth = 1; c.stroke();
+        c.strokeStyle = '#fff'; c.lineWidth = 2.6; c.beginPath(); c.arc(0, 0, o.r * 0.8, rad(40), rad(140)); c.stroke();
+        c.fillStyle = '#8d6e63'; c.fillRect(-o.r * 0.25, -o.r * 1.55, o.r * 0.5, o.r * 0.3);
+        c.restore(); break;
+      }
+      case 'dron': {   // yük dronu: gri gövde + 4 pervane + paket, üstte sekme şeridi
+        c.save(); c.translate(x, y - bas); c.scale(1 + ez * 0.6, 1 - ez); c.rotate(Math.sin(zt * 3) * 0.06);
+        c.fillStyle = '#607d8b'; c.fillRect(-o.r, -o.r * 0.35, 2 * o.r, o.r * 0.7);
+        c.fillStyle = '#263238'; for (const sx of [-1, 1]) { c.beginPath(); c.ellipse(sx * o.r, o.r * 0.45, o.r * 0.55, o.r * 0.12, 0, 0, 6.283); c.fill(); }
+        c.fillStyle = '#c8a165'; c.fillRect(-o.r * 0.35, -o.r * 0.95, o.r * 0.7, o.r * 0.55);
+        c.strokeStyle = '#fff'; c.lineWidth = 2.4; c.beginPath(); c.moveTo(-o.r * 0.8, o.r * 0.25); c.quadraticCurveTo(0, o.r * 0.6, o.r * 0.8, o.r * 0.25); c.stroke();
+        c.restore(); break;
+      }
+      case 'balina': {   // balina zeplin: iri mavi gövde + kuyruk + göz
+        c.save(); c.translate(x, y - bas - sonuk * 20); c.scale(1 + ez * 0.5, 1 - ez * 0.8);
+        const ax = o.r * 1.1, ay = o.r * 0.8;
+        c.fillStyle = '#3f6fb5'; c.strokeStyle = '#1d3b6b'; c.lineWidth = 1.4; c.beginPath(); c.ellipse(0, 0, ax, ay, 0, 0, 6.283); c.fill(); c.stroke();
+        c.fillStyle = '#a9c7f0'; c.beginPath(); c.ellipse(0, -ay * 0.35, ax * 0.8, ay * 0.45, 0, 0, Math.PI); c.fill();
+        c.fillStyle = '#3f6fb5'; c.beginPath(); c.moveTo(-ax * 0.9, 0); c.lineTo(-ax * 1.35, ay * 0.6 + Math.sin(zt * 3) * 3); c.lineTo(-ax * 1.25, -ay * 0.4); c.closePath(); c.fill();
+        c.fillStyle = '#fff'; c.beginPath(); c.arc(ax * 0.6, ay * 0.1, 2.2, 0, 6.283); c.fill();
+        c.strokeStyle = '#fff'; c.lineWidth = 3.2; c.beginPath(); c.ellipse(0, 0, ax * 0.8, ay * 0.8, 0, rad(30), rad(150)); c.stroke();
+        c.restore(); break;
+      }
+      case 'kutu': {   // paraşütlü kargo kutusu: turuncu kubbe + iplerle kutu
+        c.save(); c.translate(x, y - bas - (!o.aktif ? (u.t - o.son_t) * 20 : 0)); c.scale(1 + ez * 0.6, 1 - ez);
+        c.fillStyle = '#ff8f1f'; c.strokeStyle = '#a14f00'; c.lineWidth = 1; c.beginPath(); c.arc(0, o.r * 0.1, o.r, 0, Math.PI); c.closePath(); c.fill(); c.stroke();
+        c.strokeStyle = '#fff'; c.lineWidth = 2.6; c.beginPath(); c.arc(0, o.r * 0.1, o.r * 0.78, rad(30), rad(150)); c.stroke();
+        c.strokeStyle = '#555'; c.lineWidth = 0.7; c.beginPath(); c.moveTo(-o.r, o.r * 0.1); c.lineTo(-o.r * 0.3, -o.r * 0.7); c.moveTo(o.r, o.r * 0.1); c.lineTo(o.r * 0.3, -o.r * 0.7); c.stroke();
+        c.fillStyle = '#8d6e63'; c.fillRect(-o.r * 0.35, -o.r * 1.15, o.r * 0.7, o.r * 0.5);
+        c.restore(); break;
+      }
+      case 'afis': {   // afiş çeken uçak (yavaşlatıcı, köşeli)
+        c.save(); c.translate(x, y); c.rotate(!o.aktif ? (u.t - o.son_t) * 2 : 0);
+        c.fillStyle = '#eceff1'; c.strokeStyle = '#455a64'; c.lineWidth = 1; c.fillRect(o.r * 0.1, -2.5, o.r * 0.9, 5); c.strokeRect(o.r * 0.1, -2.5, o.r * 0.9, 5);
+        c.fillStyle = '#455a64'; c.beginPath(); c.moveTo(o.r * 0.4, 0); c.lineTo(o.r * 0.2, 6); c.lineTo(o.r * 0.7, 0); c.closePath(); c.fill();
+        c.strokeStyle = '#333'; c.beginPath(); c.moveTo(o.r * 0.1, 0); c.lineTo(-o.r * 0.3, 0); c.stroke();
+        c.fillStyle = '#ff5a5a'; c.beginPath(); for (let k = 0; k <= 6; k++) { const bx = -o.r * 0.3 - k * o.r * 0.15, by = Math.sin(zt * 6 + k) * 1.5; k ? c.lineTo(bx, by + 3) : c.moveTo(bx, by + 3); }
+        for (let k = 6; k >= 0; k--) c.lineTo(-o.r * 0.3 - k * o.r * 0.15, Math.sin(zt * 6 + k) * 1.5 - 3); c.closePath(); c.fill();
+        c.restore(); break;
+      }
+      case 'balon': {   // reklam balonu: yuvarlak turuncu
         if (!o.aktif) break;   // patladı (parçacıklar)
         c.save(); c.translate(x, y - bas); c.scale(1 + ez * 0.6, 1 - ez);
-        c.fillStyle = o.tip === 'balon' ? '#ff6aa9' : '#c58cff'; c.strokeStyle = '#a3245e'; c.lineWidth = 1; c.beginPath(); c.arc(0, 0, o.r, 0, 6.283); c.fill(); c.stroke();
+        c.fillStyle = '#ff9a2e'; c.strokeStyle = '#a3520e'; c.lineWidth = 1; c.beginPath(); c.arc(0, 0, o.r, 0, 6.283); c.fill(); c.stroke();
         c.strokeStyle = '#fff'; c.lineWidth = 2.6; c.beginPath(); c.arc(0, 0, o.r * 0.78, rad(35), rad(145)); c.stroke();
         c.strokeStyle = 'rgba(0,0,0,.35)'; c.lineWidth = 0.8; c.beginPath(); c.moveTo(0, -o.r); c.lineTo(0, -o.r - 8); c.stroke();
         c.restore(); break;
@@ -1650,7 +1753,7 @@ function roketCiz(c, x, y, a, u) {
   c.save(); c.translate(x, y); c.rotate(a);
   const kad = u ? u.kademe : 1;
   // alev
-  const dal = u && u.dalis_t !== null, alev = (G.asama === 'UCUS' && (dal || G.dalisT < 0.2)) ? 1 : 0.35;
+  const dal = u && u.dalis_t !== null, alev = (G.asama === 'UCUS' && (dal || G.dalisT < 0.2)) ? 1 : (G.asama === 'UCUS' && u && u.itki) ? 1.6 : 0.35;
   if (G.asama !== 'HANGAR' && !(u && u.bitti)) {
     c.fillStyle = dal ? '#fff3a0' : '#ff9a3c'; const L = 6 + 10 * alev + Math.random() * 3;
     c.beginPath(); c.moveTo(-6 - (kad > 0 ? 6 : 0), 2.2); c.lineTo(-6 - (kad > 0 ? 6 : 0) - L, 0); c.lineTo(-6 - (kad > 0 ? 6 : 0), -2.2); c.closePath(); c.fill();
@@ -1684,7 +1787,7 @@ function debugCiz(c, rx, ry) {
 }
 
 // ---- HUD
-const hud = { jeton: null, mesafe: null, irtifa: null, hiz: null, ses: null, sesYazi: null, dalis: null, hak: null };
+const hud = { yakit: null, jeton: null, mesafe: null, irtifa: null, hiz: null, ses: null, sesYazi: null, dalis: null, hak: null };
 function yayYol(cxp, cyp, r, a0, a1) {   // derece, saat yönünün tersi (SVG y aşağı)
   const p = (a) => [cxp + r * Math.cos(rad(a)), cyp - r * Math.sin(rad(a))];
   const [x0, y0] = p(a0), [x1, y1] = p(a1);
@@ -1717,6 +1820,8 @@ function hudGuncelle() {   // önce sayıyı karşılaştır, yalnız değişinc
   if (bolge !== hud.sesYazi) { hud.sesYazi = bolge; $('hizSes').setAttribute('visibility', bolge ? 'visible' : 'hidden'); }
   const n = Math.floor(u.gosterge + 1e-9), dn = Math.round(u.gosterge >= A.dalis_kap ? 100 : (u.gosterge - n) * 100);
   if (dn !== hud.dalis) { hud.dalis = dn; $('dalisHalka').setAttribute('stroke-dasharray', `${dn} 100`); }
+  const yk = Math.round(100 * u.yakit / (A.yakit_kap + A.yakit_kap_sv * (u.sv.depo || 0)));
+  if (yk !== hud.yakit) { hud.yakit = yk; $('yakitBar').firstChild.style.height = yk + '%'; $('yakitBar').classList.toggle('bos', yk <= 0); }
   if (n !== hud.hak) { hud.hak = n; $('hak0').setAttribute('fill', n >= 1 ? '#ffd23f' : '#55607e'); $('hak1').setAttribute('fill', n >= 2 ? '#ffd23f' : '#55607e'); }
 }
 function sesOdulu() { return KAYIT.k.duvar.ses === null ? KONF.DUVARLAR.ses : KONF.DUVARLAR.ses * SE.duvar_sonraki; }
@@ -2003,8 +2108,28 @@ document.addEventListener('pointerdown', (e) => {
   if (!e.isPrimary) return;
   if (e.target.closest('button')) SES.tik();
   if (e.target.closest('button, input, .ekran')) { if (G.asama === 'KARA_KUTU' && !e.target.closest('button')) karaKutuAtla(); return; }
+  if (G.asama === 'UCUS' && !G.bot) { DOK.id = e.pointerId; DOK.t0 = performance.now(); DOK.x0 = e.clientX; DOK.y0 = e.clientY; DOK.yon = false; return; }   // bırakınca karar
   dokunus();
 }, { passive: true });
+// uçuşta: hızlı dokunuş (< dokun_ms, < dokun_px) = dalış/itiş; basılı tutup sürükleme = yönlendirme (burun sürükleme yönüne)
+const DOK = { id: null, t0: 0, x0: 0, y0: 0, yon: false };
+document.addEventListener('pointermove', (e) => {
+  if (e.pointerId !== DOK.id || G.asama !== 'UCUS') return;
+  const dx = e.clientX - DOK.x0, dy = e.clientY - DOK.y0, U = B0_ARAYUZ;
+  if (!DOK.yon && Math.hypot(dx, dy) >= U.dokun_px) DOK.yon = true;
+  if (DOK.yon && !G.duraklat && G.sayim <= 0) {
+    const lim = rad(A.yon_sinir + A.yon_sinir_sv * (G.u.sv.yon || 0));
+    G.yonHedef = Math.max(-lim, Math.min(lim, -dy / U.yon_px * lim));
+  }
+}, { passive: true });
+function dokunBitti(e, iptal) {
+  if (e.pointerId !== DOK.id) return;
+  const kisa = !DOK.yon && performance.now() - DOK.t0 < B0_ARAYUZ.dokun_ms;
+  DOK.id = null; G.yonHedef = null;
+  if (kisa && !iptal) dokunus();
+}
+document.addEventListener('pointerup', (e) => dokunBitti(e, false), { passive: true });
+document.addEventListener('pointercancel', (e) => dokunBitti(e, true), { passive: true });
 function dokunus() {
   if (G.duraklat || G.sayim > 0 || G.donmus) return;
   if (G.asama === 'RAMPA' && G.rampaFaz === 'aci') { if (!G.bot && performance.now() / 1000 - G.rampaGirisT >= B0_ARAYUZ.rampa_kilit) aciKilit(G.aciGor, G.aciT, true); return; }
@@ -2039,6 +2164,7 @@ function guncelle(dt) {
   }
   if (G.duraklat) return;
   if (G.bidon.on && (G.bidon.t += dt) > B0_ARAYUZ.bidon_sure) G.bidon.on = false;
+  G.itkiT += dt; if (G.kopan.on && (G.kopan.t += dt) > B0_ARAYUZ.ucurtma_kac_s) G.kopan.on = false;
   G.sarsT += dt; G.flasT += dt; G.koniT += dt; G.dalisT += dt; G.botDokT += dt; G.kalkisT += dt;
   for (const p of G.parca) if (p.on) { p.t += dt; p.x += p.vx * dt; p.y += p.vy * dt; p.vy -= 40 * dt; if (p.t > p.s) p.on = false; }
   for (const h of G.halkaG) if (h.on && (h.t += dt) > h.s) h.on = false;
