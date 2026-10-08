@@ -496,3 +496,136 @@ def cek(kokler, dosya, gen_px, pay=0.07, cerceve=None, ornek=64):
     with open(os.path.join(HAM, "_sureler.txt"), "a") as f:
         f.write(f"{os.path.basename(s.render.filepath)}\t{s.render.resolution_x}x{s.render.resolution_y}\t{ornek}\t{sure:.1f}\n")
     return (x0, x1, z0, z1)
+
+# ---------------------------------------------------------------- AYRINTILI MALZEME (2. yön: olgun, premium)
+# Panel çizgileri + perçin (kabartma), panel başına ton farkı, AO ile oyuk kiri, gürültüyle aşınma/çizik, is (kurum) gradyanı.
+def _m(N, L, op, a, b=None):
+    n = N.new("ShaderNodeMath"); n.operation = op
+    for i, v in enumerate((a, b)):
+        if v is None: continue
+        if isinstance(v, (int, float)): n.inputs[i].default_value = v
+        else: L.new(v, n.inputs[i])
+    return n.outputs[0]
+
+def _mix(N, L, f, a, b):
+    m = N.new("ShaderNodeMix"); m.data_type = "RGBA"
+    for idx, v in ((0, f), (6, a), (7, b)):
+        if isinstance(v, (int, float)): m.inputs[idx].default_value = v
+        elif isinstance(v, tuple): m.inputs[idx].default_value = v
+        else: L.new(v, m.inputs[idx])
+    return m.outputs[2]
+
+def _smooth(N, L, x, a, b):
+    mr = N.new("ShaderNodeMapRange"); mr.interpolation_type = "SMOOTHSTEP"
+    mr.inputs["From Min"].default_value = a; mr.inputs["From Max"].default_value = b
+    L.new(x, mr.inputs["Value"]); return mr.outputs["Result"]
+
+def detayli(ad, hexc, rough=0.42, coat=0.25, metal=0.0, sss=0.0, panel=None, percin=False, kir=0.35, asinma=0.0,
+            asinma_renk="#8d96a6", is_=None, kumas=0.0, kenar=0.35, renk_dugum=None, cizik=0.0):
+    """panel: dict(eksen='X'|'Z', adim=boyuna aralık, n=çevresel bölüm, R=yarıçap, x0=ofset).
+    is_: (eksen_degeri_baslangic, bitis) — bu aralıkta kurum karartması (roket alt ucu)."""
+    m, nt, N, L = _yeni(ad); out = N.new("ShaderNodeOutputMaterial")
+    p = N.new("ShaderNodeBsdfPrincipled")
+    tc = N.new("ShaderNodeTexCoord"); sp = N.new("ShaderNodeSeparateXYZ"); L.new(tc.outputs["Object"], sp.inputs[0])
+    base = renk_dugum(nt, N, L) if renk_dugum else None
+    c = lin(hexc)
+    renk = base if base is not None else c
+    yuk = None  # kabartma yüksekliği
+    if panel:
+        ek = panel.get("eksen", "X")
+        ax = sp.outputs["X"] if ek == "X" else sp.outputs["Z"]
+        q1, q2 = (sp.outputs["Z"], sp.outputs["Y"]) if ek == "X" else (sp.outputs["Y"], sp.outputs["X"])
+        ang = _m(N, L, "ARCTAN2", q1, q2)
+        Px, Na, R = panel["adim"], panel["n"], panel["R"]
+        u = _m(N, L, "ADD", _m(N, L, "DIVIDE", ax, Px), panel.get("x0", 0.0))
+        du = _m(N, L, "MULTIPLY", _m(N, L, "ABSOLUTE", _m(N, L, "SUBTRACT", _m(N, L, "FRACT", u), 0.5)), Px)   # eksende dikişe uzaklık (0.5 adımda)
+        du = _m(N, L, "SUBTRACT", Px * 0.5, du)
+        va = _m(N, L, "MULTIPLY", ang, Na / (2 * math.pi))
+        dv = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", 0.5, _m(N, L, "ABSOLUTE", _m(N, L, "SUBTRACT", _m(N, L, "FRACT", va), 0.5))), 2 * math.pi * R / Na)
+        g1 = _m(N, L, "SUBTRACT", 1.0, _smooth(N, L, du, 0.004, 0.012))
+        g2 = _m(N, L, "SUBTRACT", 1.0, _smooth(N, L, dv, 0.004, 0.012))
+        oluk = _m(N, L, "MAXIMUM", g1, g2)
+        yuk = _m(N, L, "MULTIPLY", oluk, -1.0)
+        # panel başına ton farkı
+        pid = N.new("ShaderNodeCombineXYZ"); L.new(_m(N, L, "FLOOR", u), pid.inputs[0]); L.new(_m(N, L, "FLOOR", va), pid.inputs[1])
+        wn = N.new("ShaderNodeTexWhiteNoise"); wn.noise_dimensions = "3D"; L.new(pid.outputs[0], wn.inputs["Vector"])
+        ton = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", wn.outputs["Value"], 0.5), 0.10)
+        hsv = N.new("ShaderNodeHueSaturation")
+        if isinstance(renk, tuple): hsv.inputs["Color"].default_value = renk
+        else: L.new(renk, hsv.inputs["Color"])
+        L.new(_m(N, L, "ADD", ton, 1.0), hsv.inputs["Value"]); renk = hsv.outputs["Color"]
+        # oluk içi koyu çizgi
+        renk = _mix(N, L, _m(N, L, "MULTIPLY", oluk, 0.55), renk, lin("#2a2440"))
+        if percin:
+            # dikişin iki yanında perçin sırası, çevresel aralık ~0.07
+            ps = 0.07; aR = _m(N, L, "MULTIPLY", ang, R)
+            fa = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", _m(N, L, "FRACT", _m(N, L, "DIVIDE", aR, ps)), 0.5), ps)
+            satir = _m(N, L, "SUBTRACT", du, 0.032)
+            d2 = _m(N, L, "SQRT", _m(N, L, "ADD", _m(N, L, "MULTIPLY", fa, fa), _m(N, L, "MULTIPLY", satir, satir)))
+            pc = _m(N, L, "SUBTRACT", 1.0, _smooth(N, L, d2, 0.006, 0.013))
+            yuk = _m(N, L, "ADD", yuk, _m(N, L, "MULTIPLY", pc, 0.8))
+            renk = _mix(N, L, _m(N, L, "MULTIPLY", pc, 0.25), renk, lin("#ffffff"))
+    if kumas > 0:
+        nz = N.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 6.0; nz.inputs["Detail"].default_value = 3
+        L.new(tc.outputs["Object"], nz.inputs["Vector"])
+        kat = _m(N, L, "MULTIPLY", _m(N, L, "SINE", _m(N, L, "MULTIPLY", nz.outputs["Fac"], 18.0)), kumas)
+        yuk = kat if yuk is None else _m(N, L, "ADD", yuk, kat)
+    # aşınma / çizik: gürültü eşiği -> alttaki metal
+    if asinma > 0:
+        nz = N.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 9.0; nz.inputs["Detail"].default_value = 8; nz.inputs["Roughness"].default_value = 0.7
+        L.new(tc.outputs["Object"], nz.inputs["Vector"])
+        w = _smooth(N, L, nz.outputs["Fac"], 0.70 - asinma * 0.12, 0.74 - asinma * 0.12)
+        renk = _mix(N, L, w, renk, lin(asinma_renk))
+        L.new(_mix(N, L, w, (rough, rough, rough, 1), (0.25, 0.25, 0.25, 1)), p.inputs["Roughness"])
+    else:
+        rn = N.new("ShaderNodeTexNoise"); rn.inputs["Scale"].default_value = 4.0; L.new(tc.outputs["Object"], rn.inputs["Vector"])
+        L.new(_m(N, L, "ADD", _m(N, L, "MULTIPLY", rn.outputs["Fac"], 0.16), rough - 0.08), p.inputs["Roughness"])
+    if cizik > 0:
+        st = N.new("ShaderNodeTexNoise"); st.inputs["Scale"].default_value = 40.0; st.inputs["Detail"].default_value = 2
+        mp = N.new("ShaderNodeMapping"); mp.inputs["Scale"].default_value = (0.08, 1.0, 1.0); L.new(tc.outputs["Object"], mp.inputs["Vector"]); L.new(mp.outputs[0], st.inputs["Vector"])
+        cz = _smooth(N, L, st.outputs["Fac"], 0.66, 0.70)
+        renk = _mix(N, L, _m(N, L, "MULTIPLY", cz, cizik), renk, lin("#e8ecf2"))
+    # kurum (is)
+    if is_:
+        ek = is_[2] if len(is_) > 2 else "X"
+        axv = sp.outputs["X"] if ek == "X" else sp.outputs["Z"]
+        nz = N.new("ShaderNodeTexNoise"); nz.inputs["Scale"].default_value = 3.0; L.new(tc.outputs["Object"], nz.inputs["Vector"])
+        g = _m(N, L, "MULTIPLY", _smooth(N, L, axv, is_[1], is_[0]), _m(N, L, "ADD", _m(N, L, "MULTIPLY", nz.outputs["Fac"], 0.7), 0.4))
+        renk = _mix(N, L, _m(N, L, "MINIMUM", g, 0.85), renk, lin("#2b2522"))
+    # oyuk kiri (AO)
+    if kir > 0:
+        ao = N.new("ShaderNodeAmbientOcclusion"); ao.inputs["Distance"].default_value = 0.18; ao.samples = 8
+        k = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", 1.0, ao.outputs["AO"]), kir)
+        renk = _mix(N, L, _m(N, L, "MINIMUM", k, 0.7), renk, lin("#3b2f2a"))
+    if isinstance(renk, tuple): p.inputs["Base Color"].default_value = renk
+    else: L.new(renk, p.inputs["Base Color"])
+    p.inputs["Metallic"].default_value = metal
+    p.inputs["Subsurface Weight"].default_value = sss; p.inputs["Subsurface Radius"].default_value = (1.0, 0.45, 0.3); p.inputs["Subsurface Scale"].default_value = 0.05
+    p.inputs["Coat Weight"].default_value = coat; p.inputs["Coat Roughness"].default_value = 0.12
+    p.inputs["Specular IOR Level"].default_value = 0.5
+    if kumas > 0: p.inputs["Sheen Weight"].default_value = 0.4
+    if yuk is not None:
+        b = N.new("ShaderNodeBump"); b.inputs["Strength"].default_value = 0.55; b.inputs["Distance"].default_value = 0.02
+        L.new(yuk, b.inputs["Height"]); L.new(b.outputs["Normal"], p.inputs["Normal"]); L.new(b.outputs["Normal"], p.inputs["Coat Normal"])
+    if kenar > 0 and STIL == "B":
+        kr = tuple(min(1.0, x * 0.4 + 0.6) for x in c[:3]) + (1,)
+        p.inputs["Emission Color"].default_value = kr
+        L.new(_kenar_isigi(N, L, c, kenar).outputs[0], p.inputs["Emission Strength"])
+    L.new(p.outputs[0], out.inputs[0])
+    return m
+
+def boru(ad, noktalar, r, mat, parent=None, seg=10):
+    """Polyline boyunca tüp (kablo kanalı, ip, destek çubuğu, burun çıtası)."""
+    V, F = [], []
+    P = [Vector(p) for p in noktalar]
+    for i, p in enumerate(P):
+        t = (P[min(i + 1, len(P) - 1)] - P[max(i - 1, 0)]).normalized()
+        a = t.orthogonal().normalized(); b = t.cross(a)
+        for k in range(seg):
+            f = 2 * math.pi * k / seg
+            V.append(tuple(p + (a * math.cos(f) + b * math.sin(f)) * r))
+    for i in range(len(P) - 1):
+        for k in range(seg):
+            F.append((i * seg + k, i * seg + (k + 1) % seg, (i + 1) * seg + (k + 1) % seg, (i + 1) * seg + k))
+    F.append(tuple(range(seg))[::-1]); F.append(tuple((len(P) - 1) * seg + k for k in range(seg)))
+    return mesh_obj(ad, V, F, mat, parent)
