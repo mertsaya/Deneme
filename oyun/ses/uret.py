@@ -486,7 +486,7 @@ def _():
     cat = bp(white(N), 900, 5000) * env_exp(N, 0.012, 0.0003)
     cat[:n_(0.0015)] += white(n_(0.0015)) * 1.5
     cat = yumusat(cat, 2.5)
-    vur = yumusat(karis((cat, 0, 0.8), (tok(180, 80, 0.08, 0.3), 0, 1.0)), 4.0)
+    vur = yumusat(karis((cat, 0, 1.0), (tok(260, 120, 0.06, 0.3), 0, 0.8)), 4.0)
     puf = yumusat(kumas_puf(0.55), 2.0)
     return verb(karis((vur, 0, 1.0), (puf, 0.16, 0.75), (kanat(0.4, 30, 0.12), 0.2, 0.25)), 0.35, 0.12)
 
