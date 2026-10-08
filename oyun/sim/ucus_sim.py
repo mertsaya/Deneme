@@ -89,7 +89,7 @@ AYAR = dict(
     bant_carpan=((1000.0, 2.4), (3500.0, 4.3)),   # S3 (öneri 1,8 · 3,0; ayarla 2,4 · 4,3): irtifa bandı çarpanı (y ≥ eşik → ×), nesne ve km ödülüne; carpan_tavan dışında
     izlenme_sv=0.10,
     odul_kat=0.10,             # izlenme → jeton çevrimi (KULLANICI KARARI bekliyor; değiştirme)
-    nesne_prim=2.8,            # nesne ödülüne sponsor primi (çevrimden bağımsız). S4 2,4→2,0 önerdi; geliri hedefin yarısına düşürdü, ayarla 2,8
+    nesne_prim=3.1,            # nesne ödülüne sponsor primi (çevrimden bağımsız). S4 2,4→2,0 önerdi; geliri hedefin yarısına düşürdü, ayarla 2,8; seyreltme (ekran_hedef 7→5) sonrası 3,1 (iyi ses duvarı tur 3'e döndü)
     rakip_odul=0.2,             # rampa zeplin vuruşu: hasar × 0,2 jeton. S4 0,6→0,45 önerdi; tur 1 kazancının büyük payı olduğu için 0,2
     km_odul=75.0,              # iç km (1.000 b) başına jeton, bant çarpanıyla (S3). S4 55 önerdi, ayarla 75
     taban_odul=25.0, sure_odul=0.0,   # sponsor tabanı: tur başına sabit (para sıfırken bile kazanç > 0). Saniye ödemesi kaldırıldı (uzun turu ödüllendirmesin)
