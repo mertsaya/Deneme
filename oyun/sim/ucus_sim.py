@@ -30,10 +30,10 @@ AYAR = dict(
     rho_olcek=400.0,           # ρ(y) = e^(−y/400)
     c_suruk=0.00012,           # a = −c·ρ·Cd·v²
     cd_ses=((85, 1.0), (100, 2.4), (115, 1.1)),   # transonik tepe (doğrusal ara değer)
-    ses_v=115.0, ses_sure=0.3, isi_duvar_v=250.0, duvar_sure=1.0, isi_sure=2.0,   # ısı duvarı: 250 üstünde 2 s (1→2: tek fişek patlamasıyla kırılmasın)
+    ses_v=115.0, ses_sure=0.3, isi_duvar_v=250.0, duvar_sure=1.0, isi_sure=3.0,   # ısı duvarı: 250 üstünde 3 s (1→2→3, S5: gerçek duvar; kalkan çözen geliştirme)
     uzay_kosul=True,           # yörünge ve kaçış yalnız y ≥ y_karman'da sayılır. Hız duvarı = eşiğin üstünde duvar_sure kadar kesintisiz kalmak
     isi_v=250.0, isi_y=1000.0,  # ısı duvarı yalnız atmosferde (y < tropopoz) kırılır
-    isi_hiz=2.0,               # ısı/s = (v − 250) × ρ(y) × 2 × (1 − 0,15·kalkan)
+    isi_hiz=3.0,               # ısı/s = (v − 250) × ρ(y) × 3 × (1 − 0,15·kalkan) (S5: 2→3)
     isi_sogu=25.0,             # ısı/s soğuma
     isi_cd=2.5,                # ısı ≥ 100 iken Cd çarpanı (aşırı ısınma freni), 70'e soğuyunca kalkar
     y_karman=3500.0, y_tropopoz=1000.0,   # 2. ayar: Kármán 3000→3500 (hedef tur 18–19)
@@ -135,7 +135,7 @@ KARGO = dict(r=22, kanat=40, odul=200, kanat_kayip=0.30, ymin=300, ymax=600, aci
 GELISTIRME = {
     'rampa':      (10, 60, 1), 'bolge': (5, 80, 2), 'm_bonus': (5, 200, 14), 'zeplin_h': (8, 120, 7),
     'verim':      (8, 90, 1), 'aero': (8, 150, 4), 'burun': (6, 120, 5), 'ip': (4, 100, 4),
-    'kalkan':     (6, 1500, 10), 'zirh': (3, 2500, 6),
+    'kalkan':     (6, 1500, 8), 'zirh': (3, 2500, 6),
     'kademe_n':   (2, [600, 6000], 12), 'kademe_itki': (8, 200, 1),
     'dalis':      (10, 70, 1), 'dolum': (8, 90, 2), 'kapasite': (2, [900, 7000], 23), 'son_ates': (4, 400, 24),
     'izlenme':    (10, 150, 1), 'kombo_s': (5, 120, 9), 'kombo_t': (3, 1000, 20),
