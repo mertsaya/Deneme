@@ -55,7 +55,7 @@ KURAL = [
     ("alev", 0.016, hex2("#9a1f0c"), None),
     ("efekt_ses", 0.0, None, (10, 0.9)),
     ("efekt_toz", 0.012, hex2("#7b6a8f"), None),
-    ("", 0.0135, CIVIT, None),
+    ("", 0.009, CIVIT, None),
 ]
 
 def kural(ad):
@@ -74,7 +74,7 @@ def isle(yol, hedef_gen=None, oran_carp=1.0, sabit_px=None):
     return kontur(im, r, renk)
 
 # dizi başına sabit kalınlık (px, 1x sprite boyunda)
-SABIT = {"roket_aci": 9.0, "pilot_": 7.0, "zeplin_": 8.5, "balon_": 7.5, "efekt_yildiz": 6.5, "efekt_toz": 4.5, "alev_": 4.0}
+SABIT = {"roket_aci": 5.5, "roket": 5.5, "pilot_": 5.0, "zeplin_": 5.5, "balon_": 5.0, "efekt_yildiz": 5.0, "efekt_toz": 3.5, "alev_": 3.0}
 
 def sabit(ad):
     for k, v in SABIT.items():

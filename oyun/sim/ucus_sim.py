@@ -65,6 +65,8 @@ AYAR = dict(
     bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
     bos_dalis_yer=15.0,        # E1: boş dalışta y < kademe_y + 15 olunca hemen toparlanır (yere gömülmesin)
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
+    baslangic_bos_x=90.0,      # kullanıcı kararı: kalkıştan sonra x < bu değerde hiç nesne doğmaz (ilk ekran temiz). Açılış zeplini bölgenin hemen ötesine konur
+    yavaslatici_ac_x=400.0, yavaslatici_tur=3,   # tur 1–3'te x < 400'de yavaşlatıcı (martı, uçurtma) doğmaz
     kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
@@ -332,6 +334,8 @@ class Ucus:
         # açılış zeplini: "vay" anı garantisi
         px, py = s.rota_nokta(A['acilis_sekme_dt'])
         z = TIPLER['zeplin']
+        if px < A['baslangic_bos_x'] + z['r'] + A['r_roket']:   # boş bölgenin hemen ötesi, rota üstü
+            px, py = s.rota_nokta((A['baslangic_bos_x'] + z['r'] + A['r_roket'] - s.x) / max(s.vx, 1.0))
         s.nesneler.append(Nesne('zeplin', px + 4, max(65.0, py - z['r'] * 0.5), 'tr', z['r']))
 
     def g_etkin(s, vx, vy=0.0):
@@ -406,6 +410,9 @@ class Ucus:
 
     def ekle(s, tip, x, y):
         T = TIPLER[tip]
+        xk = x - T['r'] - s.A['r_roket']   # nesnenin rokete değebileceği en küçük x
+        if xk < s.A['baslangic_bos_x'] or (T['sinif'] == 'yv' and s.tur <= s.A['yavaslatici_tur'] and xk < s.A['yavaslatici_ac_x']):
+            return False   # kalkış boş bölgesi / erken turlarda yavaşlatıcısız başlangıç (rastgele çekim sırası aynı: aday çekildikten sonra reddedilir)
         if s.cakisir(x, y, T['r']) or not s.gecit(x, y, T['r']):
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
@@ -517,7 +524,8 @@ class Ucus:
                 for o in s.nesneler:   # E2: fırsat rotada kalır, üst üste binen eski nesne kaldırılır
                     if o.sinif in ('tr', 'yv') and (o.x - px) ** 2 + (o.y - py) ** 2 < (o.r + F['r'] + s.A['dogus_pay']) ** 2:
                         o.aktif = False
-                s.nesneler.append(Nesne(ad, px, py, 'fr', F['r'], dogus=s.t))
+                if px - F['r'] - A['r_roket'] >= A['baslangic_bos_x']:   # kalkış boş bölgesi (sayaç ve çekimler aynı)
+                    s.nesneler.append(Nesne(ad, px, py, 'fr', F['r'], dogus=s.t))
 
     def olumcul_yonet(s):
         A = s.A

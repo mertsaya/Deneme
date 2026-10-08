@@ -42,7 +42,7 @@ def sifirla(stil=None):
         s.view_settings.view_transform = "AgX"; s.view_settings.look = "AgX - Punchy"
     else:
         s.view_settings.view_transform = "Standard"
-    s.view_settings.exposure = 0.0
+    s.view_settings.exposure = 0.12
     cam = bpy.data.objects.new("kamera", bpy.data.cameras.new("kamera"))
     s.collection.objects.link(cam); s.camera = cam
     cam.data.type = "ORTHO"; cam.location = (0, -40, 0); cam.rotation_euler = (math.pi / 2, 0, 0)
@@ -555,7 +555,7 @@ def detayli(ad, hexc, rough=0.42, coat=0.25, metal=0.0, sss=0.0, panel=None, per
         else: L.new(renk, hsv.inputs["Color"])
         L.new(_m(N, L, "ADD", ton, 1.0), hsv.inputs["Value"]); renk = hsv.outputs["Color"]
         # oluk içi koyu çizgi
-        renk = _mix(N, L, _m(N, L, "MULTIPLY", oluk, 0.55), renk, lin("#2a2440"))
+        renk = _mix(N, L, _m(N, L, "MULTIPLY", oluk, 0.4), renk, lin("#3a3450"))
         if percin:
             # dikişin iki yanında perçin sırası, çevresel aralık ~0.07
             ps = 0.07; aR = _m(N, L, "MULTIPLY", ang, R)
@@ -595,7 +595,7 @@ def detayli(ad, hexc, rough=0.42, coat=0.25, metal=0.0, sss=0.0, panel=None, per
     # oyuk kiri (AO)
     if kir > 0:
         ao = N.new("ShaderNodeAmbientOcclusion"); ao.inputs["Distance"].default_value = 0.18; ao.samples = 8
-        k = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", 1.0, ao.outputs["AO"]), kir)
+        k = _m(N, L, "MULTIPLY", _m(N, L, "SUBTRACT", 1.0, ao.outputs["AO"]), kir * 0.55)
         renk = _mix(N, L, _m(N, L, "MINIMUM", k, 0.7), renk, lin("#3b2f2a"))
     if isinstance(renk, tuple): p.inputs["Base Color"].default_value = renk
     else: L.new(renk, p.inputs["Base Color"])
