@@ -84,9 +84,9 @@ AYAR = dict(
     bant_carpan=((1000.0, 1.8), (3500.0, 3.0)),   # S3: irtifa bandı çarpanı (y ≥ eşik → ×), nesne ve km ödülüne; carpan_tavan dışında
     izlenme_sv=0.10,
     odul_kat=0.10,             # izlenme → jeton çevrimi (KULLANICI KARARI bekliyor; değiştirme)
-    nesne_prim=2.4,            # nesne ödülüne sponsor primi (çevrimden bağımsız; kaldırılan saniye ödemesinin yerine)
-    rakip_odul=0.6,            # rampa zeplin vuruşu: hasar × 0,6 jeton (ICERIK formülündeki "zeplin vuruşu")
-    km_odul=70.0,              # iç km (1.000 b) başına jeton (50→70: kaldırılan saniye ödemesinin yerine)
+    nesne_prim=2.0,            # nesne ödülüne sponsor primi (çevrimden bağımsız; kaldırılan saniye ödemesinin yerine)
+    rakip_odul=0.45,            # rampa zeplin vuruşu: hasar × 0,6 jeton (ICERIK formülündeki "zeplin vuruşu"); S4: 0,6→0,45
+    km_odul=55.0,              # iç km (1.000 b) başına jeton (50→70→55; S4 erken gelir kesintisi)
     taban_odul=25.0, sure_odul=0.0,   # sponsor tabanı: tur başına sabit (para sıfırken bile kazanç > 0). Saniye ödemesi kaldırıldı (uzun turu ödüllendirmesin)
     firsat_guc_kat=dict(fisek=2.8, konfeti=2.8, jet=3.5, romorkor=4.5),   # FIRSATLAR güçlerinin çarpanı (ICERIK değerleri × bu); yörünge turunu bu ayarlar
     fiyat_us=1.55,
