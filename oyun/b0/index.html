@@ -303,7 +303,7 @@ class Nesne {
   sifirla(tip, x, y, sinif, r, dogus) {
     this.tip = tip; this.x = x; this.y = y; this.sinif = sinif; this.r = r; this.vurus = 0; this.son_t = -99; this.aktif = true; this.dogus = dogus;
     this.kimlik = ++KIMLIK; this.halka_oldu = false; this.L = 0; this.dogal = false;
-    const g = this.g; g.ox = g.oy = g.kvx = g.kvy = 0; g.kt = 9; g.ezil_t = 9; g.bas_t = 9; g.donus = 0; g.faz = (this.kimlik * 2.399) % 6.283; g.sonuk = 0;
+    const g = this.g; g.ox = g.oy = g.kvx = g.kvy = 0; g.kt = 9; g.ezil_t = 9; g.bas_t = 9; g.kopuk = false; g.donus = 0; g.faz = (this.kimlik * 2.399) % 6.283; g.sonuk = 0;
   }
 }
 let KIMLIK = 0;
@@ -1407,7 +1407,7 @@ function olay(ad, a, b, c) {
       parcacik(o.x, o.y, o.tip === 'marti' ? 6 : 4, o.tip === 'marti' ? '#fff' : '#ffd23f', 60, 2);
       break;
     }
-    case 'ip': { a.g.kt = 0; SES.ip_kopma(); titres(HIS.titresim.hafif); parcacik(a.x, u.y, 4, '#333', 40, 1.5); const k = G.kopan; k.on = true; k.x = a.x; k.y = a.y; k.t = 0;
+    case 'ip': { a.g.kopuk = true; SES.ip_kopma(); titres(HIS.titresim.hafif); parcacik(a.x, u.y, 4, '#333', 40, 1.5); const k = G.kopan; k.on = true; k.x = a.x; k.y = a.y; k.t = 0;
       mesaj('İP KOPTU', '+' + Math.round(TIPLER.ucurtma.ip_odul * A.odul_kat * A.nesne_prim), 0.6); break; }
     case 'sondu': { const o = a; if (o.tip === 'balon' || o.tip === 'parti') { parcacik(o.x + o.g.ox, o.y + o.g.oy, 12, '#ff7eb6', 90, 3); SES.balon(); } break; }
     case 'firsat': {
@@ -1713,7 +1713,7 @@ function nesneleriCiz(c, gdt) {
         break;
       }
       case 'ucurtma': {
-        const kop = !o.aktif && o.g.kt < 9;
+        const kop = !o.aktif && o.g.kopuk;
         if (!kop || o.aktif) { c.strokeStyle = 'rgba(30,30,30,.6)'; c.lineWidth = 0.7; c.beginPath(); c.moveTo(x, y - o.r); c.lineTo(x + Math.sin(zt) * 2, 0); c.stroke(); }
         if (kop) break;   // ipi koptu: kopan uçurtma ayrıca yukarı süzülür
         c.save(); c.translate(x, y); c.rotate(!o.aktif ? (u.t - o.son_t) * 9 : Math.sin(zt * 2) * 0.12);
