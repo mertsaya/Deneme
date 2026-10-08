@@ -59,6 +59,8 @@ AYAR = dict(
     dalis_aci=70.0, dalis_koni=(66.0, 76.0), dalis_menzil=150.0, dalis_menzil_k=1.0,   # koni içinde hedef varsa ona nişan alır. 60–80→66–76: zamanlama beceri farkı yaratsın
     dalis_itki=14.0, dalis_itki_sv=4.0, dalis_sure=1.2,   # sv 2,2→4,0 (14→54): geç oyun hızı, yörünge ~tur 25–27
     bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
+    bos_dalis_yer=15.0,        # E1: boş dalışta y < kademe_y + 15 olunca hemen toparlanır (yere gömülmesin)
+    dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -365,9 +367,17 @@ class Ucus:
                 return n
         return tipler[-1][0]
 
+    def cakisir(s, x, y, r):
+        """E2: aday mevcut bir nesneyle üst üste biniyor mu (bant nesneleri hariç)."""
+        p = s.A['dogus_pay']
+        return any(o.sinif != 'bant' and (o.x - x) ** 2 + (o.y - y) ** 2 < (o.r + r + p) ** 2 for o in s.nesneler)
+
     def ekle(s, tip, x, y):
         T = TIPLER[tip]
+        if s.cakisir(x, y, T['r']):
+            return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
+        return True
 
     def ilk_doldur(s):
         s.yonet(ilk=True)
@@ -435,8 +445,8 @@ class Ucus:
             if tip is None:
                 return
             y = min(y, TIPLER[tip]['ymax'])
-        s.ekle(tip, px, y)
-        s.st['garanti'] = s.st.get('garanti', 0) + 1
+        if s.ekle(tip, px, y):
+            s.st['garanti'] = s.st.get('garanti', 0) + 1
 
     def firsat_yonet(s):
         A = s.A
@@ -472,6 +482,9 @@ class Ucus:
                 s.nesneler.append(Nesne(ad, px, yc, 'bant', 30, dict(L=F['uzun']), s.t))
             else:
                 py = max(30.0, py + s.rng.gauss(0, 12))
+                for o in s.nesneler:   # E2: fırsat rotada kalır, üst üste binen eski nesne kaldırılır
+                    if o.sinif in ('tr', 'yv') and (o.x - px) ** 2 + (o.y - py) ** 2 < (o.r + F['r'] + s.A['dogus_pay']) ** 2:
+                        o.aktif = False
                 s.nesneler.append(Nesne(ad, px, py, 'fr', F['r'], dogus=s.t))
 
     def olumcul_yonet(s):
@@ -760,9 +773,9 @@ class Ucus:
             s.dalis_t += dt
             if s.dalis_t > A['dalis_sure']:
                 s.dalis_t = None
-        if s.bos:   # S6: boş dalış toparlanması
+        if s.bos:   # S6: boş dalış toparlanması (E1: yere yakınsa hemen)
             s.bos[0] -= dt
-            if s.bos[0] <= 0:
+            if s.bos[0] <= 0 or s.y < A['kademe_y'] + A['bos_dalis_yer']:
                 lo, hi = (math.radians(x) for x in A['bos_dalis_aci'])
                 a = min(hi, max(lo, s.bos[1]))
                 vb = s.bos[2] * (1 - A['bos_dalis_kayip'])

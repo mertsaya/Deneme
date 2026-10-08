@@ -34,3 +34,4 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 - Bitiş sahnesi: **karışık** (normal bitişler sakin, rekor / büyük kayıpta abartılı).
 - "Seni durduran şey" metinleri: **öğretici** ton.
 - (B0 denetimi sonrası, kullanıcı onaylı) Abartılı bitiş: mesafe rekoru %10'dan fazla aşılınca (ilk tur hariç) ya da tur mesafesi son 3 turun ortalamasının yarısından kısaysa; diğer bitişler sakin. Rakip zeplini B0'da yok, kalkış primi kalır (S1 b). Dron halkası yalnız dron rotadaysa açılır.
+- (Ses, kullanıcı seçimi) Seçimler `oyun/ses/SECIM.md`: müzik A "Roket sörfü" (5 puan); motor tutuşma c, motor uçuş b, trambolin c, martı b, dalış b; puansız seçimler geçici. Kademe ayrılma b yalnız 3 puan, yeniden dinletilebilir.
