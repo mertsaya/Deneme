@@ -679,7 +679,7 @@ class Ucus {
   }
   carp(o) {
     if (this.t - o.son_t < A.tekrar_sure || !o.aktif) return;
-    if (o.sinif === 'tr' && !(this.vy < 0 && this.y >= o.y)) { if (o.g.kt > 1) o.g.ezil_t = 0.15; return; }   // kullanıcı kararı: trambolin yalnız üstten; alttan/yandan içinden geçilir (yalnız hafif titreme)
+    if (o.sinif === 'tr' && !(this.vy < 0 && this.y >= o.y)) { if (this.ol) this.emit('gecis', o); return; }   // kullanıcı kararı: trambolin yalnız üstten; alttan/yandan içinden geçilir (yalnız hafif titreme)
     o.son_t = this.t;
     this.st.temas++;
     if (this.st.ilk_temas_x === null) this.st.ilk_temas_x = this.x;
@@ -1366,6 +1366,8 @@ function olay(ad, a, b, c) {
     case 'halka_bitti': SES.vinDur(); break;
     case 'dalis': { G.dalisT = 0; SES.vuus(); parcacik(u.x, u.y, 6, '#ff9a3c', 50); break; }
     case 'bos_dalis': break;
+    case 'gecis': if (a.g.ezil_t > 0.6) a.g.ezil_t = 0.2; break;   // alttan/yandan geçiş: nesne hafif titrer, roket etkilenmez
+    case 'yakit_bitti': mesaj('YAKIT BİTTİ', '', 0.8); SES.tik(); break;
     case 'son_sans': {
       his('son_sans'); mesaj('SON ŞANS', u.kademe > 0 ? '▮'.repeat(u.kademe) : 'son kademe'); SES.pat(); titres(HIS.titresim.son_sans);
       const p = G.kademeP.find(q => !q.on); if (p) { p.on = true; p.x = u.x; p.y = u.y; p.vx = u.vx * 0.2; p.vy = -10; p.a = Math.atan2(u.vy, u.vx); p.t = 0; }
