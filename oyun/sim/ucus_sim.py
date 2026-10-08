@@ -66,8 +66,9 @@ AYAR = dict(
     bos_dalis_sure=0.4, bos_dalis_kayip=0.0, bos_dalis_aci=(-10.0, 45.0),   # S6: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10..+45°) döner, |v| = dalış öncesi × (1 − kayıp); S6'daki 0,10 orta botu −%15 yavaşlattı, 0 seçildi
     bos_dalis_yer=15.0,        # E1: boş dalışta y < kademe_y + 15 olunca hemen toparlanır (yere gömülmesin)
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
-    baslangic_bos_x=90.0,      # kullanıcı kararı: kalkıştan sonra x < bu değerde hiç nesne doğmaz (ilk ekran temiz). Açılış zeplini bölgenin hemen ötesine konur
-    yavaslatici_ac_x=400.0, yavaslatici_tur=3,   # tur 1–3'te x < 400'de yavaşlatıcı (martı, uçurtma) doğmaz
+    baslangic_bos_x=200.0, baslangic_bos_t=2.6,   # kullanıcı kararı: kalkış boş bölgesi = max(200, kalkış vx × 2,6 s); içinde hiç nesne (açılış zeplini, fırsat, hava akımı dahil) yok
+    yavaslatici_ac_x=600.0, yavaslatici_tur=3,   # tur 1–3'te x < 600'de yavaşlatıcı (martı, uçurtma, afiş) doğmaz
+    ogrenme_n=5,               # tur 1'de ilk 5 nesne birbirinden ve öncekilerden en az ayni_tur_ekran·W uzakta (öğrenme rampası)
     kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     # yönlendirme + yakıt (kullanıcı kararı): basılı tutup sürükleyince burun hedef açıya döner, |v| korunur; dönerken yakıt harcanır
     yakit_kap=100.0, yakit_kap_sv=30.0, yakit_harca=35.0,   # tur başı dolu depo; 'depo' kartı kapasite; birim/s (dönerken)
@@ -142,7 +143,7 @@ TIPLER = {
     # habitat: ayrı sınıf "kayma yüzeyi" (sığ 15°, fizik trambolinle aynı; görseli kullanıcı onayında)
     'habitat': dict(sinif='tr', kayma=True, r=26, ymin=_YK, ymax=9000, w=0.8, k=0.90, aci=15, yan=0.05, odul=60, omur=3, acilis='karman'),
     'marti':   dict(sinif='yv', r=13, ymin=25,   ymax=180,  w=3.0, kayip=0.06, odul=20, acilis=1),
-    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.35, ip=0.15, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip; kullanıcı kararı 0,02→0,35 'roket durmalı'), ip −%15
+    'ucurtma': dict(sinif='yv', r=7,  ymin=40,   ymax=220,  w=1.5, kayip=0.35, ip=0.0, odul=6, acilis=1),   # kayip = gövde çarpması (ucurtma_govde_kayip 0,35, kullanıcı kararı); ip yavaşlatmaz, yalnız kopar (kullanıcı kararı)
     'balina':  dict(sinif='tr', r=40, ymin=120,  ymax=450,  w=0.15, k=0.88, aci=45, yan=0.12, odul=120, omur=4, acilis=2),   # nadir olay: balina zeplin (iri trambolin)
     'afis':    dict(sinif='yv', r=14, ymin=60,   ymax=200,  w=0.4, kayip=0.35, odul=25, acilis=4, ip_tip=True),
     'sonde':   dict(sinif='yv', r=6,  ymin=50,   ymax=700,  w=1.0, kayip=0.02, odul=8, acilis=5),
@@ -338,6 +339,7 @@ class Ucus:
     def kalkis(s, kalite, rampa_t, aci=None):
         A = s.A
         s.aci = A['rampa_aci'] if aci is None else aci
+        s.bos_x = A['baslangic_bos_x']   # kalkış hızıyla aşağıda güncellenir
         s.rampa_t = rampa_t
         v = A['rampa_v'] + A['rampa_v_sv'] * s.sv.get('rampa', 0)
         q = A['kalite'][kalite]
@@ -349,6 +351,7 @@ class Ucus:
         s.vx, s.vy = v * math.cos(a), v * math.sin(a)
         s.v_kalkis = v
         s.kalite = kalite
+        s.bos_x = max(A['baslangic_bos_x'], s.vx * A['baslangic_bos_t'])
         ge = s.g_etkin(s.vx)
         s.tepe_rampa = A['rampa_y'] + s.vy ** 2 / (2 * ge)
         # rakip zeplini (rampa yanı)
@@ -362,8 +365,8 @@ class Ucus:
         # açılış zeplini rotanın iniş kolunda (yalnız üstten sekilir): tepeden en az acilis_inis_pay s sonra
         px, py = s.rota_nokta(max(A['acilis_sekme_dt'], s.vy / max(1e-6, s.g_etkin(s.vx)) + A['acilis_inis_pay']))
         z = TIPLER['zeplin']
-        if px < A['baslangic_bos_x'] + z['r'] + A['r_roket']:   # boş bölgenin hemen ötesi, rota üstü
-            px, py = s.rota_nokta((A['baslangic_bos_x'] + z['r'] + A['r_roket'] - s.x) / max(s.vx, 1.0))
+        if px < s.bos_x + z['r'] + A['r_roket']:   # boş bölgenin hemen ötesi, rota üstü
+            px, py = s.rota_nokta((s.bos_x + z['r'] + A['r_roket'] - s.x) / max(s.vx, 1.0))
         s.nesneler.append(Nesne('zeplin', px + 4, max(65.0, py - z['r'] * 0.5), 'tr', z['r']))
 
     def g_etkin(s, vx, vy=0.0):
@@ -470,8 +473,11 @@ class Ucus:
         if x % R['P'] >= R['P'] * (1 - R['bosluk']):
             return True
         W = s.ekran()[4]
+        ogren = s.tur == 1 and s.st.get('dogan', 0) < A['ogrenme_n']
         for o in s.nesneler:
             if o.sinif in ('tr', 'yv') and o.aktif:
+                if ogren and abs(o.x - x) < A['ayni_tur_ekran'] * W:
+                    return True
                 if o.tip == tip and abs(o.x - x) < A['ayni_tur_ekran'] * W:
                     return True
                 if abs(o.x - x) < A['kume_dx'] * W:
@@ -483,12 +489,13 @@ class Ucus:
         if not garanti and s.tekrar_ret(tip, x, y):   # sekme garantisi muaf (seyrek ama hep mevcut)
             return False
         xk = x - T['r'] - s.A['r_roket']   # nesnenin rokete değebileceği en küçük x
-        if xk < s.A['baslangic_bos_x'] or (T['sinif'] == 'yv' and s.tur <= s.A['yavaslatici_tur'] and xk < s.A['yavaslatici_ac_x']):
+        if xk < s.bos_x or (T['sinif'] == 'yv' and s.tur <= s.A['yavaslatici_tur'] and xk < s.A['yavaslatici_ac_x']):
             return False   # kalkış boş bölgesi / erken turlarda yavaşlatıcısız başlangıç (rastgele çekim sırası aynı: aday çekildikten sonra reddedilir)
         if s.cakisir(x, y, T['r']) or not s.gecit(x, y, T['r']):
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
         s.son_tip, s.son_y, s.tip_t[tip] = tip, y, s.t
+        s.st['dogan'] = s.st.get('dogan', 0) + 1
         return True
 
     def ilk_doldur(s):
@@ -589,6 +596,8 @@ class Ucus:
                 s.firsat_n += ad not in A['firsat_tur_muaf']
             tau = 1.6 + s.rng.random()
             px, py = s.rota_nokta(tau)
+            if ad in ('termal', 'jet') and px < s.bos_x:
+                continue   # kalkış boş bölgesinde hava akımı yok (çekimler yapıldı, sıra aynı)
             if ad == 'termal':
                 s.nesneler.append(Nesne(ad, px, 140, 'bant', 60, dict(w=60, dogal=dogal), s.t))
             elif ad == 'jet':
@@ -599,7 +608,7 @@ class Ucus:
                 for o in s.nesneler:   # E2: fırsat rotada kalır, üst üste binen eski nesne kaldırılır
                     if o.sinif in ('tr', 'yv') and (o.x - px) ** 2 + (o.y - py) ** 2 < (o.r + F['r'] + s.A['dogus_pay']) ** 2:
                         o.aktif = False
-                if px - F['r'] - A['r_roket'] >= A['baslangic_bos_x']:   # kalkış boş bölgesi (sayaç ve çekimler aynı)
+                if px - F['r'] - A['r_roket'] >= s.bos_x:   # kalkış boş bölgesi (sayaç ve çekimler aynı)
                     s.nesneler.append(Nesne(ad, px, py, 'fr', F['r'], dogus=s.t))
 
     def olumcul_yonet(s):
@@ -828,7 +837,9 @@ class Ucus:
                     o.son_t = s.t
                     o.aktif = False
                     s.st['temas'] += 1
-                    s.yavaslat(TIPLER['ucurtma']['ip'] * (1 - 0.2 * s.sv.get('ip', 0)))
+                    if TIPLER['ucurtma']['ip']:
+                        s.yavaslat(TIPLER['ucurtma']['ip'] * (1 - 0.2 * s.sv.get('ip', 0)))
+                    s.log('ip_kopma')
                     s.odul(TIPLER['ucurtma']['odul'])
 
     # ---------- adım
