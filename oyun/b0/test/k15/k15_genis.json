@@ -1,0 +1,479 @@
+[
+ {
+  "gorunum": "360x780",
+  "yazi": 1.0,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     127,
+     702,
+     344,
+     766
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     117,
+     766
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     702,
+     344,
+     766
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     80,
+     766
+    ]
+   }
+  },
+  "kart_px": 13,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "360x780",
+  "yazi": 1.2,
+  "gecti": false,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     131,
+     702,
+     344,
+     766
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     121,
+     766
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     702,
+     344,
+     766
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     80,
+     766
+    ]
+   }
+  },
+  "kart_px": 13.824,
+  "roket_px": 174,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "360x780",
+  "yazi": 1.4,
+  "gecti": false,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     143,
+     702,
+     344,
+     766
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     133,
+     766
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     702,
+     344,
+     766
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     702,
+     80,
+     766
+    ]
+   }
+  },
+  "kart_px": 16.128,
+  "roket_px": 110,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "384x832",
+  "yazi": 1.0,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     128,
+     754,
+     368,
+     818
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     118,
+     818
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     754,
+     368,
+     818
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     80,
+     818
+    ]
+   }
+  },
+  "kart_px": 13,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "384x832",
+  "yazi": 1.2,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     132,
+     754,
+     368,
+     818
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     122,
+     818
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     754,
+     368,
+     818
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     80,
+     818
+    ]
+   }
+  },
+  "kart_px": 13.824,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "384x832",
+  "yazi": 1.4,
+  "gecti": false,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     143,
+     754,
+     368,
+     818
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     133,
+     818
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     754,
+     368,
+     818
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     754,
+     80,
+     818
+    ]
+   }
+  },
+  "kart_px": 16.128,
+  "roket_px": 171,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "412x915",
+  "yazi": 1.0,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     128,
+     837,
+     396,
+     901
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     118,
+     901
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     837,
+     396,
+     901
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     80,
+     901
+    ]
+   }
+  },
+  "kart_px": 13,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "412x915",
+  "yazi": 1.2,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     138,
+     837,
+     396,
+     901
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     128,
+     901
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     837,
+     396,
+     901
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     80,
+     901
+    ]
+   }
+  },
+  "kart_px": 13.824,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ },
+ {
+  "gorunum": "412x915",
+  "yazi": 1.4,
+  "gecti": true,
+  "kara_kutu": {
+   "kkTekrar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     143,
+     837,
+     396,
+     901
+    ]
+   },
+   "kkHangar": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     133,
+     901
+    ]
+   }
+  },
+  "hangar": {
+   "ucBtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     90,
+     837,
+     396,
+     901
+    ]
+   },
+   "dislibtn": {
+    "tam": true,
+    "tek_satir": true,
+    "r": [
+     16,
+     837,
+     80,
+     901
+    ]
+   }
+  },
+  "kart_px": 16.128,
+  "roket_px": 220,
+  "ayar_cakisan": [],
+  "kucuk": []
+ }
+]

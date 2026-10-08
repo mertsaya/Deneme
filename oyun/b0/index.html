@@ -52,18 +52,21 @@ body.rampada #ipucu{bottom:calc(env(safe-area-inset-bottom,0px) + 43% + 40vw + 1
 .koyu{background:rgba(9,14,32,.9)}
 .ekran h1{margin:0;font-size:1.6rem;font-weight:900;letter-spacing:.03em}
 .ekran h2{margin:0;font-size:1.05rem;color:var(--soluk);font-weight:700}
-.birincil{background:var(--sari);color:#1d1600;border-color:#b8860b;font-weight:900;font-size:1.4rem;padding:14px 18px;min-height:64px}
-.ikincil{font-weight:800;font-size:1.05rem;padding:10px 16px}
+.birincil{background:var(--sari);color:#1d1600;border-color:#b8860b;font-weight:900;font-size:clamp(1rem,1.4rem,6vw);padding:12px 14px;min-height:64px;white-space:nowrap}
+.ikincil{font-weight:800;font-size:clamp(.9rem,1.05rem,4.6vw);padding:10px 12px;white-space:nowrap}
+.ekran>*{flex-shrink:0}
+#aKapat{position:sticky;bottom:0;margin-top:auto;box-shadow:0 0 0 8px rgba(9,14,32,.97),0 14px 0 8px rgba(9,14,32,.97)}   /* içerik sıkışmaz; ekran kaydırılır */
+.ekran>.alt{position:sticky;bottom:0;margin-top:auto;padding-top:8px;background:rgba(9,14,32,.97);box-shadow:0 14px 0 rgba(9,14,32,.97);flex:none}
 /* hangar */
 #hangar .tepe{display:flex;justify-content:space-between;align-items:center}
 #hJeton{font-size:1.4rem}
-#hRoket{flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#hRoket{flex:1 0 110px;min-height:110px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 #hRoket svg{height:100%;max-height:220px;width:auto}
-#hangar{overflow:hidden;gap:8px}
+#hangar{gap:8px}
 #kartlar{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .kart{display:flex;flex-direction:column;align-items:stretch;text-align:left;gap:3px;padding:7px 8px;border-radius:14px;background:#26314f;border:2px solid #44527a}
 .kart b{font-size:.95rem;line-height:1.15}
-.kart p{margin:0;font-size:.72rem;color:var(--soluk);line-height:1.25;flex:1}
+.kart p{margin:0;font-size:max(13px,.72rem);color:var(--soluk);line-height:1.25;flex:1}
 .kart .sv{display:flex;gap:3px;flex-wrap:wrap}
 .kart .sv i{width:9px;height:9px;border-radius:50%;background:#55607e}
 .kart .sv i.d{background:var(--sari)}
@@ -93,7 +96,7 @@ body.rampada #ipucu{bottom:calc(env(safe-area-inset-bottom,0px) + 43% + 40vw + 1
 .orta{justify-content:center;align-items:stretch;max-width:26rem;margin:0 auto;right:0;left:0}
 .orta button{min-height:56px;font-weight:800;font-size:1.15rem}
 #mTohum{font-size:.8rem;color:var(--soluk);text-align:center;user-select:text;-webkit-user-select:text}
-.ayar{display:flex;justify-content:space-between;align-items:center;gap:10px;background:var(--panel);border-radius:12px;padding:8px 12px;min-height:52px}
+.ayar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:6px 10px;background:var(--panel);border-radius:12px;padding:8px 12px;min-height:52px}
 .ayar label{font-weight:700}
 .ayar input[type=range]{width:45%;min-height:48px}
 .secim{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
@@ -634,10 +637,11 @@ class Ucus {
         this.yavaslat(T.yan);
         this.gosterge_ekle(A.gosterge_diger);
         this.dalis_t = null; this.bos = false;
+        this.log('temas', o.tip, 'yan');
         this.emit('yan', o);
       }
       o.vurus += 1;
-      if (o.vurus >= T.omur) { o.aktif = false; this.emit('sondu', o); }
+      if (o.vurus >= T.omur) { o.aktif = false; this.log('sondu', o.tip); this.emit('sondu', o); }
       this.odul(T.odul, true, o);
     } else if (o.sinif === 'yv') {
       const T = TIPLER[o.tip];
@@ -648,6 +652,7 @@ class Ucus {
       }
       o.aktif = false;
       this.gosterge_ekle(A.gosterge_diger);
+      this.log('temas', o.tip);
       this.emit('yavas', o);
       this.odul(T.odul, true, o);
     } else if (o.sinif === 'fr') {
@@ -662,6 +667,7 @@ class Ucus {
         o.son_t = this.t; o.aktif = false;
         this.st.temas++; this.st.ip++;
         this.yavaslat(TIPLER.ucurtma.ip * (1 - 0.2 * (this.sv.ip || 0)));
+        this.log('ip', o.tip);
         this.emit('ip', o);
         this.odul(TIPLER.ucurtma.odul, true, o);
       }
@@ -918,14 +924,15 @@ function varsayilanKayit() {
     sv: { rampa: 0, bolge: 0, verim: 0, dalis: 0, kademe_itki: 0, yakit_ac: 0, yakit_s: 0 },
     duvar: { ses: null }, rekor: { mesafe_g: 0, max_v: 0, max_y: 0 }, son: [], son_dalis: [], son_mesafe: [], elle: 0,
     ipucu: { rampa: false, dalis: false, sekme: false, yakit: false },
-    ayar: { efekt: 80, muzik: true, titresim: true, hareket_azalt: null, isik: false, yazi: 1.0, kalite: 'oto' }, bekleyen: null };
+    ayar: { efekt: 80, muzik: true, titresim: true, hareket_azalt: null, isik: false, yazi: 1.0, kalite: 'oto' }, bekleyen: null, askida: null };
 }
-function tasi(k) {   // sürüm taşıma: v'ye göre adım adım (B0'da yalnız v1)
-  if (k.v !== 1) throw new Error('sürüm');
+const KAYIT_UST = 1e9;   // jeton ve bekleyen kazanç için makul üst sınır
+function tasi(k) {   // sürüm taşıma: v'ye göre adım adım (B0'da yalnız v1). Bilinmeyen/ileri sürüm: bilinen alanlar onar() ile, bilinmeyenler korunur
+  if (k.v !== 1) KAYIT.surum = k.v;
   return k;
 }
 function onar(h) {   // alan bazında doğrulama: geçersiz alan → varsayılan (sv seviyeleri svMaks'a kırpılır). Dönüş [kayıt, onarılan alanlar]
-  const d = varsayilanKayit(), bozuk = [], say = (x) => typeof x === 'number' && isFinite(x) && x >= 0, tam = (x) => Number.isInteger(x) && x >= 0;
+  const d = varsayilanKayit(), bozuk = [], say = (x) => typeof x === 'number' && isFinite(x) && x >= 0 && x <= KAYIT_UST, tam = (x) => Number.isInteger(x) && x >= 0;
   const al = (ad, ok, v, vars) => { if (ok) return v; if (v !== undefined) bozuk.push(ad); return vars; };
   const dizi = (ad, x) => Array.isArray(x) && x.every(say) ? x.slice(-3) : al(ad, false, x, []);
   const k = d;
@@ -943,8 +950,11 @@ function onar(h) {   // alan bazında doğrulama: geçersiz alan → varsayılan
   k.ayar.hareket_azalt = al('ayar.hareket_azalt', ay.hareket_azalt === null || bool(ay.hareket_azalt), ay.hareket_azalt, null);
   k.ayar.yazi = al('ayar.yazi', [1, 1.2, 1.4].includes(ay.yazi), ay.yazi, A0.yazi);
   k.ayar.kalite = al('ayar.kalite', ['oto', 'dusuk', 'orta', 'yuksek'].includes(ay.kalite), ay.kalite, A0.kalite);
-  const bk = h.bekleyen;   // eski biçim sayı; yeni { j, ses }
-  k.bekleyen = al('bekleyen', bk === null || say(bk) || (bk && typeof bk === 'object' && say(bk.j) && typeof bk.ses === 'boolean'), bk, null);
+  const bek = (x) => x === null || say(x) || (!!x && typeof x === 'object' && say(x.j) && typeof x.ses === 'boolean');   // eski biçim sayı; yeni { j, ses }
+  k.bekleyen = al('bekleyen', bek(h.bekleyen), h.bekleyen, null);
+  k.askida = al('askida', bek(h.askida), h.askida, null);
+  for (const a in h) if (!(a in d) && a !== 'askida') k[a] = h[a];   // bilinmeyen (ileri sürüm) alanlar korunur
+  k.v = 1;
   return [k, bozuk];
 }
 const KAYIT = {
@@ -965,7 +975,8 @@ const KAYIT = {
     }
     const [k, bozuk] = onar(h);
     this.k = k;
-    if (bozuk.length) { this.bildirim = 'Kayıt kısmen onarıldı'; this.onarilan = bozuk; this.yaz(); }
+    if (this.surum !== undefined) { this.bildirim = 'Kayıt başka bir sürümden: uyumlu alanlar yüklendi'; this.yaz(); }
+    else if (bozuk.length) { this.bildirim = 'Kayıt kısmen onarıldı'; this.onarilan = bozuk; this.yaz(); }
     return this.k;
   },
   yaz(o) {
@@ -1620,7 +1631,7 @@ function turSonu(elle) {   // tur kazancını hesapla ve kaydet (tek setItem; be
   const rek = { mesafe: r.mesafe_g > K.rekor.mesafe_g, hiz: r.max_v > K.rekor.max_v };
   const kk = { r, elle, nesne, km: r.kazanc_km, prim: elle ? null : r.kazanc_rakip, taban: elle ? null : A.taban_odul, ses: duvarOdul, toplam: Math.round(toplam), rek, tur: ucusNo() };
   if (!SV_Q) {   // ?sv'li oyun kayda yazmaz (?kayit=0 hiç yazmaz)
-    K.jeton += kk.toplam; K.bekleyen = null;
+    K.jeton += kk.toplam; K.bekleyen = null; K.askida = null;
     if (elle) K.elle += 1; else K.tur += 1;   // elle bitirmeler ayrı sayılır (K16 "kendiliğinden tur" şişmesin)
     if (ilkSes) K.duvar.ses = kk.tur;
     K.rekor.mesafe_g = Math.max(K.rekor.mesafe_g, r.mesafe_g); K.rekor.max_v = Math.max(K.rekor.max_v, r.max_v); K.rekor.max_y = Math.max(K.rekor.max_y, r.max_y);
@@ -1769,7 +1780,10 @@ function gizlenince() {
   duraklat();
   if (G.asama === 'UCUS' && !SV_Q) { KAYIT.k.bekleyen = { j: elleKazanc(), ses: G.u.duvar.has('ses') }; KAYIT.yaz(); }
 }
-function gorununce() { if (KAYIT.k.bekleyen !== null && (G.asama === 'UCUS' || G.asama === 'RAMPA')) { KAYIT.k.bekleyen = null; KAYIT.yaz(); } }
+function gorununce() {   // §13.1: görünür olunca bekleyen = null; tur duraklatılmış kaldığı için kazanç 'askida'ya taşınır (aynı yazım), DEVAM ya da tur sonunda silinir
+  const K = KAYIT.k;
+  if (K.bekleyen !== null && (G.asama === 'UCUS' || G.asama === 'RAMPA')) { if (G.asama === 'UCUS') K.askida = K.bekleyen; K.bekleyen = null; KAYIT.yaz(); }
+}
 document.addEventListener('visibilitychange', () => { if (document.hidden) { gizlenince(); SES.askiya(); } else { gorununce(); if (!ilkDokunus) SES.surdur(); } });
 window.addEventListener('pagehide', gizlenince);
 window.addEventListener('blur', () => { if (!GORUNTUSUZ && TEST_T === null) duraklat(); });
@@ -1849,7 +1863,7 @@ function guncelle(dt) {
   if (bildirimZ > 0 && (bildirimZ -= dt) <= 0) $('bildirim').classList.remove('on');
   if (G.sayim > 0) {
     G.sayim -= dt; $('sayim').textContent = String(Math.max(1, Math.ceil(G.sayim / B0_ARAYUZ.devam_sayim[1])));
-    if (G.sayim <= 0) { G.sayim = 0; G.duraklat = false; $('sayim').hidden = true; G.kuyruk = 0; }
+    if (G.sayim <= 0) { G.sayim = 0; G.duraklat = false; $('sayim').hidden = true; G.kuyruk = 0; if (KAYIT.k.askida !== null) { KAYIT.k.askida = null; KAYIT.yaz(); } }
     return;
   }
   if (G.duraklat) return;
@@ -2003,11 +2017,11 @@ function acilis() {
   ayarCiz();
   if (TEST_T === null) SES.yukle();
   const K = KAYIT.k;
-  if (K.bekleyen) {   // gizliyken öldürülmüş tur: kazanç bir kez eklenir; ses duvarı kırıldıysa ilk kırılış kaydedilir (ödül ikinci kez alınamaz)
-    const bk = typeof K.bekleyen === 'number' ? { j: K.bekleyen, ses: false } : K.bekleyen, b = Math.round(bk.j);
+  if (K.bekleyen || K.askida) {   // gizliyken ya da duraklatılmışken öldürülmüş tur: kazanç bir kez eklenir; ses duvarı kırıldıysa ilk kırılış kaydedilir
+    const kb = K.bekleyen || K.askida, bk = typeof kb === 'number' ? { j: kb, ses: false } : kb, b = Math.round(bk.j);
     K.jeton += b; if (bk.ses && K.duvar.ses === null) K.duvar.ses = ucusNo();
     K.elle += 1;
-    K.bekleyen = null; KAYIT.yaz(); bildirim('Yarım kalan uçuş: +' + fmtN(b) + ' jeton');
+    K.bekleyen = null; K.askida = null; KAYIT.yaz(); bildirim('Yarım kalan uçuş: +' + fmtN(b) + ' jeton');
   }
   if (KAYIT.bildirim) bildirim(KAYIT.bildirim);
   if (TEST_T !== null) ileriSar(TEST_T);
