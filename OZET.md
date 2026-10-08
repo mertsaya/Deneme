@@ -160,3 +160,6 @@ Veritabanındaki durumu "verifiable", yani tek bir örnek bulunursa problem çö
 1. Tasarımcı çıktısını kontrol et (PLAN_B 6.2, ICERIK, b0/TASARIM.md) → Opus denetçi.
 2. Onaylanırsa B0 gri kutu kodlaması (uygulayıcı, Opus, bulut oturumunda) → testçi (Playwright botları) → kullanıcı telefonda.
 3. Dosyaları commit et, kullanıcı push etsin.
+
+## Bulut devri
+- Tasarımcı çıktısı onaylandı (8baeb3c). Sıradaki bulut işi: (1) sim S1–S9 ayarı ve `ozet 20` ölçümü, (2) denetçi şartname incelemesi, (3) B0 kodlaması (oyun/b0/TASARIM.md), (4) testçi.
