@@ -1,141 +1,101 @@
-# Uçuş + ekonomi simülasyonu: rapor (2. ayar)
+# Uçuş + ekonomi simülasyonu: rapor (3. ayar: S1–S9 + E1–E2)
 
-2026-10-08 · `oyun/sim/ucus_sim.py` (saf Python) · Dayanak: PLAN_B §5, ICERIK §5, KARARLAR.md (8. oturum dahil)
+2026-10-08 · `oyun/sim/ucus_sim.py` (saf Python) · Dayanak: PLAN_B §5.2–5.3 (S1–S9, D1–D7), KARARLAR.md (8. oturum dahil)
 
-Çalıştırma (klasör `oyun/sim`): `python ucus_sim.py` (tam: 5 bot × 20 tohum × 60 tur, ~80 s, `kampanya.json` yazar) · `ozet [n]` (ayar döngüsü, ilk 25 tur) · `tek 7 iyi` · `egri` · `esleme` · `kontrol` (geçiyor).
+Çalıştırma (klasör `oyun/sim`): `python ucus_sim.py` (tam: 5 bot × 20 tohum × 60 tur, ~5,5 dk, `kampanya.json` yazar) · `ozet [n]` (ayar döngüsü + **hedef kontrol** listesi; ~2 dk/20 tohum, ~4 dk/40 tohum) · `tek 7 iyi` · `egri` · `esleme` · `kontrol` (geçiyor).
 
-**Kapsam:** Ayar yalnız **ilk 25 tur** için yapıldı. Tablolarda 26+ satırlar **taslak**. Para birimi **jeton**. Hedefler kodda tek yerde: `HEDEF`.
+**Kapsam:** Ayar yalnız ilk 25 tur için. 26+ satırlar taslak. Para birimi jeton. Hedefler kodda tek yerde: `HEDEF` (S9 ile güncellendi). `ozet` artık tuttu/tutmadı listesini kendisi basar.
 
-## 1. Ne değişti
+## 1. Uygulanan ayarlar
 
-| Kalem | Eski | Yeni | Neden |
-|---|---|---|---|
-| Botlar | hic, kotu (rastgele dokunur), iyi, usta | **hic, kotu, orta, iyi, usta**, tek tablo `BOTLAR` | §2 |
-| Botların görüşü | iyi/usta oyunun koni yardımını kâhin gibi kullanıyordu (400 b ileri) | Yalnız **ekranda görünen** nesneler (ileri bakış ≤ ekranın 2/3'ü) | Görev 1 |
-| Tur tavanı | 85 s uçuş + rampa | **65 s tur** (yalnız emniyet) | Görev 2 |
-| Yörünge sönümü | 14 b/s² | **22 b/s²** (`sonum_yorunge` ayrı düğme, şimdilik 22) | Görev 2 |
-| v < 600 ek sürükleme | yok | y 300→3500 arası 0→**7 b/s²** (`SONUM_ALT`) | Görev 2 |
-| Yüksekte asılı kalma | yok | Tropopoz üstünde **yatay hız 2 s boyunca < 110** → tur biter (`vx_dur`) | Uzun turların asıl nedeni, §6.1 |
-| Turda fırsat sayısı | sınırsız | **en çok 5** (römorkör muaf) (`firsat_tur_max`) | Uzun uçuş kendini fırsatla beslemesin |
-| Gösterge dolumu / temas | trambolin 0,25 · diğer 0,20 | **0,08 · 0,13** | Dalış zinciri sonsuza dek sürmesin |
-| Saniye başına ödeme | 2,5 jeton/s | **0** | Görev 2. Yerine: km ödülü 50→**70**, nesne ödülüne `nesne_prim` **×2,4** (izlenme→jeton çevrimi `odul_kat`=0,10 **dokunulmadı**) |
-| Rampa üst sınırı | 190 (12/sv) | **230** (16/sv) | Görev 3 |
-| Son ateşleme, kademe itkisi | 15/sv · 5/sv | **19,5/sv · 6,5/sv** (+%30) | Görev 3 |
-| Kármán eşiği | y 3000 | **y 3500**; irtifa eşlemesi 3500 b = 100 km; uzay bantları Kármán'dan türer | Görev 4 |
-| Bilim balonu sekme açısı | 30° | **40°** + y > 2900'de yükselirken **6 b/s²** ek dikey sönüm (`ust_sonum`) | KARARLAR 8. oturum |
-| Habitat | trambolin, 15° | 15°, **ayrı sınıf "kayma yüzeyi"** (`kayma=True`; `kontrol` 40–55° kuralından muaf tutar) | KARARLAR 8. oturum |
-| Fırsat güçleri | ICERIK değerleri | ICERIK × **fişek 2,8 · konfeti 2,8 · jet 3,5 · römorkör 4,5** (`firsat_guc_kat`) | Görev 4 |
-| Dalış itkisi | 14 + 2,2/sv | 14 + **4,0/sv** | Geç oyun hızı (yörünge) |
-| Dalış konisi | 60–80° | **66–76°** | Geniş konide tepki süresi önemsizdi (usta ≈ iyi), §3 |
-| Isı duvarı süresi | 250 üstünde 1 s | **2 s** | Tek fişek patlamasıyla kırılmasın |
-| Alıcı bot | römörkörü hiç almıyordu | Römorkör değeri "romorkor_y'ye çıkabiliyor musun"a bağlı; `rastgele` seçeneği (dayanıklılık) | |
+Her adımdan sonra `ozet 20` ile ölçüldü. Son kabul 40 tohumla yapıldı. "Öneri" sütunu PLAN_B §5.3'teki değer, "Son" sütunu koddaki değer. Farklıysa nedeni yazılı. Yaratıcı kurallara dokunulmadı. Değişen yalnız sayılar ve ölçüm.
 
-Değişmeyen: duvar ödülleri, fiyatlar, seviye sayıları, rakip canları, izlenme→jeton çevrimi, ekran yoğunluğu.
-
-## 2. Botlar (`BOTLAR`)
-
-| Bot | Tepki s | Hedef tahmini hatası | Öngörü | Mükemmel kalkış | Mini oyun | Not |
-|---|---|---|---|---|---|---|
-| hic | – | – | – | hep "iyi" (3 s bekler) | %0 | Uçuşta hiç dokunmaz |
-| kotu | 0,40–0,70 | ±%50 | 0,2 | ≈ bölge (%12–24), %25 zayıf | %25 | + saniyede 0,15 amaçsız dokunuş |
-| **orta** | 0,25–0,40 | ±%25 | 0,7 | %50–60 | %35 | Yeni |
-| iyi | 0,18–0,30 | ±%10 | 0,8 | %80–95 | %50 | Eskiden 0–0,15 s ve ekran dışını görüyordu |
-| usta | 0–0,05 | 0 | 1,0 | %97 | %100 | |
-
-`kotu` yeniden tanımlandı: eski rastgele dokunan kotu, hiç dokunmayandan **daha kötüydü** (tur 10'da −%40); yani "kötü oyuncu" modeli değil, cezaydı. Yenisi hedefe dokunmaya çalışıyor ama geç ve hatalı.
-
-## 3. Hedef ve sonuç (iyi bot, 20 tohum, tek birim)
-
-Birimler: iç birim **b**, **b/s** (yalnız kodda). Göstergede: mesafe **km** (gösterge hızının yatay bileşeninin tümlevi, `mesafe_g`), irtifa **km** (`irtifa_km`), hız Mach / km/s. Eski rapordaki "iç b · gösterge km" karışık sütunu ve "hedefi simülasyona göre değiştir" önerisi kaldırıldı: hedefler PLAN_B §5 / ICERIK §5'ten, sim onlara ayarlanır.
-
-| Tur | Ölçüt | Hedef | Ölçülen | |
+| # | Düğme | Öneri | Son | Not |
 |---|---|---|---|---|
-| 1 | süre · mesafe · kazanç | 18 s · 1,2 km · 120 | 18 s · 1,7 km · 171 | mesafe ve kazanç biraz yüksek |
-| 3 | süre · mesafe · en yüksek hız | 30 s · 4 km · Mach 1+ | 27 s · 3,8 km · Mach 1,9 | ✓ |
-| 5 | kazanç | 400 | 701 | yüksek |
-| 10 | süre · mesafe · hız · kazanç | 50 s · 25 km · 260 b/s · 900 | 45 s · 22,5 km · 256 b/s · 932 | ✓ |
-| 15 | kazanç | 1.600 | 1.031 | düşük |
-| 15–25 | tur süresi medyanı | 45–55 s | 46 s | ✓ |
-| 20 | kazanç | 2.600 | 2.283 | ✓ (±%15) |
-| 25 | mesafe · hız · kazanç | 150 km · 600 b/s · 4.000 | 67 km · 426 b/s · 1.815 | **düşük** |
+| S1 | Durma (`v_dur`/`vx_dur`) olunca kademe **her irtifada** ateşlenir. Tropopoz üstünde `kademe_ust_vy_kat` | 0,5 | 0,5 | Uygulandı. Tur 25'te son şans artık kullanılıyor (iyi: ort. 1,9 kademe/tur) |
+| S2 | Kazanç hedefi = **uçuş kazancı** (`kazanc_ucus`, duvar ve nakavt hariç), 3 tur kayan medyan, tohumlar arası medyan | – | – | `kayan_medyan()`. `ozet` toplam kazancı ayrı satırda verir |
+| S3 | `bant_carpan` (y ≥ 1.000 · y ≥ 3.500), nesne ve km ödülüne uygulanır, `carpan_tavan` dışında. km ödülü bulunduğu bantta tümlenir | ×1,8 · ×3,0 | **×2,4 · ×4,3** | S4 ile birlikte ayarlandı (aşağıda) |
+| S4 | `km_odul` · `nesne_prim` · `rakip_odul` | 55 · 2,0 · 0,45 | **75 · 2,8 · 0,20** | Öneri, geliri hedefin %50'sine düşürdü (tahmin −%20 idi). Orta/kotu ilerlemesi çöktü (orta yörünge yok, kotu ısı 45). Gelir, bant çarpanı geç döneme kaydırılarak geri alındı. `rakip_odul` tur 1 kazancının büyük payı olduğu için 0,2'ye indi |
+| S5 | `isi_sure` · `isi_hiz` · Isı kalkanı görünür tur | 3 s · 3,0 · 8 | **2,5 s** · 3,0 · 8 | 3 s ile 40 tohumda iyi ısı **13**. 2,5 s → 12. Duvar tur 8–9'daki tropopozdan 2–4 tur sonra geliyor; kalkan "çözen geliştirme" |
+| S6 | Boş dalış toparlanması: konide hedef yoksa dalış 0,4 s sürer, sonra burun eski yönüne (−10°…+45°) döner, `bos_dalis_kayip` | 0,4 s · 0,10 | 0,4 s · **0,0** | 0,10 ile **orta bot −%15** (aynı geliştirmeyle tek uçuş). Koninin hemen dışındaki hedefe dalışlar 0,4 s'den sonra da isabet ediyordu. 0 ile kotu +%17, orta kaybı yarıya iner. Aşağıda §4 |
+| S7 | İyi yörünge > 27 → römorkör `firsat_guc_kat` | 4,5 → 5,5 | 5,5 | Uygulandı. Tek başına etkisi yok (29 → 29). 7,0 da denendi: orta 40 → 38, iyi değişmedi |
+| S8 | Tavan > %10 → alçak bantta trambolin seyrelmesi: 30. s'den sonra her 10 s ×0,9, en az ×0,5 | y < 300 | **y < 1.000**, sekme garantisi de seyrelir | y < 300 hiç etki etmedi. Tavana çarpan turlar **bulut bandında** (300–1.000, vx 60–100, tepe ~600, yay başına 10–12 s). Garanti her 0,25 s trambolin koyduğu için seyrelme boşa gidiyordu; garanti de aynı olasılıkla atlanıyor. Etki küçük: iyi %18 → %14–17 |
+| S9 | `HEDEF` güncellemesi (D1–D6) + `hedef_kontrol()` | – | – | Eşik turu **sansürlü medyan**: ulaşamayan kampanya "ulaşamadı" sayılır (eskiden yalnız ulaşanların medyanıydı; orta yörünge bu yüzden iyimser görünüyordu) |
+| E1 | Boş dalışta y < `kademe_y` + 15 olunca hemen toparlan (`bos_dalis_yer`) | 15 | 15 | Koordinatör ekledi. Yere gömülen boş dalış kademe yakmasın |
+| E2 | Nesneler üst üste doğmaz: d < r1 + r2 + 4 olan aday reddedilir (`dogus_pay`). Fırsat rotada kalır, çakışan eski nesne kalkar | 4 | 4 | Koordinatör ekledi. Ekran yoğunluğu 9,4 → 9,0 (kontrol 7–12 geçiyor) |
 
-Tur 25 süresi PLAN_B'de 75 s yazıyor; bu görevde 45–55 s istendiği için o kullanıldı (PLAN_B güncellenmeli).
+Ölçüm de değişti: `ozet` artık orta/iyi/usta için 40 tur, hic/kotu için 60 tur koşuyor (`OZET_TUR`). Önceden 25 turda kesildiği için Kármán ve yörünge medyanları eksik sayılıyordu.
 
-## 4. Eşiklerin ilk kırıldığı tur (medyan · %10–%90, 20 tohum)
+## 2. Hedef tablosu (son kabul: `ozet 40`, son kod)
+
+| Hedef | Ölçülen | | Öneri değerleriyle (S1–S8 yazıldığı gibi, 40 tohum) |
+|---|---|---|---|
+| iyi ses 2–3 | **4** | ✗ (sınırda; 20 tohumda 3) | 3 |
+| iyi tropopoz 9–10 | 10 | ✓ | 10 |
+| iyi ısı 11–12 | 12 | ✓ | 13 ✗ |
+| iyi Kármán 17–19 | 17 | ✓ | 19 |
+| iyi yörünge 24–27 | 27 | ✓ | 30 ✗ |
+| usta yörünge ≤ 24 | 21 | ✓ | 25 ✗ |
+| orta yörünge ≤ 34 | **40** (21/40 kampanya tur 40'a dek) | ✗ | ulaşamadı ✗ |
+| kotu ısı ≤ 28 | **32** | ✗ | 45 ✗ |
+| kotu Kármán ≤ 50 (≥ 15/20) | **5/40** | ✗ | 3/40 ✗ |
+| iyi tur 15–25 medyan süre 45–55 s | 54 | ✓ | 54 |
+| tavana çarpan ≤ %10 (her bot) | hic 4 · kotu 2 · **orta 13 · iyi 15 · usta 12** | ✗ | orta 13 · iyi 15 · usta 11 ✗ |
+| uçuş kazancı t1 120 | **146** (+%22) | ✗ | 149 ✗ |
+| t5 500 | **239** (−%52) | ✗ | 228 ✗ |
+| t10 900 | **725** (−%19) | ✗ (sınırda; 40 tohumluk öbür koşu 885) | 493 ✗ |
+| t15 1.600 | **1.291** (−%19) | ✗ (sınırda; öbür koşu 1.352) | 798 ✗ |
+| t20 2.600 | 2.812 | ✓ | 1.289 ✗ |
+| t25 4.000 | 4.097 | ✓ | 1.946 ✗ |
+| beceri tur 1 iyi/hiç ≥ +%30 | +%55 | ✓ | +%44 |
+| beceri tur 5 ≥ +%60 | +%152 | ✓ | +%150 |
+| beceri tur 10 ≥ +%60 | +%233 | ✓ | +%151 |
+| **Toplam** | **11/20** | | 7/20 |
+
+Sınırda olanlar (ses, t10, t15) 40 tohumluk iki koşu arasında yer değiştiriyor. Ölçüm gürültüsü eşik turunda ±1, kazançta ±%10.
+
+## 3. Tam koşu (`python ucus_sim.py`, 20 tohum, 60 tur; `kampanya.json`)
+
+Eşiklerin ilk kırıldığı tur (medyan · %10–%90):
 
 | Bot | Ses | Tropopoz | Isı | Kármán | Yörünge | Kaçış (taslak) |
 |---|---|---|---|---|---|---|
-| **hedef (iyi)** | 3 | 10 | 12 | 18–19 | 25 | (40) |
-| hic | 6 | 28 | 28 | 47 · 37–55 | 54 (5/20) | — |
-| kotu | 7 | 30 (19/20) | 30 (19/20) | 38 (7/20) | — | — |
-| orta | 3 | 12 | 12 | 23 · 13–37 | 37 (19/20) | 51 (13/20) |
-| iyi | 2 | 8 | 9 | **17** · 11–24 | **31** · 20–37 | 43 |
-| usta | 2 | 8 | 8 | **13** · 10–18 | **25** · 21–30 | 32 |
+| **hedef (iyi)** | 2–3 | 9–10 | 11–12 | 17–19 | 24–27 | (40) |
+| hic | 6 | 27 · 20–32 | 28 · 22–35 | 45 · 33–53 | 53 (15/20) | 58 (9/20) |
+| kotu | 7 | 30 · 25–42 | 35 · 25–48 | 52 (8/20) | — | — |
+| orta | 4 | 15 · 9–19 | 19 · 15–28 | 31 · 25–39 | 42 · 36–51 | 50 (16/20) |
+| iyi | 3 | 10 · 7–15 | 14 · 6–20 | 17 · 12–23 | 28 · 21–38 | 36 |
+| usta | 3 | 9 | 9 | 14 | 21 | 29 |
 
-Rakip nakavtı (medyan, hedef 7 · 14 · 22): iyi 6 · 12 · 19 · usta 5 · 12 · 19 · orta 7 · 16 · 26 · hic 14 · 30 · 46.
+Rakip nakavtı (hedef 7 · 14 · 22): iyi 6 · 13 · 20 · orta 8 · 16 · 27 · hic 14 · 29 · 44.
 
-İyi ile usta farkı: Kármán **4 tur** ✓, yörünge **6 tur** ✓. Uyarı: kampanya başına sapma büyük. Aynı ayarla iki ölçümde iyi botun yörünge medyanı 26 ve 31 çıktı (20 tohumda ±3 tur oynuyor).
+Tur süresi (ilk 25 tur): iyi tur 15–25 medyanı 53 s (%10–%90: 35–65), tavana çarpan orta %15 · iyi %17 · usta %10 · hic %2 · kotu %1.
 
-## 5. Tur süresi (ilk 25 tur)
+Beceri farkı (aynı geliştirme, mesafe, bot/hiç − 1): tur 5 iyi +%186 · orta +%114 · kotu +%17. Tur 10 iyi +%227 · orta +%158 · kotu +%24. Tur 25 iyi +%116.
 
-| Bot | Tur 15–25 medyan | %10–%90 | Tavana (65 s) çarpan |
-|---|---|---|---|
-| hic | 30 s | 17–58 | %3 |
-| kotu | 20 s | 10–53 | %3 |
-| orta | 52 s | 27–65 | **%17** |
-| iyi | 46 s | 23–65 | **%13** |
-| usta | 44 s | 21–60 | %10 |
+Dayanıklılık (alıcı %30 rastgele): alışverişsiz seri en çok 2, çıkmaz 0/20 (tüm botlar). İyi bot: Kármán 18, yörünge 26.
 
-Medyan hedefte. Tavana çarpma orta ve iyi botta %10'un üstünde (§7).
+## 4. Kalan sorunlar ve bulgular
 
-## 6. Beceri farkı (aynı geliştirmeler: iyi botun o turdaki seviyeleri, 60 uçuş)
+1. **Kazanç eğrisinin başı tutmuyor (tur 1: 146, tur 5: 239; hedef 120 / 500).** Tur 1 → 5 arası uçuş kazancı ×1,6 büyüyor, hedef ×4,2 istiyor. Erken dönemde gelir mesafeyle doğrusal; iyi bot tur 5'te tur 1'in ~2,5 katı yol alıyor, gelir çarpanı (izlenme) ise tur 10'a dek alınmıyor. Hiçbir doğrusal ödül düğmesi ikisini birden tutturamaz. Erken geliri yükseltmek erken eşikleri öne çekiyor: tur 5 ≈ 300 olan ayarda tropopoz 8, ses 2. Eşik hedefleri tur 5 ≈ 240 gelirle tutuyor. Yani **fiyatlar, tur 5 = 500 hedefinin varsaydığından ucuz.** Seçenekler (karar gerekir): (A) tur 1–5 hedefini 120 → 150, 500 → 250 yap (eğri tur 10'dan sonra tutuyor). (B) İlk 10 turun fiyatlarını ve duvar ödüllerini ~×2 yap ve gelir hedefini koru (ICERIK fiyat tablosu değişir). (C) Erken bir gelir geliştirmesi (izlenme) daha görünür/ucuz olsun (kara kutu kartı önerir).
+2. **Kötü dokunan oyuncu (kotu) hâlâ hiç dokunmayandan yavaş** (ısı 32 vs 28; Kármán 5/40 vs hic 45). S6 uçuşta farkı kapattı: aynı geliştirmeyle kotu artık hic'ten +%8–24 ileri. Asıl neden **alışveriş**. Sim'de hic'e kara kutu kartı hep "Rampa gücü"nü öneriyor, kotu ise iyi bot gibi dalış geliştirmelerine (dalış, dolum, yakıt) para yatırıyor ama dalışları tutmuyor. Tanı: kotu yalnız hic'in alım değerleriyle oynatılınca **ısı 28 ✓, Kármán 44 (20/20) ✓.** Öneri (tasarım kararı, uygulanmadı): kara kutu kartı önerisini oyuncunun dalış isabet oranına bağla. Dalışları tutmayan oyuncuya rampa/aerodinamik/kademe önerilsin.
+3. **Orta oyuncu yörüngeye geç ulaşıyor** (40; 21/40 kampanya tur 40'a dek). Bu, sansürlü medyanla ilk kez dürüstçe görünüyor; eski raporda "33 (11/20)" yalnız ulaşanların medyanıydı. Römorkör ×7 orta'yı yalnız 2 tur öne çekti. Engel orta'nın uzaydaki tepe hızı. Seçenekler: (A) orta hedefini ≤ 40'a gevşet (B1 kapsamı 25 tur olduğundan tipik oyuncu yörüngeyi B1'de görmez). (B) Yörünge koşulunu orta için kolaylaştıran bir yardım (yörünge göstergesi / uzayda dalış konisi genişler). İkisi de karar.
+4. **Tavan oranı %12–17 (hedef ≤ %10).** Tavana çarpan turlar bulut bandında (300–1.000) yavaş, yüksek yaylar. vx 60–100 hızla 10–12 s'lik yaylar, fişek/konfeti ile yeniden besleniyor. `vx_dur` tropopoz altında geçerli değil. S8 (y < 1.000, garanti dahil) %18 → %14–17 düşürdü. Daha sert seyrelme (×0,8, en az ×0,3) ve alçak bant sönümü (`SONUM_ALT` ek 7 → 14 ya da y1 1.000) **denendi**. Tavanı düşürmedi, ilerlemeyi bozdu (iyi Kármán 17 → 25). Kalan kaldıraçlar kural değişikliği, karar gerekir: (A) `vx_dur` benzeri bir durma koşulu bulut bandında da (ör. vx < 80, 3 s; uçuşun 30. s'sinden sonra). (B) Tur başına fırsat sınırı 5 → 4 (kullanıcı onaylı sayı). (C) %15'i kabul et, tavan emniyet olarak kalsın.
+5. **Koordinatörün B0 ölçümü (ses 4, ilk 5–15 turda %42 tavan) sim'le uyuşmuyor.** Sim'de iyi bot ses 3–4, tavan ilk 15 turda %10'un altında. B0'daki %42 büyük olasılıkla B0'a özgü bir fark (fırsat çıkışı, garanti, durma kuralı ya da `ayar_uret.py`'nin eski değerleri okuması). Ayarlar bu oturumda değişti (§1), `ayar_uret.py` yeniden koşulmalı.
+6. Ölçüm gürültüsü: 20 tohumda eşik turu ±2, 40 tohumda ±1. Karar için 40 tohum kullanıldı.
 
-| Tur | kotu | orta | iyi | usta |
-|---|---|---|---|---|
-| 1 (geliştirmesiz) | +%13 | +%33 | +%44 | +%41 |
-| 5 | −%15 | +%106 | +%150 | +%185 |
-| 10 | +%17 | **+%153** | +%232 | +%243 |
-| 25 | +%20 | +%64 | +%89 | +%83 |
+## 5. PLAN_B §5'e işlenecekler
 
-Orta botun tur 10 hedefi (+%150–300) bu ölçümde sınırda tutuyor. 20 tohumlu `ozet` ölçümünde ise +%123 çıktı. Tur 1'de iyi/hic +%44; eski hedef ≥ %60'tı. Bunun nedeni iyi botun artık gerçekçi tepki süresiyle oynaması.
+- §5 tablo: sürükleme satırına **irtifa bandı ödül çarpanı** (y ≥ 1.000 ×2,4 · y ≥ 3.500 ×4,3; nesne + km ödülü; ×4 çarpan tavanının dışında).
+- Isı duvarı: **v ≥ 250, y < 1.000, kesintisiz 2,5 s**; ısı/s = (v − 250) × **3** × ρ(y) × (1 − 0,15·kalkan) − 25. Isı kalkanı görünür **tur 8**.
+- Kademe: durma (v < 25 ya da tropopoz üstünde vx < 110, 2 s) olunca **her irtifada** kademe ateşlenir. Tropopoz üstünde vy × 0,5 (ileri ağırlıklı). Kademe yoksa tur biter.
+- Dalış: **boş dalış** (konide hedef yok) 0,4 s sürer ya da y < 40'a inince biter. Burun dalış öncesi yöne döner (−10°…+45°), hız büyüklüğü dalış öncesiyle aynı (kayıp 0).
+- Dünya yönetmeni: nesneler üst üste doğmaz (d < r1 + r2 + 4 reddedilir). Uçuşun 30. s'sinden sonra y < 1.000'de trambolin ağırlığı ve sekme garantisi her 10 s ×0,9 (en az ×0,5).
+- Ekonomi (§7): km ödülü 75 jeton/km(iç), nesne primi ×2,8, rampa zeplin vuruşu hasar × 0,2 jeton. Römorkör güç çarpanı ×5,5.
+- §5.1 hedef tablosu S9'a göre: eşikler ses 2–3 · tropopoz 9–10 · ısı 11–12 · Kármán 17–19 · yörünge iyi 24–27 / usta ≤ 24 / orta ≤ 34. Mesafe tur 25 bilgi satırı (sim: 69–84 km; D1'in tahmini 90–130 tutmadı). Tur 25 hız satırı kalkar. Kazanç = uçuş kazancı, 3 tur kayan medyan. Beceri farkı tur 1 ≥ +%30, tur 5/10 ≥ +%60.
+- §5.1 sim sütunu §2 ve §3'teki sayılarla güncellenir. §5.2 zayıf oyuncu: hic ısı 28 ✓ / Kármán 45 ✓; kotu ısı 32 ✗ / Kármán 5/40 ✗ (neden §4.2).
+- §5.3 sonuna: S4 tahmini (−%20) gerçekte −%35/−%50 idi. S6'nın 0,10 kaybı orta oyuncuyu cezalandırdı. S8 y < 300 bandı yanlış banttı. Karar bekleyenler §4.1–4.4.
 
-## 7. Zayıf oyuncu tabanı
+## 6. Simüle edilmedi
 
-| Hedef | Sonuç |
-|---|---|
-| kotu: ısı duvarı ~tur 25 | Medyan **30** (19/20). Hedefe yakın, tutmadı |
-| kotu: Kármán ~tur 45 | 60 turda yalnız **7/20** kırabildi (medyan 38). **Tutmadı** |
-| hic: tüm geliştirmeler maksta tropopoz | Ortalama tepe irtifa 1.584 b, **6/10** tur tropopozu geçiyor ✓ |
-| hic kampanyası (bilgi) | Tropopoz 28, ısı 28, Kármán 47 |
-
-Kaldıraçlar: rampa 230, +%30 pasif geliştirmeler, kotu bot modeli (§2). Kotu botun Kármán'a ulaşması için ek kaldıraç gerekiyor: tur başına sabit sponsor ödemesini (`taban_odul` 25) artırmak ya da dokunuş istemeyen bir "otomatik dalış" geliştirmesi eklemek. İkisi de tasarım kararı.
-
-## 8. Dayanıklılık: alıcı %30 olasılıkla rastgele satın alır
-
-| Bot | Kármán | Yörünge | Alışverişsiz seri maks (ilk 25 · 60 tur) | Çıkmaz |
-|---|---|---|---|---|
-| hic | 48 (18/20) | 54 (3/20) | 2 · 2 | 0/20 |
-| kotu | 54 (7/20) | — | 2 · 2 | 0/20 |
-| orta | 27 | 44 | 1 · 2 | 0/20 |
-| iyi | 17 | 32 | 1 · 3 | 0/20 |
-| usta | 13 | 28 | 1 · 2 | 0/20 |
-
-"Alışverişsiz seri ≤ 3" ve "çıkmaz yok" hâlâ geçiyor. Çıkmaz: ilk 25 turda art arda 5 tur ne alım ne yeni eşik ne rakip nakavtı olması. Açgözlü alıcıyla seri en çok 2.
-
-## 9. Açık sorunlar ve seçenekler
-
-1. **Uzun turun asıl nedeni yörünge değil, sürekli beslenen zincirlerdi.** İki yer var. (a) Üst atmosferde (1000–3500) yoğunluk ≈ 0 olduğu için kayıp yok, bilim balonu basamak gibi çalışıyor. (b) Fırsatlar zamana bağlı çıktığı için uzun uçuş daha çok fırsat topluyor. Görevdeki iki kaldıraç (sönüm 22, v < 600 ek sürükleme) tek başına süreyi değiştirmedi: tavansız ölçümde medyan 70–90 s, p90 120–200 s kaldı. Süreyi asıl üç yeni kural düşürdü: `vx_dur`, `firsat_tur_max` ve düşük gösterge dolumu. Bunlar oynanış kuralıdır, **onay gerekir**. Kalan sorun: tavana çarpanların çoğu alçakta (y < 1000) yavaş sekme zincirleri, orta botta %17, iyide %13. Denenip işe yaramayanlar: düz/doğrusal ek sürükleme (erken turları öldürüyor), alçakta yatay hız eşiği (tur 1 süresini 9–13 s'ye düşürüyor), yavaşken sekme garantisini kapatmak, gösterge dolumunu hıza bağlamak, sekme kaybını artırmak. Seçenekler: (A) %13–17'yi kabul et, tavan emniyet olarak kalsın. (B) Fırsat çıkışını süre yerine mesafeye bağla (denenmedi). (C) Alçak bantta (y < 300) trambolin yoğunluğu uçuş ilerledikçe seyrelsin (denenmedi).
-2. **Yörünge ~tur 25.** Yalnız fırsat gücüyle olmadı. Römorkörü ×7 güçlendirmek, ucuzlatmak (2.500), erken açmak (tur 18), uçuşta garanti çıkarmak (`romorkor_garanti`, kapalı) ya da yörünge hızında sönümü sıfırlamak iyi botun yörünge turunu değiştirmedi (33–37). Asıl engel iyi botun tur 22–25'teki tepe hızı (~430). Sonuçta dalış itkisini 2,2'den 4,0/sv'ye çıkardım: yörünge 26–31 oldu. ICERIK'teki "dalış 14 → 36" artık **14 → 54**; onay gerekir. Diğer seçenekler: (A) "Bölge 4 / yörünge" takvimini tur ~30'a kaydır. (B) Yörünge koşulunu "v ≥ 600, 1 s" yerine 0,5 s yap (`duvar_sure`). Denedim, etkisi küçük.
-3. **Erken eşikler 1–3 tur erken** (iyi: ses 2/3, tropopoz 8/10, ısı 9/12, Kármán 17/18–19). Erken kazanç yüksek (tur 5: 701, hedef 400), geç kazanç düşük (tur 25: 1.815, hedef 4.000). Eğri fazla düz. Sonraki ayarın konusu: erken rampa vuruşu ödülü (`rakip_odul`) ile km ödülü düşürülsün, geç dönemde izlenme/kombo çarpanı güçlensin.
-4. **Ölçüm gürültüsü büyük.** Tek tohumda kampanyalar ±5 tur oynuyor. Beceri farkı ortalama mesafeyle ölçülüyor ve uç değerlere duyarlı. Karar verirken 20+ tohum ve medyan kullanılmalı (`ana` artık beceri farkını 60 uçuşla ölçüyor).
-5. **Tasarım dokümanlarına işlenecekler:** PLAN_B §5 hedef tablosu (tur 25 süresi 75 → 45–55 s), Kármán 3.500 b = 100 km, bantlar (üst atmosfer 1.000–3.500, yörünge 3.500+), ısı duvarı 2 s, dalış konisi 66–76°, fırsat güç çarpanları, habitat "kayma yüzeyi" sınıfı, ₺ → jeton.
-
-## 10. Eksik sistemler ve ışığa duyarlılık
-
-Kapsam kararına göre B0/B1'e yalnız şunlar giriyor: **ayarlar** (müzik/efekt ayrı, titreşim, hareket azaltma, ışığa duyarlılık modu, yazı boyutu, kalite kademesi, kaydı sıfırla), **duraklat** (düğme + arka plana geçişte otomatik; devam/yeniden başla/hangar/ayarlar; dönüşte 3-2-1) ve **erişilebilirlik**. Renk körlüğü modu, yedek kodu, satın alma kilidi ve istatistik ekranı B1'den sonra. Kayıt şeması (`v` sürümü, güvenli varsayılan) yine gerekli.
-
-Işığa duyarlılık: tam ekran flaş saniyede 3'ten sık olmaz. Mükemmel sekme parlaması ekranın en çok %30'u, < 100 ms. Kırmızı-beyaz titreşim olmaz. Duvar ağır çekimi parlaklık oynatmaz. `prefers-reduced-motion` okunur. Uyarılar renkten ayrı olarak şekille de ayırt edilir.
-
-## 11. Simüle edilmedi
-
-Nadir olaylar, kapsül kartları, görevler, albüm, rüzgâr/dalga bulutu/fırtına, F5/F7/F8/F9, Süzülgen/Kancalı roket, hayalet, uçuşta rakip hasarı (yalnız rampa vuruşu sayılıyor), ölümcül nesneden kaçınan bot. Bot parametreleri (tepki, hata, mini oyun oranları) gerçek oyuncu verisiyle düzeltilmeli.
+Nadir olaylar, kapsül kartları, görevler, albüm, rüzgâr/dalga bulutu/fırtına, F5/F7/F8/F9, Süzülgen/Kancalı roket, hayalet, uçuşta rakip hasarı (yalnız rampa vuruşu), ölümcül nesneden kaçınan bot. Bot parametreleri (tepki, hata, mini oyun oranları, alışveriş değerleri) gerçek oyuncu verisiyle düzeltilmeli. Özellikle kotu botun alışverişi (§4.2).
