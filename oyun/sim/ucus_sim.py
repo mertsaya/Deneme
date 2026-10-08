@@ -68,14 +68,25 @@ AYAR = dict(
     dogus_pay=4.0,             # E2: yeni nesne mevcut nesneyle d < r1 + r2 + 4 ise doğmaz (üst üste binme yok)
     baslangic_bos_x=90.0,      # kullanıcı kararı: kalkıştan sonra x < bu değerde hiç nesne doğmaz (ilk ekran temiz). Açılış zeplini bölgenin hemen ötesine konur
     yavaslatici_ac_x=400.0, yavaslatici_tur=3,   # tur 1–3'te x < 400'de yavaşlatıcı (martı, uçurtma) doğmaz
-    kacis_pay=4.0,
+    kacis_pay=4.0,             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
     # yönlendirme + yakıt (kullanıcı kararı): basılı tutup sürükleyince burun hedef açıya döner, |v| korunur; dönerken yakıt harcanır
     yakit_kap=100.0, yakit_kap_sv=30.0, yakit_harca=35.0,   # tur başı dolu depo; 'depo' kartı kapasite; birim/s (dönerken)
     yon_hiz=60.0, yon_hiz_sv=12.0, yon_sinir=45.0, yon_sinir_sv=5.0,   # derece/s dönüş hızı, ± derece hedef sınırı; 'yon' kartı
     yon_bot_ara=0.2,           # botların yönlendirme kararı aralığı (s)
     # doğal hava akımları (kullanıcı kararı): termal ve jet satın almadan çıkar; erken turlarda nadir/zayıf, 'hava' kartı sıklık+güç
     hava_dogal=('termal', 'jet'), hava_ara_kat=1.5, hava_guc=(0.6, 0.1),   # aralık × 1,5; güç × (0,6 + 0,1·hava sv)
-    cesit_max=2,               # aynı tür art arda en çok 2 kez doğar             # E3: roketin öngörülen yoluna doğan nesnenin üstünde ya da altında en az 2·(r_roket + 4) geçit kalır
+    # tekrardan kaçınma ve ritim (kullanıcı kararı: 'çok sıklık var, tekrardan kaçılmalı'); hepsi aday reddi, rastgele çekim eklemez
+    cesit_max=1,               # aynı tür art arda en çok 1 kez
+    ayni_tur_ekran=1.5,        # aynı türden iki nesne arasında en az 1,5 ekran genişliği (W) yatay mesafe
+    kume_dx=0.2,               # aynı x aralığında (0,2·W) en çok 1 nesne
+    yakin_agirlik=(0.3, 4.0),  # son doğan türün ağırlığı ×0,3, 4 s'de doğrusal olarak normale döner
+    yuk_cesit=25.0,            # ardışık iki doğuşun yükseklik farkı en az 25 b
+    ritim=dict(P=400.0, bosluk=0.35),   # dünya x'inde her 400 b'nin son %35'i nesnesiz (kümeler arası nefes boşluğu ~0,6–1 ekran)
+    # itiş (kullanıcı kararı): hedefsiz dokunuş = kısa ileri-yukarı itiş (boş dalış/toparlanma yerine); yakıt harcar
+    itki_aci=30.0, itki_aci_max=60.0,   # burun en çok 30° yukarı döner, mutlak açı en çok +60°; asla aşağı dönmez
+    itki_sure=0.3, itki_kat=0.08, itki_v_tavan=150.0,   # 0,3 s'de |v| en çok +%8; itişle hız bu tavanı aşamaz
+    itki_yakit=15.0, itki_bekle=0.5,    # yakıt/itiş; iki itiş arası en az 0,5 s (saniyede en çok 2)
+    itki_bot_y=60.0, itki_bot_v=45.0,   # orta/iyi/usta bot hedef yokken itişi alçakta inerken ya da yavaşlayınca kullanır
     dalis_kap=2, gosterge_bas=1.0,   # tur yarı dolu göstergeyle (1 dalış) başlar
     gosterge_tr=0.08, gosterge_diger=0.13, gosterge_m=0.10,   # tr 0,25→0,08, diğer 0,20→0,13: dalış zinciri kendini sonsuza dek beslemesin
     gosterge_firsat=0.30, gosterge_sv=0.10,
@@ -87,7 +98,7 @@ AYAR = dict(
     son_ates=19.5,             # Son ateşleme: +19,5/sv (15'ten +%30), yatay < 30 ve kademe yokken 1 kez
     # kamera / ekran (dikey telefon)
     ekran_w0=150.0, ekran_wk=0.5, ekran_wmax=500.0, ekran_oran=2.1,
-    ekran_hedef=5,             # ekranda her an hedef nesne sayısı (kullanıcı kararı 2026-10-08: 7→5, ~%30 seyrek; 'bir şeye çarpmadan uçulmuyor')
+    ekran_hedef=3.5,           # ekranda her an hedef nesne sayısı (kullanıcı kararı 2026-10-08: 7→5→3,5; 'çok sıklık var')
     romorkor_garanti=False,    # SEÇENEK (kapalı): uçuşta romorkor_y ilk geçilince römorkör garanti çıkar (RAPOR §6)
     romorkor_y=1500.0,         # uzay römorkörü yalnız bu yüksekliğin üstünde çıkar (üst atmosfer sonu / yörünge girişi)
     seyrek=dict(y=1000.0, t0=30.0, adim=10.0, kat=0.9, en_az=0.5),   # S8: y < 1.000'de (300 yetmedi: tavana çarpanlar bulut bandında) trambolin ağırlığı uçuşun 30. s'sinden sonra her 10 s'de ×0,9 (en az ×0,5)
@@ -273,7 +284,9 @@ class Ucus:
         s._rota_t, s._rota_p = None, []
         s.yakit = A['yakit_kap'] + A['yakit_kap_sv'] * sv.get('depo', 0)
         s.yon_hedef = None             # oyuncu/bot yönlendirme hedefi (rad) ya da None
-        s.son2 = [None, None]          # son doğan iki tür (çeşitlendirme)
+        s.son_tip, s.son_y, s.tip_t = None, None, {}   # son doğan tür/yükseklik, tür başına son doğuş zamanı (tekrardan kaçınma)
+        s.itki, s.itki_son = None, -99.0   # itiş [kalan s, hedef açı, dv/s]
+        s.st['itki'] = 0
         s.st['yon_s'] = 0.0
 
     # ---------- yardımcılar
@@ -386,10 +399,12 @@ class Ucus:
 
     def tip_sec(s, y, sadece_tr=False):
         sk = s.seyrek(y)
-        tipler = [(n, T['w'] * (sk if T['sinif'] == 'tr' else 1.0)) for n, T in TIPLER.items()
+        ya = s.A['yakin_agirlik']
+        tipler = [(n, T['w'] * (sk if T['sinif'] == 'tr' else 1.0) * (ya[0] + (1 - ya[0]) * min(1.0, (s.t - s.tip_t[n]) / ya[1]) if n in s.tip_t else 1.0))
+                  for n, T in TIPLER.items()
                   if T['ymin'] <= y <= T['ymax'] and s.acik(n) and (not sadece_tr or T['sinif'] == 'tr')]
-        if s.son2[0] is not None and s.son2[0] == s.son2[1] and len(tipler) > 1:   # aynı tür art arda en çok cesit_max (2) kez
-            tipler = [t for t in tipler if t[0] != s.son2[0]]
+        if s.son_tip is not None and len(tipler) > 1:   # aynı tür art arda en çok cesit_max (1) kez
+            tipler = [t for t in tipler if t[0] != s.son_tip]
         if not tipler:
             return None
         top = sum(w for _, w in tipler)
@@ -448,15 +463,32 @@ class Ucus:
         s.yakit = max(0.0, s.yakit - A['yakit_harca'] * dt)
         s.st['yon_s'] += dt
 
-    def ekle(s, tip, x, y):
+    def tekrar_ret(s, tip, x, y):
+        """Tekrardan kaçınma ve ritim (aday reddi): nefes boşluğu, aynı tür aralığı, küme, yükseklik çeşitliliği."""
+        A = s.A
+        R = A['ritim']
+        if x % R['P'] >= R['P'] * (1 - R['bosluk']):
+            return True
+        W = s.ekran()[4]
+        for o in s.nesneler:
+            if o.sinif in ('tr', 'yv') and o.aktif:
+                if o.tip == tip and abs(o.x - x) < A['ayni_tur_ekran'] * W:
+                    return True
+                if abs(o.x - x) < A['kume_dx'] * W:
+                    return True
+        return s.son_y is not None and abs(y - s.son_y) < A['yuk_cesit']
+
+    def ekle(s, tip, x, y, garanti=False):
         T = TIPLER[tip]
+        if not garanti and s.tekrar_ret(tip, x, y):   # sekme garantisi muaf (seyrek ama hep mevcut)
+            return False
         xk = x - T['r'] - s.A['r_roket']   # nesnenin rokete değebileceği en küçük x
         if xk < s.A['baslangic_bos_x'] or (T['sinif'] == 'yv' and s.tur <= s.A['yavaslatici_tur'] and xk < s.A['yavaslatici_ac_x']):
             return False   # kalkış boş bölgesi / erken turlarda yavaşlatıcısız başlangıç (rastgele çekim sırası aynı: aday çekildikten sonra reddedilir)
         if s.cakisir(x, y, T['r']) or not s.gecit(x, y, T['r']):
             return False
         s.nesneler.append(Nesne(tip, x, y, T['sinif'], T['r'], dogus=s.t))
-        s.son2 = [s.son2[1], tip]
+        s.son_tip, s.son_y, s.tip_t[tip] = tip, y, s.t
         return True
 
     def ilk_doldur(s):
@@ -525,7 +557,7 @@ class Ucus:
             if tip is None:
                 return
             y = min(y, TIPLER[tip]['ymax'])
-        if s.ekle(tip, px, y):
+        if s.ekle(tip, px, y, garanti=True):
             s.st['garanti'] = s.st.get('garanti', 0) + 1
 
     def firsat_yonet(s):
@@ -591,14 +623,16 @@ class Ucus:
         """Tek dokunuş: fırsat halkası varsa onu, yoksa dalış."""
         if s.bitti or s.dalis_t is not None:
             return False
+        h = s.dalis_hedef()
+        if h is None:
+            return s.itki_yap()   # kullanıcı kararı: hedefsiz dokunuş = itiş (boş dalış yok)
         if s.gosterge < 1.0:
             return False
         A = s.A
         v = math.hypot(s.vx, s.vy)
         sv = v + A['dalis_itki'] + A['dalis_itki_sv'] * s.sv.get('dalis', 0)
-        h = s.dalis_hedef()
-        s.bos = None if h else [A['bos_dalis_sure'], math.atan2(s.vy, s.vx), v]   # S6: boş dalış toparlanır
-        a = -(h[1] if h else math.radians(A['dalis_aci']))
+        s.bos = None
+        a = -h[1]
         s.vx, s.vy = sv * math.cos(a), sv * math.sin(a)
         s.gosterge -= 1.0
         s.kad_izle = None
@@ -606,6 +640,36 @@ class Ucus:
         s.st['dalis'] += 1
         s.log('dalis', round(sv))
         return True
+
+    def itki_yap(s):
+        """Kısa ileri-yukarı itiş: burun en çok itki_aci yukarı (mutlak ≤ itki_aci_max, asla aşağı), itki_sure boyunca |v| en çok
+        +itki_kat (itki_v_tavan'ı aşmaz); itki_yakit harcar, itki_bekle aralıkla."""
+        A = s.A
+        if s.itki is not None or s.yakit < A['itki_yakit'] or s.t - s.itki_son < A['itki_bekle']:
+            s.log('itki_yok')
+            return False
+        a = math.atan2(s.vy, s.vx)
+        h = max(a, min(a + math.radians(A['itki_aci']), math.radians(A['itki_aci_max'])))
+        v = math.hypot(s.vx, s.vy)
+        dv = max(0.0, min(v * A['itki_kat'], A['itki_v_tavan'] - v))
+        s.itki = [A['itki_sure'], h, dv / A['itki_sure']]
+        s.itki_son = s.t
+        s.yakit -= A['itki_yakit']
+        s.st['itki'] += 1
+        s.kad_izle = None
+        s.log('itki')
+        return True
+
+    def itki_adim(s, dt):
+        """İtiş sürerken burun hedefe doğrusal döner (kalan sürede), hız büyüklüğü dv/s ile artar."""
+        k, h, dvs = s.itki
+        a = math.atan2(s.vy, s.vx)
+        a2 = a + (h - a) * min(1.0, dt / k)
+        v = math.hypot(s.vx, s.vy) + dvs * dt
+        s.vx, s.vy = v * math.cos(a2), v * math.sin(a2)
+        s.itki[0] -= dt
+        if s.itki[0] <= 1e-9:
+            s.itki = None
 
     def dalis_hedef(s):
         """Dalış koni yardımı: 60–80° aşağı konide, menzildeki en yakın trambolin (üst kenarına nişan)."""
@@ -640,6 +704,7 @@ class Ucus:
         s.dalis_t = None
         s.bos = None
         s.itis = None
+        s.itki = None
         s.dur_t = 0.0
         s.st['son_sans'] += 1
         s.kad_izle, s.kad_y0 = s.y, s.y
@@ -658,6 +723,7 @@ class Ucus:
         s.vx, s.vy = yv * math.cos(a), yv * math.sin(a) + T.get('ek_vy', 0)
         s.dalis_t = None
         s.bos = None
+        s.itki = None
         s.st['sekme'] += 1
         s.gosterge_ekle(A['gosterge_m'] if mukemmel else A['gosterge_tr'])
         # "vay": kalkıştan sonraki ilk tepe aşımı
@@ -840,7 +906,10 @@ class Ucus:
                 if v < V:
                     ax += (FIRSATLAR['jet']['guc'] + FIRSATLAR['jet']['guc_sv'] * g) * A['firsat_guc_kat']['jet'] * (1 - v / V) * s.hava_k(o)
                 s.st['kazanc'] += FIRSATLAR['jet']['odul'] * dt
-        s.yonlendir(dt)
+        if s.itki is not None:
+            s.itki_adim(dt)
+        else:
+            s.yonlendir(dt)
         # tümleştir (yarı örtük Euler)
         x_on = s.x
         s.vx += ax * dt
@@ -966,9 +1035,9 @@ class Ucus:
 BOTLAR = dict(
     hic=dict(tut=0.0),
     kotu=dict(tepki=(0.40, 0.70), gurultu=0.50, ongoru=0.2, tut=0.25, vazgec=0.3, rampa_t=(0.4, 2.0), zayif=0.25, rastgele_s=0.15, aci_sapma=None, aci_t=(0.5, 2.0), yon=0.3),
-    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4), aci_sapma=6.0, aci_t=(0.6, 1.4), yon=0.6),
-    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1), aci_sapma=3.0, aci_t=(0.5, 1.0), yon=0.9),
-    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1), aci_sapma=0.0, aci_t=(0.5, 0.6), yon=1.0),
+    orta=dict(tepki=(0.25, 0.40), gurultu=0.25, ongoru=0.7, mukemmel=(0.50, 0.60), tut=0.35, vazgec=0.5, rampa_t=(0.6, 1.4), aci_sapma=6.0, aci_t=(0.6, 1.4), yon=0.6, itki=True),
+    iyi=dict(tepki=(0.18, 0.30), gurultu=0.10, ongoru=0.8, mukemmel=(0.80, 0.95), tut=0.50, vazgec=0.8, rampa_t=(0.8, 1.1), aci_sapma=3.0, aci_t=(0.5, 1.0), yon=0.9, itki=True),
+    usta=dict(tepki=(0.00, 0.05), gurultu=0.0, ongoru=1.0, mukemmel=(0.97, 0.97), tut=1.00, vazgec=1.0, rampa_t=(0.8, 1.1), aci_sapma=0.0, aci_t=(0.5, 0.6), yon=1.0, itki=True),
 )
 BOT_SIRA = ['hic', 'kotu', 'orta', 'iyi', 'usta']
 
@@ -1039,12 +1108,17 @@ def bot_karar(bot, u, rng, durum):
             return True
         return False
     durum['t'] = durum.get('t', 0) - AYAR['dt']
-    if durum['t'] > 0 or u.gosterge < 1.0 or u.dalis_t is not None:
+    if durum['t'] > 0 or u.dalis_t is not None:
         return False
     durum['t'] = 0.05
     a, b = B['tepki']
-    if gorunur_hedef(u, bot, durum, B['ongoru'] * (a + b) / 2) is not None:
+    if u.gosterge >= 1.0 and gorunur_hedef(u, bot, durum, B['ongoru'] * (a + b) / 2) is not None:
         durum['bekle'] = a + (b - a) * rng.random()
+        return False
+    A = AYAR   # hedef yok: orta/iyi/usta alçakta inerken ya da yavaşlayınca itiş kullanır
+    if B.get('itki') and u.itki is None and u.yakit >= A['itki_yakit'] and u.t - u.itki_son >= A['itki_bekle'] and \
+            ((u.y < A['itki_bot_y'] and u.vy < 0) or math.hypot(u.vx, u.vy) < A['itki_bot_v']):
+        return True
     return False
 
 
@@ -1629,7 +1703,7 @@ def kontrol():
     # (d) yoğunluk ekran başına: 40 tur, ortalama ekrandaki nesne 7–12
     rs = [tur_oyna(sd, {}, b) for sd in range(1, 21) for b in ('iyi', 'orta')]
     ek = [r['ekran_ort'] for r in rs]
-    assert 5 <= sum(ek) / len(ek) <= 9, ek   # ekran_hedef 5 (eski 7: 7–12)
+    assert 2.5 <= sum(ek) / len(ek) <= 6, ek   # ekran_hedef 3,5 + tekrar/ritim retleri (eski 7: 7–12, 5: 5–9)
     # tur tavanı yalnız emniyet: geliştirmesiz tur 1'de hiçbir tur tavana çarpmaz
     assert all(r['sure_tur'] <= A['tur_tavan'] + A['dt'] and r['bitis'] != 'sure' for r in rs)
     # irtifa göstergesi tek yönlü ve Kármán = 100 km; uzay nesneleri Kármán'ın üstünde, atmosfer nesneleri altında
