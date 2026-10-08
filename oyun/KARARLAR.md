@@ -17,3 +17,11 @@ Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
 | 2026-10-08 | Kargo kapsülü kartları | 3 kartın üçü de kazanılır | |
 | 2026-10-08 | Müzik | Enerjik çizgi film; hızlandıkça katman kazanır | |
 | 2026-10-08 | B1 kapsamı | Önce ilk 25 tur (~24 nesne, 5 nadir olay, 6 fırsat) | Eğlence kanıtlanınca gerisi |
+
+## 8. oturum kararları (2026-10-08, kullanıcı onaylı)
+- Para birimi: **altın jeton** (₺ kaldırılır; evrensel ton).
+- Sekme açısı: bilim balonu **40°** (fazla irtifa üst atmosfer sönümüyle çözülür); habitat **15°** ama ayrı nesne sınıfı ("kayma yüzeyi"). Görsel tasarımı kullanıcı onayına gider.
+- Zayıf oyuncu: dokunmasa da geliştirmelerle **yavaş ama ilerler** (ısı duvarı ~tur 25, Kármán ~tur 45). Beceri hızlandırır, şart değil.
+- Kapsam: B0/B1'e yalnız **ayarlar, duraklat, erişilebilirlik** girer. Renk körlüğü modu, yedek kodu ver/al, satın alma kilidi, istatistik ekranı B1 sonrası.
+- Sanat yönü (kullanıcı onaylı): `oyun/konsept/` altındaki üç konsept (oyun içi, hangar, ana ekran) kabul: parlak renkli çizgi film, kalın yumuşak hatlar, parlak yuvarlak arayüz, maskot pilot. Görsel yazılar kodla konur (üretilen görseldeki yazılara güvenilmez). Ana ekranda Plüton daha belirgin olmalı.
+- Kabul edilen kurallar (kullanıcı onaylı): (1) tropopoz üstünde yatay hız 2 sn boyunca 110'un altında kalırsa tur biter (`vx_dur`); (2) turda en çok 5 fırsat nesnesi, römorkör hariç (`firsat_tur_max`); (3) dalış itkisi gelişimi 14→54 (4,0/sv).
