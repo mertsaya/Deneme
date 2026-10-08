@@ -59,12 +59,20 @@ def tok(f0=120, f1=45, tau=0.09, n=0.5):
     return x + k
 
 
-def pat(n=0.3):
-    """Balon patlamasi: keskin durtu + tiz gurultu."""
+def pat_ince(n=0.3):
+    """Ince patlama: keskin durtu + tiz gurultu (govdesiz)."""
     N = n_(n)
     x = hp(white(N), 800) * env_exp(N, 0.025, 0.0003)
     x[:n_(0.002)] += white(n_(0.002)) * 2.5
     return x
+
+
+def pat(n=0.3):
+    """Balon patlamasi: durtu + tiz gurultu + orta bant govde (telefonda dolgun)."""
+    N = n_(n)
+    x = bp(white(N), 800, 6000) * env_exp(N, 0.045, 0.0003) + bp(white(N), 300, 1500) * env_exp(N, 0.03, 0.0005) * 0.8
+    x[:n_(0.002)] += white(n_(0.002)) * 1.2
+    return lp(x, 7000)
 
 
 def yumusat(x, d=3.0):
@@ -179,16 +187,16 @@ def _():
 
 @aday('motor_tutusma', 'c', 'Turbo şarj + ateşleme', 'Yükselen şarj ıslığı (gerilim), tepede patlayan ateşleme ve kısa kükreme.')
 def _():
-    n1 = n_(1.1)
+    n1 = n_(1.0)
     t1 = np.arange(n1) / SR
     f = expc(180, 1100, n1)
     sarj = (osc(f, n1) + 0.25 * osc(f * 0.5, n1, 'square')) * np.linspace(0.1, 1, n1) ** 1.5
     sarj += sweep(white(n1), f * 2, q=4, kind='bp') * np.linspace(0, 0.6, n1)
     N = n_(1.3)
     t = np.arange(N) / SR
-    ates = hp(white(N), 1200) * env_exp(N, 0.03) * 0.8 + tok(110, 40, 0.15, 1.3) + gurultu_patlama(1.3, 1500, 0.45) * 1.2
+    ates = hp(white(N), 1200) * env_exp(N, 0.03) * 0.8 + tok(110, 40, 0.15, 1.3) + gurultu_patlama(1.3, 1500, 0.35) * 1.2
     ates += lp(osc(np.interp(t, [0, 1.3], [80, 95]), N, 'saw'), 600) * env_adsr(N, 0.01, 0.3, 0.4, 0.5) * 0.5
-    return verb(sat(karis((sarj, 0, 0.35), (ates, 1.1, 1.0)), 1.5), 0.8, 0.2)
+    return verb(sat(karis((sarj, 0, 0.35), (ates, 1.0, 1.0)), 1.5), 0.5, 0.2)
 
 
 @aday('motor_tutusma', 'd', 'Kenney itici + tok başlangıç', 'Kenney "thrusterFire_000" (CC0) itici sesi, başına sentez tok ateşleme vuruşu eklendi.', 'karma')
@@ -316,7 +324,7 @@ def _():
 def _():
     k = normal(kirp_sessiz(kenney('kenney_impact-sounds/impactSoft_heavy_000.ogg')))
     N = n_(0.25)
-    c = osc(expc(250, 520, N), N) * env_exp(N, 0.1, 0.003)
+    c = fade(osc(expc(250, 520, N), N) * env_exp(N, 0.1, 0.003), 0, 0.05)
     return karis((k, 0, 0.9), (c, 0.01, 0.5))
 
 
@@ -325,6 +333,13 @@ def _():
     N = n_(0.05)
     sq = osc(expc(900, 1400, N), N) * env_exp(N, 0.015, 0.001)
     return sat(karis((tok(140, 55, 0.08, 0.35), 0, 1.0), (sq, 0.005, 0.35)), 2.0)
+
+
+@aday('sekme_trambolin', 'f', 'Telefon dostu tiz boing', 'b\'nin bir oktav yukarısı (300→700 Hz) + lastik tık. Ölçümde trambolinlerin telefonda zayıf kaldığı görülünce eklendi.')
+def _():
+    N = n_(0.03)
+    tik = bp(white(N), 1500, 4000) * env_exp(N, 0.005, 0.0005)
+    return karis((boing(300, 700, 0.5, 14, 0.07, 0.16), 0, 0.8), (tik, 0, 0.4), (tok(160, 70, 0.04, 0.2), 0, 0.4))
 
 
 # ================================================================ marti
@@ -367,16 +382,16 @@ def _():
 
 
 # ================================================================ balon
-@aday('carpma_balon', 'a', 'Keskin "pat"', 'Kısa, temiz patlama ve küçük oda yankısı.')
+@aday('carpma_balon', 'a', 'Keskin ince "pat"', 'Çok kısa, gövdesiz patlama ve küçük oda yankısı.')
 def _():
-    return verb(pat(0.15), 0.25, 0.25)
+    return verb(pat_ince(0.15), 0.25, 0.25)
 
 
 @aday('carpma_balon', 'b', 'Pat + lastik + konfeti', 'Patlama, ardından lastiğin "fivv" savrulması ve ince konfeti şıngırtısı.')
 def _():
     N = n_(0.14)
     fw = sweep(white(N), expc(3000, 600, N), q=3, kind='bp') * env_exp(N, 0.06, 0.002)
-    return karis((pat_dolgun(0.2), 0, 1.0), (fw, 0.02, 0.6), (kivilcim(0.5, 6, (4500, 7500), 0.05, 0.3), 0, 0.2))
+    return karis((pat_dolgun(0.2), 0, 1.0), (fw, 0.02, 0.6), (kivilcim(0.5, 6, (4500, 7500), 0.05, 0.3), 0, 0.05))
 
 
 @aday('carpma_balon', 'c', 'Pat + hava kaçışı', 'Patlama ve alçalan ıslık (çizgi filmde sönen balon). Komik.')
@@ -388,7 +403,7 @@ def _():
 
 @aday('carpma_balon', 'd', 'Büyük reklam balonu', 'Patlama + gövdeli alçak "bum" + yankı. Büyük balon için iri.')
 def _():
-    return yumusat(verb(karis((pat_dolgun(0.25), 0, 1.0), (tok(130, 60, 0.15, 0.6), 0, 0.9), (gurultu_patlama(0.5, 600, 0.1), 0, 0.6)), 0.5, 0.2), 2.0)
+    return yumusat(verb(karis((pat_dolgun(0.25), 0, 1.0), (tok(130, 60, 0.12, 0.45), 0, 0.9), (gurultu_patlama(0.4, 600, 0.1), 0, 0.6)), 0.3, 0.2), 2.0)
 
 
 @aday('carpma_balon', 'e', 'Kenney çatırtı tiz', 'Kenney "explosionCrunch_000" (CC0) 1,6 kat hızlandırılıp tizleştirildi + tık.', 'karma')
@@ -403,7 +418,7 @@ def _():
     N = n_(0.15)
     cr = hp(white(N), 2200) * env_exp(N, 0.012, 0.0005)
     return verb(yumusat(karis((cr, 0, 1.0), (metal(n=1.0), 0, 0.25), (lp(brown(n_(0.6)), 200) * env_exp(n_(0.6), 0.12, 0.003), 0, 1.0),
-                              (tok(95, 45, 0.15, 0.5), 0, 0.6)), 2.5), 0.6, 0.2)
+                              (tok(95, 45, 0.15, 0.5), 0, 0.6)), 3.5), 0.6, 0.2)
 
 
 @aday('kademe_ayrilma', 'b', 'Kenney metal + tıslama', 'Kenney "impactMetal_heavy_000" (CC0) + basınç tıslaması + alçak vuruş.', 'karma')
@@ -434,7 +449,7 @@ def _():
     N = n_(0.35)
     t = np.arange(N) / SR
     yay = osc(expc(600, 200, N) * (1 + 0.1 * np.sin(2 * np.pi * 18 * t)), N) * env_exp(N, 0.15)
-    return karis((metal((520, 1310), (1, .5), 0.06, 0.3), 0, 0.6), (tok(120, 50, 0.06, 0.3), 0, 0.7), (yay, 0.03, 0.5), (vuus(0.45, 500, 3500, 1.2), 0.12, 0.6))
+    return karis((metal((520, 1310), (1, .5), 0.06, 0.3), 0, 0.6), (tok(120, 50, 0.06, 0.3), 0, 0.7), (yay, 0.03, 0.5), (vuus(0.45, 500, 3500, 1.2, 'tepe'), 0.12, 0.6))
 
 
 # ================================================================ dalis
@@ -518,7 +533,7 @@ def _():
     t = np.arange(N) / SR
     pari = bp(pink(N), 1000, 5000) * np.sin(np.pi * np.clip(t / 1.8, 0, 1)) ** 2 * 0.25 + (osc(660, N) + osc(990, N) * 0.6) * np.sin(np.pi * t / 1.8) ** 3 * 0.08
     x = karis((catlak(), 0, 1.0), (catlak(), 0.1, 0.9), (gurultu_patlama(1.6, 700, 0.5), 0, 1.0), (tok(80, 35, 0.4, 1.5), 0, 0.8), (pari, 0.3, 1.0))
-    return yumusat(verb(sat(x, 1.6), 1.6, 0.3), 2.5)
+    return yumusat(verb(sat(x, 1.6), 1.6, 0.3), 4.0)
 
 
 @aday('ses_duvari', 'c', 'Emme + BUM + çınlama', 'Ters "emme" (0,45 s gerilim), sonra çatlak + doygun bum + metalik çınlama ve uzun kuyruk. En sinematik.')
@@ -529,15 +544,15 @@ def _():
     c = hp(white(N), 1500) * env_exp(N, 0.008, 0.0002)
     bum = sat(gurultu_patlama(2.2, 1200, 0.35) * 2.0, 2.5) + tok(70, 30, 0.5, 2.2) * 0.7
     cin = metal((880, 1320, 1975, 2637), (1, .8, .5, .3), 0.8, 2.0) * 0.12
-    return yumusat(verb(karis((em, 0, 0.6), (c, 0.45, 1.0), (bum, 0.45, 0.9), (cin, 0.47, 1.0)), 2.0, 0.3), 2.5)
+    return yumusat(verb(karis((em, 0, 0.6), (c, 0.45, 1.0), (bum, 0.45, 0.9), (cin, 0.47, 1.0)), 1.1, 0.3), 4.0)
 
 
 @aday('ses_duvari', 'd', 'Kenney alçak patlama + çatlak', 'Kenney "lowFrequency_explosion_000" (CC0) + sentez çatlak ve orta bant takviyesi.', 'karma')
 def _():
-    k = normal(kirp_sessiz(kenney('kenney_sci-fi-sounds/lowFrequency_explosion_000.ogg')))
+    k = normal(fade(kirp_sessiz(kenney('kenney_sci-fi-sounds/lowFrequency_explosion_000.ogg')), 0, 0.3))   # dosya 2,0 s'de kesik bitiyor
     N = n_(0.6)
     c = hp(white(N), 1500) * env_exp(N, 0.008, 0.0002) + bp(white(N), 300, 2500) * env_exp(N, 0.15) * 0.7
-    return verb(karis((k, 0, 1.0), (c, 0, 0.8)), 1.2, 0.2)
+    return yumusat(verb(karis((k, 0, 1.0), (c, 0, 0.8)), 1.2, 0.2), 3.0)
 
 
 @aday('ses_duvari', 'e', 'BUM + fanfar', 'Bum ve hemen ardından iki vuruşlu bakır fanfar ("ta-DAA!"). Ödül anı gibi, en neşeli.')
@@ -551,8 +566,8 @@ def _():
     N = n_(0.6)
     c = hp(white(N), 1500) * env_exp(N, 0.008, 0.0002)
     akor = [233.1, 293.7, 349.2, 466.2]
-    return yumusat(verb(karis((c, 0, 1.0), (gurultu_patlama(1.2, 800, 0.35), 0, 1.0), (tok(80, 35, 0.3, 1.0), 0, 0.7),
-                           (bakir(akor, 0.16), 0.3, 0.9), (bakir([f * 1.335 for f in akor], 1.2), 0.5, 1.0)), 1.0, 0.2), 2.5)
+    return yumusat(verb(karis((c, 0, 0.5), (gurultu_patlama(1.2, 800, 0.35), 0, 1.0), (tok(80, 35, 0.3, 1.0), 0, 0.7),
+                           (bakir(akor, 0.16), 0.3, 0.9), (bakir([f * 1.335 for f in akor], 1.2), 0.5, 1.0)), 1.0, 0.2), 4.0)
 
 
 # ================================================================ jeton
@@ -1059,7 +1074,8 @@ def main():
             bilgi.update(kazanc_db=20 * np.log10(g), eksik_db=eksik, dongu=[DONGU_PAY, DONGU_PAY + DL], sure=DL,
                          dosyalar=[f'{ad}.mp3'], demo=f'{ad}_demo.mp3')
         else:
-            x = fade(x - np.mean(x), 0.0, 0.008)
+            x = hp(x, 20, 2)   # DC ve altses temizligi (ortalama cikarmak sessiz kuyruga basamak ekler)
+            x = fade(x, 0.0, float(np.clip(0.12 * len(x) / SR, 0.02, 0.15)))   # dogal bitis: son %12 (20-150 ms) yumusak kapanir
             g, eksik = oranla(x, kat)
             x = x * g
             w = os.path.join(ARA, f'{ad}.wav')

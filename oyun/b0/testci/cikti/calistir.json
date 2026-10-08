@@ -1,0 +1,90 @@
+{
+ "eksik_kanca": [],
+ "ses_once": {
+  "sayi": 0,
+  "ilk": [],
+  "simdi_ac": [],
+  "resume": [],
+  "simdi": "yok",
+  "tamekran": 0,
+  "kilit": 0,
+  "titresim": 0
+ },
+ "ses_sonra": {
+  "sayi": 1,
+  "ilk": [
+   "running"
+  ],
+  "simdi_ac": [
+   "running"
+  ],
+  "resume": [
+   0
+  ],
+  "simdi": "running",
+  "tamekran": 1,
+  "kilit": 0,
+  "titresim": 1
+ },
+ "fps": {
+  "kare": 427,
+  "ort_fps": 55.55846057310183,
+  "min_fps": 4.000000000000002,
+  "p95_ms": 16.800000000000068,
+  "en_uzun_ms": 249.9999999999999
+ },
+ "durum_bas": {
+  "asama": "RAMPA",
+  "t": 0.8333000000000003,
+  "rampa_t": 0.8333000000000003,
+  "sarsinti": 0,
+  "duraklat": false,
+  "x": 0,
+  "y": 60,
+  "vx": 0,
+  "vy": 0,
+  "gosterge": 1,
+  "kademe": 1,
+  "kazanc": 0,
+  "nesne_n": 0,
+  "halka": null,
+  "bitti": null,
+  "seed": 91375384,
+  "fps": 35.99280143971206,
+  "pr": 2,
+  "uyari": 0,
+  "jeton": 0,
+  "tur": 0
+ },
+ "durum_son": {
+  "asama": "UCUS",
+  "t": 6.4750000000001116,
+  "rampa_t": 0.8333000000000003,
+  "sarsinti": 0,
+  "duraklat": false,
+  "x": 205.94943863895588,
+  "y": 52.56651685987394,
+  "vx": 24.026609924689634,
+  "vy": -33.942338047386684,
+  "gosterge": 1.29,
+  "kademe": 1,
+  "kazanc": 30.640000000000004,
+  "nesne_n": 32,
+  "halka": null,
+  "bitti": null,
+  "seed": 91375384,
+  "fps": 59.999999999999986,
+  "pr": 2,
+  "uyari": 0,
+  "jeton": 0,
+  "tur": 0
+ },
+ "baslik": "Son Durak Gri Kutu",
+ "tampon": {
+  "w": 384,
+  "h": 832,
+  "dpr": 2
+ },
+ "konsol_hata": [],
+ "sorunlar": []
+}

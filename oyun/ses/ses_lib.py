@@ -46,7 +46,7 @@ def osc(f, n, kind='sine', duty=0.5, ph0=0.0):
         return 2 * np.abs(2 * fr - 1) - 1
     O = 4
     fr = (np.cumsum(np.repeat(f, O)) / (SR * O) + ph0) % 1.0
-    x = 2 * fr - 1 if kind == 'saw' else np.where(fr < duty, 1.0, -1.0)
+    x = 2 * fr - 1 if kind == 'saw' else np.where(fr < duty, 1.0, -1.0) - (2 * duty - 1)   # kare: DC payi cikarilir
     return signal.resample_poly(x, 1, O)[:n]
 
 

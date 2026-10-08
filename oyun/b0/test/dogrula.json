@@ -1,0 +1,389 @@
+{
+ "eslik": [
+  {
+   "bot": "hic",
+   "olcu": "sure_tur",
+   "js": 18.07,
+   "sim": 17.65,
+   "fark": 2.4,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "mesafe",
+   "js": 511.27,
+   "sim": 498.21,
+   "fark": 2.6,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "max_v",
+   "js": 88.58,
+   "sim": 89.1,
+   "fark": 0.6,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "sekme",
+   "js": 3.3,
+   "sim": 3.15,
+   "fark": 4.8,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "kazanc",
+   "js": 81.2,
+   "sim": 78.05,
+   "fark": 4.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "mukemmel",
+   "js": 0.0,
+   "sim": 0.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "dalis",
+   "js": 0.0,
+   "sim": 0.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "son_sans",
+   "js": 1.0,
+   "sim": 1.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "mesafe_g",
+   "js": 1.0,
+   "sim": 0.98,
+   "fark": 2.0,
+   "gecti": true
+  },
+  {
+   "bot": "hic",
+   "olcu": "vay<=5",
+   "js": 1.0,
+   "sim": 0.975
+  },
+  {
+   "bot": "orta",
+   "olcu": "sure_tur",
+   "js": 17.34,
+   "sim": 16.5,
+   "fark": 5.1,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "mesafe",
+   "js": 685.66,
+   "sim": 659.75,
+   "fark": 3.9,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "max_v",
+   "js": 95.99,
+   "sim": 95.41,
+   "fark": 0.6,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "sekme",
+   "js": 3.42,
+   "sim": 3.1,
+   "fark": 10.5,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "kazanc",
+   "js": 93.89,
+   "sim": 91.15,
+   "fark": 3.0,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "mukemmel",
+   "js": 0.9,
+   "sim": 0.8,
+   "fark": 12.5,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "dalis",
+   "js": 1.07,
+   "sim": 1.15,
+   "fark": 6.5,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "son_sans",
+   "js": 1.0,
+   "sim": 1.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "mesafe_g",
+   "js": 1.56,
+   "sim": 1.51,
+   "fark": 3.7,
+   "gecti": true
+  },
+  {
+   "bot": "orta",
+   "olcu": "vay<=5",
+   "js": 0.975,
+   "sim": 0.925
+  },
+  {
+   "bot": "iyi",
+   "olcu": "sure_tur",
+   "js": 17.76,
+   "sim": 17.44,
+   "fark": 1.8,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "mesafe",
+   "js": 742.99,
+   "sim": 732.56,
+   "fark": 1.4,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "max_v",
+   "js": 97.86,
+   "sim": 97.46,
+   "fark": 0.4,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "sekme",
+   "js": 3.48,
+   "sim": 3.38,
+   "fark": 3.0,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "kazanc",
+   "js": 98.77,
+   "sim": 99.61,
+   "fark": 0.8,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "mukemmel",
+   "js": 1.1,
+   "sim": 0.95,
+   "fark": 15.8,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "dalis",
+   "js": 1.18,
+   "sim": 1.18,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "son_sans",
+   "js": 1.0,
+   "sim": 1.0,
+   "fark": 0.0,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "mesafe_g",
+   "js": 1.74,
+   "sim": 1.73,
+   "fark": 0.5,
+   "gecti": true
+  },
+  {
+   "bot": "iyi",
+   "olcu": "vay<=5",
+   "js": 0.95,
+   "sim": 0.975
+  }
+ ],
+ "deger_fark": [],
+ "belirlenimli": true,
+ "kampanya_iyi": [
+  [
+   1,
+   24,
+   164,
+   [
+    "rampa"
+   ]
+  ],
+  [
+   2,
+   18,
+   170,
+   [
+    "yakit_ac",
+    "rampa"
+   ]
+  ],
+  [
+   3,
+   18,
+   475,
+   [
+    "rampa",
+    "yakit_s",
+    "rampa"
+   ]
+  ],
+  [
+   4,
+   34,
+   314,
+   [
+    "dalis",
+    "yakit_s",
+    "verim"
+   ]
+  ],
+  [
+   5,
+   29,
+   297,
+   []
+  ],
+  [
+   6,
+   65,
+   550,
+   [
+    "dalis",
+    "dalis",
+    "dalis",
+    "rampa"
+   ]
+  ],
+  [
+   7,
+   17,
+   240,
+   [
+    "bolge"
+   ]
+  ],
+  [
+   8,
+   42,
+   442,
+   [
+    "verim",
+    "yakit_s",
+    "verim"
+   ]
+  ],
+  [
+   9,
+   44,
+   430,
+   [
+    "dalis"
+   ]
+  ],
+  [
+   10,
+   40,
+   314,
+   []
+  ],
+  [
+   11,
+   65,
+   692,
+   [
+    "rampa",
+    "bolge",
+    "yakit_s"
+   ]
+  ],
+  [
+   12,
+   65,
+   741,
+   [
+    "dalis"
+   ]
+  ],
+  [
+   13,
+   65,
+   611,
+   [
+    "verim",
+    "bolge",
+    "kademe_itki"
+   ]
+  ],
+  [
+   14,
+   65,
+   581,
+   [
+    "verim"
+   ]
+  ],
+  [
+   15,
+   18,
+   286,
+   [
+    "bolge"
+   ]
+  ]
+ ],
+ "kampanya_ilk": {
+  "ses": 3,
+  "ses_harcama": 303
+ },
+ "goruntu": [
+  "t0_5_rampa",
+  "t2_kalkis",
+  "t4_ucus",
+  "t9_ucus",
+  "t14_ucus",
+  "t9_debug",
+  "t20_yakit",
+  "t60_kara_kutu",
+  "hangar",
+  "ayarlar"
+ ],
+ "konsol": []
+}
