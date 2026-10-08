@@ -2,12 +2,32 @@
 
 Kaynaklar: `TASARIM.md` (şartname), `oyun/KARARLAR.md`, `oyun/sim/ucus_sim.py`, koordinatör yayın notu.
 
-## Sorulacak (kullanıcı / tasarımcı kararı gerekiyor)
+## Karara bağlananlar (kullanıcı, koordinatör aracılığıyla; uygulandı)
 
-1. **"Seni durduran" metinleri.** §20 K-C "§11 anahtarlarındaki mevcut metinler" diyor ama §11'de metin yok, yalnız anahtarlar var. Öğretici tonda **yer tutucu** metinler yazdım (`index.html` → `METIN['durduran.*']`). Onay ya da yeni metin gerekiyor.
-2. **Bitiş sahnesinin ne zaman abartılı olacağı.** KARARLAR: "rekor / büyük kayıpta abartılı". TASARIM §20: "`yer`'de abartılı, `durma`/`sure`'de sakin". İkisi farklı. Şimdilik ikisinin birleşimi: bitiş `yer` **ya da** mesafe rekoru → abartılı, öbürleri sakin. "Büyük kayıp" tanımlanmamış.
-3. **Elle bitirilen turda kara kutu.** §9/§11'e göre kara kutuda prim ve taban "—" görünmeli; ama §13.3'te YENİDEN BAŞLA ile HANGAR'ın kara kutu gösterip göstermediği yazmıyor. Şimdilik kara kutu yok: YENİDEN BAŞLA doğrudan RAMPA'ya, HANGAR doğrudan hangara gidiyor, kazanç "Yarım uçuş: +X jeton" bildirimiyle gösteriliyor. `—` satırları kodda hazır.
-4. **Denge (bilgi; testçi `kabul.py --hizli` ölçtü, geçme şartı değil).** K5: ses duvarının ilk kırıldığı tur medyanı iyi bot için 4 (hedef 2–3). K6: iyi bot tur 5–15'te medyan 60 s ve turların %48'i 65 s tavanına çarpıyor (hedef 20–40 s, ≤ %5). Sebep büyük olasılıkla şu: B0'da ısı ve üst bantlar yok, dalış gücü/verim ucuz geliyor. Sim ayarı (S1–S9) bitince yeniden ölçülmeli; gerekirse B0'a özel kart tavanı (rampa gibi) konabilir.
+- **Bitiş sahnesi:** abartılı bitiş yalnız şu iki durumda. (a) Mesafe rekoru %10'dan fazla aşıldıysa (ilk tur hariç). (b) Tur mesafesi son 3 normal turun ortalamasının yarısından kısaysa. Geri kalan her bitiş sakin; yer/durma ayrımı ölçüt değil (`B0_ARAYUZ.abarti_*`). Kayda `son_mesafe` eklendi.
+- **Rakip zeplini:** B0'da yok, kalkış primi kalıyor (S1 (b)).
+- **Dron halkası:** yalnız dron rotadaysa başlıyor: |rota_nokta(τ).y − o.y| ≤ 2·(r+4) (`YAKIT_HALKA.rota_kat`).
+- **"Seni durduran" metinleri:** "trambolin" yerine "balon ya da zeplin" yazıldı; süre metni verildi. Ses kuralının eşiği en yüksek hız ≥ ~100 (`durduran_ses_v`). Öbür metinler hâlâ benim yazdığım öğretici yer tutucular.
+- **Tur sayacı:** elle bitirilen turlar `kayit.elle` alanında ayrı sayılıyor. `kayit.tur` yalnız doğal bitişleri sayıyor (K16 sayımı şişmesin). Elle turlar `son`, `son_dalis` ve `son_mesafe` ortalamalarına da girmiyor.
+
+## Sorulacak
+
+1. **Elle bitirilen turda kara kutu** gösterilsin mi? Şimdilik gösterilmiyor; kazanç bildirimle yazılıyor.
+2. **Denge (bilgi; sim ayarıyla birlikte bakılacak).** Sim güncellendikten sonra `kabul.py --hizli` sonuçları:
+   - K5: iyi bot ses duvarını medyan 4. turda kırıyor (hedef 2–3).
+   - K6: iyi bot 5–15. turlarda medyan 52 s uçuyor, turların %42'si 65 s tavanına çarpıyor (hedef 20–40 s, ≤ %5).
+3. **Denetçiden bekleyenler (koordinatör: YAPMA).** Boş dalışın y < kademe_y+15'te hemen toparlanması ve nesnelerin üst üste doğmaması. İkisi de rastgele sayı sırasını ve sim eşliğini etkiliyor; sim ayarı bitince birlikte yapılacak.
+
+## Denetim düzeltmeleri (uygulandı)
+
+- **Kamera:** zemin ekran altından 160 px yukarıda (`alt_pay_px`). Aynı kaydırma `Ucus.ekran()` içinde de var (görüntüsüzde `kay` = 0, sim aynen). Rampa göstergesi altta %43'te: istenen ~%34'te roket rampadayken göstergenin altında kalıyordu. Rampa sırasında ipucu göstergenin üstünde.
+- **His:** sarsıntı genliği 0,05. Duraksama sırasında hiç fizik adımı atılmıyor. Ara değer (alfa) en çok 1.
+- **HUD:** rampada da güncelleniyor (eski turun sayıları kalmıyor).
+- **İlk açılış:** iğne ve otomatik kalkış ilk dokunuşa kadar bekliyor ("Başlamak için dokun"). O dokunuş yalnız tam ekranı ve sesi başlatıyor. Ses `state !== 'closed'` ise çalıyor. `ipucu.rampa` yalnız insan dokunuşuyla yazılıyor.
+- **Bekleyen:** `bekleyen = { j, ses }`. Açılışta `ses` doluysa `duvar.ses` yazılıyor, ödül ikinci kez alınamıyor. Eski biçim (sayı) de kabul ediliyor.
+- **Küçük görseller:** üstten sekmede balon/zeplin 0,15 s 2,5 birim aşağı itiliyor. Dron bidonu rokete uçuyor. İrtifa yazıları büyütüldü.
+- **Tahsis:** HUD önce sayıyı karşılaştırıyor, yalnız değişince biçimliyor. Intl.NumberFormat ve matchMedia önbellekte. Gök gradyanı yalnız renk değişince kuruluyor. Flaş sayacı halka tampon. Yazı tipi dizgileri, kesik çizgi deseni ve pervane dizisi önbellekte.
+- **404:** kabul koşusundaki 2 adet 404, `kabul.py` K13'ün kendi açtığı `/__bos__` sayfasından (betikte iki `goto`). Oyun hiçbir dosya istemiyor; favicon `data:` URI. Gidermek için testçinin boş sayfayı `about:blank` ya da var olan bir dosyayla değiştirmesi gerekiyor (testçi dosyalarına dokunmadım).
 
 ## Şartnameyle çelişen ya da şartnamede eksik olup kendim çözdüklerim
 
