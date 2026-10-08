@@ -64,6 +64,7 @@ AYAR = dict(
     mukemmel_sekme=0.10, mukemmel_sekme_tavan=12.0,
     # kademe son şansı
     kademe_y=25.0, kademe_vy=78.0, kademe_vy_sv=6.5, kademe_vx=15.0, kademe_vx_sv=6.5, kademe_x_kayip=0.9,   # itki/sv 5→6,5 (+%30)
+    kademe_ust_vy_kat=0.5,     # S1: tropopoz üstünde ateşlenen kademe ileri ağırlıklı: vy × 0,5 (vx aynı formül)
     kademe_cd=0.85,            # her ayrılma sürüklemeyi %15 azaltır
     son_ates=19.5,             # Son ateşleme: +19,5/sv (15'ten +%30), yatay < 30 ve kademe yokken 1 kez
     # kamera / ekran (dikey telefon)
@@ -515,6 +516,8 @@ class Ucus:
         s.cd_kat *= A['kademe_cd']
         s.vx = s.vx * A['kademe_x_kayip'] + A['kademe_vx'] + A['kademe_vx_sv'] * s.sv.get('kademe_itki', 0)
         s.vy = A['kademe_vy'] + A['kademe_vy_sv'] * s.sv.get('kademe_itki', 0)
+        if s.y > A['y_tropopoz']:     # S1: yüksekte (durma) ateşleme ileri ağırlıklı
+            s.vy *= A['kademe_ust_vy_kat']
         s.dalis_t = None
         s.itis = None
         s.dur_t = 0.0
@@ -794,7 +797,7 @@ class Ucus:
         if v < A['v_dur'] or (abs(s.vx) < A['vx_dur'] and s.y > A['y_tropopoz']):
             s.dur_t += dt
             if s.dur_t >= A['dur_sure']:
-                if s.kademe > 0 and s.y < 300:
+                if s.kademe > 0:      # S1: her irtifada (KARARLAR 8. oturum: vx_dur'da önce kademe ateşlenir)
                     s.kademe_ates('durma')
                 else:
                     s.bitti = 'durma'
@@ -1296,35 +1299,51 @@ HEDEF = dict(
 )
 
 
-def ozet(havuz, tohum_n=12, tur_max=25, botlar=None, rastgele=0.0):
-    """Ayar döngüsü için kısa ölçüm: eşik turları, süre, kazanç, beceri farkı (ilk 25 tur)."""
+def kayan_medyan(k, t, alan='kazanc_ucus'):
+    """Kampanyada t. tur çevresindeki 3 turun (t−1, t, t+1; uçta 2) medyanı (S2: tur bazındaki gürültüyü azaltır)."""
+    tt = k['turlar']
+    v = sorted(tt[i][alan] for i in range(max(0, t - 2), min(len(tt), t + 1)))
+    return v[len(v) // 2] if len(v) % 2 else (v[len(v) // 2 - 1] + v[len(v) // 2]) / 2
+
+
+OZET_TUR = dict(hic=60, kotu=60, orta=40, iyi=40, usta=40)   # eşik medyanı kesilmesin: yörünge/Kármán 25. turdan sonra da sayılır
+
+
+def ozet(havuz, tohum_n=12, tur_max=None, botlar=None, rastgele=0.0):
+    """Ayar döngüsü için kısa ölçüm (medyan): eşik turları, süre, uçuş kazancı (3 tur kayan medyan), tavan oranı."""
     botlar = botlar or BOT_SIRA
     tohumlar = list(range(1, tohum_n + 1))
-    kp = havuz.map(kampanya, [(sd, b, tur_max if b != 'kotu' else max(tur_max, 50), rastgele) for b in botlar for sd in tohumlar])
+    kp = havuz.map(kampanya, [(sd, b, tur_max or OZET_TUR[b], rastgele) for b in botlar for sd in tohumlar])
     kb = {}
     for k in kp:
         kb.setdefault(k['bot'], []).append(k)
-    sat = []
+    sat, olc = [], {}
+    T = AYAR['ayar_tur']
     for b in botlar:
         ks = kb[b]
+        o = olc[b] = {}
         h = []
         for d in ('ses', 'tropopoz', 'isi', 'karman', 'yorunge'):
             v = [k['ilk'].get(d) for k in ks]
             ok = [x for x in v if x]
-            h.append(f"{d}:{yuzde(ok, .5) if ok else '—'}" + (f"({len(ok)}/{len(v)})" if len(ok) < len(v) else ''))
+            o[d] = (yuzde(ok, .5) if ok else None, len(ok), len(v))
+            h.append(f"{d}:{o[d][0] or '—'}" + (f"({len(ok)}/{len(v)})" if len(ok) < len(v) else ''))
         rk = []
         for i in range(1, 4):
             vv = sorted(next((x['tur'] for x in k['turlar'] if x['rakip'] >= i), 999) for k in ks)
             rk.append(str(vv[len(vv) // 2]))
-        t15 = [x['sure'] for k in ks for x in k['turlar'][14:25]]
-        tav = sum(1 for k in ks for x in k['turlar'][:25] if x['bitis'] == 'sure') / max(1, sum(len(k['turlar'][:25]) for k in ks))
-        kz = ' '.join(f"{t}:{ort([k['turlar'][t - 1]['kazanc'] for k in ks]):.0f}" for t in (1, 5, 10, 15, 20, 25) if t <= tur_max)
-        mz = ' '.join(f"{t}:{ort([k['turlar'][t - 1]['mesafe_g'] for k in ks]):.1f}" for t in (1, 3, 10, 25) if t <= tur_max)
-        hz = ' '.join(f"{t}:{ort([k['turlar'][t - 1]['max_v'] for k in ks]):.0f}" for t in (1, 3, 10, 25) if t <= tur_max)
-        sr = ' '.join(f"{t}:{yuzde([k['turlar'][t - 1]['sure'] for k in ks], .5):.0f}" for t in (1, 3, 10, 15, 25) if t <= tur_max)
-        sat.append(f"{b:5} | {' '.join(h)} | rakip {'/'.join(rk)} | süre med {sr} · t15-25 med {yuzde(t15, .5) if t15 else 0:.0f} · tavan %{tav * 100:.0f} "
-                   f"| kazanç {kz} | km {mz} | hız {hz} | seri25 maks {max(k['en_uzun_yok25'] for k in ks)}")
-    return '\n'.join(sat), kb
+        t15 = [x['sure'] for k in ks for x in k['turlar'][14:T]]
+        o['t15'] = yuzde(t15, .5) if t15 else 0
+        o['tavan'] = sum(1 for k in ks for x in k['turlar'][:T] if x['bitis'] == 'sure') / max(1, sum(len(k['turlar'][:T]) for k in ks))
+        o['kazanc'] = {t: yuzde([kayan_medyan(k, t) for k in ks], .5) for t in (1, 5, 10, 15, 20, 25)}
+        kz = ' '.join(f"{t}:{v:.0f}" for t, v in o['kazanc'].items())
+        kt = ' '.join(f"{t}:{yuzde([k['turlar'][t - 1]['kazanc'] for k in ks], .5):.0f}" for t in (5, 15, 25))
+        sr = ' '.join(f"{t}:{yuzde([k['turlar'][t - 1]['sure'] for k in ks], .5):.0f}" for t in (1, 3, 10, 15, 25))
+        mz = ' '.join(f"{t}:{yuzde([k['turlar'][t - 1]['mesafe_g'] for k in ks], .5):.0f}" for t in (10, 25))
+        ss = ' '.join(f"{t}:{ort([k['turlar'][t - 1]['son_sans'] for k in ks]):.1f}" for t in (10, 25))
+        sat.append(f"{b:5} | {' '.join(h)} | rakip {'/'.join(rk)} | süre med {sr} · t15-25 {o['t15']:.0f} · tavan %{o['tavan'] * 100:.0f} "
+                   f"| uçuş kazancı (3 tur kayan med) {kz} · toplam {kt} | km {mz} | son şans {ss} | seri25 maks {max(k['en_uzun_yok25'] for k in ks)}")
+    return '\n'.join(sat), kb, olc
 
 
 def beceri(havuz, kb, t, tohum_n=12, botlar=None):
@@ -1339,6 +1358,10 @@ def beceri(havuz, kb, t, tohum_n=12, botlar=None):
     for (sd, _, b, _, _), r in zip(isl, rr):
         out.setdefault(b, []).append(r)
     return out
+
+
+def hedef_kontrol(olc, bc):
+    return ''
 
 
 def kontrol():
@@ -1402,14 +1425,17 @@ if __name__ == '__main__':
     elif a and a[0] == 'ozet':   # python ucus_sim.py ozet [tohum] [rastgele]
         with Pool() as hv:
             n = int(a[1]) if len(a) > 1 else 12
-            txt, kb = ozet(hv, n, rastgele=float(a[2]) if len(a) > 2 else 0.0)
+            txt, kb, olc = ozet(hv, n, rastgele=float(a[2]) if len(a) > 2 else 0.0)
             print(txt)
-            for t in (10, 25):
-                out = beceri(hv, kb, t, n)
+            bc = {}
+            for t in (1, 5, 10):
+                out = beceri(hv, kb, t, 3 * n)
                 m = {b: ort([r['mesafe'] for r in rs]) for b, rs in out.items()}
-                print(f"beceri t{t}: " + ' '.join(f"{b}/hic {m[b] / m['hic'] - 1:+.0%}" for b in m if b != 'hic'))
+                bc[t] = {b: m[b] / m['hic'] - 1 for b in m if b != 'hic'}
+                print(f"beceri t{t}: " + ' '.join(f"{b}/hic {v:+.0%}" for b, v in bc[t].items()))
             mx = [tur_oyna(sd, sv_oran(1.0), 'hic', 40, {'tropopoz', 'karman'}) for sd in range(1, 11)]
             print('hic maks: irtifa ort', round(ort([r['max_y'] for r in mx])), 'tropopoz', sum(r['max_y'] >= AYAR['y_tropopoz'] for r in mx), '/10')
+            print(hedef_kontrol(olc, bc))
     else:
         n = 5 if a and a[0] == 'hizli' else 20
         print(ana(n, 60 if n == 20 else 50))
