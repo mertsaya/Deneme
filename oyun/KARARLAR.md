@@ -1,0 +1,28 @@
+# Kullanıcı kararları (yaratıcı yön)
+
+Ajanlar bu dosyayı kesin kabul eder; değiştirmek için kullanıcıya sorulur.
+
+| Tarih | Konu | Karar | Not |
+|---|---|---|---|
+| 2026-10-08 | Oynanış | Burrito Bison mantığı | Gerçekçi simülasyon (A0) reddedildi |
+| 2026-10-08 | Kamera / kontrol / tarz | Yandan 2.5B · tek dokunuş + zamanlama · renkli çizgi film | |
+| 2026-10-08 | Zemin | Her şey gökyüzünde, deniz yok | Sekme yüzeyi havadaki nesneler |
+| 2026-10-08 | Son şans | Yere düşmek üzereyken kademe ayrılır, üstteki kademe olay yerinden yeniden fırlar | İlerleme bir hatayla kaybolmasın |
+| 2026-10-08 | Ölümcül çarpışma | Tur bitmez, bir kademe kaybedilir; son kademedeysen tur biter | Uyarı ≥ 1,2 s |
+| 2026-10-08 | Pilot | Maskot pilot (çizgi film astronot; son şansta kapsülde kalır) | Oyunun yüzü |
+| 2026-10-08 | Ton ve kültür | **Evrensel** çizgi film tonu, yerel gönderme yok | ICERIK'teki Simit/Nazar/Lokum kaplamaları, "SICAK SİMİT" reklamları, Türk karakterli rakipler ve yerel bilgi kartları değiştirilecek |
+| 2026-10-08 | Fırsat dokunuşu | Her fırsat nesnesinin kendi mini zamanlama oyunu | Öğrenme yükü için: her yeni mini oyun ilk karşılaşmada tek satır ipucuyla, turda en çok bir yeni kural |
+| 2026-10-08 | Araçlar | Playwright+Chromium, gltf-transform, adb kuruldu; KTX-Software indirildi (kurulum yönetici onayı ister, B2'de) | |
+| 2026-10-08 | Nadir olaylar | Komik ve tuhaf (şişme kedi, balina zeplin, sahte uzaylı = rakip zeplini, leylek termalleri, meteor şok dalgası) | Absürt ama kendi içinde mantıklı |
+| 2026-10-08 | Kargo kapsülü kartları | 3 kartın üçü de kazanılır | |
+| 2026-10-08 | Müzik | Enerjik çizgi film; hızlandıkça katman kazanır | |
+| 2026-10-08 | B1 kapsamı | Önce ilk 25 tur (~24 nesne, 5 nadir olay, 6 fırsat) | Eğlence kanıtlanınca gerisi |
+
+## 8. oturum kararları (2026-10-08, kullanıcı onaylı)
+- Para birimi: **altın jeton** (₺ kaldırılır; evrensel ton).
+- Sekme açısı: bilim balonu **40°** (fazla irtifa üst atmosfer sönümüyle çözülür); habitat **15°** ama ayrı nesne sınıfı ("kayma yüzeyi"). Görsel tasarımı kullanıcı onayına gider.
+- Zayıf oyuncu: dokunmasa da geliştirmelerle **yavaş ama ilerler** (ısı duvarı ~tur 25, Kármán ~tur 45). Beceri hızlandırır, şart değil.
+- Kapsam: B0/B1'e yalnız **ayarlar, duraklat, erişilebilirlik** girer. Renk körlüğü modu, yedek kodu ver/al, satın alma kilidi, istatistik ekranı B1 sonrası.
+- Sanat yönü (kullanıcı onaylı): `oyun/konsept/` altındaki üç konsept (oyun içi, hangar, ana ekran) kabul: parlak renkli çizgi film, kalın yumuşak hatlar, parlak yuvarlak arayüz, maskot pilot. Görsel yazılar kodla konur (üretilen görseldeki yazılara güvenilmez). Ana ekranda Plüton daha belirgin olmalı.
+- Kabul edilen kurallar (kullanıcı onaylı): (1) tropopoz üstünde yatay hız 2 sn boyunca 110'un altında kalırsa tur biter (`vx_dur`); (2) turda en çok 5 fırsat nesnesi, römorkör hariç (`firsat_tur_max`); (3) dalış itkisi gelişimi 14→54 (4,0/sv).
+- PLAN_B §16 / ICERIK §10 önerileri kabul (kullanıcı onaylı): vx_dur'da önce kademe ateşlenir; geç dönem kazanç = irtifa bandı; boş dalış 0,4 s sonra toparlanır; yeryüzü dekoru tarla; rakipler adsız hayvan maskot arketipleri; hedef değişiklikleri (mesafe 150 km bilgi satırı, tur 5 kazanç 500, ses duvarı tur 2–3, tur 1 beceri farkı ≥%30); uçan sayılar jeton; görev/albüm/günlük hedef/hayalet B1 sonrası; römorkör y 1500'de kalır. Simülasyon ayarları S1–S9 uygulanacak (bulut, Opus).
